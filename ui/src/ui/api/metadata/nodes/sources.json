@@ -1,0 +1,106 @@
+[
+  {
+    "name": "CSV",
+    "description": "Connect data from a CSV file",
+    "icon": "images/csv.svg",
+    "type": "Source",
+    "step": {
+      "type": "connector",
+      "config": {
+        "subtype": "file",
+        "format": "csv"
+      }
+    },
+    "options": {
+      "maxIncoming": 0,
+      "maxOutgoing": -1
+    }
+  },
+  {
+    "name": "EXCEL",
+    "description": "Connect data from excel",
+    "icon": "images/excel.svg",
+    "type": "Source",
+    "step": {
+      "type": "connector",
+      "config": {
+        "subtype": "file",
+        "format": "excel"
+      }
+    },
+    "options": {
+      "maxIncoming": 0,
+      "maxOutgoing": -1
+    }
+  },
+  {
+    "name": "JSON",
+    "description": "Connect data from a file, with each row as a json string",
+    "icon": "images/json-file.svg",
+    "type": "Source",
+    "step": {
+      "type": "connector",
+      "config": {
+        "subtype": "file",
+        "format": "json"
+      }
+    },
+    "options": {
+      "maxIncoming": 0,
+      "maxOutgoing": -1
+    }
+  },
+  {
+    "name": "PostgreSQL",
+    "description": "Connect data from postgreSQL database",
+    "icon": "images/PostgreSQL_logo.svg",
+    "type": "Source",
+    "step": {
+      "type": "connector",
+      "config": {
+        "subtype": "jdbc",
+        "database": "postgres",
+        "tablename": ""
+      }
+    },
+    "options": {
+      "maxIncoming": 0,
+      "maxOutgoing": -1
+    }
+  },
+  {
+    "name": "MySQL",
+    "description": "Connect data from MySQL database",
+    "icon": "images/mysql.svg",
+    "type": "Source",
+    "step": {
+      "type": "connector",
+      "config": {
+        "subtype": "jdbc",
+        "database": "mysql",
+        "tablename": ""
+      }
+    },
+    "options": {
+      "maxIncoming": 0,
+      "maxOutgoing": -1
+    }
+  },
+  {
+    "name": "mongoDB",
+    "description": "Connect data from NoSQL database - mongoDB",
+    "icon": "images/mongodb-original-wordmark.svg",
+    "type": "Source",
+    "step": {
+      "type": "connector",
+      "config": {
+        "subtype": "mongo"
+      }
+    },
+    "options": {
+      "maxIncoming": 0,
+      "maxOutgoing": -1
+    }
+  }
+
+]

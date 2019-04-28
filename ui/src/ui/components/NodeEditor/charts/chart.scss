@@ -1,0 +1,105 @@
+.linechart-placeholder {
+  border: 1px dashed #999;
+  height: 100%;
+}
+
+.linechart-legend {
+  position: absolute;
+  top: 45px;
+  right: 12px;
+}
+
+.chart-placeholder {
+  border: 1px dashed #999;
+  height: 100%;
+}
+
+.chart-legend {
+  position: absolute;
+  top: 45px;
+  right: 12px;
+}
+
+.chart-tooltip {
+  
+}
+
+.bx--data-tooltip {
+  padding: 0;
+}
+
+.bx--data-tooltip__label {
+  width: 100%;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  color: #5a6872;
+  padding: 0 1rem;
+  white-space: nowrap;
+  border-bottom: 1px solid #dfe3e6;
+}
+
+.bx--data-tooltip-list-item {
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.bx--data-tooltip-list-item__data {
+  font-weight: 600;
+  background-color: #ffffff;
+  z-index: 2;
+}
+
+.bx--data-tooltip-list-item__label {
+  color: #5a6872;
+  font-size: 12px;
+}
+
+.bx--data-tooltip-list-item__data,
+.bx--data-tooltip-list-item__label {
+  display: inline-block;
+}
+
+.bx--data-tooltip__base {
+  min-height: 1.625rem;
+  padding: 0 0.625rem;
+}
+
+.bx--data-tooltip__single {
+  min-height: 2.625rem;
+  padding: 0 0.625rem;
+}
+
+.bx--data-tooltip__multiple {
+  margin: 0.5rem 1rem;
+  min-height: 2rem;
+  padding-left: 0.5rem;
+}
+
+.bx--data-tooltip__multiple--last {
+  margin-bottom: 1rem;
+}
+
+.bx--data-tooltip__multiple--right {
+  margin-left: 0;
+}
+
+.bx--data-tooltip__multiple--left {
+  margin-right: 0;
+}
+
+.bx--data-tooltip-list--single {
+  display: flex;
+  flex-direction: column;
+  column-count: 1;
+  column-gap: 1.25rem;
+}
+
+.bx--data-tooltip-list--double {
+  column-count: 2;
+  column-gap: 1.25rem;
+}
+

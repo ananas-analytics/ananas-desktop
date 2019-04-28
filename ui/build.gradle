@@ -1,0 +1,60 @@
+task install(type: Exec) {
+	workingDir "."
+
+	inputs.file("package.json").withPathSensitivity(PathSensitivity.RELATIVE)
+
+	outputs.dir("node_modules")
+	outputs.cacheIf { true }
+
+	commandLine "yarn", "install"
+}
+
+task buildRender(type: Exec) { 
+	dependsOn install	
+
+	workingDir "."
+	
+	inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
+	inputs.dir("src/ui").withPathSensitivity(PathSensitivity.RELATIVE)
+	inputs.dir("public").withPathSensitivity(PathSensitivity.RELATIVE)
+
+	outputs.file("dist/bundle.js")
+	outputs.cacheIf { true }
+
+	environment "NODE_ENV", "production"
+
+	commandLine "./node_modules/.bin/webpack", "--mode", "production" 
+}
+
+task buildMain(type: Exec) {
+	dependsOn install	
+
+	inputs.file("main.js").withPathSensitivity(PathSensitivity.RELATIVE)
+	inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
+	inputs.dir("src/main").withPathSensitivity(PathSensitivity.RELATIVE)
+
+	outputs.file("dist/app.js")
+	outputs.cacheIf { true }
+
+	workingDir "."
+
+	environment "NODE_ENV", "production"
+
+	commandLine "./node_modules/.bin/webpack", "--config",  "webpack.main.config.js", "--mode", "production" 
+}
+
+task build {
+	dependsOn buildRender, buildMain
+}
+
+task test(type: Exec) {
+	commandLine "./node_modules/.bin/jest"
+}
+
+task run(type: Exec) {
+	dependsOn build
+
+	workingDir "."
+
+	commandLine "./node_modules/.bin/electron", "."
+}
