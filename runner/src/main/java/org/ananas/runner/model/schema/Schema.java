@@ -2,13 +2,14 @@ package org.ananas.runner.model.schema;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Schema {
+public class Schema implements Serializable {
 
-	private List<SchemaField> fields;
+	public List<SchemaField> fields;
 
 	public static Schema Of(org.apache.beam.sdk.schemas.Schema schema) {
 		Schema s = new Schema();

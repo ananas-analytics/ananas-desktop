@@ -12,8 +12,8 @@ import java.util.List;
 
 @Data
 public class Dataframe {
-	private String id; //     string                            `json:"id"`
-	private org.ananas.runner.model.schema.Schema schema; // map[string]map[string]interface{} `json:"schemas"`
+	public String id; //     string                            `json:"id"`
+	public org.ananas.runner.model.schema.Schema schema; // map[string]map[string]interface{} `json:"schemas"`
 	public List<List<Object>> data; //`json:"data"`
 	public String message;
 
