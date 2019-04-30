@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- https://logback.qos.ch/manual/appenders.html -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.home}/ananas/ananas.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${user.home}/ananas/ananas.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 3 days' worth of history capped at 300MB total size -->
+            <maxHistory>3</maxHistory>
+            <totalSizeCap>30MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} %-5level - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <logger name="org.apache.flink" level="debug"
+            additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <root level="error">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

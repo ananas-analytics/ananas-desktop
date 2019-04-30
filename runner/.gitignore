@@ -1,0 +1,6 @@
+target/
+.gradle/
+.idea/*
+/build
+derby.log
+/package
