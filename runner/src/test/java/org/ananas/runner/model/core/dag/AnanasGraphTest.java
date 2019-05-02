@@ -13,12 +13,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DatumaniaGraphTest {
+public class AnanasGraphTest {
 
 	@Test
 	public void dfsSearch() {
 		DagRequest dag = wikiDag();
-		DatumaniaGraph builder = new DatumaniaGraph(dag.dag, dag.goals).reverse();
+		AnanasGraph builder = new AnanasGraph(dag.dag, dag.goals).reverse();
 		Map<String, Iterable<Step>> x = builder.DFSBranch();
 		Assert.assertEquals("should have one branch for each runnable step", dag.goals.size(), x.size());
 		for (String id : dag.goals) {
@@ -29,15 +29,15 @@ public class DatumaniaGraphTest {
 	@Test
 	public void reverse() {
 		DagRequest dag = wikiDag();
-		DatumaniaGraph original = new DatumaniaGraph(dag.dag, dag.goals);
-		DatumaniaGraph reversed = original.reverse();
+		AnanasGraph original = new AnanasGraph(dag.dag, dag.goals);
+		AnanasGraph reversed = original.reverse();
 		Assert.assertEquals(original.dag.connections.size(), reversed.dag.connections.size());
 	}
 
 	@Test
 	public void subDag() {
 		DagRequest dag = wikiDag();
-		DatumaniaGraph subdagGraphBuilder = new DatumaniaGraph(dag.dag, dag.goals).reverse().subDag(dag.goals);
+		AnanasGraph subdagGraphBuilder = new AnanasGraph(dag.dag, dag.goals).reverse().subDag(dag.goals);
 		Assert.assertEquals(7, subdagGraphBuilder.dag.connections.size());
 		Assert.assertEquals(7, subdagGraphBuilder.dag.steps.size());
 	}
@@ -45,7 +45,7 @@ public class DatumaniaGraphTest {
 	@Test
 	public void topologicalSort() {
 		DagRequest dag = wikiDag();
-		DatumaniaGraph builder = new DatumaniaGraph(dag.dag, dag.goals);
+		AnanasGraph builder = new AnanasGraph(dag.dag, dag.goals);
 		Set<Step> x = builder.topologicalSort();
 		Assert.assertEquals("should have same amout of step", dag.dag.getSteps().size(), x.size());
 		System.out.println(x.stream().map(s -> s.id).collect(Collectors.toList()));
@@ -67,7 +67,7 @@ public class DatumaniaGraphTest {
 		Set<String> goals = new HashSet<>();
 		goals.add("2");
 
-		new DatumaniaGraph(cyclicGraph, goals);
+		new AnanasGraph(cyclicGraph, goals);
 	}
 
 

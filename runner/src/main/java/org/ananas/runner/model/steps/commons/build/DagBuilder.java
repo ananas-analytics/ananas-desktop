@@ -5,7 +5,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.ananas.runner.misc.VariableRender;
 import org.ananas.runner.model.core.*;
-import org.ananas.runner.model.core.dag.DatumaniaGraph;
+import org.ananas.runner.model.core.dag.AnanasGraph;
 import org.ananas.runner.model.hooks.NoHook;
 import org.ananas.runner.model.steps.commons.StepRunner;
 import org.ananas.runner.model.steps.commons.StepType;
@@ -23,7 +23,7 @@ public class DagBuilder implements Builder {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DagBuilder.class);
 
-	private DatumaniaGraph dag;
+	private AnanasGraph dag;
 	private Set<String> stepIds;
 
 	private static Cache<String, Iterable<Step>> stepsCache = CacheBuilder.newBuilder()
@@ -36,7 +36,7 @@ public class DagBuilder implements Builder {
 	Map<String, Object> variables;
 
 	public DagBuilder(Dag d, boolean isTest, Set<String> goals, Map<String, Object> variables) {
-		this.dag = new DatumaniaGraph(d, goals).reverse().subDag(goals).reverse();
+		this.dag = new AnanasGraph(d, goals).reverse().subDag(goals).reverse();
 		System.out.println(this.dag);
 		this.stepIds = goals;
 		this.isTest = isTest;

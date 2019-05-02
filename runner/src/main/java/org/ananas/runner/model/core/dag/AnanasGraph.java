@@ -16,14 +16,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DatumaniaGraph {
+public class AnanasGraph {
 
 	Map<String, Step> stepdIds;
 	MutableGraph<Step> graph;
 	Dag dag;
 	Set<String> goals;
 
-	public DatumaniaGraph(Dag dag, Set<String> goals) {
+	public AnanasGraph(Dag dag, Set<String> goals) {
 		this.dag = dag;
 		this.goals = goals;
 		this.stepdIds = new HashMap<>();
@@ -53,14 +53,14 @@ public class DatumaniaGraph {
 		}
 	}
 
-	public DatumaniaGraph reverse() {
+	public AnanasGraph reverse() {
 		Dag copy = this.dag.copy();
 		Set<Dag.DagEdge> edges = new HashSet<>();
 		for (Dag.DagEdge edge : copy.getConnections()) {
 			edges.add(new Dag.DagEdge(edge.target, edge.source));
 		}
 		copy.setConnections(edges);
-		DatumaniaGraph dagGraphBuilder = new DatumaniaGraph(copy, this.goals);
+		AnanasGraph dagGraphBuilder = new AnanasGraph(copy, this.goals);
 		return dagGraphBuilder;
 	}
 
@@ -81,7 +81,7 @@ public class DatumaniaGraph {
 		return DFSBranch(this.goals);
 	}
 
-	public DatumaniaGraph subDag(Set<String> leaves) {
+	public AnanasGraph subDag(Set<String> leaves) {
 
 		Map<String, Iterable<Step>> m = DFSBranch(leaves);
 		Set<Step> set = new HashSet<>();
@@ -99,7 +99,7 @@ public class DatumaniaGraph {
 		}
 
 		Dag subDag = new Dag(connections, set);
-		return new DatumaniaGraph(subDag, leaves);
+		return new AnanasGraph(subDag, leaves);
 	}
 
 	public Set<Step> topologicalSort() {
@@ -132,7 +132,7 @@ public class DatumaniaGraph {
 
 	@Override
 	public String toString() {
-		return "DatumaniaGraph{" +
+		return "AnanasGraph{" +
 				"stepdIds=" + this.stepdIds +
 				", graph=" + this.graph +
 				", dag=" + this.dag +
