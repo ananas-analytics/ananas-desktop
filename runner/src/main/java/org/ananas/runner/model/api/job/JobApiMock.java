@@ -1,7 +1,7 @@
 package org.ananas.runner.model.api.job;
 
 import com.google.common.collect.ImmutableMap;
-import org.ananas.runner.model.api.DatumaniaApiClient;
+import org.ananas.runner.model.api.AnanasApiClient;
 import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.Job;
 import org.ananas.runner.model.steps.commons.jobs.LocalJobManager;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-public class JobApiMock extends DatumaniaApiClient implements JobClient {
+public class JobApiMock extends AnanasApiClient implements JobClient {
 
 
 	public JobApiMock() {

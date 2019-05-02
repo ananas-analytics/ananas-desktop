@@ -3,7 +3,7 @@ package org.ananas.runner.model.api.pipeline;
 import com.google.common.collect.ImmutableMap;
 import org.ananas.runner.api.JsonUtil;
 import org.ananas.runner.misc.HttpClient;
-import org.ananas.runner.model.api.DatumaniaApiClient;
+import org.ananas.runner.model.api.AnanasApiClient;
 import org.ananas.runner.model.core.Pipeline;
 import org.ananas.runner.model.core.Step;
 
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class PipelineApiClient extends DatumaniaApiClient implements PipelineClient {
+public class PipelineApiClient extends AnanasApiClient implements PipelineClient {
 
 
 	public PipelineApiClient() {

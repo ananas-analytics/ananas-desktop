@@ -3,11 +3,11 @@ package org.ananas.runner.model.api;
 
 import org.apache.commons.lang3.StringUtils;
 
-public abstract class DatumaniaApiClient {
+public abstract class AnanasApiClient {
 
 	protected String endpoint;
 
-	protected DatumaniaApiClient() {
+	protected AnanasApiClient() {
 		//this.endpoint = String.format("http://api.%s.ananasanalytics.com/api/v1", getEnv());
 		this.endpoint = "http://localhost:8080/api/v1";
 	}

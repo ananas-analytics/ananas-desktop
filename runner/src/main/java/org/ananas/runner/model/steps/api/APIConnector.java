@@ -1,6 +1,6 @@
 package org.ananas.runner.model.steps.api;
 
-import org.ananas.runner.model.errors.DatumaniaException;
+import org.ananas.runner.model.errors.AnanasException;
 import org.ananas.runner.model.errors.ExceptionHandler;
 import org.ananas.runner.model.steps.commons.AbstractStepRunner;
 import org.ananas.runner.model.steps.commons.ErrorHandler;
@@ -32,7 +32,7 @@ public class APIConnector extends AbstractStepRunner implements StepRunner, Seri
 		try {
 			r = APIPaginator.handle(config);
 		} catch (IOException e) {
-			throw new DatumaniaException(ExceptionHandler.ErrorCode.CONNECTION,
+			throw new AnanasException(ExceptionHandler.ErrorCode.CONNECTION,
 					"A technical error occurred when connecting to your API. Please verify your parameters");
 		}
 		Create.Values<org.apache.beam.sdk.values.Row> pCollections = Create.of(r.getRight());

@@ -86,9 +86,9 @@ public class JdbcSchemaDetecter implements Serializable {
 		return null;
 	}
 
-	public static class DatumaniaRecordMapper implements RecordMapperProvider {
+	public static class AnanasRecordMapper implements RecordMapperProvider {
 
-		public DatumaniaRecordMapper() {
+		public AnanasRecordMapper() {
 
 		}
 

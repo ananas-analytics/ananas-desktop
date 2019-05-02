@@ -3,7 +3,7 @@ package org.ananas.runner.model.core.dag;
 import org.ananas.runner.model.core.Dag;
 import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.Step;
-import org.ananas.runner.model.errors.DatumaniaException;
+import org.ananas.runner.model.errors.AnanasException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,7 +51,7 @@ public class AnanasGraphTest {
 		System.out.println(x.stream().map(s -> s.id).collect(Collectors.toList()));
 	}
 
-	@Test(expected = DatumaniaException.class)
+	@Test(expected = AnanasException.class)
 	public void cyclicGraph() {
 		Dag cyclicGraph = new Dag();
 

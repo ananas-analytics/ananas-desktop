@@ -7,7 +7,7 @@ import com.google.common.graph.MutableGraph;
 import com.google.common.graph.Traverser;
 import org.ananas.runner.model.core.Dag;
 import org.ananas.runner.model.core.Step;
-import org.ananas.runner.model.errors.DatumaniaException;
+import org.ananas.runner.model.errors.AnanasException;
 import org.ananas.runner.model.errors.ExceptionHandler;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -47,7 +47,7 @@ public class AnanasGraph {
 			this.graph.putEdge(stepSource, stepTarget);
 		}
 		if (com.google.common.graph.Graphs.hasCycle(this.graph)) {
-			throw new DatumaniaException(
+			throw new AnanasException(
 					MutablePair.of(ExceptionHandler.ErrorCode.DAG,
 							"Oops. Your DAG has a cycle ie a sequence of connections starting and ending with the same step."));
 		}

@@ -3,7 +3,7 @@ package org.ananas.runner.api;
 import org.ananas.runner.model.core.Dataframe;
 import org.ananas.runner.model.core.Job;
 import org.ananas.runner.model.core.PaginationBody;
-import org.ananas.runner.model.errors.DatumaniaException;
+import org.ananas.runner.model.errors.AnanasException;
 import org.ananas.runner.model.healthcheck.HealthCheck;
 import org.ananas.runner.model.steps.commons.paginate.Paginator;
 import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
@@ -57,7 +57,7 @@ class HttpHandler {
 
 		if (body == null || body.length() == 0) {
 			return JsonUtil.toJson(
-					ApiResponseBuilder.Of().KO(new DatumaniaException(
+					ApiResponseBuilder.Of().KO(new AnanasException(
 							org.ananas.runner.model.errors.ExceptionHandler.ErrorCode.GENERAL,
 							"missing body")).build());
 		}
@@ -74,7 +74,7 @@ class HttpHandler {
 
 		if (body == null || body.length() == 0) {
 			return JsonUtil.toJson(
-					ApiResponseBuilder.Of().KO(new DatumaniaException(
+					ApiResponseBuilder.Of().KO(new AnanasException(
 							org.ananas.runner.model.errors.ExceptionHandler.ErrorCode.GENERAL,
 							"missing body")).build());
 		}

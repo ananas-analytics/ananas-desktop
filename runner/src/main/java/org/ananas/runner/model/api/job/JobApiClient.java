@@ -3,7 +3,7 @@ package org.ananas.runner.model.api.job;
 import com.google.common.collect.ImmutableMap;
 import org.ananas.runner.api.JsonUtil;
 import org.ananas.runner.misc.HttpClient;
-import org.ananas.runner.model.api.DatumaniaApiClient;
+import org.ananas.runner.model.api.AnanasApiClient;
 import org.ananas.runner.model.api.pipeline.SimpleMapResponse;
 import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.Job;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JobApiClient extends DatumaniaApiClient implements JobClient {
+public class JobApiClient extends AnanasApiClient implements JobClient {
 
 
 	public JobApiClient() {

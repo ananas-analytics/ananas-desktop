@@ -1,6 +1,6 @@
 package org.ananas.runner.model.steps.commons.paginate;
 
-import org.ananas.runner.model.errors.DatumaniaException;
+import org.ananas.runner.model.errors.AnanasException;
 import org.ananas.runner.model.errors.ExceptionHandler;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.Logger;
@@ -78,7 +78,7 @@ public class PageProcessor {
 			LOG.debug(String.format("No Of Message %s , Time(ms) %s ", counter, tot));
 			return linkedList;
 		} catch (IOException e) {
-			throw new DatumaniaException(
+			throw new AnanasException(
 					MutablePair.of(ExceptionHandler.ErrorCode.GENERAL,
 							"An error occurred while reading file : " + e.getMessage()));
 		}

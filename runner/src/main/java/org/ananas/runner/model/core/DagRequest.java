@@ -13,6 +13,7 @@ import java.util.Set;
 public class DagRequest {
 
 	@Data
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	static public class Env {
 		String name;
 		String type;

@@ -2,7 +2,7 @@ package org.ananas.runner.model.steps.api;
 
 
 import org.ananas.runner.misc.HttpClient;
-import org.ananas.runner.model.errors.DatumaniaException;
+import org.ananas.runner.model.errors.AnanasException;
 import org.ananas.runner.model.errors.ExceptionHandler;
 import org.ananas.runner.model.schema.JsonAutodetect;
 import org.ananas.runner.model.schema.SchemaBasedRowConverter;
@@ -39,7 +39,7 @@ public class APIPaginator extends AbstractPaginator implements Paginator {
 		try {
 			rows = handle(this.config);
 		} catch (IOException e) {
-			throw new DatumaniaException(MutablePair.of(ExceptionHandler.ErrorCode.CONNECTION, e.getMessage()));
+			throw new AnanasException(MutablePair.of(ExceptionHandler.ErrorCode.CONNECTION, e.getMessage()));
 		}
 		this.schema = rows.getLeft();
 		return StreamSupport.stream(rows.getRight().spliterator(), false).collect(Collectors.toList());

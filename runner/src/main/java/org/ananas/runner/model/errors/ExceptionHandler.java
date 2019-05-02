@@ -20,12 +20,12 @@ public class ExceptionHandler {
 
 	}
 
-	public static DatumaniaException valueOf(ErrorCode code, String message) {
-		return new DatumaniaException(MutablePair.of(code, message));
+	public static AnanasException valueOf(ErrorCode code, String message) {
+		return new AnanasException(MutablePair.of(code, message));
 	}
 
-	public static DatumaniaException valueOf(Throwable e) {
-		return new DatumaniaException(findRootCauseMessage(e));
+	public static AnanasException valueOf(Throwable e) {
+		return new AnanasException(findRootCauseMessage(e));
 	}
 
 	public static MutablePair<ErrorCode, String> findRootCauseMessage(Throwable e) {
@@ -36,15 +36,15 @@ public class ExceptionHandler {
 			}
 			e = e.getCause();
 		}
-		if (e instanceof DatumaniaException) {
-			return ((DatumaniaException) e).error;
+		if (e instanceof AnanasException) {
+			return ((AnanasException) e).error;
 		}
 		return MutablePair.of(ErrorCode.GENERAL, StringUtils.defaultString(e.getMessage(), e.toString()));
 	}
 
 	private static MutablePair<ErrorCode, String> parseException(Throwable e) {
-		if (e instanceof DatumaniaException) {
-			return ((DatumaniaException) e).error;
+		if (e instanceof AnanasException) {
+			return ((AnanasException) e).error;
 		}
 		if (e instanceof NullPointerException) {
 			return MutablePair.of(ErrorCode.GENERAL, "Oops. Something went wrong.");

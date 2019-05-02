@@ -1,6 +1,6 @@
 package org.ananas.runner.model.steps.files;
 
-import org.ananas.runner.model.errors.DatumaniaException;
+import org.ananas.runner.model.errors.AnanasException;
 import org.ananas.runner.model.errors.ExceptionHandler;
 import org.ananas.runner.model.steps.commons.ErrorHandler;
 import org.ananas.runner.model.steps.commons.paginate.AbstractPaginator;
@@ -116,10 +116,10 @@ public class ExcelPaginator extends AbstractPaginator implements Paginator {
 			}
 
 		} catch (IOException e) {
-			throw new DatumaniaException(
+			throw new AnanasException(
 					MutablePair.of(ExceptionHandler.ErrorCode.GENERAL, "Can't read your Excel file. "));
 		} catch (InvalidFormatException e) {
-			throw new DatumaniaException(
+			throw new AnanasException(
 					MutablePair.of(ExceptionHandler.ErrorCode.GENERAL, "Oops. Invalid format? "));
 		} catch (Exception e) {
 			errorHandler.addError(ExceptionHandler.ErrorCode.GENERAL,
