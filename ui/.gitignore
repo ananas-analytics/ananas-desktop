@@ -4,3 +4,4 @@ dist
 *.swp
 .DS_Store
 bin
+/tags
