@@ -48,7 +48,7 @@ const state = {
       name: 'Welcome',
       email: 'user@ananas.com',
       subscriptionId: 'subscription',
-      token: '',
+      token: '123',
     },
     currentProjectId: null,
     projects: { // all project related data here

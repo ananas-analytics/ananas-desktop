@@ -1,3 +1,15 @@
+
+def String getSystemProperty(String propertyName, String defaultValue)
+{
+	String value = System.properties[propertyName]
+	if (value != null) {
+		return value
+	}
+	return defaultValue
+}
+
+// println getSystemProperty("NODE_ENV", "development")
+
 task install(type: Exec) {
 	workingDir "."
 
@@ -14,6 +26,7 @@ task buildRender(type: Exec) {
 
 	workingDir "."
 	
+	inputs.property 'NODE_ENV', getSystemProperty('NODE_ENV', 'development')
 	inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("src/ui").withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("public").withPathSensitivity(PathSensitivity.RELATIVE)
@@ -21,14 +34,15 @@ task buildRender(type: Exec) {
 	outputs.file("dist/bundle.js")
 	outputs.cacheIf { true }
 
-	environment "NODE_ENV", "production"
+	environment "NODE_ENV", "${getSystemProperty('NODE_ENV', 'development')}"
 
-	commandLine "./node_modules/.bin/webpack", "--mode", "production" 
+	commandLine "./node_modules/.bin/webpack", "--mode", "${getSystemProperty('NODE_ENV', 'development')}"
 }
 
 task buildMain(type: Exec) {
 	dependsOn install	
 
+	inputs.property 'NODE_ENV', getSystemProperty('NODE_ENV', 'development')
 	inputs.file("main.js").withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("src/main").withPathSensitivity(PathSensitivity.RELATIVE)
@@ -38,9 +52,9 @@ task buildMain(type: Exec) {
 
 	workingDir "."
 
-	environment "NODE_ENV", "production"
+	environment "NODE_ENV", "${getSystemProperty('NODE_ENV', 'development')}"
 
-	commandLine "./node_modules/.bin/webpack", "--config",  "webpack.main.config.js", "--mode", "production" 
+	commandLine "./node_modules/.bin/webpack", "--config",  "webpack.main.config.js", "--mode", "${getSystemProperty('NODE_ENV', 'development')}" 
 }
 
 task build {

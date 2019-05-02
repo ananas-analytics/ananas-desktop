@@ -1,6 +1,14 @@
 const { app, BrowserWindow, Menu } = require('electron')
+const path = require('path')
+const { spawn } = require('child_process')
+
+const log = require('./src/common/log')
 
 require('./src/main')
+
+const env = process.env.NODE_ENV || 'development'
+
+let runner = null
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -18,7 +26,9 @@ function createWindow () {
   win.loadFile('public/index.html')
 
   // Open the DevTools.
+  // #if process.env.NODE_ENV !== 'production'
   win.webContents.openDevTools()
+  // #endif
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -48,6 +58,58 @@ function createWindow () {
   ]
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+
+  // #if process.env.NODE_ENV === 'production'
+  startRunner()
+  // #endif
+}
+
+function getRunnerPath() {
+  // #if process.env.NODE_ENV === 'production'
+  switch(process.platform) {
+    case 'darwin':
+      return path.join(app.getAppPath(), '..', 'resources/macos/v0.4/Contents/MacOS/ananas')
+    case 'win32':
+      return ''
+    case 'linux':
+      return ''
+  } 
+  // #endif
+
+  // #if process.env.NODE_ENV !== 'production'
+  switch(process.platform) {
+    case 'darwin':
+      return path.join(app.getAppPath(), 'resources/macos/v0.4/Contents/MacOS/ananas')
+    case 'win32':
+      return ''
+    case 'linux':
+      return ''
+  }
+  // #endif
+}
+
+function startRunner() {
+  const runnerPath = getRunnerPath()  
+
+  runner = spawn(runnerPath)
+  runner.stdout.on('data', (data) => {
+    log.info(data.toString())
+  })
+
+  runner.stderr.on('data', (data) => {
+    log.error(data.toString())
+  })
+
+  runner.on('exit', (code) => {
+    log.info(`Child exited with code ${code}`)
+  })
+}
+
+
+function stopRunner() {
+  if (runner !== null) {
+    runner.kill('SIGKILL')
+  }
 }
 
 // This method will be called when Electron has finished
@@ -62,6 +124,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+  stopRunner()
 })
 
 app.on('activate', () => {

@@ -52,6 +52,7 @@ const store = createStore(
 
 modelService.setStore(store)
 executionService.setStore(store)
+variableService.setStore(store)
 
 ReactDOM.render(
   <Provider store={store}>

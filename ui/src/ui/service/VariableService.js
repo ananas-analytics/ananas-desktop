@@ -1,5 +1,7 @@
 // @flow
 
+const app = require('electron').remote.app
+
 import moment from 'moment'
 
 import proxy from '../proxy'
@@ -50,10 +52,15 @@ class Expression {
 }
 
 export default class VariableService {
+  store: any
   dict: {[string]: PlainVariable}
 
   getServiceName() {
     return 'VariableService'
+  }
+
+  setStore(store:any) {
+    this.store = store
   }
   
   updateDictionary(variables: Array<PlainVariable>) {
@@ -126,6 +133,12 @@ export default class VariableService {
         description: 'Job execution date',
         scope: 'runtime',
       },
+      {
+        name: 'PROJECT_PATH',
+        type: 'string',
+        description: 'Project full path',
+        scope: 'runtime',
+      }
     ]
   }
 
@@ -152,19 +165,18 @@ export default class VariableService {
 
         let newDict = { ... dict }  
         // override runtime variables, and remove unexpected variables
-        variables.forEach(v => {
-          if (v.scope === 'runtime') {
-            if (v.type === 'date') {
-              newDict[v.name] = moment().format()
-            } else if (v.type === 'string') {
-              newDict[v.name] = ''
-            } else if (v.type === 'number') {
-              newDict[v.name] = '0'
-            }
-          }
-        })
+        newDict['EXECUTE_DATE'] = moment().format() 
+        newDict['PROJECT_PATH'] = this.getProjectPath(projectID)
         return newDict
       })
   }
 
+  getProjectPath(projectID: ID) :string{
+    const state = this.store.getState()
+    let project = state.model.projects[projectID]
+    if (project && project.path) {
+      return project.path
+    }
+    return `${app.getPath('userData')}/${projectID}`
+  }
 }

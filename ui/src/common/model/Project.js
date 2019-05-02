@@ -33,6 +33,8 @@ class Project {
       if (!projectData.steps[k].deleted) {
         newSteps[k] = projectData.steps[k]
         delete newSteps[k]['dirty']
+        delete newSteps[k]['expressions']
+        delete newSteps[k]['variables']
         // keep only 10 data from dataframe if exists
         if (newSteps[k].hasOwnProperty('dataframe') 
             && Array.isArray(newSteps[k].dataframe.data)) {
@@ -49,6 +51,16 @@ class Project {
       }
     }
     projectData.steps = newSteps
+
+    // remove internal variable fields
+    projectData.variables = projectData.variables.map(v => {
+      return {
+        name: v.name,
+        description: v.description,
+        scope: v.scope,
+        type: v.type,
+      }
+    })
 
     let projectContent = YAML.stringify(projectData)
 
