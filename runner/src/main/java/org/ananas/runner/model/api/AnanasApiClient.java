@@ -14,7 +14,7 @@ public abstract class AnanasApiClient {
 
 
 	private static String getEnv() {
-		String env = System.getenv("DATUMANIA_ENV");
+		String env = System.getenv("ANANAS_ENV");
 		if (StringUtils.isEmpty(env)) {
 			return "prod";
 		}
