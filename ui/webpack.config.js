@@ -30,15 +30,23 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env', '@babel/preset-flow'],
-          plugins: [
-            '@babel/plugin-proposal-class-properties',
-            '@babel/plugin-proposal-object-rest-spread',
-            '@babel/plugin-syntax-dynamic-import'
-          ]
-        }
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-flow'],
+              plugins: [
+                '@babel/plugin-proposal-class-properties',
+                '@babel/plugin-proposal-object-rest-spread',
+                '@babel/plugin-syntax-dynamic-import'
+              ]
+            }
+          }, 
+          {
+            loader: 'webpack-conditional-loader'
+          }
+        ],
+        
       },
       {
         test: /\.(css|scss)$/,
