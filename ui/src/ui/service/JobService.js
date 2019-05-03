@@ -56,7 +56,7 @@ export class Job {
 
       axios({
         method: 'GET',
-        url: `${apiURL}/job/${this.id}`,
+        url: `${apiURL}/jobs/${this.id}/poll`,
         headers: {
           'content-type': 'application/json',
           'authorization': this.token,

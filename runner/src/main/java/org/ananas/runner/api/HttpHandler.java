@@ -15,6 +15,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -96,7 +97,6 @@ class HttpHandler {
 		return JsonUtil.toJson(ApiResponseBuilder.Of().OK(jobs).build());
 	};
 
-
 	static Route pollJob = (Request request, Response response) -> {
 		Runner runner = new BeamRunner();
 		String jobid = request.params(":jobid");
@@ -104,7 +104,12 @@ class HttpHandler {
 		if (job == null) {
 			return JsonUtil.toJson(ApiResponseBuilder.Of().KO(new NoSuchElementException("job not found")).build());
 		} else {
-			return JsonUtil.toJson(ApiResponseBuilder.Of().OK(job).build());
+			HashMap<String, String>	stateResponse = new HashMap<String, String>();
+			stateResponse.put("state", job.getState().getLeft().toString());
+			if (job.getState().getRight() != null) {
+				stateResponse.put("message", job.getState().getRight().getLocalizedMessage());
+			}
+			return JsonUtil.toJson(ApiResponseBuilder.Of().OK(stateResponse).build());
 		}
 	};
 

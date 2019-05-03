@@ -24,6 +24,7 @@ public class DagBuilder implements Builder {
 	private static final Logger LOG = LoggerFactory.getLogger(DagBuilder.class);
 
 	private AnanasGraph dag;
+
 	private Set<String> stepIds;
 
 	private static Cache<String, Iterable<Step>> stepsCache = CacheBuilder.newBuilder()
@@ -44,6 +45,9 @@ public class DagBuilder implements Builder {
 		this.variables = variables == null ? new HashMap<>() : variables;
 	}
 
+	public Set<String> getGoals() {
+		return this.stepIds;
+	}
 
 	public Map<String, Dataframe> test() {
 		Map<String, Dataframe> p = new HashMap<>();

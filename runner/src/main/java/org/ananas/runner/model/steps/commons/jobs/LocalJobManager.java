@@ -100,7 +100,7 @@ public class LocalJobManager implements JobManager, JobRepository {
 
 			pipelineFuture.thenApply(pipelineResult -> {
 				this.jobs.put(jobId,
-						Job.of(jobId, pipelineResult.getLeft(), pipelineResult.getRight(), projectId, token));
+						Job.of(jobId, pipelineResult.getLeft(), pipelineResult.getRight(), projectId, builder.getGoals(), token));
 				return pipelineResult != null;
 			});
 

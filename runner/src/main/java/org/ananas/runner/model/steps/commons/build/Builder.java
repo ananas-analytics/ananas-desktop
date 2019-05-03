@@ -6,6 +6,7 @@ import org.ananas.runner.model.steps.commons.StepRunner;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 public interface Builder {
@@ -14,4 +15,6 @@ public interface Builder {
 
 	Map<String, Dataframe> test();
 
+	// get the goals
+	Set<String> getGoals();
 }

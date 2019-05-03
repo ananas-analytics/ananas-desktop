@@ -57,7 +57,8 @@ public class BackgroundApiService implements Runnable {
 				}
 				if (cancelled) {
 					runner.updateJobState(job.id);
-					runner.removeJob(job.id);
+					// NOTE: keep all jobs in memory for now
+					// runner.removeJob(job.id);
 				}
 			}
 		}
@@ -70,8 +71,9 @@ public class BackgroundApiService implements Runnable {
 		for (Job job : jobs) {
 			runner.updateJobState(job.id);
 			if (job.getState().getLeft().isTerminal()) {
-				runner.removeJob(job.id);
-				LOG.debug("removed job - " + job.id);
+				// NOTE: keep all jobs in memory for now
+				// runner.removeJob(job.id);
+				// LOG.debug("removed job - " + job.id);
 			}
 		}
 	}
