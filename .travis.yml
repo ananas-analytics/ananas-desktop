@@ -10,4 +10,8 @@ matrix:
     - language: node_js
       node_js:
         - "10.15.0"
+      before_script:
+        - cd ui
+      script:
+        - yarn install && yarn test
       
