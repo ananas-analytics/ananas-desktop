@@ -7,7 +7,8 @@ const YAML     = require('yaml')
 const ObjectID = require('bson-objectid')
 const mkdirp   = require('mkdirp')
 
-const log = require('../log')
+const log            = require('../log')
+const MetadataLoader = require('./MetadataLoader')
 
 import type { PlainProject } from './flowtypes'
 
@@ -62,6 +63,17 @@ class Project {
       }
     })
 
+    // remove nodes in dag and build layout
+    let nodes = projectData.dag ? projectData.dag.nodes : []
+    let layout = nodes.map(node => {
+      return {
+        id: node.id,
+        metadata: node.metadata.id,
+        x: node.x,
+        y: node.y,
+      }
+    })
+
     let projectContent = YAML.stringify(projectData)
 
     let ananasFile = path.join(this.path, 'ananas.yml')
@@ -72,6 +84,9 @@ class Project {
       .then(() => {
         // save readme
         return util.promisify(fs.writeFile)(path.join(this.path, 'README.md'), description, 'utf8')
+      })
+      .then(() => {
+        return util.promisify(fs.writeFile)(path.join(this.path, 'layout.yml'), layout, 'utf8')
       })
   }
 
@@ -102,13 +117,25 @@ class Project {
   }
 
   static Load(projectPath: string) :Promise<Project> {
-    let projectData = {}
+    let projectData = {
+      id: ObjectID.generate(),
+      name: 'untitled project', 
+      description: '# untitled project',
+      dag: {
+        connections: [],
+        nodes: [],
+      },
+      steps: {},
+      variables: [],
+    }
+    let layout = []
     return util.promisify(fs.readFile)(path.join(projectPath, 'ananas.yml'))
       .then(data => {
         projectData = YAML.parse(data.toString())
         return util.promisify(fs.readFile)(path.join(projectPath, 'README.md'))
       })
-      .catch(err => {
+      .catch(err => { // default README content
+        log.warn(err.message)
         return Promise.resolve('')
       })
       .then(data => {
@@ -116,22 +143,41 @@ class Project {
         if (!projectData.id) {
           projectData.id = ObjectID.generate()
         }
+        //return new Project(projectPath, projectData)
+      })
+      .then(() => {
+         return util.promisify(fs.readFile)(path.join(projectPath, 'layout.yml'))
+      })
+      .then(data => {
+        // parse layout
+        layout = YAML.parse(data.toString())
+      })
+      .catch(() => { // default layout
+        return Promise.resolve([])
+      })
+      .then(() => {
+        // load node metadata 
+        return MetadataLoader.getInstance().load()
+      })
+      .then(metadata => {
+        return layout
+          .filter(node => metadata.hasOwnProperty(node.meta))
+          .map(node => {
+            return {
+              id       : node.id,
+              label    : node.name,
+              type     : metadata[node.metadata].type,
+              x        : node.x,
+              y        : node.y,
+              metadata : metadata[node.metadata],
+            }
+          })  
+      })
+      .then(nodes => {
+        projectData.dag.nodes = nodes
         return new Project(projectPath, projectData)
       })
-      .catch(err => {
-        log.warn(err.message) 
-        return new Project(projectPath, { 
-          id: ObjectID.generate(),
-          name: 'untitled project', 
-          description: '# untitled project',
-          dag: {
-            connections: [],
-            nodes: [],
-          },
-          steps: {},
-          variables: [],
-        })
-      })
+      
   }
 }
 

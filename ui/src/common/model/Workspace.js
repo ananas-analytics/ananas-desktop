@@ -10,9 +10,18 @@ const Project = require('./Project')
 
 import type { ProjectMeta } from './flowtypes'
 
+
 class Workspace {
+  static INSTANCE: ?Workspace
+
 	path: string
 	projects: Array<ProjectMeta>
+
+  static defaultProps = {
+    INSTANCE : null,
+    path     : '',
+    project  : [],
+  }
 
 	constructor(path: string, workspace: any) {
 		let obj = workspace || {}
@@ -86,10 +95,15 @@ class Workspace {
 	}
 
 	static Load(file: string) :Promise<Workspace> {
+    if (Workspace.INSTANCE !== null &&
+       Workspace.INSTANCE !== undefined) {
+      return Promise.resolve(Workspace.INSTANCE)
+    }
 		return util.promisify(fs.readFile)(file) 
 			.then(data => {
 				let workspace = YAML.parse(data.toString())
-				return new Workspace(file, workspace)
+				Workspace.INSTANCE = new Workspace(file, workspace)
+        return Workspace.INSTANCE
 			})	
 			.catch(err => {
 				log.warn(err.message)	

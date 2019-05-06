@@ -58,24 +58,25 @@ export type PlainDataframe = {
  * DAG
  */
 export type PlainNodeMetadata = {
-  name: string,
-  icon: string,
-  description: string,
-  type: StepType,
-  options: {
-    maxIncoming: number,
-    maxOutgoing: number,
+  id          : string,
+  name        : string,
+  icon        : string,
+  description : string,
+  type        : StepType,
+  step        : PlainStep,
+  options     : {
+    maxIncoming : number,
+    maxOutgoing : number,
   },
-  step: PlainStep
 } 
 
 export type PlainNode = {
-  id: ID,
-  x: number,
-  y: number,
-  label: string,
-  type: NodeType,
-  metadata: PlainNodeMetadata,
+  id       : ID,
+  x        : number,
+  y        : number,
+  label    : string,
+  type     : NodeType,
+  metadata : PlainNodeMetadata,
 }
 
 export type PlainConnection = {
@@ -84,53 +85,53 @@ export type PlainConnection = {
 }
 
 export type PlainDAG = {
-  nodes: Array<PlainNode>,
-  connections: Array<PlainConnection>
+  nodes       : Array<PlainNode>,
+  connections : Array<PlainConnection>
 }
 
 /**
  * Project
  */
 export type ProjectMeta = {
-  id: string,
-  path: string,
+  id   : string,
+  path : string,
 }
 
 export type PlainProject = {
-  id: ID,
-  path?: string,
-  name: string,
-  description: string,
-  dag: PlainDAG,
-  steps: {[string]:PlainStep},
-  variables: Array<PlainVariable>,
-  deleted?: boolean,
+  id          : ID,
+  path?       : string,
+  name        : string,
+  description : string,
+  dag         : PlainDAG,
+  steps       : {[string] : PlainStep},
+  variables   : Array<PlainVariable>,
+  deleted?    : boolean,
 }
 
 /**
  * Step
  */
 export type PlainStep = {
-  id: ID,
-  name: string,
-  description: string,
-  type: StepType,
-  config: {[string]: any},
-  dataframe: PlainDataframe,
-  dict: {},
+  id          : ID,
+  name        : string,
+  description : string,
+  type        : StepType,
+  config      : {[string] : any},
+  dataframe   : PlainDataframe,
+  dict        : {},
 }
 
 /**
  * Variable
  */
-export type VariableType = "string" | "number" | "date"
+export type VariableType  = "string" | "number" | "date"
 export type VariableScope = "runtime" | "organization" | "project"
 
 export type PlainVariable = {
-  name: string,
-  type: VariableType,
-  description: string,
-  scope: VariableScope,
+  name        : string,
+  type        : VariableType,
+  description : string,
+  scope       : VariableScope,
 }
 
 /**
@@ -142,15 +143,15 @@ export type Env = {
 }
 
 export type PlainJob = {
-  id: ID,
-  userId: ID,
-  userName: string,
-  goals: Array<ID>,
-  env: Env, 
-  state: string,
-  message: ?string,
-  updateTime: number,
-  createTime: number,
+  id         : ID,
+  userId     : ID,
+  userName   : string,
+  goals      : Array<ID>,
+  env        : Env,
+  state      : string,
+  message    : ?string,
+  updateTime : number,
+  createTime : number,
 }
 
 /**
@@ -158,27 +159,27 @@ export type PlainJob = {
  */
 export type MessageLevel = 'info' | 'success' | 'warning' | 'danger'
 export type MessageOptions = {
-  body?: string,
-  timeout?: number
+  body?    : string,
+  timeout? : number
 }
 
 /**
  * Node Editor
  */
 export type NodeEditorContext = {
-  user: PlainUser,
-  project: PlainProject,
-  dag: PlainDAG,
-  step: PlainStep,
-  variables: Array<PlainVariable>,
-  services: {[string]:any},
+  user      : PlainUser,
+  project   : PlainProject,
+  dag       : PlainDAG,
+  step      : PlainStep,
+  variables : Array<PlainVariable>,
+  services  : {[string] : any},
 }
 
 /**
  * Utils
  */
 export type APIResponse<T> = {
-  code: number,
-  message?: string,
-  data?: T,
+  code     : number,
+  message? : string,
+  data?    : T,
 }

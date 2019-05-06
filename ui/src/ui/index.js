@@ -23,6 +23,7 @@ import {
   ModelService, 
   VariableService,
   NotificationService,
+  NodeMetadataService,
 } from './service'
 
 const logger              = createLogger({})
@@ -31,6 +32,7 @@ const modelService        = new ModelService()
 const jobService          = new JobService(state.settings.runnerEndpoint, notificationService)
 const variableService     = new VariableService()
 const executionService    = new ExecutionService(variableService)
+const nodeMetadataService = new NodeMetadataService()
 
 let services = { 
   executionService, 
@@ -38,6 +40,7 @@ let services = {
   modelService, 
   variableService, 
   notificationService,
+  nodeMetadataService,
 }
 
 state.model.runtimeVariables = variableService.getRuntimeVariables()
