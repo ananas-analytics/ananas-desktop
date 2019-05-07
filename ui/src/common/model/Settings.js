@@ -10,5 +10,4 @@ export default class Settings {
     workspace: {},
     projects: {},
   }
-
 }

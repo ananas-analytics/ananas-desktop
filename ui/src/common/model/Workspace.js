@@ -8,14 +8,14 @@ const ObjectID = require('bson-objectid')
 const log     = require('../log')
 const Project = require('./Project')
 
-import type { ProjectMeta } from './flowtypes'
+import type { ProjectMeta, PlainNodeMetadata } from './flowtypes'
 
 
 class Workspace {
   static INSTANCE: ?Workspace
 
 	path: string
-	projects: Array<ProjectMeta>
+  projects: Array<ProjectMeta> // metadata of the projects in the workspace
 
   static defaultProps = {
     INSTANCE : null,
@@ -68,29 +68,28 @@ class Workspace {
 		return this.projects.find(project => project.id === projectId)
 	}
 
-	importProject(projectPath: string) :Promise<Project> {
+	importProject(projectPath: string, metadata: {[string]: PlainNodeMetadata}) :Promise<Project> {
 		let meta = this.projects.find(project => project.path === projectPath)
 		if (!meta) {
 			meta = { id: ObjectID.generate(), path: projectPath }
-			return Project.Load(meta.path)
+			return Project.Load(meta.path, metadata)
 		} else {
 			return Promise.reject(new Error('Project already exists'))
 		}
 	}
 
-	loadProject(projectId: string) :Promise<Project> {
+	loadProject(projectId: string, metadata: {[string]: PlainNodeMetadata}) :Promise<Project> {
 		let meta = this.projects.find(project => project.id === projectId)
 		if (!meta) {
 			return Promise.reject(new Error('Can NOT find project'))
 		}
-		return Project.Load(meta.path)
+		return Project.Load(meta.path, metadata)
 	}
 
-	loadProjects() :Promise<Array<Project>> {
+	loadProjects(metadata: {[string]: PlainNodeMetadata}) :Promise<Array<Project>> {
 		let tasks = this.projects.map(project => {
-			return Project.Load(project.path)
+			return Project.Load(project.path, metadata)
 		})
-
 		return Promise.all(tasks)
 	}
 

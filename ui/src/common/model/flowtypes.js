@@ -115,6 +115,7 @@ export type PlainStep = {
   id          : ID,
   name        : string,
   description : string,
+  metadataId  : string,
   type        : StepType,
   config      : {[string] : any},
   dataframe   : PlainDataframe,

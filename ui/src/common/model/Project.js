@@ -7,10 +7,11 @@ const YAML     = require('yaml')
 const ObjectID = require('bson-objectid')
 const mkdirp   = require('mkdirp')
 
-const log            = require('../log')
-const MetadataLoader = require('./MetadataLoader')
 
-import type { PlainProject } from './flowtypes'
+const log = require('../log')
+const { calculateLayout } = require('../util/dag')
+
+import type { PlainProject, PlainNodeMetadata } from './flowtypes'
 
 class Project { 
   path: string
@@ -36,7 +37,7 @@ class Project {
         delete newSteps[k]['dirty']
         delete newSteps[k]['expressions']
         delete newSteps[k]['variables']
-        // keep only 10 data from dataframe if exists
+        // keep only few data from dataframe if exists
         if (newSteps[k].hasOwnProperty('dataframe') 
             && Array.isArray(newSteps[k].dataframe.data)) {
           let sampleData = newSteps[k].dataframe.data.slice(0, 5)
@@ -68,17 +69,19 @@ class Project {
     let layout = nodes.map(node => {
       return {
         id: node.id,
-        metadata: node.metadata.id,
+        metadataId: node.metadata.id, // keep the reference to metadata
         x: node.x,
         y: node.y,
       }
     })
+    delete projectData.dag['nodes']
 
     let projectContent = YAML.stringify(projectData)
 
     let ananasFile = path.join(this.path, 'ananas.yml')
     return util.promisify(mkdirp)(this.path)
       .then(() => {
+        // same ananas.yml
         return util.promisify(fs.writeFile)(ananasFile, projectContent, 'utf8')
       })
       .then(() => {
@@ -86,7 +89,8 @@ class Project {
         return util.promisify(fs.writeFile)(path.join(this.path, 'README.md'), description, 'utf8')
       })
       .then(() => {
-        return util.promisify(fs.writeFile)(path.join(this.path, 'layout.yml'), layout, 'utf8')
+        // save layout
+        return util.promisify(fs.writeFile)(path.join(this.path, 'layout.yml'), YAML.stringify(layout), 'utf8')
       })
   }
 
@@ -116,7 +120,8 @@ class Project {
       })
   }
 
-  static Load(projectPath: string) :Promise<Project> {
+  static Load(projectPath: string, metadata: {[string]: PlainNodeMetadata}) :Promise<Project> {
+    // default project
     let projectData = {
       id: ObjectID.generate(),
       name: 'untitled project', 
@@ -128,6 +133,7 @@ class Project {
       steps: {},
       variables: [],
     }
+
     let layout = []
     return util.promisify(fs.readFile)(path.join(projectPath, 'ananas.yml'))
       .then(data => {
@@ -143,7 +149,6 @@ class Project {
         if (!projectData.id) {
           projectData.id = ObjectID.generate()
         }
-        //return new Project(projectPath, projectData)
       })
       .then(() => {
          return util.promisify(fs.readFile)(path.join(projectPath, 'layout.yml'))
@@ -151,25 +156,31 @@ class Project {
       .then(data => {
         // parse layout
         layout = YAML.parse(data.toString())
+        if (!layout) layout = []
+        return layout
       })
       .catch(() => { // default layout
-        return Promise.resolve([])
+        // calculate the layout
+        log.error('failed to load layout, now calculating it')
+        let stepList = []
+        for (let key in projectData.steps) {
+          stepList.push(projectData.steps[key])
+        }
+        layout = calculateLayout(stepList, projectData.dag.connections) 
+        log.debug(layout)
+        return
       })
       .then(() => {
-        // load node metadata 
-        return MetadataLoader.getInstance().load()
-      })
-      .then(metadata => {
         return layout
-          .filter(node => metadata.hasOwnProperty(node.meta))
+          .filter(node => metadata.hasOwnProperty(node.metadataId))
           .map(node => {
             return {
               id       : node.id,
               label    : node.name,
-              type     : metadata[node.metadata].type,
+              type     : metadata[node.metadataId].type,
               x        : node.x,
               y        : node.y,
-              metadata : metadata[node.metadata],
+              metadata : metadata[node.metadataId],
             }
           })  
       })
@@ -177,7 +188,6 @@ class Project {
         projectData.dag.nodes = nodes
         return new Project(projectPath, projectData)
       })
-      
   }
 }
 

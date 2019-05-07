@@ -48,7 +48,9 @@ const store = createStore(
   reducers,
   state,
   applyMiddleware(
-    logger, // comment this line in PRODUCTION
+    // #if process.env.NODE_ENV !== 'production'
+    logger, 
+    // #endif
     thunkMiddleware.withExtraArgument(services),
   )
 )

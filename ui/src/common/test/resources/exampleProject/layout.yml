@@ -1,14 +1,14 @@
 ---
 # node layout
 - id: step1
-  metadata: org.ananas.source.file.csv
+  metadataId: org.ananas.source.file.csv
   x: 50
   y: 100
 - id: step2
-  metadata: org.ananas.transform.sql
+  metadataId: org.ananas.transform.sql
   x: 250
   y: 100
 - id: step3
-  metadata: org.ananas.viewer.barchart
+  metadataId: org.ananas.visualization.barchart
   x: 450
   y: 100

@@ -16,15 +16,6 @@ class MetadataLoader {
     metadata: null
   }
 
-  load() :Promise<{[string]: PlainNodeMetadata}> {
-    if (this.metadata !== null && 
-        this.metadata !== undefined) {
-      return Promise.resolve(this.metadata)
-    }
-    // TODO: load metadata
-    return Promise.resolve({})
-  }
-
   loadFromDir(dir: string) :Promise<{[string]: PlainNodeMetadata}> {
     return readdirp.promise(dir, {
       fileFilter: ['*.yaml', '*.yml'],
@@ -33,7 +24,7 @@ class MetadataLoader {
       let tasks = entries.map(entry => {
         return util.promisify(fs.readFile)(entry.fullPath) 
       })
-      // FIX THIS: Promise.all fails when one task fails
+      // FIXIT: Promise.all fails when one task fails
       return Promise.all(tasks)
     })
     .then(contents => {

@@ -2,20 +2,25 @@ id: example-project
 name: Example Project
 steps:
   step1:
+    id: step1
     type: connector
     name: CSV connector example
     description: |
       a csv source that contains all students score info in the past year
+    metadataId: org.ananas.source.file.csv
     config:
       subtype: file
       format: csv
-      path: {PROJECT_PATH}/students.csv
+      path: |
+        {PROJECT_PATH}/students.csv
       header: false
   step2:
+    id: step2
     type: transformer
     name: average score by student
     description: |
       group the students by name 
+    metadataId: org.ananas.transform.sql
     config:
       subtype: sql
       sql: |
@@ -26,6 +31,7 @@ steps:
     name: Bar Chart
     description: |
       visualize score by student
+    metadataId: org.ananas.visualization.barchart
     config:
       subtype:
         bar chart
