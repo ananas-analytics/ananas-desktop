@@ -231,6 +231,8 @@ class DAGEditor extends Component {
       node.id = ObjectID.generate()
       node.x = (node.clientX - left) / scale
       node.y = (node.clientY - top) / scale
+			delete node['clientX']
+			delete node['clientY']
       let newNodes = [ ... this.state.nodes, node ]
       this.changeAndNotify( newNodes, this.state.connections, {}, { 
         type: 'NEW_NODE', 

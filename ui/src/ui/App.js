@@ -58,7 +58,6 @@ const App = ({
   return (
     <Grommet theme={theme} full>
       <Box direction='row' flex fill>
-
         <AppSideBar
           user={user}
           activeMenu={activeMenu}

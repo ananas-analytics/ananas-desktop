@@ -1,0 +1,48 @@
+---
+# file type source
+org.ananas.source.file.csv:
+  id: org.ananas.source.file.csv
+  name: CSV
+  description: Connect data from a CSV file
+  type: Source
+  icon: images/csv.svg
+  step: 
+    type: connector
+    config: 
+      subtype: file
+      format: csv
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
+
+org.ananas.source.file.excel:
+  id: org.ananas.source.file.excel
+  name: EXCEL
+  description: Connect data from an excel file
+  type: Source
+  icon: images/excel.svg
+  step: 
+    type: connector
+    config: 
+      subtype: file
+      format: excel
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
+
+org.ananas.source.file.json:
+  id: org.ananas.source.file.json
+  name: JSON
+  description: Connect data from a file, with each row as a json string
+  type: Source
+  icon: images/json-file.svg
+  step: 
+    type: connector
+    config: 
+      subtype: file
+      format: json
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
+
+

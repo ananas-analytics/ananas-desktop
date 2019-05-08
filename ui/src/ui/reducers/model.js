@@ -119,6 +119,7 @@ function handleNewNode(newState, node) {
     id: node.id,
     name: meta.name,
     description: meta.description,
+    metadataId: meta.id,
     type: meta.step.type,
     config: { ... meta.step.config }, 
     variables: [],

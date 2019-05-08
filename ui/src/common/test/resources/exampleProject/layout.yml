@@ -1,0 +1,14 @@
+---
+# node layout
+- id: step1
+  metadataId: org.ananas.source.file.csv
+  x: 50
+  y: 100
+- id: step2
+  metadataId: org.ananas.transform.sql
+  x: 250
+  y: 100
+- id: step3
+  metadataId: org.ananas.visualization.barchart
+  x: 450
+  y: 100

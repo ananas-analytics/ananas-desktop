@@ -1,0 +1,17 @@
+matrix:
+  include:
+    - language: java
+      install: true
+      jdk:
+        - oraclejdk8
+      script:
+        - ./gradlew :runner:test
+
+    - language: node_js
+      node_js:
+        - "10.15.0"
+      before_script:
+        - cd ui
+      script:
+        - yarn install && yarn test
+      
