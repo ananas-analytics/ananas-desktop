@@ -4,12 +4,13 @@ const { spawn } = require('child_process')
 
 const log = require('./src/common/log')
 
-require('./src/main')
+const { init } = require('./src/main')
 
-const env = process.env.NODE_ENV || 'development'
+const MetadataLoader = require('./src/common/model/MetadataLoader')
+const { getResourcePath } = require('./src/main/util')
+const metadataResourcePath = getResourcePath('metadata')
 
 let runner = null
-
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -115,7 +116,16 @@ function stopRunner() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', () => {
+  MetadataLoader.getInstance().loadFromDir(metadataResourcePath)
+    .then(metadata => {
+      init(metadata)
+      createWindow()
+    })
+    .catch(err => {
+      log.error(err.message, err.stack)
+    })
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

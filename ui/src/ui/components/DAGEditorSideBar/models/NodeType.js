@@ -1,6 +1,7 @@
 class NodeType {
   /**
    * The constructor of NodeType
+   * @param{string} id    the id of the nodeType
    * @param{string} name  the name of the node type
    * @param{string} description  the description of the node type
    * @param{string} icon  the icon url of the node type
@@ -12,7 +13,8 @@ class NodeType {
    *  maxOutgoing: -1, the max number of outgoing connections
    * }
    */
-  constructor(name, description, icon, type, step, options) {
+  constructor(id, name, description, icon, type, step, options) {
+    this.id = id
     this.name = name
     this.description = description
     this.icon = icon
@@ -23,6 +25,7 @@ class NodeType {
 
   static fromObject(obj) {
     return new NodeType(
+      obj.id,
       obj.name, 
       obj.description,
       obj.icon,

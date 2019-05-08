@@ -65,6 +65,7 @@ const state = {
       // other projects here
     },
     runtimeVariables: [], 
+    metadata: [],
   },
 
   /* settings */

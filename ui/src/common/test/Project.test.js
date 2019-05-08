@@ -6,13 +6,31 @@ const del = require('del')
 const Project = require('../model/Project')
 const MetadataLoader = require('../model/MetadataLoader')
 
+// node metadata
+let metadatas = null
+
+
 describe('load project', () => {
-  test('should load project from a directory', async () => {
+  beforeEach(async () => {
     let loader = MetadataLoader.getInstance()
     let metadataPath = path.join(__dirname, 'resources/metadata')
-    let metadatas = await loader.loadFromDir(metadataPath)
-
+    metadatas = await loader.loadFromDir(metadataPath)
+  })
+  test('should load project from a directory', async () => {
     let projectPath = path.join(__dirname, 'resources/exampleProject')
+    let project = await Project.Load(projectPath, metadatas)
+    
+    let plainProject = project.toPlainObject()
+    expect(plainProject.id).toBe('example-project')
+    expect(plainProject.name).toBe('Example Project')
+    expect(plainProject.variables).toEqual([])
+    expect(plainProject.dag.connections.length).toBe(2)
+    expect(plainProject.dag.nodes.length).toBe(3)
+    expect(Object.values(plainProject.steps).length).toBe(3)
+  })
+
+  test('should calculate layout if not exist', async () => {
+    let projectPath = path.join(__dirname, 'resources/exampleProjectWithoutLayout')
     let project = await Project.Load(projectPath, metadatas)
     
     let plainProject = project.toPlainObject()
@@ -25,12 +43,15 @@ describe('load project', () => {
   })
 })
 
+
 describe('save and load project', () => {
-  test('should save and load project', async () => {
+  beforeEach(async () => {
     let loader = MetadataLoader.getInstance()
     let metadataPath = path.join(__dirname, 'resources/metadata')
-    let metadatas = await loader.loadFromDir(metadataPath)
+    metadatas = await loader.loadFromDir(metadataPath)
+  })
 
+  test('should save and load project', async () => {
     let tmpPath = await util.promisify(tmp.dir)({ 
       prefix: 'ananas_test' 
     }) 
@@ -142,6 +163,5 @@ describe('save and load project', () => {
     let deleted = await del(tmpPath, {
       force: true,
     })
-    console.log('deleted', deleted)
   })
 })

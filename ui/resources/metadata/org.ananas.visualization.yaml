@@ -1,0 +1,43 @@
+---
+org.ananas.visualization.linechart:
+  id: org.ananas.visualization.linechart
+  name: Line Chart
+  description: Visualize your data as line charts
+  icon: images/line-chart.png
+  type: Visualization
+  step: 
+    type: viewer
+    config: 
+      subtype: line chart
+  options: 
+    maxIncoming: 1
+    maxOutgoing: 0
+
+org.ananas.visualization.barchart:
+  id: org.ananas.visualization.barchart
+  name: Bar Chart
+  description: Visualize your data as bar charts
+  icon: images/vertical-bar-chart.png
+  type: Visualization
+  step: 
+    type: viewer
+    config: 
+      subtype: bar chart
+  options: 
+    maxIncoming: 1
+    maxOutgoing: 0
+
+org.ananas.visualization.bignumber:
+  id: org.ananas.visualization.bignumber
+  name: Big Number
+  description: Visualize a single number
+  icon: images/number.svg
+  type: Visualization
+  step: 
+    type: viewer
+    config: 
+      subtype: big number
+  options: 
+    maxIncoming: 1
+    maxOutgoing: 0
+

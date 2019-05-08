@@ -27,8 +27,7 @@ const renderActiveContextSideBar = (activeApp, options) => {
     switch(activeApp) {
     case 0:
       if (!options.showNodeEditor) {
-        let items = getNodeTypes()
-        items = items.map(item => NodeType.fromObject(item))
+        let items = options.nodeMetadata.map(item => NodeType.fromObject(item))
         return <DAGEditorSideBar items={items} />
       } else {
         return <NodeEditorSideBar />
@@ -38,7 +37,7 @@ const renderActiveContextSideBar = (activeApp, options) => {
   }
 }
 
-const AppContainer = ({ activeApp, contextSideBarExpanded, showNodeEditor }) => {
+const AppContainer = ({ activeApp, contextSideBarExpanded, showNodeEditor, nodeMetadata }) => {
   return (
     <Box direction='row' overflow={{horizontal: 'hidden'}}flex >
       <Box flex >
@@ -46,7 +45,7 @@ const AppContainer = ({ activeApp, contextSideBarExpanded, showNodeEditor }) => 
       </Box>
       <Collapsible direction='horizontal' open={contextSideBarExpanded} fill>
         <Box border='left' flex>
-          { renderActiveContextSideBar(activeApp, { showNodeEditor }) }
+          { renderActiveContextSideBar(activeApp, { nodeMetadata, showNodeEditor }) }
         </Box>
       </Collapsible>
     </Box>
@@ -58,6 +57,7 @@ const mapStateToProps = state => {
     activeApp: state.AppSideBar.activeMenu,
     contextSideBarExpanded: state.AppToolBar.contextSideBarExpanded,
     showNodeEditor: state.AnalysisBoard.showEditor,
+    nodeMetadata: state.model.metadata,
   }
 }
 
