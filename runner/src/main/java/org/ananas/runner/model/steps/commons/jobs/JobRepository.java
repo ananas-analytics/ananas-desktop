@@ -8,5 +8,4 @@ public interface JobRepository {
 	Job getJob(String id);
 
 	Set<Job> getJobs();
-
 }

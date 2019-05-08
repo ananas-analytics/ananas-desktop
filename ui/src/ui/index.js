@@ -28,7 +28,7 @@ import {
 const logger              = createLogger({})
 const notificationService = new NotificationService()
 const modelService        = new ModelService()
-const jobService          = new JobService(state.settings.apiEndpoint, notificationService)
+const jobService          = new JobService(state.settings.runnerEndpoint, notificationService)
 const variableService     = new VariableService()
 const executionService    = new ExecutionService(variableService)
 

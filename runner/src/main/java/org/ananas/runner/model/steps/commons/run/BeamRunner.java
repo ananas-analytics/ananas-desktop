@@ -1,7 +1,7 @@
 package org.ananas.runner.model.steps.commons.run;
 
-import org.ananas.runner.model.api.job.JobApiClient;
 import org.ananas.runner.model.api.job.JobClient;
+import org.ananas.runner.model.api.job.LocalJobApiClient;
 import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.Job;
 import org.ananas.runner.model.steps.commons.build.Builder;
@@ -20,7 +20,7 @@ public class BeamRunner implements Runner {
 	public String run(Builder p,
 					  String projectId,
 					  String token, DagRequest req) throws IOException {
-		JobClient jobApiClient = new JobApiClient();
+		JobClient jobApiClient = new LocalJobApiClient();
 
 
 		String jobId = jobApiClient.createJob(projectId, token, req);
@@ -47,7 +47,7 @@ public class BeamRunner implements Runner {
 
 	@Override
 	public void updateJobState(String jobId) {
-		JobClient jobApiClient = new JobApiClient();
+		JobClient jobApiClient = new LocalJobApiClient();
 		try {
 			jobApiClient.updateJobState(jobId);
 			LOG.debug("updated job state - " + jobId);

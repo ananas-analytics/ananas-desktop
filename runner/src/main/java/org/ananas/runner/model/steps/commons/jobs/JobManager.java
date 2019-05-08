@@ -1,8 +1,10 @@
 package org.ananas.runner.model.steps.commons.jobs;
 
+import org.ananas.runner.model.core.Job;
 import org.ananas.runner.model.steps.commons.build.Builder;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface JobManager {
 
@@ -14,5 +16,4 @@ public interface JobManager {
 			   String token);
 
 	void removeJob(String jobId);
-
 }

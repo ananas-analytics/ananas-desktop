@@ -38,7 +38,6 @@ public class JobApiClient extends AnanasApiClient implements JobClient {
 
 		return HttpClient.POST(url, params, dagRequest, conn -> {
 			String s = IOUtils.toString(conn.getInputStream());
-			System.out.println(s);
 			SimpleMapResponse response = JsonUtil.fromJson(s, SimpleMapResponse.class);
 			return response.data.id;
 		});
