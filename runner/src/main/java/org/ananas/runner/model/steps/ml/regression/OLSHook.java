@@ -4,7 +4,7 @@ import com.google.common.base.Joiner;
 import org.ananas.runner.model.core.Step;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
 import org.ananas.runner.model.steps.ml.regression.common.RegressionLinearHook;
-import org.ananas.runner.utils.MutableQuadruple;
+import org.ananas.runner.misc.MutableQuadruple;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;

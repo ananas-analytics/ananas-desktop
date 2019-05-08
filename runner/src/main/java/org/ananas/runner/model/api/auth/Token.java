@@ -3,7 +3,7 @@ package org.ananas.runner.model.api.auth;
 import lombok.Data;
 
 /**
- * Created by grego on 14/08/18.
+ * Token Placeholder 
  */
 @Data
 public class Token {

@@ -31,6 +31,7 @@ repositories {
 }
 
 dependencies {
+    compile 'org.apache.beam:beam-runners-spark:2.9.0'
     compile 'org.apache.beam:beam-runners-flink_2.11:2.9.0'
     compile 'com.sparkjava:spark-core:2.5'
     compile 'org.jooq:jooq:3.11.9'

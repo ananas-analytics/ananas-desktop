@@ -5,7 +5,7 @@ import org.apache.beam.sdk.schemas.Schema;
 import java.math.BigDecimal;
 
 /**
- * Created by grego on 08/02/19.
+ * Double convertor 
  */
 //TODO fix this conversion
 public class ObjectToDouble {
