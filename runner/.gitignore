@@ -6,3 +6,4 @@ ananas.*
 derby.log
 /package
 /tags
+out/
