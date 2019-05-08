@@ -12,7 +12,7 @@ org.ananas.transform.sql:
       subtype: sql
   options:
     maxIncoming: 1
-    maxOutgoing: 1
+    maxOutgoing: -1
 
 org.ananas.transform.join:
   id: org.ananas.transform.join
@@ -26,6 +26,6 @@ org.ananas.transform.join:
       subtype: join
   options:
     maxIncoming: 2
-    maxOutgoing: 1
+    maxOutgoing: -1
 
 

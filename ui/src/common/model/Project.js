@@ -174,9 +174,10 @@ class Project {
         return layout
           .filter(node => metadata.hasOwnProperty(node.metadataId))
           .map(node => {
+            let step = projectData.steps[node.id] || {}
             return {
               id       : node.id,
-              label    : node.name,
+              label    : step.name,
               type     : metadata[node.metadataId].type,
               x        : node.x,
               y        : node.y,
