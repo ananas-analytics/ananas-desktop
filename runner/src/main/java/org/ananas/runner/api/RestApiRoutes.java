@@ -5,7 +5,7 @@ import org.ananas.runner.model.hooks.BackgroundApiService;
 import static spark.Spark.*;
 
 /**
- * Created by grego on 26/02/19.
+ * REST API Routes
  */
 public class RestApiRoutes {
 

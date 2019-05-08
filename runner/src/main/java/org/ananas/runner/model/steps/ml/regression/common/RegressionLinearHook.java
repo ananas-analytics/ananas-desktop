@@ -5,7 +5,7 @@ import org.ananas.runner.model.core.Step;
 import org.ananas.runner.model.steps.ml.MLHookTemplate;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
 import org.ananas.runner.model.steps.ml.Predictor;
-import org.ananas.runner.utils.MutableQuadruple;
+import org.ananas.runner.misc.MutableQuadruple;
 import org.apache.beam.repackaged.beam_sdks_java_core.org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;

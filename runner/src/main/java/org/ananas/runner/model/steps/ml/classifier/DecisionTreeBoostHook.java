@@ -4,7 +4,7 @@ import org.ananas.runner.model.core.Step;
 import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
 import org.ananas.runner.model.steps.ml.classifier.common.ClassificationHook;
-import org.ananas.runner.utils.MutableQuadruple;
+import org.ananas.runner.misc.MutableQuadruple;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;

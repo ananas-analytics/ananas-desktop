@@ -1,4 +1,4 @@
-package org.ananas.runner.utils;
+package org.ananas.runner.misc;
 
 import java.util.Objects;
 

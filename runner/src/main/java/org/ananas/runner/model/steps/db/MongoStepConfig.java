@@ -5,7 +5,7 @@ import org.ananas.runner.model.core.StepConfig;
 import java.util.Map;
 
 /**
- * Created by grego on 03/01/19.
+ * Mongo Step Config 
  */
 public class MongoStepConfig {
 

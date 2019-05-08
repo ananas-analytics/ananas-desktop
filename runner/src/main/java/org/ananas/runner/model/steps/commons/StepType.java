@@ -1,7 +1,7 @@
 package org.ananas.runner.model.steps.commons;
 
 /**
- * Created by grego on 01/12/18.
+ * Enumeration of StepType 
  */
 public enum StepType {
 	Connector, Transformer, Viewer, Loader;
