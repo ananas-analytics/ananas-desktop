@@ -1,0 +1,17 @@
+---
+# visualization 
+org.ananas.visualization.barchart:
+  id: org.ananas.visualization.barchart
+  name: Bar Chart
+  description: Visualize your data as bar chart
+  type: Visualization
+  icon: images/barchart.svg
+  step: 
+    type: viewer
+    config:
+      subtype: bar chart
+      sql: |
+        SELECT * FROM PCOLLECTION
+  options:
+    maxIncoming: 1
+    maxOutgoing: 0

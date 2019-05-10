@@ -23,6 +23,7 @@ import {
   ModelService, 
   VariableService,
   NotificationService,
+  NodeMetadataService,
 } from './service'
 
 const logger              = createLogger({})
@@ -31,43 +32,51 @@ const modelService        = new ModelService()
 const jobService          = new JobService(state.settings.runnerEndpoint, notificationService)
 const variableService     = new VariableService()
 const executionService    = new ExecutionService(variableService)
+const nodeMetadataService = new NodeMetadataService()
 
-let services = { 
-  executionService, 
-  jobService, 
-  modelService, 
-  variableService, 
-  notificationService,
-}
+// load metadata, then init the app
+nodeMetadataService.load()
+  .then(metadata => {
+    let services = { 
+      executionService, 
+      jobService, 
+      modelService, 
+      variableService, 
+      notificationService,
+      nodeMetadataService,
+    }
+    state.model.metadata = metadata
+    state.model.runtimeVariables = variableService.getRuntimeVariables()
+    const store = createStore(
+      reducers,
+      state,
+      applyMiddleware(
+        // #if process.env.NODE_ENV !== 'production'
+        logger, 
+        // #endif
+        thunkMiddleware.withExtraArgument(services),
+      )
+    )
 
-state.model.runtimeVariables = variableService.getRuntimeVariables()
-const store = createStore(
-  reducers,
-  state,
-  applyMiddleware(
-    logger, // comment this line in PRODUCTION
-    thunkMiddleware.withExtraArgument(services),
-  )
-)
+    modelService.setStore(store)
+    executionService.setStore(store)
+    variableService.setStore(store)
 
-modelService.setStore(store)
-executionService.setStore(store)
-variableService.setStore(store)
+    ReactDOM.render(
+      <Provider store={store}>
+        <DragDropContextProvider backend={HTML5Backend}>
+          <ServiceContext.Provider value={services}>
+            <App />
+          </ServiceContext.Provider>
+        </DragDropContextProvider>
+      </Provider>,
+      document.getElementById('app')
+    )
+  })
+  .catch(err => {
+    console.error(err.message, err.stack)
+  })
 
-ReactDOM.render(
-  <Provider store={store}>
-    <DragDropContextProvider backend={HTML5Backend}>
-      <ServiceContext.Provider value={services}>
-        <App />
-      </ServiceContext.Provider>
-    </DragDropContextProvider>
-  </Provider>,
-  document.getElementById('app')
-)
 
-/*
-window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-  alert('Error occured: ' + errorMsg)
-  return false
-}
-*/
+
+

@@ -16,6 +16,10 @@ class Proxy {
   constructor() {
   } 
 
+  getMetadata() {
+    return ipc('get-metadata')
+  }
+
   getProjectVariableDict(projectId) {
     return ipc('get-variable-dict', projectId)
   }

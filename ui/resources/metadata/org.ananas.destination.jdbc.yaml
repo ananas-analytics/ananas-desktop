@@ -1,0 +1,31 @@
+---
+# jdbc sources
+org.ananas.destination.jdbc.postgres:
+  id: org.ananas.destination.jdbc.postgres
+  name: PostgreSQL
+  description: Save your datat to postgreSQL database
+  icon: images/PostgreSQL_logo.svg
+  type: Destination
+  step:
+    type: loader
+    config: 
+      subtype: jdbc
+      database: postgres
+  options:
+    maxIncoming: 1
+    maxOutgoing: 0 
+
+org.ananas.destination.jdbc.mysql:
+  id: org.ananas.destination.jdbc.mysql
+  name: MySQL
+  description: Save your data to MySQL database
+  icon: images/mysql.svg
+  type: Destination
+  step:
+    type: loader
+    config: 
+      subtype: jdbc
+      database: mysql
+  options:
+    maxIncoming: 1
+    maxOutgoing: 0 

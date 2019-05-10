@@ -1,5 +1,5 @@
 # package common
 
-This package includes all the code that can be reused in both frontend(UI) and backend(Nodejs).
+This package includes the electron irrelevant codes.
 
 For example, models, utils etc.

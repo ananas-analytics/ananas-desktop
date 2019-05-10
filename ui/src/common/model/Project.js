@@ -7,9 +7,11 @@ const YAML     = require('yaml')
 const ObjectID = require('bson-objectid')
 const mkdirp   = require('mkdirp')
 
-const log = require('../log')
 
-import type { PlainProject } from './flowtypes'
+const log = require('../log')
+const { calculateLayout } = require('../util/dag')
+
+import type { PlainProject, PlainNodeMetadata } from './flowtypes'
 
 class Project { 
   path: string
@@ -35,7 +37,7 @@ class Project {
         delete newSteps[k]['dirty']
         delete newSteps[k]['expressions']
         delete newSteps[k]['variables']
-        // keep only 10 data from dataframe if exists
+        // keep only few data from dataframe if exists
         if (newSteps[k].hasOwnProperty('dataframe') 
             && Array.isArray(newSteps[k].dataframe.data)) {
           let sampleData = newSteps[k].dataframe.data.slice(0, 5)
@@ -62,16 +64,33 @@ class Project {
       }
     })
 
+    // remove nodes in dag and build layout
+    let nodes = projectData.dag ? projectData.dag.nodes : []
+    let layout = nodes.map(node => {
+      return {
+        id: node.id,
+        metadataId: node.metadata.id, // keep the reference to metadata
+        x: node.x,
+        y: node.y,
+      }
+    })
+    delete projectData.dag['nodes']
+
     let projectContent = YAML.stringify(projectData)
 
     let ananasFile = path.join(this.path, 'ananas.yml')
     return util.promisify(mkdirp)(this.path)
       .then(() => {
+        // same ananas.yml
         return util.promisify(fs.writeFile)(ananasFile, projectContent, 'utf8')
       })
       .then(() => {
         // save readme
         return util.promisify(fs.writeFile)(path.join(this.path, 'README.md'), description, 'utf8')
+      })
+      .then(() => {
+        // save layout
+        return util.promisify(fs.writeFile)(path.join(this.path, 'layout.yml'), YAML.stringify(layout), 'utf8')
       })
   }
 
@@ -101,14 +120,28 @@ class Project {
       })
   }
 
-  static Load(projectPath: string) :Promise<Project> {
-    let projectData = {}
+  static Load(projectPath: string, metadata: {[string]: PlainNodeMetadata}) :Promise<Project> {
+    // default project
+    let projectData = {
+      id: ObjectID.generate(),
+      name: 'untitled project', 
+      description: '# untitled project',
+      dag: {
+        connections: [],
+        nodes: [],
+      },
+      steps: {},
+      variables: [],
+    }
+
+    let layout = []
     return util.promisify(fs.readFile)(path.join(projectPath, 'ananas.yml'))
       .then(data => {
         projectData = YAML.parse(data.toString())
         return util.promisify(fs.readFile)(path.join(projectPath, 'README.md'))
       })
-      .catch(err => {
+      .catch(err => { // default README content
+        log.warn(err.message)
         return Promise.resolve('')
       })
       .then(data => {
@@ -116,21 +149,45 @@ class Project {
         if (!projectData.id) {
           projectData.id = ObjectID.generate()
         }
-        return new Project(projectPath, projectData)
       })
-      .catch(err => {
-        log.warn(err.message) 
-        return new Project(projectPath, { 
-          id: ObjectID.generate(),
-          name: 'untitled project', 
-          description: '# untitled project',
-          dag: {
-            connections: [],
-            nodes: [],
-          },
-          steps: {},
-          variables: [],
-        })
+      .then(() => {
+         return util.promisify(fs.readFile)(path.join(projectPath, 'layout.yml'))
+      })
+      .then(data => {
+        // parse layout
+        layout = YAML.parse(data.toString())
+        if (!layout) layout = []
+        return layout
+      })
+      .catch(() => { // default layout
+        // calculate the layout
+        log.error('failed to load layout, now calculating it')
+        let stepList = []
+        for (let key in projectData.steps) {
+          stepList.push(projectData.steps[key])
+        }
+        layout = calculateLayout(stepList, projectData.dag.connections) 
+        log.debug(layout)
+        return
+      })
+      .then(() => {
+        return layout
+          .filter(node => metadata.hasOwnProperty(node.metadataId))
+          .map(node => {
+            let step = projectData.steps[node.id] || {}
+            return {
+              id       : node.id,
+              label    : step.name,
+              type     : metadata[node.metadataId].type,
+              x        : node.x,
+              y        : node.y,
+              metadata : metadata[node.metadataId],
+            }
+          })  
+      })
+      .then(nodes => {
+        projectData.dag.nodes = nodes
+        return new Project(projectPath, projectData)
       })
   }
 }
