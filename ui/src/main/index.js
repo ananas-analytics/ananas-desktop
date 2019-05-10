@@ -5,6 +5,7 @@ const {
 	dialog, 
 	ipcMain } = require('electron')
 const path  = require('path')
+const os = require('os')
 
 const LocalDB        = require('./LocalDB.js')
 const log            = require('../common/log')
@@ -21,6 +22,9 @@ function init(metadata :{[string]:PlainNodeMetadata}) {
   const localDB = new LocalDB(dbPath)
   log.debug('local db path', dbPath)
 
+  ipcMain.on('get-local-user', event => {
+    event.sender.send('get-local-user-result', { code: 200, data: os.userInfo().username })
+  })
 
   ipcMain.on('login', (event, url, email, password) => {
     User.Login(url, email, password)

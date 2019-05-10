@@ -19,7 +19,7 @@ let win = null
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({ 
-    width: 1200, height: 800, 
+    width: 1440, height: 1280, 
   })
 	//win.maximize()
 

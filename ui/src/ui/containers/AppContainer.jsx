@@ -10,14 +10,15 @@ import { DAGEditorSideBar, NodeEditorSideBar } from '../components/DAGEditorSide
 
 import NodeType from '../components/DAGEditorSideBar/models/NodeType'
 
-import { getNodeTypes } from '../api'
-
 const renderActiveApp = activeApp => {
   switch(activeApp) {
     case 0:
       return <AnalysisBoard />
     case 1:
+      return <Box>activeApp: {activeApp}</Box>
+    case 2:
 			return <Variables />
+   
     default:
 			return null // <Box>AppIndex: {activeApp}</Box>
   }

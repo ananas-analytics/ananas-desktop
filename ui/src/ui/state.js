@@ -45,7 +45,7 @@ const state = {
   model: {
     user: {
       id: 'default user',
-      name: 'Welcome',
+      name: '',
       email: 'user@ananas.com',
       subscriptionId: 'subscription',
       token: '123',
