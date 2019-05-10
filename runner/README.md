@@ -1,5 +1,5 @@
 
-This repo provides a RESTful interface for submitting and managing [Apache Beam](https://beam.apache.org/) streaming data 
+The Runner API provides a RESTful interface for submitting and managing [Apache Beam](https://beam.apache.org/) streaming data 
 processing jobs, and job contexts. It was originally started at [Ananas Analytics](http://ananasanalytics.com/).
 
 ## Features
@@ -10,7 +10,7 @@ processing jobs, and job contexts. It was originally started at [Ananas Analytic
 
 * Asynchronous job API
 
-* Works with Standalone Spark as well on cluster, Mesos, YARN client and on EMR
+* Currently works with Standalone Spark as well on cluster, Mesos, YARN client and on EMR
 
 * Support Bounded and unbounded sources
 
@@ -49,6 +49,11 @@ or
 * New I/O Connector : Redis, Kafka, Pubsub, BigQuery
 * New transformer step *javascript*
  
+## Contribute
+
+* Find a non assigned feature request or a create it if it does not exist with your request
+* Push a Pull Request
+* Request *ananasjoe* as reviewer
 
 ## Submit issues and request
 

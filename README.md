@@ -1,9 +1,11 @@
 # Ananas Desktop
 
-We **democratize data**. Transparency is our core value. 
+Our mission is to **democratize data**. Transparency is our core value. 
+
+We originally developed this tool at [Ananas Analytics](http://ananasanalytics.com/) Ananas Desktop.
 
 Ananas Desktop is a hackable data integration tool to enable non technical users to edit data processing 
-jobs and visualize data on demand. It is designed to deeply customizable and approachable by different data team folks.
+jobs and visualize data on demand. It is designed to be deeply customizable and approachable by different data team members (data scientist, data analyst, devops, data engineer etc.. ).
 
 ###  Features
 * Drag and Drop Pipeline Editor
@@ -21,14 +23,14 @@ Visit [Ananas Analytics](http://ananasanalytics.com/) to learn more.
 
 If you want to read about using Ananas Desktop, read our [User guide](http://doc.ananasanalytics.com/docs/overview).
 
+If you are a contributor you can get started with the [Runner Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/master/runner/README.md)
+and [UI Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/master/ui/README.md)
+
 ### Installing
 
-Prerequisites:
-
-    * Java 8 ( or a more recent version)
+Prerequisites:  *Java 8 ( or a more recent version)*
     
-    
-Download the latest [Ananas release](https://ananasanalytics.com).
+Download the latest [Ananas release](https://ananasanalytics.com/release).
 
 ### License
 
