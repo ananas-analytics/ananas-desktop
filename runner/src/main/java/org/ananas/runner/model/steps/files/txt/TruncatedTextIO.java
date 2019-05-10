@@ -50,6 +50,7 @@ public class TruncatedTextIO {
 
 		// this returns an array that can be mutated by the caller
 		@Nullable
+		@SuppressWarnings("mutable")
 		abstract byte[] getDelimiter();
 
 		abstract TruncatedTextIO.Read.Builder toBuilder();

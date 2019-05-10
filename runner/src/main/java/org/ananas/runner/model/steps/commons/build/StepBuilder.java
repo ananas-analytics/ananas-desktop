@@ -5,7 +5,7 @@ import org.ananas.runner.model.core.Step;
 import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.api.APIConnector;
 import org.ananas.runner.model.steps.api.APIStepConfig;
-import org.ananas.runner.model.steps.commons.PipelineOptionsFactory;
+import org.ananas.runner.model.steps.commons.execution.PipelineOptionsFactory;
 import org.ananas.runner.model.steps.commons.StepRunner;
 import org.ananas.runner.model.steps.commons.StepType;
 import org.ananas.runner.model.steps.concat.ConcatConnector;

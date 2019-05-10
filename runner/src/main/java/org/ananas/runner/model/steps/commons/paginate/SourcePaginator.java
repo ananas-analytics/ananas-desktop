@@ -1,5 +1,6 @@
 package org.ananas.runner.model.steps.commons.paginate;
 
+import com.google.common.base.Preconditions;
 import org.ananas.runner.misc.VariableRender;
 import org.ananas.runner.model.core.Dataframe;
 import org.ananas.runner.model.core.StepConfig;
@@ -17,7 +18,6 @@ import org.ananas.runner.model.steps.files.utils.StepFileConfigToUrl;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.flink.util.Preconditions;
 
 import java.util.Map;
 
