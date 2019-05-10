@@ -4,7 +4,7 @@ processing jobs, and job contexts. It was originally started at [Ananas Analytic
 
 ## Features
 
-* Execute pipelines on multiple execution environments ( Spark, Flink, Dataflow )
+* Execute pipelines on multiple execution environments ( Spark and Flink )
 
 * Synchronous job API for testing only with Standalone Flink.
 
@@ -41,6 +41,14 @@ or
 
 * [Apache Beam](https://beam.apache.org/get-started/quickstart-java/)
 * [Spark Java ](http://sparkjava.com/)
+
+## Coming soon
+
+* Support Data Flow runner 
+* Support Flink runner
+* New I/O Connector : Redis, Kafka, Pubsub, BigQuery
+* New transformer step *javascript*
+ 
 
 ## Submit issues and request
 
