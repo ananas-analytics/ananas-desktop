@@ -15,7 +15,7 @@ public class Services {
 	protected static Object runDag(String id, String token, String body) throws java.io.IOException {
 		DagRequest req = JsonUtil.fromJson(body, DagRequest.class);
 
-		Builder builder = new DagBuilder(req.dag, false, req.goals, req.params);
+		Builder builder = new DagBuilder(req.dag, false, req.goals, req.params, req.engine);
 
 		Runner runner = new BeamRunner();
 		String jobId = runner.run(builder, id, token, req);
@@ -26,7 +26,7 @@ public class Services {
 
 
 	protected static Object testDag(DagRequest req) throws java.io.IOException {
-		Map<String, Dataframe> results = new DagBuilder(req.dag, true, req.goals, req.params).test();
+		Map<String, Dataframe> results = new DagBuilder(req.dag, true, req.goals, req.params, req.engine).test();
 		return JsonUtil.toJson(ApiResponseBuilder.Of().OK(results).build());
 	}
 

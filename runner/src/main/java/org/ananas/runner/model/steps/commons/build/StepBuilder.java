@@ -1,5 +1,6 @@
 package org.ananas.runner.model.steps.commons.build;
 
+import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.PipelineContext;
 import org.ananas.runner.model.core.Step;
 import org.ananas.runner.model.core.StepConfig;
@@ -56,8 +57,8 @@ public class StepBuilder {
 		}
 		return null;
 	}*/
-	public static org.apache.beam.sdk.Pipeline createPipelineRunner(boolean isTest) {
-		PipelineOptions options = PipelineOptionsFactory.create(isTest);
+	public static org.apache.beam.sdk.Pipeline createPipelineRunner(boolean isTest, DagRequest.Engine engine) {
+		PipelineOptions options = PipelineOptionsFactory.create(isTest, engine);
 		org.apache.beam.sdk.Pipeline p = org.apache.beam.sdk.Pipeline.create(options);
 		Class[] classes = new Class[]{
 				BigDecimal.class,
