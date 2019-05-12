@@ -52,6 +52,14 @@ class Proxy {
     return ipc('load-projects')
   }
 
+  loadExecutionEngines() {
+    return ipc('load-execution-engines')
+  }
+
+  saveExecutionEngines(engines) {
+    return ipc('save-execution-engines', engines)
+  }
+
 	login(apiEndpoint, email, password) {
 		return ipc('login', `${apiEndpoint}/user/login`, email, password)
 	}

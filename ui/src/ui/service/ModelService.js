@@ -2,7 +2,7 @@
 
 import proxy from '../proxy'
 
-import type { ID, PlainProject } from '../../common/model/flowtypes.js'
+import type { ID, PlainEngine, PlainProject } from '../../common/model/flowtypes.js'
 
 export default class ModelService {
   url: string
@@ -18,6 +18,17 @@ export default class ModelService {
 
   setStore(store:any) {
     this.store = store
+  }
+
+  loadExecutionEngines() {
+    return proxy.loadExecutionEngines()
+      .catch(() => {
+        return Promise.resolve([])
+      })
+  }
+
+  saveExecutionEngines(engines: Array<PlainEngine>) {
+    return proxy.saveExecutionEngines(engines)
   }
   
   loadProjects() {

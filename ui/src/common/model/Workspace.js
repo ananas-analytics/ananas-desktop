@@ -8,7 +8,7 @@ const ObjectID = require('bson-objectid')
 const log     = require('../log')
 const Project = require('./Project')
 
-import type { ProjectMeta, PlainNodeMetadata } from './flowtypes'
+import type { PlainEngine, ProjectMeta, PlainNodeMetadata } from './flowtypes'
 
 
 class Workspace {
@@ -92,6 +92,17 @@ class Workspace {
 		})
 		return Promise.all(tasks)
 	}
+
+  saveExecutionEngines(location :string, engines :Array<PlainEngine>) :Promise<any> {
+    return util.promisify(fs.writeFile)(location, YAML.stringify(engines), 'utf8')
+  }
+
+  loadExecutionEngines(file :string) :Promise<PlainEngine> {
+    return util.promisify(fs.readFile)(file)
+      .then(data => {
+        return YAML.parse(data.toString())
+      })
+  }
 
 	static Load(file: string) :Promise<Workspace> {
     if (Workspace.INSTANCE !== null &&

@@ -136,6 +136,29 @@ export type PlainVariable = {
 }
 
 /**
+ * Engine
+ */
+export type EngineType  = "Flink" | "Spark" 
+export type EngineScope = "runtime" | "workspace"
+
+export type PlainEngine = {
+  name        : string,
+  type        : EngineType,
+  description : string,
+  scope       : EngineScope,
+  properties  : { [string]: string }
+}
+
+export type EngineTemplate = {
+  name: string,
+  label: string,
+  type: string, // string, number, boolean
+  description: string,
+  default: string,
+  advance: boolean
+}
+
+/**
  * Job
  */
 export type Env = {

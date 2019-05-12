@@ -159,6 +159,32 @@ function init(metadata :{[string]:PlainNodeMetadata}) {
       })
   })
 
+  ipcMain.on('load-execution-engines', event => {
+    Workspace.Load(path.join(home, 'workspace.yml'))
+      .then(workspace => {
+        return workspace.loadExecutionEngines(path.join(home, 'engine.yml'))
+      })
+      .then(engines => {
+        event.sender.send('load-execution-engines-result', { code: 200, data: engines })
+      })
+      .catch(err => {
+        event.sender.send('load-execution-engines-result', { code: 500, message: err.message })
+      })
+  })
+
+  ipcMain.on('save-execution-engines', (event, engines) => {
+    Workspace.Load(path.join(home, 'workspace.yml'))
+      .then(workspace => {
+        return workspace.saveExecutionEngines(path.join(home, 'engine.yml'), engines)
+      })
+      .then(() => {
+        event.sender.send('save-execution-engines-result', { code: 200, data: 'OK' })
+      })
+      .catch(err => {
+        event.sender.send('save-execution-engines-result', { code: 500, message: err.message })
+      })
+  })
+
   ipcMain.on('get-metadata', event => {
     log.debug('get metadata')
     event.sender.send('get-metadata-result', {

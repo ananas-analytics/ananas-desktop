@@ -38,10 +38,17 @@ const variableService     = new VariableService()
 const executionService    = new ExecutionService(variableService)
 const nodeMetadataService = new NodeMetadataService()
 
-// first get local user name
+// start initializing application
 proxy.getLocalUserName()
   .then(username => {
     state.model.user.name = username 
+    // load engines
+    return modelService.loadExecutionEngines()
+  })
+  .then(engines => {
+    if (engines.length > 0) {
+      state.ExecutionEngine.engines = engines
+    } 
     // load metadata, then init the app
     return nodeMetadataService.load()
   })
@@ -83,6 +90,7 @@ proxy.getLocalUserName()
     )
   })
   .catch(err => {
+    // TODO: report error to main process and display 
     console.error(err.message, err.stack)
   })
 

@@ -1,4 +1,3 @@
-// get last modified project and configures
 const state = {
   AppSideBar: {
     activeMenu: 0,
@@ -6,17 +5,7 @@ const state = {
   },
   AppToolBar: {
     contextSideBarExpanded: true,
-    path: {
-      //project: { id: 'test-project-id', name: 'Test Project' },
-      /*
-      project: { id: 'test-project-id', name: 'Test Project' },
-      app: {
-        id: 1,
-        name: 'Analysis Board',
-        // view: { id: '', name: 'CSV source' }
-      },
-      */
-    }
+    path: {}
   },
 
   /* each tab will have its own sub state object */
@@ -25,16 +14,34 @@ const state = {
     showEditor: false, // if showing the editor
   },
 
-  /*
-  Report: {
+  ExecutionEngine: {
+    engines: [
+      {
+        name: 'LOCAL',
+        type: 'Flink',
+        scope: 'runtime',
+        description: 'default local Flink engine',
+        properties: {
+          parallelism: 10,
+          maxBundleSize: 1000000,
+          objectReuse: true,
+        }
+      }
+    ],
+    templates: {
+      Flink: [
+        { name: 'parallelism', label: 'Parallelism', type: 'number', description: '', default: '10', advanced: false },
+        { name: 'maxBundleSize', label: 'Max Bundle Size', type: 'number', description: '', default: '1000000', advanced: true },
+        { name: 'objectReuse', label: 'Enable Object Reuse', type: 'boolean', description: '', default: 'true', advanced: true },
+      ],
+      Spark: [
+        { name: 'sparkMaster', label: 'Master URL', type: 'string', description: '', default: '', advanced: false },
+        { name: 'tempLocation', label: 'Temp Location', type: 'string', description: '', default: '/tmp/', advanced: true },
+        { name: 'streaming', label: 'Use Streaming', type: 'boolean', description: '', default: 'false', advanced: true },
+        { name: 'enableMetricSinks', label: 'Enable Metric Sinks', type: 'boolean', description: '', default: 'true', advanced: true },
+      ]
+    }
   },
-  Automation: {
-  },
-  Monitoring: {
-  },
-  Variables: {
-  },
-  */
 
   Message: {
     open: true,
@@ -44,11 +51,11 @@ const state = {
   /* data model */
   model: {
     user: {
-      id: 'default user',
+      id: 'local-user',
       name: '',
-      email: 'user@ananas.com',
-      subscriptionId: 'subscription',
-      token: '123',
+      email: 'opensource@ananasanalytics.com',
+      subscriptionId: 'not-used',
+      token: 'not-used',
     },
     currentProjectId: null,
     projects: { // all project related data here
@@ -65,7 +72,7 @@ const state = {
       // other projects here
     },
     runtimeVariables: [], 
-    metadata: [],
+    metadata: [], // node metadata    
   },
 
   /* settings */
