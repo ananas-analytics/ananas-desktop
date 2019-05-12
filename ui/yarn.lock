@@ -4149,7 +4149,7 @@ graphlib@^2.1.7:
   dependencies:
     lodash "^4.17.5"
 
-grommet-icons@^4.1.0, grommet-icons@^4.2.0:
+grommet-icons@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/grommet-icons/-/grommet-icons-4.2.0.tgz#7bcf7d4b37f694516ade084e2536c72b224c6a76"
   integrity sha512-HMPLQa2pgnCZFImUXwfq+79VizL6oyP2/AAfAzQDw57x/6qgWouoqoRrrt+2zodTjTxtKXxliBY1w/o5uC+DpA==
@@ -4161,17 +4161,17 @@ grommet-styles@^0.2.0:
   resolved "https://registry.yarnpkg.com/grommet-styles/-/grommet-styles-0.2.0.tgz#b2eac2b7e2747cb523434d21728ce5234f8ce4f4"
   integrity sha512-0OMSYuGeyifYKpg4Gv2HzL8rUdd0ddnJ5LbCBKgDuloC71XIwr9g/Fxa6rs737MbPV7OZ4pEm4wvrjH4epzf1A==
 
-grommet-theme-v1@^0.1.0:
+grommet-theme-v1@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/grommet-theme-v1/-/grommet-theme-v1-0.1.2.tgz#76d53ebd867855d8ccd0a7a80a14d5b7f47ec9eb"
   integrity sha512-J4cWVyIgwZomTUnY/WiBI07DSll/kxFDFzLAMv38qiMzLTTd78/z3YC0nHA0SHA7G1dwPVEl+wSzDo5hJGdgKg==
   dependencies:
     polished "^2.3.0"
 
-grommet@^2.6.5:
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.6.6.tgz#d36f2bb9ffd222aec958255b61a8aac5f037037d"
-  integrity sha512-NeHYTG2ROBB9DWfih2YAvsG9Q2U9PQOVPSQ0RGPsDJ8o9yfrbDFSpGmfam58oE+MC/5Hx5iBvlUrGVg+VXQgEw==
+grommet@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.7.0.tgz#40f46939dc175296414bda6a5fbc63122a76c0ee"
+  integrity sha512-qsI1SeIPdRDb/I9hQkNngmZjB15SsLHw9JgdE0IH5HLZBWMOVk2tOhMjFM/0picc7BQI9m+LDTDihqS7TtgnPw==
   dependencies:
     css "^2.2.3"
     grommet-icons "^4.2.0"

@@ -21,6 +21,7 @@ import type { Node } from 'react'
 import type ModelService from '../../service/ModelService'
 import type { MessageOptions, PlainProject, ID, Dispatch } from '../../../common/model/flowtypes.js'
 
+import RunButton from '../Common/RunButton'
 
 type Props = {
   dispatch: Dispatch,

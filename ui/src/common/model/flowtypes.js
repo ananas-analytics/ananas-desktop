@@ -196,6 +196,7 @@ export type NodeEditorContext = {
   dag       : PlainDAG,
   step      : PlainStep,
   variables : Array<PlainVariable>,
+  engines   : Array<PlainEngine>,
   services  : {[string] : any},
 }
 

@@ -109,6 +109,7 @@ class DataTableView extends Component<Props, State> {
                   step: this.props.step,
                   services: {},
                   variables: [],
+                  engines: [],
                   }} 
                   uncontrolled 
                   pagination={false}

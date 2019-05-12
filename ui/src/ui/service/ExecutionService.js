@@ -6,6 +6,7 @@ import { Graph } from 'graphlib'
 import type { 
   ID, 
   APIResponse, 
+  PlainEngine,
   PlainProject, 
   PlainConnection, 
   PlainDataframe, 
@@ -183,7 +184,7 @@ export default class ExecutionService {
    * Run the multiple steps
    */
   run(user: any, projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep},
-    dict: {[string]:any}, runnables: Array<ID>) :Promise<APIResponse<ID>> {
+    dict: {[string]:any}, runnables: Array<ID>, engine: PlainEngine) :Promise<APIResponse<ID>> {
     let newSteps = []
     for (let id in steps) {
       // inject variables for each step
@@ -217,7 +218,8 @@ export default class ExecutionService {
           steps: newSteps,
         },
         goals: runnables,
-        env: { name: 'local', type: 'local' },
+        engine,
+        // env: { name: 'local', type: 'local' },
         params: {},
       }
     })
@@ -231,7 +233,7 @@ export default class ExecutionService {
    * @return Promise<APIResponse<PlainDataframe>>
    */
   runStep(user: any, projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep}, 
-          dict:{[string]:any}, runnableId: ID) :Promise<APIResponse<ID>> {
-    return this.run(user, projectId, connections, steps, dict, [ runnableId ]) 
+          dict:{[string]:any}, runnableId: ID, engine: PlainEngine) :Promise<APIResponse<ID>> {
+    return this.run(user, projectId, connections, steps, dict, [ runnableId ], engine) 
   }
 }

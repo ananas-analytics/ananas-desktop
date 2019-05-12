@@ -9,13 +9,14 @@ import { Button } from 'grommet/components/Button'
 
 import TextInput from './TextInput'
 import DateTimeInput from './DateTimeInput'
+import RunButton from '../../Common/RunButton'
 
 import { FormNext, FormDown } from 'grommet-icons'
 
 import { ExploreOption, TestOption } from '../../../model/NodeEditor'
 
 import type { Node } from 'react'
-import type { PlainVariable, NodeEditorContext } from '../../../../common/model/flowtypes.js'
+import type { PlainEngine, PlainVariable, NodeEditorContext } from '../../../../common/model/flowtypes.js'
 
 import type { EventEmitter3 } from 'eventemitter3'
 
@@ -109,7 +110,7 @@ export default class VariablePicker extends Component<Props, State> {
       })
   }
 
-  handleRun() {
+  handleRun(engine :PlainEngine) {
     let { executionService, jobService, variableService, notificationService } = this.props.context.services
     variableService.saveVariableDict(this.props.context.project.id, this.state.values)
       .then(()=>{
@@ -122,7 +123,9 @@ export default class VariablePicker extends Component<Props, State> {
           this.props.context.project.dag.connections,
           this.props.context.project.steps,
           dict,
-          this.props.context.step.id)
+          this.props.context.step.id,
+          engine,
+        )
       })
       .then(res => {
         if (res.code !== 200) {
@@ -226,7 +229,8 @@ export default class VariablePicker extends Component<Props, State> {
         <Box align='center' direction='row' pad='small' justify='start' flex fill gap='small'>
           { this.props.testButton ? <Button label='Test' disabled={this.state.running} onClick={()=>this.handleTest()}/> : null }
           { this.props.testButton && this.props.runButton ? <Box><FormNext size='small' /></Box> : null }
-          { this.props.runButton ? <Button label='Run' primary disabled={this.state.running} onClick={()=>this.handleRun()}/> : null }
+          {/* this.props.runButton ? <Button label='Run' primary disabled={this.state.running} onClick={()=>this.handleRun()}/> : null */}
+          { this.props.runButton ? <RunButton label='Run' engines={this.props.context.engines} disabled={this.state.running} onClick={v=>this.handleRun(v)}/> : null }
           { this.props.testButton && this.props.runButton && this.props.exploreButton ? <Box><FormNext size='small' /></Box> : null }
           { this.props.exploreButton ? <Button label='Explore' disabled={this.state.running} onClick={()=>this.handleExplore()}/> : null }
         </Box>

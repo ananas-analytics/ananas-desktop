@@ -8,7 +8,6 @@ import { EnginesApp } from '../components/ExecutionEngine'
 import actions from '../actions'
 
 const ExecutionEngine = ({ engines, templates, onChangeEngines }) => {
-  console.log('render execution engine', engines, templates)
   return (
     <EnginesApp
       engines={engines}
