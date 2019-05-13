@@ -16,6 +16,10 @@ class Proxy {
   constructor() {
   } 
 
+  getLocalUserName() {
+    return ipc('get-local-user')
+  }
+
   getMetadata() {
     return ipc('get-metadata')
   }
@@ -46,6 +50,14 @@ class Proxy {
 
   loadProjects() {
     return ipc('load-projects')
+  }
+
+  loadExecutionEngines() {
+    return ipc('load-execution-engines')
+  }
+
+  saveExecutionEngines(engines) {
+    return ipc('save-execution-engines', engines)
   }
 
 	login(apiEndpoint, email, password) {

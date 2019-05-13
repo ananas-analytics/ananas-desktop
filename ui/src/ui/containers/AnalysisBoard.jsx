@@ -40,7 +40,7 @@ const CloseButton = styled(Box)`
 `
 
 const AnalysisBoard = ({ dispatch,
-  user, project, dag, step, variables, showEditor,
+  user, project, dag, step, variables, engines, showEditor,
 
   onChangeDAG, onCloseNodeEditor, onOpenNodeEditor, onSelectNode, onNewNode,
   onDeleteNode, onSubmitNodeConfig,
@@ -73,6 +73,7 @@ const AnalysisBoard = ({ dispatch,
                 dag={dag}
                 step={step}
                 variables={variables}
+                engines={engines}
                 services={services}
                 onSubmit={v=>onSubmitNodeConfig(step.id, v)}
               />)
@@ -103,6 +104,7 @@ const mapStateToProps = state => {
     dag: currentProject.dag,
     step: currentProject.steps[currentStepId],
     variables: [ ...state.model.runtimeVariables, ...currentProject.variables ],
+    engines: state.ExecutionEngine.engines,
 
     showEditor: state.AnalysisBoard.showEditor,
     nodes: currentProject.dag.nodes,

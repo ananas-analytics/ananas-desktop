@@ -6,18 +6,20 @@ import { Collapsible } from 'grommet/components/Collapsible'
 
 import AnalysisBoard from './AnalysisBoard'
 import Variables from './Variables'
+import ExecutionEngine from './ExecutionEngine'
 import { DAGEditorSideBar, NodeEditorSideBar } from '../components/DAGEditorSideBar'
 
 import NodeType from '../components/DAGEditorSideBar/models/NodeType'
-
-import { getNodeTypes } from '../api'
 
 const renderActiveApp = activeApp => {
   switch(activeApp) {
     case 0:
       return <AnalysisBoard />
     case 1:
+      return <ExecutionEngine />
+    case 2:
 			return <Variables />
+   
     default:
 			return null // <Box>AppIndex: {activeApp}</Box>
   }

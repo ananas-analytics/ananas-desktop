@@ -2,9 +2,9 @@ package org.ananas.runner.model.steps.api;
 
 import org.ananas.runner.model.core.StepConfig;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
-import scala.collection.mutable.HashMap;
 
 import java.util.Map;
+import java.util.HashMap;
 
 public class APIStepConfig {
 

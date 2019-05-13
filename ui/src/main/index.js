@@ -5,6 +5,7 @@ const {
 	dialog, 
 	ipcMain } = require('electron')
 const path  = require('path')
+const os = require('os')
 
 const LocalDB        = require('./LocalDB.js')
 const log            = require('../common/log')
@@ -21,6 +22,9 @@ function init(metadata :{[string]:PlainNodeMetadata}) {
   const localDB = new LocalDB(dbPath)
   log.debug('local db path', dbPath)
 
+  ipcMain.on('get-local-user', event => {
+    event.sender.send('get-local-user-result', { code: 200, data: os.userInfo().username })
+  })
 
   ipcMain.on('login', (event, url, email, password) => {
     User.Login(url, email, password)
@@ -152,6 +156,32 @@ function init(metadata :{[string]:PlainNodeMetadata}) {
       })
       .catch(err => {
         event.sender.send('delete-project-result', { code: 500, message: err.message })
+      })
+  })
+
+  ipcMain.on('load-execution-engines', event => {
+    Workspace.Load(path.join(home, 'workspace.yml'))
+      .then(workspace => {
+        return workspace.loadExecutionEngines(path.join(home, 'engine.yml'))
+      })
+      .then(engines => {
+        event.sender.send('load-execution-engines-result', { code: 200, data: engines })
+      })
+      .catch(err => {
+        event.sender.send('load-execution-engines-result', { code: 500, message: err.message })
+      })
+  })
+
+  ipcMain.on('save-execution-engines', (event, engines) => {
+    Workspace.Load(path.join(home, 'workspace.yml'))
+      .then(workspace => {
+        return workspace.saveExecutionEngines(path.join(home, 'engine.yml'), engines)
+      })
+      .then(() => {
+        event.sender.send('save-execution-engines-result', { code: 200, data: 'OK' })
+      })
+      .catch(err => {
+        event.sender.send('save-execution-engines-result', { code: 500, message: err.message })
       })
   })
 

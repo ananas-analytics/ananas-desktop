@@ -15,6 +15,8 @@ import state from './state.js'
 
 import App from './App'
 
+import proxy from './proxy'
+
 // import services
 import ServiceContext from './contexts/ServiceContext'
 import { 
@@ -26,7 +28,9 @@ import {
   NodeMetadataService,
 } from './service'
 
+// #if process.env.NODE_ENV !== 'production'
 const logger              = createLogger({})
+// #endif
 const notificationService = new NotificationService()
 const modelService        = new ModelService()
 const jobService          = new JobService(state.settings.runnerEndpoint, notificationService)
@@ -34,8 +38,20 @@ const variableService     = new VariableService()
 const executionService    = new ExecutionService(variableService)
 const nodeMetadataService = new NodeMetadataService()
 
-// load metadata, then init the app
-nodeMetadataService.load()
+// start initializing application
+proxy.getLocalUserName()
+  .then(username => {
+    state.model.user.name = username 
+    // load engines
+    return modelService.loadExecutionEngines()
+  })
+  .then(engines => {
+    if (engines.length > 0) {
+      state.ExecutionEngine.engines = engines
+    } 
+    // load metadata, then init the app
+    return nodeMetadataService.load()
+  })
   .then(metadata => {
     let services = { 
       executionService, 
@@ -74,6 +90,7 @@ nodeMetadataService.load()
     )
   })
   .catch(err => {
+    // TODO: report error to main process and display 
     console.error(err.message, err.stack)
   })
 

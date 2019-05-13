@@ -17,6 +17,7 @@ import type { ViewData } from './editors'
 
 import type { 
   MessageLevel, 
+  PlainEngine,
   PlainUser, 
   PlainProject, 
   PlainDAG, 
@@ -32,6 +33,7 @@ type Props = {
   dag: PlainDAG,
   step: PlainStep,
   variables: Array<PlainVariable>,
+  engines: Array<PlainEngine>,
   services: {[string]:any},
   onSubmit: (any)=>void,
 }
@@ -123,6 +125,7 @@ export default class NodeEditor extends Component<Props, State> {
     dag: {},
     step: {},
     variables: [],
+    engines: [],
     onSubmit: ()=>{}
   }
 
@@ -135,6 +138,7 @@ export default class NodeEditor extends Component<Props, State> {
       dag: this.props.dag, // current dag 
       step: this.props.step, // current step 
       variables: this.props.variables, // all variable definitions
+      engines: this.props.engines,
       services: this.props.services,    
     },
     viewData: this.getViewData(),

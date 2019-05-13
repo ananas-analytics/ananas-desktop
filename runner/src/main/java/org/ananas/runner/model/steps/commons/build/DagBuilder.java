@@ -27,6 +27,8 @@ public class DagBuilder implements Builder {
 
 	private Set<String> stepIds;
 
+	private DagRequest.Engine engine;
+
 	private static Cache<String, Iterable<Step>> stepsCache = CacheBuilder.newBuilder()
 			.maximumSize(100)
 			.expireAfterWrite(10, TimeUnit.MINUTES)
@@ -36,13 +38,14 @@ public class DagBuilder implements Builder {
 	boolean isTest;
 	Map<String, Object> variables;
 
-	public DagBuilder(Dag d, boolean isTest, Set<String> goals, Map<String, Object> variables) {
+	public DagBuilder(Dag d, boolean isTest, Set<String> goals, Map<String, Object> variables, DagRequest.Engine engine) {
 		this.dag = new AnanasGraph(d, goals).reverse().subDag(goals).reverse();
 		System.out.println(this.dag);
 		this.stepIds = goals;
 		this.isTest = isTest;
 		Preconditions.checkNotNull(variables);
 		this.variables = variables == null ? new HashMap<>() : variables;
+		this.engine = engine;
 	}
 
 	public Set<String> getGoals() {
@@ -91,7 +94,7 @@ public class DagBuilder implements Builder {
 				case 0:
 					if (contexts.empty()) {
 						PipelineContext ctxt = PipelineContext.of(new NoHook(),
-								StepBuilder.createPipelineRunner(this.isTest));
+								StepBuilder.createPipelineRunner(this.isTest, this.engine));
 						contexts.push(ctxt);
 					}
 					stepRunner =
@@ -163,7 +166,7 @@ public class DagBuilder implements Builder {
 			}
 			//start a new context here for ML batching
 			PipelineContext mlCtxt =
-					PipelineContext.of(null, StepBuilder.createPipelineRunner(this.isTest));
+					PipelineContext.of(null, StepBuilder.createPipelineRunner(this.isTest, this.engine));
 			contexts.push(mlCtxt);
 		}
 		StepRunner previous = null;

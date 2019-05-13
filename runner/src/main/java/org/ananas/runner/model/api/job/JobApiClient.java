@@ -53,7 +53,9 @@ public class JobApiClient extends AnanasApiClient implements JobClient {
 
 
 		Job job = LocalJobManager.Of().getJob(jobId);
-
+		if (job != null && job.getState() != null && job.getState().getLeft() != null) {
+			System.out.println(job.getState().toString());
+		}
 		if (job != null && job.getState() != null && job.getState().getLeft() != job.lastUpdate) {
 			job.lastUpdate = job.getState().getLeft();
 			String url =
