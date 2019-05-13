@@ -1,17 +1,26 @@
 package org.ananas.runner.model.steps.concat;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import org.ananas.runner.model.steps.commons.AbstractStepRunner;
 import org.ananas.runner.model.steps.commons.StepRunner;
 import org.ananas.runner.model.steps.commons.StepType;
+import org.ananas.runner.model.steps.join.JoinConnector;
+import org.apache.beam.sdk.extensions.sql.SqlTransform;
+import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.SchemaCoder;
 import org.apache.beam.sdk.transforms.Flatten;
 import org.apache.beam.sdk.values.PCollectionList;
+import org.apache.beam.sdk.values.PCollectionTuple;
 import org.apache.beam.sdk.values.Row;
+import org.apache.beam.sdk.values.TupleTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ConcatConnector extends AbstractStepRunner implements StepRunner, Serializable {
 	private static final Logger LOG = LoggerFactory.getLogger(ConcatConnector.class);
@@ -40,21 +49,25 @@ public class ConcatConnector extends AbstractStepRunner implements StepRunner, S
 			throw new RuntimeException("Both steps should have same columns (name and type). ");
 		}
 
-		if (leftStep.getSchemaCoder() != null) {
-			try {
-				leftStep.setSchemaCoder(rightStep.getSchemaCoder());
-			} catch (Exception e) {
-				rightStep.setSchemaCoder(leftStep.getSchemaCoder());
-			}
 
-		}
+		PCollectionTuple collectionTuple =
+					PCollectionTuple.of(new TupleTag<>("TableLeft"), leftStep.getOutput()).and(
+
+												new TupleTag<>("TableRight"),
+							rightStep.getOutput());
 
 		this.stepId = id;
+		this.output = collectionTuple.apply(
+					SqlTransform.query(
+							"SELECT " + SQLProjection("TableLeft", leftStep.getSchema()) + " FROM TableLeft" +
+									" UNION  " +
+									"SELECT " +	SQLProjection("TableRight", rightStep.getSchema()) + " FROM TableRight "));
 
-		PCollectionList<Row> a = PCollectionList.of(leftStep.getOutput()).and(rightStep.getOutput());
+	}
 
-		this.output = a.apply(Flatten.pCollections());
-		this.output.setCoder(SchemaCoder.of(leftStep.getSchema()));
+	private String SQLProjection(String tableName, Schema schema) {
+		return Joiner.on(" , ").join(schema.getFields().stream().map(
+				c -> tableName + "." + "`" + c.getName() + "`").iterator());
 	}
 
 }
