@@ -4,8 +4,7 @@ import React, { PureComponent } from 'react'
 
 import { Box } from 'grommet/components/Box'
 
-import BarChart from '../charts/BarChart.jsx'
-import LineChart from '../charts/LineChart.jsx'
+import Chart from 'react-google-charts'
 
 import type { PlainDataframe, NodeEditorContext } from '../../../../common/model/flowtypes.js'
 import type { EventEmitter3 } from 'eventemitter3'
@@ -209,10 +208,63 @@ export default class BasicChartView extends PureComponent<Props, State> {
     }
   }
 
+  prepareRenderV2() {
+    let config = this.props.context.step.config
+    let dataframe = this.state.dataframe || { schema: { fields: [] }, data: [] }
+
+    let selectedDimension = null
+    if (config.dimension && Array.isArray(config.dimension) && config.dimension.length > 0) {
+      selectedDimension = config.dimension[0].toUpperCase()
+    }
+
+    let configMeasures = Array.isArray(config.measures) ? config.measures.map(measure => measure.toUpperCase()) : []
+
+    let dimension = null
+    let measures = []
+
+    dataframe.schema.fields.map((field, index) => {
+      if (field.name.toUpperCase() === selectedDimension) {
+        dimension = { name: field.name.toUpperCase(), type: field.type, index }
+      }
+      let measureIndex = configMeasures.indexOf(field.name.toUpperCase())
+      if (configMeasures && measureIndex >= 0) {
+        measures.push({ name: field.name.toUpperCase(), type: field.type, index: measureIndex })
+      }
+    })
+
+    if (dimension == null) {
+      return {
+        dimension,
+        measures,
+        data: [],
+      }
+    }
+
+
+    let header = [dimension.name, ... measures.map(m => m.name)]
+
+    let data = dataframe.data.map<any>(row => {
+      let output = []
+      // $FlowFixMe
+      output.push(row[dimension.index])
+      measures.forEach(measure => {
+        output.push(row[measure.index])
+      })
+      return output
+    })
+
+    data.unshift(header)
+    
+    return {
+      dimension,
+      measures,
+      data,
+    }
+  }
 
   render() {
     let config = this.props.context.step.config
-    let { dimension, measures, data } = this.prepareRender()
+    let { dimension, measures, data } = this.prepareRenderV2()
 
     if (this.state.loading) {
       return (<Box margin={{ bottom: 'large' }} fill>
@@ -222,25 +274,49 @@ export default class BasicChartView extends PureComponent<Props, State> {
 
     if (this.props.type === 'bar') {
       return (<Box margin={{bottom: 'large'}}  fill>
-        <BarChart 
-          title = {config.title || ''}
-          dimension = {dimension}
-          measures = {measures}
-          xLabel = {config.xlabel || 'X'}
-          yLabel = {config.ylabel || 'Y'}
-          data = {data}
-        />
+        <Chart
+            width={'100%'}
+            height={'100%'}
+            chartType='ColumnChart'
+            loader={<div>Loading Chart</div>}
+            data={data}
+            options={{
+              title: config.title || '',
+              chart: {
+                title: config.title || '',
+              },
+              hAxis: {
+                title: config.xlabel || 'X',
+              },
+              vAxis: {
+                title: config.ylabel || 'Y',
+              },
+            }}
+            rootProps={{ 'data-testid': '2' }}
+          />
       </Box>)
     } else {
       return (<Box margin={{bottom: 'large'}}  fill>
-        <LineChart 
-          title = {config.title || ''}
-          dimension = {dimension}
-          measures = {measures}
-          xLabel = {config.xlabel || 'X'}
-          yLabel = {config.ylabel || 'Y'}
-          data = {data}
-        />
+        <Chart
+            width={'100%'}
+            height={'100%'}
+            chartType='LineChart'
+            loader={<div>Loading Chart</div>}
+            data={data}
+            options={{
+              title: config.title || '',
+              chart: {
+                title: config.title || '',
+              },
+              hAxis: {
+                title: config.xlabel || 'X',
+              },
+              vAxis: {
+                title: config.ylabel || 'Y',
+              },
+            }}
+            rootProps={{ 'data-testid': '2' }}
+          />
       </Box>)
     }
     

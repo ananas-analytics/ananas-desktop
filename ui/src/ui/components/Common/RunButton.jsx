@@ -35,7 +35,7 @@ export default class RunButton extends Component<Props, State> {
     return (<Box direction='column' >{
       this.props.engines.map(engine => {
         return (
-          <Button hoverIndicator="light-1" onClick={() => {
+          <Button key={engine.name} hoverIndicator="light-1" onClick={() => {
             this.props.onClick(engine) 
             this.setState({ open: false })
             setTimeout(() => this.setState({ open: undefined }), 1)
