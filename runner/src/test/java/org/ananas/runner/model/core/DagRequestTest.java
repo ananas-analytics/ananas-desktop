@@ -2,6 +2,7 @@ package org.ananas.runner.model.core;
 
 import freemarker.template.TemplateException;
 import org.ananas.runner.api.JsonUtil;
+import org.apache.poi.ss.formula.functions.Offset;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,6 +11,11 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,6 +35,15 @@ public class DagRequestTest {
 
 		assertEquals(6, newReq.dag.steps.size());
 
+		String dateStrValue = newReq.params.get("DATE_VAR").value;
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
+		OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateStrValue);
+		Date date = Date.from(Instant.from(offsetDateTime));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
+		String dateString = sdf.format(date);
+
+
 		Iterator<Step> it = newReq.dag.steps.iterator();
 		while (it.hasNext()) {
 			Step step = it.next();
@@ -41,7 +56,7 @@ public class DagRequestTest {
 				assertEquals("123", step.config.get("xlabel"));
 
 				List<String> dimensions = (List<String>)step.config.get("dimension");
-				assertEquals("14.05.2019, 17:22", dimensions.get(0));
+				assertEquals(dateString, dimensions.get(0));
 			}
 
 		}
