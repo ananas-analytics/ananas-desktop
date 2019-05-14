@@ -20,7 +20,7 @@ const NodeControls = ({
   return (
     <Controls direction='row' gap='small' justify='center'>
       <Box style={{cursor:'pointer'}}><Configure size='small' onClick={()=>onConfigure()} /></Box>
-      <Box style={{cursor:'pointer'}}><Note size='small' onClick={()=>onNote()} /></Box>
+      {/*<Box style={{cursor:'pointer'}}><Note size='small' onClick={()=>onNote()} /></Box>*/}
       <Box style={{cursor:'pointer'}}><Duplicate size='small' onClick={()=>onDuplicate()} /></Box>
       <Box style={{cursor:'pointer'}}><Trash size='small' onClick={()=>onDelete()} /></Box> 
     </Controls>
