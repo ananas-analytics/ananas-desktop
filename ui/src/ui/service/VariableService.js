@@ -153,7 +153,7 @@ export default class VariableService {
           let defaultDict = {}
           variables.forEach(v => {
             if (v.type === 'date') {
-              defaultDict[v.name] = moment().format()
+              defaultDict[v.name] = moment().toISOString()
             } else if (v.type === 'string') {
               defaultDict[v.name] = ''
             } else if (v.type === 'number') {
@@ -163,10 +163,18 @@ export default class VariableService {
           return defaultDict
         }
 
+        for (let k in dict) {
+          dict[k] = {
+            name: k,
+            type: variables.find(v => v.name === k) || 'string',
+            value: dict[k],
+          }
+        } 
+
         let newDict = { ... dict }  
         // override runtime variables, and remove unexpected variables
-        newDict['EXECUTE_DATE'] = moment().format() 
-        newDict['PROJECT_PATH'] = this.getProjectPath(projectID)
+        newDict['EXECUTE_DATE'] = {name: 'EXECUTE_DATE', type: 'date', value: moment().format()} 
+        newDict['PROJECT_PATH'] = {name: 'PROJECT_PATH', type: 'string', value: this.getProjectPath(projectID)}
         return newDict
       })
   }

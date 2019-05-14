@@ -45,7 +45,7 @@ class HttpHandler {
 						PaginationBody.class);
 
 		Paginator paginator =
-				SourcePaginator.of(id, paginationBody.type, paginationBody.config, paginationBody.variables);
+				SourcePaginator.of(id, paginationBody.type, paginationBody.config, paginationBody.params);
 		Dataframe dataframe = paginator.paginate(page == null ? 0 : Integer.valueOf(page),
 				pageSize == null ? 1000 : Integer.valueOf(pageSize));
 		return JsonUtil.toJson(ApiResponseBuilder.Of().OK(dataframe).build());

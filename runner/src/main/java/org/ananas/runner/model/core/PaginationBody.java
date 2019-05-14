@@ -9,6 +9,6 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PaginationBody {
 	public String type;
-	public Map<String, Object> variables;
+	public Map<String, DagRequest.Variable> params;
 	public Map<String, Object> config;
 }

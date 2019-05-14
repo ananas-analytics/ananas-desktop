@@ -45,7 +45,7 @@ public class Project {
 	}
 
 
-	public DagRequest toDagRequest(String stepId, Map<String, Object> params) {
+	public DagRequest toDagRequest(String stepId, Map<String, DagRequest.Variable> params) {
 		DagRequest req = new DagRequest();
 		req.dag = new Dag();
 		req.dag.connections = this.dag.connections;
