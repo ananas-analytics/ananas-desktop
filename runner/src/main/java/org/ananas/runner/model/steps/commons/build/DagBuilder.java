@@ -36,9 +36,9 @@ public class DagBuilder implements Builder {
 
 
 	boolean isTest;
-	Map<String, Object> variables;
+	Map<String, DagRequest.Variable> variables;
 
-	public DagBuilder(Dag d, boolean isTest, Set<String> goals, Map<String, Object> variables, DagRequest.Engine engine) {
+	public DagBuilder(Dag d, boolean isTest, Set<String> goals, Map<String, DagRequest.Variable> variables, DagRequest.Engine engine) {
 		this.dag = new AnanasGraph(d, goals).reverse().subDag(goals).reverse();
 		System.out.println(this.dag);
 		this.stepIds = goals;
@@ -87,7 +87,7 @@ public class DagBuilder implements Builder {
 		Stack<PipelineContext> contexts = new Stack<>();
 		Set<Step> topologicallySortedSteps = this.dag.topologicalSort();
 		for (Step step : topologicallySortedSteps) {
-			VariableRender.render(this.variables, step.config);
+			// VariableRender.render(this.variables, step.config);
 			StepRunner stepRunner;
 			Set<Step> predecessors = this.dag.predecessors(step);
 			switch (predecessors.size()) {

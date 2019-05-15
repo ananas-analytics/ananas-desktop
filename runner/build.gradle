@@ -37,6 +37,7 @@ repositories {
 dependencies {
     def withoutX = { exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core:2.9.5' }
 
+	compile 'org.freemarker:freemarker:2.3.28'
     compile group: 'org.apache.spark', name: 'spark-core_2.11', version: '2.4.3'
     compile group: 'org.apache.spark', name: 'spark-streaming_2.11', version: '2.4.3'
     compile 'org.apache.beam:beam-runners-spark:2.9.0'

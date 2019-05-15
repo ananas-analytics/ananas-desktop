@@ -1,11 +1,59 @@
 package org.ananas.runner.misc;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.ananas.runner.api.JsonUtil;
+import org.ananas.runner.model.core.DagRequest;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class VariableRender {
 
+	public static Map<String, Object> renderConfig(Map<String, DagRequest.Variable> variables, Map<String, Object> config)  {
+		String json = JsonUtil.toJson(config);
+		Template t = null;
+		try {
+			t = new Template("StepConfig", new StringReader(json), DagRequest.TEMPLATE_CFG);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return config;
+		}
+
+		// build model
+		Map model = new HashMap();
+		for (String key : variables.keySet()) {
+			DagRequest.Variable v = variables.get(key);
+			switch(v.type) {
+				case "number":
+					model.put(key, v.convertToNumber());
+					break;
+				case "date":
+					model.put(key, v.convertToDate());
+					break;
+				default:
+					model.put(key, v.value);
+			}
+		}
+
+		Writer out = new StringWriter();
+		try {
+			t.process(model, out);
+			String transformedTemplate = out.toString();
+			return JsonUtil.fromJson(transformedTemplate, Map.class);
+		} catch (IOException | TemplateException e) {
+			e.printStackTrace();
+		}
+
+		return config;
+	}
 
 	public static void render(Map<String, Object> variables, Map<String, Object> config) {
 		//Replace variable occurrence in step config

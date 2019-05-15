@@ -1,7 +1,9 @@
 package org.ananas.runner.model.steps.commons.paginate;
 
 import com.google.common.base.Preconditions;
+import freemarker.template.TemplateException;
 import org.ananas.runner.misc.VariableRender;
+import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.Dataframe;
 import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.api.APIPaginator;
@@ -19,6 +21,7 @@ import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class SourcePaginator implements Paginator {
@@ -36,9 +39,9 @@ public class SourcePaginator implements Paginator {
 	public static SourcePaginator of(String id,
 									 String type,
 									 Map<String, Object> config,
-									 Map<String, Object> variables) {
+									 Map<String, DagRequest.Variable> variables) {
 		Preconditions.checkNotNull(config, "config cannot be null");
-		VariableRender.render(variables, config);
+		config = VariableRender.renderConfig(variables, config);
 		StepType t = StepType.from(type);
 		return new SourcePaginator(id, t, config);
 	}

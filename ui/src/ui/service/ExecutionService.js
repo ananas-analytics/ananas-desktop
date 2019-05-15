@@ -126,8 +126,8 @@ export default class ExecutionService {
       url: `${this.getRunnerURL()}/${step.id}/paginate?page=${page}&pagesize=${pageSize}`,
       data: {
         type: step.type,
-        config: this.variableService.injectExpressions(config, variables),
-        variables: {},
+        config, //this.variableService.injectExpressions(config, variables),
+        params: dict,
       }
     })
     .then(res=>{
@@ -145,17 +145,10 @@ export default class ExecutionService {
       // inject variables for each step
       let step = steps[id]
       let config = this.getStepConfig(step)
-      let variables = {}
-      let expressions = this.variableService.parseStepConfig(config)
-      for (let key in expressions) {
-        let expression = expressions[key]
-        // TODO: keep {} for client side injection, remove it when pass to server side injection
-        variables[key] = expression.eval(dict[expression.variable])
-      }
       newSteps.push({
         id,
         type: step.type,
-        config: this.variableService.injectExpressions(config, variables)
+        config,
       })
     }
     return axios({
@@ -172,7 +165,7 @@ export default class ExecutionService {
         goals: [
           runnableId
         ],
-        params: {},
+        params: dict,
       }
     })
     .then(res=>{
@@ -190,17 +183,10 @@ export default class ExecutionService {
       // inject variables for each step
       let step = steps[id]
       let config = this.getStepConfig(step)
-      let variables = {}
-      let expressions = this.variableService.parseStepConfig(config)
-      for (let key in expressions) {
-        let expression = expressions[key]
-        // TODO: keep {} for client side injection, remove it when pass to server side injection
-        variables[key] = expression.eval(dict[expression.variable])
-      }
       newSteps.push({
         id,
         type: step.type,
-        config: this.variableService.injectExpressions(config, variables)
+        config: config,
       })
     }
 
@@ -219,8 +205,7 @@ export default class ExecutionService {
         },
         goals: runnables,
         engine,
-        // env: { name: 'local', type: 'local' },
-        params: {},
+        params: dict,
       }
     })
     .then(res=>{

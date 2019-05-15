@@ -1,5 +1,6 @@
 package org.ananas.runner.api;
 
+import freemarker.template.TemplateException;
 import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.Dataframe;
 import org.ananas.runner.model.steps.commons.build.Builder;
@@ -12,8 +13,9 @@ import java.util.Map;
 
 public class Services {
 
-	protected static Object runDag(String id, String token, String body) throws java.io.IOException {
+	protected static Object runDag(String id, String token, String body) throws java.io.IOException, TemplateException {
 		DagRequest req = JsonUtil.fromJson(body, DagRequest.class);
+		req = req.resolveVariables();
 
 		Builder builder = new DagBuilder(req.dag, false, req.goals, req.params, req.engine);
 
@@ -30,8 +32,9 @@ public class Services {
 		return JsonUtil.toJson(ApiResponseBuilder.Of().OK(results).build());
 	}
 
-	protected static Object testDag(String body) throws java.io.IOException {
+	protected static Object testDag(String body) throws java.io.IOException, TemplateException {
 		DagRequest req = JsonUtil.fromJson(body, DagRequest.class);
+		req = req.resolveVariables();
 		return testDag(req);
 	}
 
