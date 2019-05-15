@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ananas-analytics.github.io/ananas-desktop/blog</id>
-    <title>Ananas Analytics Documentation Blog</title>
+    <title>Ananas Desktop Blog</title>
     <updated>2017-10-24T06:00:00Z</updated>
     <generator>Feed for Node.js</generator>
     <link rel="alternate" href="https://ananas-analytics.github.io/ananas-desktop/blog"/>
-    <subtitle>The best place to stay up-to-date with the latest Ananas Analytics Documentation news and events.</subtitle>
+    <subtitle>The best place to stay up-to-date with the latest Ananas Desktop news and events.</subtitle>
     <logo>https://ananas-analytics.github.io/ananas-desktop/img/logo-white.png</logo>
     <rights>Copyright © 2019 Ananas Analytics</rights>
     <entry>

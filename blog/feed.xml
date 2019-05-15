@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>Ananas Analytics Documentation Blog</title>
+        <title>Ananas Desktop Blog</title>
         <link>https://ananas-analytics.github.io/ananas-desktop/blog</link>
-        <description>The best place to stay up-to-date with the latest Ananas Analytics Documentation news and events.</description>
+        <description>The best place to stay up-to-date with the latest Ananas Desktop news and events.</description>
         <lastBuildDate>Tue, 24 Oct 2017 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
-            <title>Ananas Analytics Documentation Blog</title>
+            <title>Ananas Desktop Blog</title>
             <url>https://ananas-analytics.github.io/ananas-desktop/img/logo-white.png</url>
             <link>https://ananas-analytics.github.io/ananas-desktop/blog</link>
         </image>
