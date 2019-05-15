@@ -1,0 +1,31 @@
+---
+id: visualization-bignumber
+title: Big Number
+---
+
+![ananas analytic bar chart](assets/bignumber.png)
+
+
+# Settings
+
+- Title
+
+  The title of the chart
+
+- Fields
+
+  The column to display
+
+- Size
+
+  The size of the number
+
+- Color
+
+  The color of the number
+
+# Advanced Settings
+
+- SQL
+
+  The SQL query to filter the result for visualization. Note: SQL query will not be used to calculate the processed data. It only filters the data for display.
