@@ -1,0 +1,47 @@
+{
+  "Docs": {
+    "Overview": [
+      "overview",
+      "steps",
+      "projects"
+    ],
+    "Getting Started": [
+      "getting-started",
+      "install",
+      "exploring",
+      "testing",
+      "running",
+      "visualizing"
+    ],
+    "Sources": [
+      "source-postgresql",
+      "source-mysql",
+      "source-json",
+      "source-csv",
+      "source-excel"
+    ],
+    "Destinations": [
+      "destination-postgresql",
+      "destination-mysql",
+      "destination-json",
+      "destination-csv"
+    ],
+    "Transforms": [
+      "sql",
+      "join",
+      "concat"
+    ],
+    "Visualizations": [
+      "visualization-barchart",
+      "visualization-linechart",
+      "visualization-bignumber"
+    ],
+    "For Developers": [
+      "use-existing-project",
+      "cli-commands",
+      "project structure"
+    ]
+  }
+}
+
+

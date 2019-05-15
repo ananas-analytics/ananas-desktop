@@ -1,0 +1,41 @@
+# ignore node.js modules
+node_modules
+.node_modules
+
+# ignore Apple DS Store
+*.DS_Store
+
+# ignore IntelliJ project files
+*.idea
+*.iml
+\#*\#
+
+# ignore log files
+*.log
+
+# ignore swap files
+*.swp
+
+# ignore tags file (I'm trying to get ctags/etags working for JavaScript - Edmond)
+tags
+
+# emacs turds
+*~
+
+# pid files
+*.pid
+
+# mocha? Or some other node test framework?
+.coverage_data
+
+# Stuff in the  github .gitignore for node.js
+lib-cov
+*.seed
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+pids
+logs
+results
