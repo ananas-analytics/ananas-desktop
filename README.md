@@ -1,5 +1,7 @@
 # Ananas Desktop
 
+[![Build Status](https://travis-ci.org/ananas-analytics/ananas-desktop.svg?branch=master)](https://travis-ci.org/ananas-analytics/ananas-desktop)
+
 Our mission is to **democratize data**. Transparency is our core value. 
 
 We originally developed this tool at [Ananas Analytics](http://ananasanalytics.com/).
