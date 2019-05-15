@@ -153,20 +153,21 @@ export default class VariableService {
           let defaultDict = {}
           variables.forEach(v => {
             if (v.type === 'date') {
-              defaultDict[v.name] = moment().toISOString()
+              defaultDict[v.name] = { name: v.name, type: 'date', value: moment().toISOString() }  
             } else if (v.type === 'string') {
-              defaultDict[v.name] = ''
+              defaultDict[v.name] = { name: v.name, type: 'string', value: '' }
             } else if (v.type === 'number') {
-              defaultDict[v.name] = '0'
+              defaultDict[v.name] = { name: v.name, type: 'number', value: '0' }
             }
           })
           return defaultDict
         }
 
         for (let k in dict) {
+          let variable = variables.find(v => v.name === k)
           dict[k] = {
             name: k,
-            type: variables.find(v => v.name === k) || 'string',
+            type: variable ? variable.type : 'string',
             value: dict[k],
           }
         } 
