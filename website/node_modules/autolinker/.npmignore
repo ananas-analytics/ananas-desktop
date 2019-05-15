@@ -1,8 +1,0 @@
-.externalToolBuilders
-.idea
-.project
-.settings
-web.config
-.grunt/
-_SpecRunner.html
-node_modules/
