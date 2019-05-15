@@ -169,8 +169,8 @@ export default class VariablePicker extends Component<Props, State> {
         case 'number':
           return (
             <Box key={v.name} pad='small'>
-              <TextInput label={v.name.toUpperCase()} value={this.state.values[v.name]} 
-                onChange={value=>this.handleChange(v.name, value)}
+              <TextInput label={v.name.toUpperCase()} value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
+                onChange={value=>this.handleChange(v.name, { name: v.name, type: 'number', value })}
               />
             </Box>
           )
@@ -184,8 +184,8 @@ export default class VariablePicker extends Component<Props, State> {
         default:
         return (
             <Box key={v.name} pad='small'>
-              <TextInput label={v.name.toUpperCase()} value={this.state.values[v.name]} 
-                onChange={value=>this.handleChange(v.name, value)}
+              <TextInput label={v.name.toUpperCase()} value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
+                onChange={value=>this.handleChange(v.name, { name: v.name, type: 'string', value })}
               />
             </Box>
           )
@@ -194,7 +194,7 @@ export default class VariablePicker extends Component<Props, State> {
   }
 
   renderDateVariable(variable: PlainVariable) {
-    let v = this.state.values[variable.name] || moment()    
+    let v = this.state.values[variable.name] ? this.state.values[variable.name].value : moment()    
     if (typeof v === 'string' || typeof v === 'number') {
       v = moment(v)
     }
@@ -202,7 +202,7 @@ export default class VariablePicker extends Component<Props, State> {
       <DateTimeInput key={variable.name} label={variable.name.toUpperCase()} 
         date={v.format('YYYY-MM-DD')} 
         time={v.format('HH:mm:ss')} showTime={true}
-        onChange={(value)=>{this.handleChange(variable.name, value.valueOf())}}
+        onChange={(value)=>{this.handleChange(variable.name, { name: variable.name, type: variable.type, value: value.toISOString() })}}
       />
     )
   }

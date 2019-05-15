@@ -168,7 +168,7 @@ export default class VariableService {
           dict[k] = {
             name: k,
             type: variable ? variable.type : 'string',
-            value: dict[k],
+            value: dict[k].value,
           }
         } 
 
