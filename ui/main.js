@@ -69,7 +69,7 @@ function getRunnerPath() {
   // #if process.env.NODE_ENV === 'production'
   switch(process.platform) {
     case 'darwin':
-      return path.join(app.getAppPath(), '..', 'resources/macos/v0.4/Contents/MacOS/ananas')
+      return path.join(app.getAppPath(), '..', 'resources/runner/Contents/MacOS/ananas')
     case 'win32':
       return path.join(app.getAppPath(), '..', 'resources/runner/ananas')
     case 'linux':
@@ -80,7 +80,7 @@ function getRunnerPath() {
   // #if process.env.NODE_ENV !== 'production'
   switch(process.platform) {
     case 'darwin':
-      return path.join(app.getAppPath(), 'resources/macos/v0.4/Contents/MacOS/ananas')
+      return path.join(app.getAppPath(), 'resources/runner/Contents/MacOS/ananas')
     case 'win32':
       return path.join(app.getAppPath(), 'resources/runner/ananas.exe')
     case 'linux':

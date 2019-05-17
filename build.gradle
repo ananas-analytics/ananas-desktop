@@ -9,6 +9,19 @@ if (!project.hasProperty('JDK_HOME')) {
 	project.ext.JDK_HOME = ''
 }
 
+def getPackrPlatform() {
+	switch(project.platform) {
+		case 'linux':
+			return 'linux64'
+		case 'mac':
+			return 'mac'
+		case 'win':
+			return 'windows64'
+		default: 
+			return 'linux64'
+	}
+}
+
 
 task printVersion {
 	doLast {
@@ -38,7 +51,7 @@ task packRunner(type: Exec) {
 	commandLine "java", "-jar", "buildSrc/src/main/resources/packr.jar",
 		//"--platform", "linux64",
 		//"--jdk", "/home/bo/Dev/jdk/oracle-jdk1.8.0_211",
-		"--platform", "${project.platform}64",
+		"--platform", "${getPackrPlatform()}",
 		"--jdk", "$project.JDK_HOME",
 		"--executable", "ananas",
 		"--classpath", "runner/build/libs/${project.runnerJarName}.jar",
