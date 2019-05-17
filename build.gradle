@@ -1,0 +1,58 @@
+// apply plugin: org.ananas.desktop.CoreProjectPlugin
+// project.ext.platform = ''
+// project.ext.JDK_HOME = ''
+if (!project.hasProperty('platform')) {
+	project.ext.platform = ''	
+}
+
+if (!project.hasProperty('JDK_HOME')) {
+	project.ext.JDK_HOME = ''
+}
+
+
+task printVersion {
+	doLast {
+		println "Version: $project.version; Runner name: $project.runnerJarName"
+	}
+}
+
+task copyRunner(type: Copy) {
+	dependsOn ":runner:fatJar"
+
+	from file("runner/build/libs/${project.runnerJarName}.jar")
+
+	into file("ui/resource")
+}
+
+task packRunner(type: Exec) {
+	dependsOn ":ui:cleanRunnerBinary"
+	dependsOn ":runner:clean"
+	dependsOn ":runner:fatJar"
+
+	println "Packing runner: ${project.runnerJarName}"
+
+	println "Packing JDK_HOME=[${project.JDK_HOME}] for platform [${project.platform}]"
+
+	workingDir "."
+
+	commandLine "java", "-jar", "buildSrc/src/main/resources/packr.jar",
+		//"--platform", "linux64",
+		//"--jdk", "/home/bo/Dev/jdk/oracle-jdk1.8.0_211",
+		"--platform", "${project.platform}64",
+		"--jdk", "$project.JDK_HOME",
+		"--executable", "ananas",
+		"--classpath", "runner/build/libs/${project.runnerJarName}.jar",
+		"--mainclass", "org.ananas.runner.api.Main",
+		"--vmargs", "Xmx4G",
+		"--output", "ui/resources/runner"
+}
+
+task pack(type: Exec) {
+	dependsOn packRunner
+	
+	println "Packing binary version: ${project.version}"
+
+	workingDir "./ui"
+
+	commandLine "yarn", "run", "dist-${project.platform}"
+}

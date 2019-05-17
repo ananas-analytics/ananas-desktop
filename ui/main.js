@@ -71,9 +71,9 @@ function getRunnerPath() {
     case 'darwin':
       return path.join(app.getAppPath(), '..', 'resources/macos/v0.4/Contents/MacOS/ananas')
     case 'win32':
-      return ''
+      return path.join(app.getAppPath(), '..', 'resources/runner/ananas')
     case 'linux':
-      return ''
+      return path.join(app.getAppPath(), '..', 'resources/runner/ananas')
   } 
   // #endif
 
@@ -82,15 +82,17 @@ function getRunnerPath() {
     case 'darwin':
       return path.join(app.getAppPath(), 'resources/macos/v0.4/Contents/MacOS/ananas')
     case 'win32':
-      return ''
+      return path.join(app.getAppPath(), 'resources/runner/ananas.exe')
     case 'linux':
-      return ''
+      return path.join(app.getAppPath(), 'resources/runner/ananas')
   }
   // #endif
 }
 
 function startRunner() {
   const runnerPath = getRunnerPath()  
+
+  log.info(`runner path: ${runnerPath}`)
 
   runner = spawn(runnerPath)
   runner.stdout.on('data', (data) => {

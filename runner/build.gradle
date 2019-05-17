@@ -15,8 +15,6 @@ plugins {
     id 'idea'
 }
 
-
-
 repositories {
     mavenLocal()
     maven {
@@ -84,7 +82,6 @@ dependencies {
 
 
 group = 'org.ananas'
-version = '0.1'
 sourceCompatibility = '1.8'
 
 publishing {
@@ -98,11 +95,11 @@ mainClassName = 'org.ananas.runner.api.Main'
 
 task fatJar(type: Jar) {
     zip64 true
-    baseName = project.name + '-all'
+    baseName = project.runnerJarBaseName
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
     manifest {
-        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+		attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': '$project.version'
         attributes 'Main-Class': mainClassName
     }
 }

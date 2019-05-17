@@ -10,6 +10,13 @@ def String getSystemProperty(String propertyName, String defaultValue)
 
 // println getSystemProperty("NODE_ENV", "development")
 
+// clean the runner binary folder
+task cleanRunnerBinary(type: Delete) {
+	delete 'resources/runner'
+}
+
+
+
 task install(type: Exec) {
 	workingDir "."
 

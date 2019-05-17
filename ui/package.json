@@ -13,9 +13,9 @@
     "webpack-main": "export NODE_ENV=development && webpack --config webpack.main.config.js --watch --mode development",
     "webpack-main-prod": "export NODE_ENV=production && webpack --config webpack.main.config.js --mode production",
     "pack": "electron-builder --dir",
-    "dist-mac": "export NODE_ENV=production && npm run webpack-prod && npm run webpack-main-prod && electron-builder",
-    "dist-win": "export NODE_ENV=production && npm run webpack-prod && npm run webpack-main-prod && electron-builder --win",
-    "dist-linux": "export NODE_ENV=production && npm run webpack-prod && npm run webpack-main-prod && electron-builder --linux"
+    "dist-mac": "export NODE_ENV=production && yarn run webpack-prod && yarn run webpack-main-prod && electron-builder",
+    "dist-win": "export NODE_ENV=production && yarn run webpack-prod && yarn run webpack-main-prod && electron-builder --win",
+    "dist-linux": "export NODE_ENV=production && yarn run webpack-prod && yarn run webpack-main-prod && electron-builder --linux"
   },
   "author": "Bo HOU <daily.bhou@gmail.com>",
   "build": {
@@ -34,7 +34,7 @@
       "public/images/*"
     ],
     "extraResources": [
-      "resources/macos/v0.4/Contents/**/*"
+      "resources/**/*"
     ],
     "mac": {
       "category": "public.app-category.business"
