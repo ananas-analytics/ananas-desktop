@@ -1,3 +1,8 @@
+apply plugin: org.ananas.desktop.CorePlugin
+
 include 'runner', 'ui', 'doc'
 
 rootProject.name = 'ananas-desktop'
+
+// gradle.projectsLoaded { g ->  println "loaded"  }
+

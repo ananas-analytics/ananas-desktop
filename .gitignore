@@ -3,6 +3,7 @@
 
 # Ignore Gradle build output directory
 /build
+/buildSrc/build
 
 # IDE
 .idea
@@ -11,6 +12,7 @@
 .DS_Store
 *.swp
 /*.iml
+derby.log
 
 # ctags
 /tags
