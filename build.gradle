@@ -30,7 +30,7 @@ task printVersion {
 }
 
 task copyRunner(type: Copy) {
-	dependsOn ":runner:fatJar"
+	dependsOn ":runner:shadowJar"
 
 	from file("runner/build/libs/${project.runnerJarName}.jar")
 
@@ -40,7 +40,7 @@ task copyRunner(type: Copy) {
 task packRunner(type: Exec) {
 	dependsOn ":ui:cleanRunnerBinary"
 	dependsOn ":runner:clean"
-	dependsOn ":runner:fatJar"
+	dependsOn ":runner:shadowJar"
 
 	println "Packing runner: ${project.runnerJarName}"
 

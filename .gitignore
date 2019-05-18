@@ -12,6 +12,7 @@
 .DS_Store
 *.swp
 /*.iml
+derby.log
 
 # ctags
 /tags

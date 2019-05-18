@@ -13,6 +13,8 @@ plugins {
     id 'maven-publish'
     id 'application'
     id 'idea'
+
+	id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
 
 repositories {
@@ -93,13 +95,17 @@ publishing {
 }
 mainClassName = 'org.ananas.runner.api.Main'
 
-task fatJar(type: Jar) {
-    zip64 true
-    baseName = project.runnerJarBaseName
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-    manifest {
-		attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': '$project.version'
+shadowJar {
+	zip64 true
+	archiveName = "${project.runnerJarName}.jar" 
+
+	mergeServiceFiles {
+		include 'reference.conf'
+	}
+
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': "$project.version"
         attributes 'Main-Class': mainClassName
-    }
+	}
 }
+
