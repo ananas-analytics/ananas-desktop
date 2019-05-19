@@ -6,8 +6,8 @@ Our mission is to **democratize data**. Transparency is our core value.
 
 We originally developed this tool at [Ananas Analytics](http://ananasanalytics.com/).
 
-Ananas Desktop is a hackable data integration tool to enable non technical users to edit data processing 
-jobs and visualize data on demand. It is designed to be deeply customizable and approachable by different data team members (data scientist, data analyst, devops, data engineer etc.. ).
+Ananas Desktop is a hackable data integration/analysis tool to enable non technical users to edit data processing 
+jobs and visualise data on demand. It is designed to be deeply customizable and approachable by different data team members (data scientist, data analyst, devops, data engineer etc.. ).
 
 ###  Features
 * Drag and Drop Pipeline Editor
@@ -19,7 +19,7 @@ jobs and visualize data on demand. It is designed to be deeply customizable and 
 * Visualize data with our customizable chart builder
 
 
-Visit [Ananas Analytics](http://ananasanalytics.com/) to learn more.
+Visit [Ananas Analytics](https://ananasanalytics.com/) to learn more.
 
 ### Documentation
 
