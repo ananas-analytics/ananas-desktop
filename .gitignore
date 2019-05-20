@@ -13,6 +13,10 @@
 *.swp
 /*.iml
 derby.log
+*.key
 
 # ctags
 /tags
+
+# ignore output file
+/bin

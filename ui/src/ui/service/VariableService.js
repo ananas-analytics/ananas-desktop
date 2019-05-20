@@ -2,6 +2,8 @@
 
 const app = require('electron').remote.app
 
+const normalize = require('normalize-path')
+
 import moment from 'moment'
 
 import proxy from '../proxy'
@@ -184,8 +186,8 @@ export default class VariableService {
     const state = this.store.getState()
     let project = state.model.projects[projectID]
     if (project && project.path) {
-      return project.path
+      return normalize(project.path)
     }
-    return `${app.getPath('userData')}/${projectID}`
+    return normalize(`${app.getPath('userData')}/${projectID}`)
   }
 }

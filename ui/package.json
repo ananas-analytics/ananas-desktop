@@ -23,7 +23,7 @@
     "productName": "Ananas Analytics Desktop Edition",
     "copyright": "Copyright © 2019 Ananas Analytics https://ananasanalytics.com",
     "directories": {
-      "output": "bin"
+      "output": "../bin"
     },
     "files": [
       "dist/app.js",
@@ -94,6 +94,7 @@
     "lokijs": "^1.5.6",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
+    "normalize-path": "^3.0.0",
     "panzoom": "^7.1.2",
     "react": "16.8.4",
     "react-codemirror": "^1.0.0",
