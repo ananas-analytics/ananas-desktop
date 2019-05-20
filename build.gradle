@@ -1,12 +1,10 @@
-// apply plugin: org.ananas.desktop.CoreProjectPlugin
-// project.ext.platform = ''
-// project.ext.JDK_HOME = ''
-if (!project.hasProperty('platform')) {
-	project.ext.platform = ''	
+def String getSystemProperty(String propertyName, String defaultValue)
+{
+	return System.properties.getProperty(propertyName, defaultValue)
 }
 
-if (!project.hasProperty('JDK_HOME')) {
-	project.ext.JDK_HOME = ''
+def String getAnanasEnv() {
+	return getSystemProperty('ANANAS_ENV', 'development')
 }
 
 def getPackrPlatform() {
@@ -22,6 +20,14 @@ def getPackrPlatform() {
 	}
 }
 
+
+if (!project.hasProperty('platform')) {
+	project.ext.platform = ''	
+}
+
+if (!project.hasProperty('JDK_HOME')) {
+	project.ext.JDK_HOME = ''
+}
 
 task printVersion {
 	doLast {
@@ -42,15 +48,11 @@ task packRunner(type: Exec) {
 	dependsOn ":runner:clean"
 	dependsOn ":runner:shadowJar"
 
-	println "Packing runner: ${project.runnerJarName}"
-
-	println "Packing JDK_HOME=[${project.JDK_HOME}] for platform [${project.platform}]"
+	println "Packing settings: JDK_HOME=[${project.JDK_HOME}] for platform [${project.platform}]"
 
 	workingDir "."
 
 	commandLine "java", "-jar", "buildSrc/src/main/resources/packr.jar",
-		//"--platform", "linux64",
-		//"--jdk", "/home/bo/Dev/jdk/oracle-jdk1.8.0_211",
 		"--platform", "${getPackrPlatform()}",
 		"--jdk", "$project.JDK_HOME",
 		"--executable", "ananas",
@@ -61,11 +63,18 @@ task packRunner(type: Exec) {
 }
 
 task pack(type: Exec) {
+	dependsOn ':ui:build'
 	dependsOn packRunner
-	
-	println "Packing binary version: ${project.version}"
+
+	inputs.property 'NODE_ENV', getAnanasEnv()
+
+	println "Binary version: ${project.version}"
+
+	println "Environment: ${getAnanasEnv()}"
 
 	workingDir "./ui"
 
-	commandLine "yarn", "run", "dist-${project.platform}"
+	environment "NODE_ENV", "${getAnanasEnv()}"
+
+	commandLine "./node_modules/.bin/electron-builder", "--${project.platform}"
 }

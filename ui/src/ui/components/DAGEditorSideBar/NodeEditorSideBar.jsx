@@ -61,7 +61,7 @@ class NodeEditorSideBar extends Component {
     }
     return (
       <Box direction='column' fill>
-        { fields.sort((a, b)=>{
+        { [... fields].sort((a, b)=>{
             return a.name.localeCompare(b.name) 
           })
           .map(field => (<Box key={field.name} direction='column' 

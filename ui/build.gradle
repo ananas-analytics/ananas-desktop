@@ -1,21 +1,7 @@
-
-def String getSystemProperty(String propertyName, String defaultValue)
-{
-	String value = System.properties[propertyName]
-	if (value != null) {
-		return value
-	}
-	return defaultValue
-}
-
-// println getSystemProperty("NODE_ENV", "development")
-
 // clean the runner binary folder
 task cleanRunnerBinary(type: Delete) {
 	delete 'resources/runner'
 }
-
-
 
 task install(type: Exec) {
 	workingDir "."
@@ -33,7 +19,7 @@ task buildRender(type: Exec) {
 
 	workingDir "."
 	
-	inputs.property 'NODE_ENV', getSystemProperty('NODE_ENV', 'development')
+	inputs.property 'NODE_ENV', getAnanasEnv() 
 	inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("src/ui").withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("public").withPathSensitivity(PathSensitivity.RELATIVE)
@@ -41,15 +27,15 @@ task buildRender(type: Exec) {
 	outputs.file("dist/bundle.js")
 	outputs.cacheIf { true }
 
-	environment "NODE_ENV", "${getSystemProperty('NODE_ENV', 'development')}"
+	environment "NODE_ENV", "${getAnanasEnv()}"
 
-	commandLine "./node_modules/.bin/webpack", "--mode", "${getSystemProperty('NODE_ENV', 'development')}"
+	commandLine "./node_modules/.bin/webpack", "--mode", "${getAnanasEnv()}"
 }
 
 task buildMain(type: Exec) {
 	dependsOn install	
 
-	inputs.property 'NODE_ENV', getSystemProperty('NODE_ENV', 'development')
+	inputs.property 'NODE_ENV', getAnanasEnv() 
 	inputs.file("main.js").withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
 	inputs.dir("src/main").withPathSensitivity(PathSensitivity.RELATIVE)
@@ -59,9 +45,9 @@ task buildMain(type: Exec) {
 
 	workingDir "."
 
-	environment "NODE_ENV", "${getSystemProperty('NODE_ENV', 'development')}"
+	environment "NODE_ENV", "${getAnanasEnv()}"
 
-	commandLine "./node_modules/.bin/webpack", "--config",  "webpack.main.config.js", "--mode", "${getSystemProperty('NODE_ENV', 'development')}" 
+	commandLine "./node_modules/.bin/webpack", "--config",  "webpack.main.config.js", "--mode", "${getAnanasEnv()}" 
 }
 
 task build {
