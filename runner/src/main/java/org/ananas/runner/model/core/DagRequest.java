@@ -1,6 +1,7 @@
 package org.ananas.runner.model.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import freemarker.core.RTFOutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -24,6 +25,8 @@ public class DagRequest {
 		TEMPLATE_CFG.setDefaultEncoding("UTF-8");
 		TEMPLATE_CFG.setLogTemplateExceptions(false);
 		TEMPLATE_CFG.setWrapUncheckedExceptions(true);
+		// useful to escape the injected /, {, and }
+		TEMPLATE_CFG.setOutputFormat(RTFOutputFormat.INSTANCE);
 	}
 
 	@Data
