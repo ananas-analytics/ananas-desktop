@@ -124,6 +124,7 @@ app.on('ready', () => {
       init(metadata)
       createWindow()
     })
+    // TODO: check updates
     .catch(err => {
       log.error(err.message, err.stack)
     })

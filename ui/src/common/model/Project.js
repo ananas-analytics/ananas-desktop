@@ -37,11 +37,18 @@ class Project {
         delete newSteps[k]['dirty']
         delete newSteps[k]['expressions']
         delete newSteps[k]['variables']
-        // keep only few data from dataframe if exists
-        if (newSteps[k].hasOwnProperty('dataframe') 
-            && Array.isArray(newSteps[k].dataframe.data)) {
-          let sampleData = newSteps[k].dataframe.data.slice(0, 5)
-          newSteps[k].dataframe.data = sampleData 
+        // clean up dataframe
+        if (newSteps[k].hasOwnProperty('dataframe')) {
+          newSteps[k].dataframe.data = [] 
+          if (typeof newSteps[k].dataframe.schema === 'object' && 
+              Array.isArray(newSteps[k].dataframe.schema.fields)) {
+            newSteps[k].dataframe.schema.fields = newSteps[k].dataframe.schema.fields.map(field => {
+              return {
+                name: field.name,
+                type: field.type,
+              }
+            })
+          }
         }
 
         let config = newSteps[k].config
