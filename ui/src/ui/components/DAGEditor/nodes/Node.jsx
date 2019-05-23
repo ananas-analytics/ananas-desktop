@@ -41,7 +41,7 @@ const Content = styled(Box)`
 `
 
 const Endpoint = styled(Box)`
-  cursor: grab;
+  cursor: cell;
   margin: 10px;
   left: 84px; 
   top: 45px;

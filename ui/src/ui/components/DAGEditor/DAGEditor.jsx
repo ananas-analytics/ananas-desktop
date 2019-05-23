@@ -271,20 +271,8 @@ class DAGEditor extends Component {
     })
 
     if (['Source', 'Transform'].indexOf(node.type) >= 0) {
-      /*
-      this.jsPlumbInstance.addEndpoint(node.id, { anchor: 'RightMiddle' }, {
-        uniqueEndpoint: true,
-        endpoint: ['Dot', { radius: 5 }],
-        maxConnections: node.metadata.options.maxOutgoing,
-        connectorStyle: { stroke: CONNECTION_COLOR, strokeWidth: 3 },
-        isSource: true,
-        overlays: [
-          // [ 'Arrow', { location: 1 } ],
-        ],
-      })
-      */
       this.jsPlumbInstance.makeSource(node.id, { anchor: 'RightMiddle' }, {
-        filter:".node-endpoint",
+        filter: '.node-endpoint',
         uniqueEndpoint: true,
         endpoint: ['Dot', { radius: 5 }],
         maxConnections: node.metadata.options.maxOutgoing,
@@ -320,13 +308,9 @@ class DAGEditor extends Component {
         [ 'Continuous', { faces: ['left'] } ]
       ],
       overlays:[
-        [ "Arrow", { width:10, length:10, location: 1, id:"arrow", foldback: 1 } ],
-        [ "Label", { label:"", id:"label" } ]
+        [ 'Arrow', { width:10, length:10, location: 1, id:'arrow', foldback: 1 } ],
+        [ 'Label', { label:'', id:'label' } ],
       ],
-      /*
-      overlays:[
-      ],
-      */
     })
   }
 
@@ -491,6 +475,7 @@ class DAGEditor extends Component {
         }} > 
         <Graph id='dag-editor' ref={el => this.containerElem = el} onMouseDown={()=>{
             this.setState({ selectedNodeId: null })
+            this.props.onSelectionChange(null)
           }} >
           <Grid />
           {this.renderNodes()}
