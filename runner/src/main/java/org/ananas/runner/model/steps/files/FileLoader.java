@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileLoader extends AbstractStepLoader implements StepRunner, Serializable {
+public class FileLoader extends AbstractStepLoader implements Serializable {
 
 	private static final long serialVersionUID = -6456601131110426838L;
 

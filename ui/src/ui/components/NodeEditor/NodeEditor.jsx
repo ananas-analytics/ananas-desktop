@@ -9,8 +9,6 @@ import { Text } from 'grommet/components/Text'
 
 import registry from './components'
 
-import { getViewData } from './editors'
-
 import MessageActions from '../../actions/Message.js'
 
 import type { ViewData } from './editors'
@@ -32,6 +30,7 @@ type Props = {
   project: PlainProject,
   dag: PlainDAG,
   step: PlainStep,
+  editors: {[string]:any},
   variables: Array<PlainVariable>,
   engines: Array<PlainEngine>,
   services: {[string]:any},
@@ -131,7 +130,7 @@ export default class NodeEditor extends Component<Props, State> {
 
   ee = new EventEmitter()
   state = {
-    context: { // XXX: context is read only!!
+    context: Object.freeze({ // XXX: context is read only!!
       dispatch: this.props.dispatch,
       user: this.props.user,
       project: this.props.project, // current project
@@ -140,7 +139,7 @@ export default class NodeEditor extends Component<Props, State> {
       variables: this.props.variables, // all variable definitions
       engines: this.props.engines,
       services: this.props.services,    
-    },
+    }),
     viewData: this.getViewData(),
     value: this.getInitConfig(),
   }
@@ -152,7 +151,18 @@ export default class NodeEditor extends Component<Props, State> {
 
 
   getViewData() :ViewData {
-    return getViewData(this.props.step.type, this.props.step.config)
+    // TODO: use default page layout instead of a blank page
+    if (!this.props.editors.hasOwnProperty(this.props.step.metadataId)) {
+      return {
+        layout: {
+          key: 'root',
+          props: {},
+          children: [],
+        },
+        components: {},
+      }
+    }
+    return this.props.editors[this.props.step.metadataId]
   }
 
   componentDidMount() {

@@ -41,3 +41,17 @@ org.ananas.transform.concat:
   options:
     maxIncoming: 2
     maxOutgoing: -1
+
+org.ananas.transform.javascript:
+  id: org.ananas.transform.javascript
+  name: Javascript
+  description: Transform data with javascript
+  type: Transform
+  icon: images/javascript.svg
+  step:
+    type: transformer
+    config:
+      subtype: js
+  options:
+    maxIncoming: 1
+    maxOutgoing: -1

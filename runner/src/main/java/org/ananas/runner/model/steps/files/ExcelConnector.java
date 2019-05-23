@@ -13,7 +13,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.io.Serializable;
 
-public class ExcelConnector extends AbstractStepRunner implements StepRunner, Serializable {
+public class ExcelConnector extends AbstractStepRunner implements Serializable {
 
 
 	private static final long serialVersionUID = 3622276763366208866L;

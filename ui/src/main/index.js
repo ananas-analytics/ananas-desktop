@@ -15,7 +15,7 @@ const User           = require('../common/model/User')
 
 import type { PlainNodeMetadata } from '../common/model/flowtypes'
 
-function init(metadata :{[string]:PlainNodeMetadata}) {
+function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) {
   // init localDB
   const home = app.getPath('userData')
   const dbPath = path.join(home, 'db')
@@ -185,11 +185,19 @@ function init(metadata :{[string]:PlainNodeMetadata}) {
       })
   })
 
-  ipcMain.on('get-metadata', event => {
-    log.debug('get metadata')
-    event.sender.send('get-metadata-result', {
+  ipcMain.on('get-node-metadata', event => {
+    log.debug('get node metadata')
+    event.sender.send('get-node-metadata-result', {
       code: 200,
       data: Object.values(metadata)
+    })
+  })
+
+  ipcMain.on('get-editor-metadata', event => {
+    log.debug('get editor metadata') 
+    event.sender.send('get-editor-metadata-result', {
+      code: 200,
+      data: editors
     })
   })
 }

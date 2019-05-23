@@ -72,7 +72,10 @@ const state = {
       // other projects here
     },
     runtimeVariables: [], 
-    metadata: [], // node metadata    
+    metadata: {
+      node: [],
+      editor: {},
+    }, // metadata    
   },
 
   /* settings */

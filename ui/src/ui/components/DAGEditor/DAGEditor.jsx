@@ -58,6 +58,8 @@ class DAGEditor extends Component {
     this.panzoomInstance = null 
     this.jsPlumbInstance = null
 
+    this.enableDetachHandling = true
+
     this.transform = { x: 0, y: 0, scale: this.props.zoom }
 
     this.state = {
@@ -69,8 +71,6 @@ class DAGEditor extends Component {
 
   
   componentDidMount() {
-    console.log('----------init dag editor----------')
-
     // init the panzoom
     this.panzoomInstance = panzoom(this.containerElem, {
       maxZoom: MAX_ZOOM,
@@ -125,6 +125,11 @@ class DAGEditor extends Component {
         if (existing) {
           return
         }
+        // This is a work around !!!
+        this.toggleDetachHandling(false)
+        this.jsPlumbInstance.deleteConnection(info.connection)
+        this.addConnection({ source: info.sourceId, target: info.targetId })
+
         let newConnections = [ ... this.state.connections, {source: info.sourceId, target: info.targetId} ] 
         this.changeAndNotify(this.state.nodes, newConnections, {}, {
           type: 'NEW_CONNECTION',
@@ -133,11 +138,13 @@ class DAGEditor extends Component {
       })
 
       this.jsPlumbInstance.bind('connectionDetached', info => {
+        if (!this.enableDetachHandling) {
+          this.toggleDetachHandling(true)
+          return
+        }
         let newConnections = this.state.connections.filter(c => {
           return c.source !== info.sourceId || c.target !== info.targetId
         })
-        //this.props.onDeleteConnection({source: info.sourceId, target: info.targetId})
-        console.log('connection detached', newConnections)
         this.changeAndNotify(this.state.nodes, newConnections, {}, {
           type: 'DELETE_CONNECTION',
           connection: {source: info.sourceId, target: info.targetId}
@@ -153,7 +160,7 @@ class DAGEditor extends Component {
     this.panzoomInstance.dispose()
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState) {
     // add new node to jsplumb
     // Note: new node are always appended to the end of the list
     if (prevState.nodes.length < this.state.nodes.length) {
@@ -161,6 +168,11 @@ class DAGEditor extends Component {
         this.addNode(this.state.nodes[i])
       }
     }
+  }
+
+  // TODO: this is a work around, need to check why the drag drop created connection can't be detached by dragging the endpoint
+  toggleDetachHandling(enabled: boolean) {
+    this.enableDetachHandling = enabled
   }
 
   /** CUSTOMIZED METHODS **/
@@ -259,15 +271,27 @@ class DAGEditor extends Component {
     })
 
     if (['Source', 'Transform'].indexOf(node.type) >= 0) {
+      /*
       this.jsPlumbInstance.addEndpoint(node.id, { anchor: 'RightMiddle' }, {
-        connectionsDetachable: false,
         uniqueEndpoint: true,
         endpoint: ['Dot', { radius: 5 }],
         maxConnections: node.metadata.options.maxOutgoing,
         connectorStyle: { stroke: CONNECTION_COLOR, strokeWidth: 3 },
         isSource: true,
         overlays: [
-          [ 'Arrow', { location: 1 } ],
+          // [ 'Arrow', { location: 1 } ],
+        ],
+      })
+      */
+      this.jsPlumbInstance.makeSource(node.id, { anchor: 'RightMiddle' }, {
+        filter:".node-endpoint",
+        uniqueEndpoint: true,
+        endpoint: ['Dot', { radius: 5 }],
+        maxConnections: node.metadata.options.maxOutgoing,
+        connectorStyle: { stroke: CONNECTION_COLOR, strokeWidth: 3 },
+        isSource: true,
+        overlays: [
+          // [ 'Arrow', { location: 1 } ],
         ],
       })
     }
@@ -275,9 +299,11 @@ class DAGEditor extends Component {
     if (['Transform', 'Destination', 'Visualization'].indexOf(node.type) >= 0) {
       this.jsPlumbInstance.makeTarget(node.id, {
         allowLoopback: false,
+        connectionsDetachable: true,
         maxConnections: node.metadata.options.maxIncoming, //node.type === 'Transform' ? -1 : 1,
         anchor: [ 'Continuous', { faces: ['left'] } ],
-        paintStyle: { fill: CONNECTION_COLOR }
+        endpoint: [ 'Dot', { radius: 5 } ],
+        paintStyle: { fill: CONNECTION_COLOR },
       })
     }
   }
@@ -294,7 +320,13 @@ class DAGEditor extends Component {
         [ 'Continuous', { faces: ['left'] } ]
       ],
       overlays:[
+        [ "Arrow", { width:10, length:10, location: 1, id:"arrow", foldback: 1 } ],
+        [ "Label", { label:"", id:"label" } ]
       ],
+      /*
+      overlays:[
+      ],
+      */
     })
   }
 
@@ -380,6 +412,7 @@ class DAGEditor extends Component {
     switch(node.type) {
       case 'Source':
         return <Source label={node.label} icon={node.metadata.icon} 
+          isLeaf={false}
           selected={this.state.selectedNodeId === node.id} 
           onClick={() => this.onClickNode(node)}
           onConfigure={() => this.onConfigureNode(node)}
@@ -388,6 +421,7 @@ class DAGEditor extends Component {
         />
       case 'Transform':
         return <Transform label={node.label} icon={node.metadata.icon}  
+          isLeaf={false}
           selected={this.state.selectedNodeId === node.id} 
           onClick={() => this.onClickNode(node)}
           onConfigure={() => this.onConfigureNode(node)}
@@ -396,6 +430,7 @@ class DAGEditor extends Component {
         />
       case 'Destination':
         return <Destination label={node.label} icon={node.metadata.icon}  
+          isLeaf={true}
           selected={this.state.selectedNodeId === node.id} 
           onClick={() => this.onClickNode(node)}
           onConfigure={() => this.onConfigureNode(node)}
@@ -404,6 +439,7 @@ class DAGEditor extends Component {
         />
       case 'Visualization':
         return <Visualization label={node.label} icon={node.metadata.icon} 
+          isLeaf={true}
           selected={this.state.selectedNodeId === node.id} 
           onClick={() => this.onClickNode(node)}
           onConfigure={() => this.onConfigureNode(node)}
@@ -453,7 +489,9 @@ class DAGEditor extends Component {
           outline: 'none',
           position: 'relative',
         }} > 
-        <Graph id='dag-editor' ref={el => this.containerElem = el} >
+        <Graph id='dag-editor' ref={el => this.containerElem = el} onMouseDown={()=>{
+            this.setState({ selectedNodeId: null })
+          }} >
           <Grid />
           {this.renderNodes()}
         </Graph>

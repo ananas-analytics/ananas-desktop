@@ -20,8 +20,12 @@ class Proxy {
     return ipc('get-local-user')
   }
 
-  getMetadata() {
-    return ipc('get-metadata')
+  getNodeMetadata() {
+    return ipc('get-node-metadata')
+  }
+
+  getEditorMetadata() {
+    return ipc('get-editor-metadata')
   }
 
   getProjectVariableDict(projectId) {

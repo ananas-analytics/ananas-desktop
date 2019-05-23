@@ -25,7 +25,7 @@ import {
   ModelService, 
   VariableService,
   NotificationService,
-  NodeMetadataService,
+  MetadataService,
 } from './service'
 
 // #if process.env.NODE_ENV !== 'production'
@@ -36,7 +36,7 @@ const modelService        = new ModelService()
 const jobService          = new JobService(state.settings.runnerEndpoint, notificationService)
 const variableService     = new VariableService()
 const executionService    = new ExecutionService(variableService)
-const nodeMetadataService = new NodeMetadataService()
+const metadataService     = new MetadataService()
 
 // start initializing application
 proxy.getLocalUserName()
@@ -50,18 +50,24 @@ proxy.getLocalUserName()
       state.ExecutionEngine.engines = engines
     } 
     // load metadata, then init the app
-    return nodeMetadataService.load()
+    return Promise.all([
+      metadataService.loadNodeMetadata(),
+      metadataService.loadEditorMetadata()
+    ])
   })
-  .then(metadata => {
+  .then(metadatas => {
     let services = { 
       executionService, 
       jobService, 
       modelService, 
       variableService, 
       notificationService,
-      nodeMetadataService,
+      metadataService,
     }
-    state.model.metadata = metadata
+    state.model.metadata = {
+      node: metadatas[0],
+      editor: metadatas[1],
+    }
     state.model.runtimeVariables = variableService.getRuntimeVariables()
     const store = createStore(
       reducers,

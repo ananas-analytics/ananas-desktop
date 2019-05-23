@@ -7,8 +7,10 @@ const log = require('./src/common/log')
 const { init } = require('./src/main')
 
 const MetadataLoader = require('./src/common/model/MetadataLoader')
+const EditorMetadataLoader = require('./src/common/model/EditorMetadataLoader')
 const { getResourcePath } = require('./src/main/util')
 const metadataResourcePath = getResourcePath('metadata')
+const editorResourcePath = getResourcePath('editor')
 
 let runner = null
 
@@ -21,7 +23,7 @@ function createWindow () {
   win = new BrowserWindow({ 
     width: 1440, height: 1280, 
   })
-	//win.maximize()
+	win.maximize()
 
   // and load the index.html of the app.
   win.loadFile('public/index.html')
@@ -118,10 +120,17 @@ function stopRunner() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+let metadata = null
 app.on('ready', () => {
   MetadataLoader.getInstance().loadFromDir(metadataResourcePath)
-    .then(metadata => {
-      init(metadata)
+    .then(meta => {
+      metadata = meta
+    })
+    .then(() => {
+      return EditorMetadataLoader.getInstance().loadFromDir(editorResourcePath)
+    })
+    .then(editors => {
+      init(metadata, editors)
       createWindow()
     })
     // TODO: check updates

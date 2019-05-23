@@ -16,20 +16,20 @@ org.ananas.destination.file.csv:
     maxIncoming: 1
     maxOutgoing: 0 
 
-org.ananas.destination.file.json:
-  id: org.ananas.destination.file.json
-  name: JSON
-  description: Save your data as a file, each row is a json string
-  type: Destination
-  icon: images/json-file.svg
-  step: 
-    type: loader
-    config: 
-      subtype: file
-      format: json
-      prefix: output
-  options:
-    maxIncoming: 1
-    maxOutgoing: 0 
+#org.ananas.destination.file.json:
+#  id: org.ananas.destination.file.json
+#  name: JSON
+#  description: Save your data as a file, each row is a json string
+#  type: Destination
+#  icon: images/json-file.svg
+#  step: 
+#    type: loader
+#    config: 
+#      subtype: file
+#      format: json
+#      prefix: output
+#  options:
+#    maxIncoming: 1
+#    maxOutgoing: 0 
 
 

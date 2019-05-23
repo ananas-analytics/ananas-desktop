@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.Serializable;
 
-public class JsonConnector extends AbstractStepRunner implements StepRunner, Serializable {
+public class JsonConnector extends AbstractStepRunner implements Serializable {
 
 
 	private static final Logger LOG = LoggerFactory.getLogger(JsonConnector.class);

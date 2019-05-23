@@ -248,11 +248,11 @@ public class StepBuilder {
 						previous);
 			case "js":
 				return new JavascriptRowTransformer(step.id,
-						previous,
-						"transform",
-						(String) step.config.getOrDefault(StepConfig.JAVASCRIPT_SAMPLE, "[]"),
-						Arrays.asList((String) step.config.get(StepConfig.JAVASCRIPT_SCRIPT))
-				);
+				previous,
+				"transform",
+				(String) step.config.getOrDefault(StepConfig.JAVASCRIPT_SAMPLE, "[]"),
+				Arrays.asList((String) step.config.get(StepConfig.JAVASCRIPT_SCRIPT))
+			);
 			case "histogram":
 				return new HistogramTransformer(step,
 						previous);

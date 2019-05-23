@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Box } from 'grommet/components/Box'
 import { Text } from 'grommet/components/Text'
 import { Image } from 'grommet/components/Image'
+import { AddCircle } from 'grommet-icons'
 
 import Controls from './Controls'
 
@@ -39,13 +40,21 @@ const Content = styled(Box)`
   bottom: 0px;
 `
 
+const Endpoint = styled(Box)`
+  cursor: grab;
+  margin: 10px;
+  left: 84px; 
+  top: 45px;
+  position: absolute;
+`
+
 const getBorderColor = (selected, hasIssue) => {
   if (hasIssue) return 'status-error'
   return selected ? 'node-border-highlight' : 'node-border'
 }
 
 const NodeTemplate = ({ 
-  label, icon, selected, hasIssue, round,
+  label, icon, isLeaf = false, selected, hasIssue, round,
   onClick, onConfigure, onNote, onDuplicate, onDelete 
 }) => {
   return (
@@ -63,6 +72,9 @@ const NodeTemplate = ({
           <Image src={icon} fit='cover' /> 
         </Box>
       </Content>
+      {
+        selected && !isLeaf ? (<Endpoint className="node-endpoint"> <AddCircle className='node-endpoint' size='small' /> </Endpoint>) : null
+      }
       {
         selected ? (<Controls 
           onConfigure={()=>onConfigure()}

@@ -7,7 +7,7 @@ import org.apache.beam.sdk.values.Row;
 
 import java.io.Serializable;
 
-public abstract class AbstractStepRunner implements Serializable {
+public abstract class AbstractStepRunner implements StepRunner, Serializable {
 
 	private static final long serialVersionUID = -2738595602320369583L;
 	protected static int DEFAULT_LIMIT = new Integer(100);

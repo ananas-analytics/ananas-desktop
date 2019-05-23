@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 
-public class CSVConnector extends AbstractStepRunner implements StepRunner, Serializable {
+public class CSVConnector extends AbstractStepRunner implements Serializable {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CSVConnector.class);
 	private static final long serialVersionUID = -4031447533274691635L;

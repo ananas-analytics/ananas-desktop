@@ -1,15 +1,15 @@
 ---
 # nosql sources
-org.ananas.source.nosql.mongodb:
-  id: org.ananas.source.nosql.mongodb
-  name: MongoDB
-  description: Connect data from NoSQL database - mongoDB
-  icon: images/mongodb-original-wordmark.svg
-  type: Source
-  step:
-    type: connector
-    config: 
-      subtype: mongo
-  options:
-    maxIncoming: 0
-    maxOutgoing: -1
+#org.ananas.source.nosql.mongodb:
+#  id: org.ananas.source.nosql.mongodb
+#  name: MongoDB
+#  description: Connect data from NoSQL database - mongoDB
+#  icon: images/mongodb-original-wordmark.svg
+#  type: Source
+#  step:
+#    type: connector
+#    config: 
+#      subtype: mongo
+#  options:
+#    maxIncoming: 0
+#    maxOutgoing: -1

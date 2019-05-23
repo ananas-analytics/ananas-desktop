@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JavascriptRowTransformer extends AbstractStepRunner implements StepRunner, Serializable {
+public class JavascriptRowTransformer extends AbstractStepRunner implements Serializable {
 	private static final Logger LOG = LoggerFactory.getLogger(JavascriptRowTransformer.class);
 	private static final long serialVersionUID = -7010768938364851288L;
 

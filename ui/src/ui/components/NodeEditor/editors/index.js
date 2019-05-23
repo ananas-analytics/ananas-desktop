@@ -19,7 +19,7 @@ export type ViewData = {
   components: {[string]:Component}
 }
 
-import csvSourceView from './csv_source'
+/*
 import excelSourceView from './excel_source.js'
 import jsonSourceView from './json_source'
 import mysqlSourceView from './mysql_source'
@@ -30,15 +30,10 @@ import sqlTransformView from './sql_transform'
 import joinTransformView  from './join_transform'
 import concatTransformView  from './concat_transform'
 
-import csvDestinationView from './csv_destination'
-// import excelDestinationView from './excel_destination'
 import mysqlDestinationView from './mysql_destination'
 import postgresqlDestinationView from './postgresql_destination'
 import mongoDestinationView from './mongo_destination'
 
-import barChartViewerView from './barchart_viewer'
-import lineChartViewerView from './linechart_viewer'
-import bignumberViewerView from './bignumber_viewer'
 
 export function getViewData(type: string, config: {[string]:any}) :ViewData {
   switch(type) {
@@ -100,3 +95,4 @@ export function getViewData(type: string, config: {[string]:any}) :ViewData {
     components: {},
   }
 }
+*/
