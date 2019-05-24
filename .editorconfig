@@ -27,9 +27,14 @@ indent_style = tab
 indent_style = space
 indent_size = 2
 
-# Indentation override for all JS under lib directory
-[*.{java,gradle}]
-indent_style = tab
+# Indentation override for all Java
+[*.java]
+indent_style = space
+indent_size = 2
+
+# Indentation override for all gradle
+[*.gradle]
+indent_style = space
 indent_size = 4
 
 # Matches the exact files either package.json or .travis.yml

@@ -2,15 +2,10 @@ package org.ananas.runner.model.api.auth;
 
 import lombok.Data;
 
-/**
- * Token Placeholder 
- */
+/** Token Placeholder */
 @Data
 public class Token {
-	public Token() {
+  public Token() {}
 
-	}
-
-	public String token;
-
+  public String token;
 }

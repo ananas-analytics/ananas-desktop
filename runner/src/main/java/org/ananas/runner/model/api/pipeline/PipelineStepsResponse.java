@@ -5,6 +5,6 @@ import org.ananas.runner.model.core.Step;
 
 @Data
 public class PipelineStepsResponse {
-	public String code;
-	public Step[] data;
+  public String code;
+  public Step[] data;
 }

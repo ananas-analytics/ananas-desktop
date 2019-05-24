@@ -1,7 +1,9 @@
 package org.ananas.runner.model.steps.ml.featureselection;
 
-
 import com.google.common.base.Joiner;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.ananas.runner.model.core.Step;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
 import org.apache.beam.repackaged.beam_sdks_java_core.org.apache.commons.lang3.tuple.MutableTriple;
@@ -18,112 +20,103 @@ import smile.validation.ClassificationMeasure;
 import smile.validation.RSS;
 import smile.validation.RegressionMeasure;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-/**
- * Genetic Algorithm Based Feature Selection
- */
+/** Genetic Algorithm Based Feature Selection */
 public class GAFeatureSelectionHook extends FeatureSelectionHook {
 
+  public GAFeatureSelectionHook(
+      String mode,
+      Pipeline pipeline,
+      Map<String, Schema> schemas,
+      Map<String, Step> steps,
+      Map<String, String> modesteps,
+      Step mlStep,
+      MLModelTrainer blackBoxTransformer) {
+    super(mode, pipeline, schemas, steps, modesteps, mlStep, blackBoxTransformer);
+  }
 
-	public GAFeatureSelectionHook(String mode,
-								  Pipeline pipeline,
-								  Map<String, Schema> schemas,
-								  Map<String, Step> steps,
-								  Map<String, String> modesteps,
-								  Step mlStep,
-								  MLModelTrainer blackBoxTransformer) {
-		super(mode, pipeline, schemas, steps, modesteps, mlStep, blackBoxTransformer);
-	}
+  protected MutableTriple<Schema, Iterable<Row>, String> onRegression(
+      Class clazz, Attribute[] attributes, double[][] x, double[] y) {
 
-	protected MutableTriple<Schema, Iterable<Row>, String> onRegression(Class clazz, Attribute[] attributes,
-																		double[][] x,
-																		double[] y) {
+    RegressionTrainer<double[]> trainer = null;
 
-		RegressionTrainer<double[]> trainer = null;
+    try {
+      trainer = (RegressionTrainer<double[]>) clazz.getDeclaredConstructor().newInstance();
 
-		try {
-			trainer =
-					(RegressionTrainer<double[]>) clazz.getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException("OOps can't create model ");
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("OOps can't create model ");
-		}
+    // KNN.Trainer trainer = new KNN.Trainer(100);
 
-		//KNN.Trainer trainer = new KNN.Trainer(100);
+    RegressionMeasure measure = new RSS();
 
-		RegressionMeasure measure = new RSS();
+    // Use default settings for Genetic Algorithm.
+    GAFeatureSelection selector = new GAFeatureSelection();
 
-		// Use default settings for Genetic Algorithm.
-		GAFeatureSelection selector = new GAFeatureSelection();
+    // The population size is 50, and 20 generation evolution.
+    // Each returned BitString contains the selected feature subset and its fitness.
+    BitString[] bitStrings = selector.learn(50, 3, trainer, measure, x, y, 5);
 
-		// The population size is 50, and 20 generation evolution.
-		// Each returned BitString contains the selected feature subset and its fitness.
-		BitString[] bitStrings = selector.learn(50, 3, trainer, measure, x, y, 5);
+    return getSchemaIterableStringMutableTriple(bitStrings);
+  }
 
+  private MutableTriple<Schema, Iterable<Row>, String> getSchemaIterableStringMutableTriple(
+      BitString[] bitStrings) {
+    Schema schema =
+        Schema.builder()
+            .addNullableField("features", Schema.FieldType.STRING)
+            .addNullableField("fitness", Schema.FieldType.STRING)
+            .build();
 
-		return getSchemaIterableStringMutableTriple(bitStrings);
-	}
+    List<Row> a = new ArrayList<>();
+    for (int i = 0; i < bitStrings.length; i++) {
+      a.add(
+          Row.withSchema(schema)
+              .addValue(convert(bitStrings[i].bits()))
+              .addValue(String.valueOf((100 * bitStrings[i].fitness())) + "%")
+              .build());
+    }
 
-	private MutableTriple<Schema, Iterable<Row>, String> getSchemaIterableStringMutableTriple(BitString[] bitStrings) {
-		Schema schema = Schema.builder().addNullableField("features", Schema.FieldType.STRING)
-				.addNullableField("fitness", Schema.FieldType.STRING).build();
+    return MutableTriple.of(schema, a, "Feature Selection completed.");
+  }
 
-		List<Row> a = new ArrayList<>();
-		for (int i = 0; i < bitStrings.length; i++) {
-			a.add(Row.withSchema(schema)
-					.addValue(convert(bitStrings[i].bits()))
-					.addValue(String.valueOf((100 * bitStrings[i].fitness())) + "%").build());
-		}
+  protected MutableTriple<Schema, Iterable<Row>, String> onClassifier(
+      Class clazz, Attribute[] attributes, double[][] x, int[] y) {
 
-		return MutableTriple.of(schema, a,
-				"Feature Selection completed.");
-	}
+    ClassifierTrainer<double[]> trainer = null;
 
-	protected MutableTriple<Schema, Iterable<Row>, String> onClassifier(Class clazz, Attribute[] attributes,
-																		double[][] x,
-																		int[] y) {
+    try {
+      trainer = (ClassifierTrainer<double[]>) clazz.getDeclaredConstructor().newInstance();
 
-		ClassifierTrainer<double[]> trainer = null;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException("OOps can't create model ");
+    }
 
-		try {
-			trainer =
-					(ClassifierTrainer<double[]>) clazz.getDeclaredConstructor().newInstance();
+    // KNN.Trainer trainer = new KNN.Trainer(100);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("OOps can't create model ");
-		}
+    ClassificationMeasure measure = new Accuracy();
 
-		//KNN.Trainer trainer = new KNN.Trainer(100);
+    // Use default settings for Genetic Algorithm.
+    GAFeatureSelection selector = new GAFeatureSelection();
 
-		ClassificationMeasure measure = new Accuracy();
+    // The population size is 50, and 20 generation evolution.
+    // Each returned BitString contains the selected feature subset and its fitness.
+    BitString[] bitStrings = selector.learn(50, 3, trainer, measure, x, y, 5);
 
-		// Use default settings for Genetic Algorithm.
-		GAFeatureSelection selector = new GAFeatureSelection();
+    return getSchemaIterableStringMutableTriple(bitStrings);
+  }
 
-		// The population size is 50, and 20 generation evolution.
-		// Each returned BitString contains the selected feature subset and its fitness.
-		BitString[] bitStrings = selector.learn(50, 3, trainer, measure, x, y, 5);
-
-
-		return getSchemaIterableStringMutableTriple(bitStrings);
-	}
-
-
-	private String convert(int[] bits) {
-		Schema schema = this.previousSchemas.get(this.mode);
-		List<String> fieldNames = new ArrayList<>();
-		for (int i = 0; i < bits.length; i++) {
-			if (bits[i] == 1) {
-				Schema.Field f = schema.getField(i);
-				fieldNames.add(f.getName());
-			}
-		}
-		return Joiner.on(" ").join(fieldNames);
-	}
+  private String convert(int[] bits) {
+    Schema schema = this.previousSchemas.get(this.mode);
+    List<String> fieldNames = new ArrayList<>();
+    for (int i = 0; i < bits.length; i++) {
+      if (bits[i] == 1) {
+        Schema.Field f = schema.getField(i);
+        fieldNames.add(f.getName());
+      }
+    }
+    return Joiner.on(" ").join(fieldNames);
+  }
 }
-

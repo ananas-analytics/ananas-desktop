@@ -10,36 +10,33 @@ import org.bson.Document;
 
 public class BsonDocumentAsTextReader extends PTransform<PCollection<Document>, PCollection<Row>> {
 
-	private static final long serialVersionUID = -6665406554798597832L;
+  private static final long serialVersionUID = -6665406554798597832L;
 
-	private Schema schema;
+  private Schema schema;
 
-	public BsonDocumentAsTextReader(Schema schema) {
-		this.schema = schema;
-	}
+  public BsonDocumentAsTextReader(Schema schema) {
+    this.schema = schema;
+  }
 
-	@Override
-	public PCollection<Row> expand(PCollection<Document> input) {
-		return input.apply(
-				ParDo.of(
-						new DoFn<Document, Row>() {
-							private static final long serialVersionUID = -7364417564214230507L;
+  @Override
+  public PCollection<Row> expand(PCollection<Document> input) {
+    return input.apply(
+        ParDo.of(
+            new DoFn<Document, Row>() {
+              private static final long serialVersionUID = -7364417564214230507L;
 
-							@ProcessElement
-							public void processElement(ProcessContext ctx) {
-								Document doc = ctx.element();
-								if (doc != null) {
-									Row o = doc2Row(doc);
-									ctx.output(o);
-								}
-							}
-						}));
-	}
+              @ProcessElement
+              public void processElement(ProcessContext ctx) {
+                Document doc = ctx.element();
+                if (doc != null) {
+                  Row o = doc2Row(doc);
+                  ctx.output(o);
+                }
+              }
+            }));
+  }
 
-	public Row doc2Row(Document doc) {
-		return Row.withSchema(BsonDocumentAsTextReader.this.schema).addValue(
-				doc.toJson()).build();
-	}
-
-
+  public Row doc2Row(Document doc) {
+    return Row.withSchema(BsonDocumentAsTextReader.this.schema).addValue(doc.toJson()).build();
+  }
 }

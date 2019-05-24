@@ -7,8 +7,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 public interface Paginator {
 
-	MutablePair<Schema, Iterable<Row>> paginateRows(Integer page, Integer pageSize);
+  MutablePair<Schema, Iterable<Row>> paginateRows(Integer page, Integer pageSize);
 
-	Dataframe paginate(Integer page, Integer pageSize);
-
+  Dataframe paginate(Integer page, Integer pageSize);
 }

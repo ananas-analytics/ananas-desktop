@@ -1,5 +1,6 @@
 package org.ananas.runner.model.steps.ml.featureselection;
 
+import java.util.Map;
 import org.ananas.runner.model.core.Step;
 import org.ananas.runner.model.steps.ml.MLHookTemplate;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
@@ -13,69 +14,61 @@ import smile.data.AttributeDataset;
 import smile.feature.FeatureTransform;
 import smile.feature.Standardizer;
 
-import java.util.Map;
-
 public abstract class FeatureSelectionHook<T extends Standardizer> extends MLHookTemplate {
 
+  public FeatureSelectionHook(
+      String mode,
+      Pipeline pipeline,
+      Map<String, Schema> schemas,
+      Map<String, Step> steps,
+      Map<String, String> modesteps,
+      Step mlStep,
+      MLModelTrainer blackBoxTransformer) {
+    super(mode, pipeline, schemas, steps, modesteps, mlStep, blackBoxTransformer);
+  }
 
-	public FeatureSelectionHook(String mode,
-								Pipeline pipeline,
-								Map<String, Schema> schemas,
-								Map<String, Step> steps,
-								Map<String, String> modesteps,
-								Step mlStep, MLModelTrainer blackBoxTransformer) {
-		super(mode, pipeline, schemas, steps, modesteps, mlStep, blackBoxTransformer);
-	}
+  /**
+   * Select k feature and serialize model
+   *
+   * @return the list of features set with their fitness
+   */
+  protected MutableTriple<Schema, Iterable<Row>, String> select(AttributeDataset dataset) {
 
-	/**
-	 * Select k feature and serialize model
-	 *
-	 * @return the list of features set with their fitness
-	 */
-	protected MutableTriple<Schema, Iterable<Row>, String> select(AttributeDataset dataset) {
+    double[][] x = dataset.toArray(new double[dataset.size()][]);
 
-		double[][] x = dataset.toArray(new double[dataset.size()][]);
+    FeatureTransform tf = getTransformTf();
 
+    Attribute[] attributes = dataset.attributes();
+    double[][] xt = transform(x, tf, attributes);
 
-		FeatureTransform tf = getTransformTf();
+    String algo = (String) this.mlStep.config.get("algo_selected");
+    Preconditions.checkNotEmpty(
+        algo, "Select the underlying model from which you want to select features. ");
 
-		Attribute[] attributes = dataset.attributes();
-		double[][] xt = transform(x, tf, attributes);
+    Class clazz = MLModelTrainer.ALGOS_CLASSIFIER.get(algo);
+    if (clazz != null) {
+      int[] y = dataset.toArray(new int[dataset.size()]);
+      return onClassifier(clazz, attributes, xt, y);
+    }
+    clazz = MLModelTrainer.ALGOS_REGRESSION.get(algo);
+    if (clazz != null) {
+      double[] y = dataset.toArray(new double[dataset.size()]);
+      return onRegression(clazz, attributes, xt, y);
+    }
 
-		String algo = (String) this.mlStep.config.get("algo_selected");
-		Preconditions.checkNotEmpty(algo, "Select the underlying model from which you want to select features. ");
+    throw new RuntimeException(
+        "Sorry we can't run a genetic algorithm feautre selection on such algorithm");
+  }
 
-		Class clazz = MLModelTrainer.ALGOS_CLASSIFIER.get(algo);
-		if (clazz != null) {
-			int[] y = dataset.toArray(new int[dataset.size()]);
-			return onClassifier(clazz, attributes, xt, y);
-		}
-		clazz = MLModelTrainer.ALGOS_REGRESSION.get(algo);
-		if (clazz != null) {
-			double[] y = dataset.toArray(new double[dataset.size()]);
-			return onRegression(clazz, attributes, xt, y);
-		}
+  protected abstract MutableTriple<Schema, Iterable<Row>, String> onRegression(
+      Class modelTrainerClass, Attribute[] attributes, double[][] x, double[] y);
 
-		throw new RuntimeException("Sorry we can't run a genetic algorithm feautre selection on such algorithm");
-	}
+  protected abstract MutableTriple<Schema, Iterable<Row>, String> onClassifier(
+      Class modelTrainerClass, Attribute[] attributes, double[][] x, int[] y);
 
-
-	protected abstract MutableTriple<Schema, Iterable<Row>, String> onRegression(Class modelTrainerClass,
-																				 Attribute[] attributes,
-																				 double[][] x,
-																				 double[] y);
-
-	protected abstract MutableTriple<Schema, Iterable<Row>, String> onClassifier(Class modelTrainerClass,
-																				 Attribute[] attributes,
-																				 double[][] x,
-																				 int[] y);
-
-	@Override
-	public MutableTriple<Schema, Iterable<Row>, String> MLRun() {
-		AttributeDataset dataset = extractDataset(this.mode, true);
-		return select(dataset);
-	}
-
-
+  @Override
+  public MutableTriple<Schema, Iterable<Row>, String> MLRun() {
+    AttributeDataset dataset = extractDataset(this.mode, true);
+    return select(dataset);
+  }
 }
-

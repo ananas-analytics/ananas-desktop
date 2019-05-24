@@ -4,14 +4,8 @@ import org.ananas.runner.model.core.PipelineHook;
 
 public class NoHook implements PipelineHook {
 
-	public NoHook() {
+  public NoHook() {}
 
-	}
-
-	@Override
-	public void run() {
-
-	}
-
-
+  @Override
+  public void run() {}
 }
