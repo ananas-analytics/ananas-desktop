@@ -19,6 +19,7 @@ import org.ananas.runner.api.JsonUtil;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DagRequest {
+
   public static Configuration TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_27);
 
   static {
@@ -32,6 +33,7 @@ public class DagRequest {
   @Data
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Engine {
+
     public String name;
     public String type;
     public Map<String, String> properties;
@@ -85,6 +87,7 @@ public class DagRequest {
   }
 
   public static class Variable {
+
     public String name;
     public String type;
     public String description;

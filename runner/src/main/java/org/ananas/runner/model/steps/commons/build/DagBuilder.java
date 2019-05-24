@@ -33,7 +33,11 @@ public class DagBuilder implements Builder {
   boolean isTest;
   Map<String, DagRequest.Variable> variables;
 
-  public DagBuilder(
+  public DagBuilder(DagRequest dagRequest, boolean isTest) {
+    this(dagRequest.dag, isTest, dagRequest.goals, dagRequest.params, dagRequest.engine);
+  }
+
+  private DagBuilder(
       Dag d,
       boolean isTest,
       Set<String> goals,
@@ -92,7 +96,6 @@ public class DagBuilder implements Builder {
     Stack<PipelineContext> contexts = new Stack<>();
     Set<Step> topologicallySortedSteps = this.dag.topologicalSort();
     for (Step step : topologicallySortedSteps) {
-      // VariableRender.render(this.variables, step.config);
       StepRunner stepRunner;
       Set<Step> predecessors = this.dag.predecessors(step);
       switch (predecessors.size()) {

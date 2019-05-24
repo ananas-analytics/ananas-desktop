@@ -90,9 +90,7 @@ public class JoinConnector extends AbstractStepRunner implements StepRunner, Ser
   private String SQLJoin(Map<String, String> joinedColumns) {
     return Joiner.on(" AND ")
         .join(
-            joinedColumns
-                .entrySet()
-                .stream()
+            joinedColumns.entrySet().stream()
                 .map(
                     e ->
                         String.format(

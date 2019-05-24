@@ -147,7 +147,9 @@ export default class ExecutionService {
       let config = this.getStepConfig(step)
       newSteps.push({
         id,
+        name: step.name,
         type: step.type,
+        metadataId: step.metadataId,
         config,
       })
     }
@@ -185,7 +187,9 @@ export default class ExecutionService {
       let config = this.getStepConfig(step)
       newSteps.push({
         id,
+        name: step.name,
         type: step.type,
+        metadataId: step.metadataId,
         config: config,
       })
     }

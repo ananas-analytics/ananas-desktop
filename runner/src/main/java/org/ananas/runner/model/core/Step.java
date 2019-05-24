@@ -9,7 +9,9 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Step implements DeepComparable {
+
   public String id;
+  public String metadataId;
   public String name;
   public String type;
   public String description;
@@ -17,9 +19,10 @@ public class Step implements DeepComparable {
 
   public Step() {}
 
-  public static Step of(String id) {
+  public static Step of(String id, String metadataId) {
     Step step = new Step();
     step.id = id;
+    step.metadataId = metadataId;
     step.config = new HashMap<>();
     return step;
   }
@@ -40,6 +43,9 @@ public class Step implements DeepComparable {
     Step step = (Step) o;
 
     if (this.id != null ? !this.id.equals(step.id) : step.id != null) {
+      return false;
+    }
+    if (this.metadataId != null ? !this.metadataId.equals(step.metadataId) : step.id != null) {
       return false;
     }
     if (this.name != null ? !this.name.equals(step.name) : step.name != null) {
@@ -78,8 +84,6 @@ public class Step implements DeepComparable {
   /**
    * Compare two collections of steps
    *
-   * @param steps
-   * @param otherSteps
    * @return true if both collections are deeply equals (using deepEquals)
    */
   public static boolean deepEquals(Iterable<Step> steps, Iterable<Step> otherSteps) {
@@ -99,5 +103,14 @@ public class Step implements DeepComparable {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return "Step{" +
+      "id='" + id + '\'' +
+      ", metadataId='" + metadataId + '\'' +
+      ", name='" + name + '\'' +
+      '}';
   }
 }

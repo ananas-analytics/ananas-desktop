@@ -48,15 +48,11 @@ public class Graphs<N> {
     private TopologicalOrderIterator(Graph<N> graph) {
       this.graph = checkNotNull(graph, "graph");
       this.roots =
-          graph
-              .nodes()
-              .stream()
+          graph.nodes().stream()
               .filter(node -> graph.inDegree(node) == 0)
               .collect(toCollection(ArrayDeque::new));
       this.nonRootsToInDegree =
-          graph
-              .nodes()
-              .stream()
+          graph.nodes().stream()
               .filter(node -> graph.inDegree(node) > 0)
               .collect(toMap(node -> node, graph::inDegree, (a, b) -> a, HashMap::new));
     }

@@ -57,9 +57,7 @@ public class ConcatConnector extends AbstractStepRunner implements StepRunner, S
   private String SQLProjection(String tableName, Schema schema) {
     return Joiner.on(" , ")
         .join(
-            schema
-                .getFields()
-                .stream()
+            schema.getFields().stream()
                 .map(c -> tableName + "." + "`" + c.getName() + "`")
                 .iterator());
   }

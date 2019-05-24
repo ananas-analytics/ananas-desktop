@@ -100,9 +100,7 @@ class JavascriptRuntime implements Serializable {
         "Failed to match any files with the pattern: " + path);
 
     List<String> scripts =
-        result
-            .metadata()
-            .stream()
+        result.metadata().stream()
             .filter(metadata -> metadata.resourceId().getFilename().endsWith(".js"))
             .map(Metadata::resourceId)
             .map(

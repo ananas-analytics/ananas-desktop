@@ -61,7 +61,6 @@ public abstract class AbstractStepRunner implements StepRunner, Serializable {
 
   public void setReader() {
     if (this.output != null) {
-      // output.apply(DebugLogger.logRecords(stepId));
       this.reader = DirectRunnerDataReader.of(this.stepId);
       this.output.apply(this.reader.mapElements());
     }

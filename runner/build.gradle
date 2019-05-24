@@ -110,3 +110,6 @@ shadowJar {
 	}
 }
 
+googleJavaFormat {
+  toolVersion = '1.7'
+}

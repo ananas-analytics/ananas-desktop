@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Dag {
+
   public Set<DagEdge> connections;
   public Set<Step> steps;
 

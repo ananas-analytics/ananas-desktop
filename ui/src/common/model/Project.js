@@ -40,6 +40,7 @@ class Project {
         // clean up dataframe
         if (newSteps[k].hasOwnProperty('dataframe')) {
           newSteps[k].dataframe.data = [] 
+          /*
           if (typeof newSteps[k].dataframe.schema === 'object' && 
               Array.isArray(newSteps[k].dataframe.schema.fields)) {
             newSteps[k].dataframe.schema.fields = newSteps[k].dataframe.schema.fields.map(field => {
@@ -49,6 +50,7 @@ class Project {
               }
             })
           }
+          */
         }
 
         let config = newSteps[k].config

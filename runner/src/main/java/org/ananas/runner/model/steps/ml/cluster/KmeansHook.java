@@ -50,8 +50,7 @@ public class KmeansHook extends ClusteringHook {
     Schema schema = MLHookTemplate.getSchemaBuilder(this.previousSchemas.get(this.mode)).build();
 
     List<Row> a =
-        Arrays.asList(centroids)
-            .stream()
+        Arrays.asList(centroids).stream()
             .map(datasetDoubles2Row(schema))
             .collect(Collectors.toList());
     return MutableTriple.of(schema, a, k.toString());

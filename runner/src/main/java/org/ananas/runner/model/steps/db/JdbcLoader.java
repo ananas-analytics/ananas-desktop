@@ -192,9 +192,7 @@ public class JdbcLoader extends AbstractStepLoader implements StepRunner, Serial
     for (int i = 0; i < oldSchema.getFields().size(); i++) {
       Schema.Field n = oldSchema.getField(i);
       Optional<Schema.Field> f =
-          schema
-              .getFields()
-              .stream()
+          schema.getFields().stream()
               .filter(field -> field.getName().equalsIgnoreCase(n.getName()))
               .findFirst();
 
@@ -217,9 +215,7 @@ public class JdbcLoader extends AbstractStepLoader implements StepRunner, Serial
     for (int i = 0; i < schema.getFields().size(); i++) {
       Schema.Field n = schema.getField(i);
       Optional<Schema.Field> f =
-          oldSchema
-              .getFields()
-              .stream()
+          oldSchema.getFields().stream()
               .filter(field -> field.getName().equalsIgnoreCase(n.getName()))
               .findFirst();
 
