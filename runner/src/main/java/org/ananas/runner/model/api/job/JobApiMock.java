@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+import org.ananas.runner.kernel.model.DagRequest;
 import org.ananas.runner.model.api.AnanasApiClient;
-import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.Job;
 import org.ananas.runner.model.steps.commons.jobs.LocalJobManager;
 

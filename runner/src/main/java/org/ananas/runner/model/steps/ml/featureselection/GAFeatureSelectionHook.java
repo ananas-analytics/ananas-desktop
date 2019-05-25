@@ -4,7 +4,7 @@ import com.google.common.base.Joiner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.ananas.runner.model.core.Step;
+import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
 import org.apache.beam.repackaged.beam_sdks_java_core.org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.beam.sdk.Pipeline;

@@ -3,8 +3,8 @@ package org.ananas.runner.model.api.pipeline;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import org.ananas.runner.model.core.Pipeline;
-import org.ananas.runner.model.core.Step;
+import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.kernel.pipeline.Pipeline;
 import org.ananas.runner.model.core.StepConfig;
 
 public class MockPipelineApiClient {

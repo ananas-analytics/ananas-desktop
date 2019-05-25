@@ -2,6 +2,7 @@ package org.ananas.runner.model.steps.commons;
 
 import java.io.Serializable;
 import java.util.List;
+import org.ananas.runner.kernel.common.DataReader;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.NotImplementedException;

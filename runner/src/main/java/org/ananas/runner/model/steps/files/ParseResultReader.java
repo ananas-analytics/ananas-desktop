@@ -1,8 +1,8 @@
 package org.ananas.runner.model.steps.files;
 
 import java.io.Serializable;
-import org.ananas.runner.model.errors.ExceptionHandler;
-import org.ananas.runner.model.steps.commons.ErrorHandler;
+import org.ananas.runner.kernel.errors.ErrorHandler;
+import org.ananas.runner.kernel.errors.ExceptionHandler;
 import org.apache.beam.sdk.io.tika.ParseResult;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.DoFn;

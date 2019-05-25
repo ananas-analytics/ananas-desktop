@@ -2,9 +2,9 @@ package org.ananas.runner.model.steps.db;
 
 import java.io.Serializable;
 import java.util.Optional;
+import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.model.schema.JdbcSchemaDetecter;
 import org.ananas.runner.model.steps.commons.AbstractStepLoader;
-import org.ananas.runner.model.steps.commons.StepRunner;
 import org.ananas.runner.model.steps.commons.json.AsBsons;
 import org.ananas.runner.model.steps.db.jdbc.JDBCDriver;
 import org.ananas.runner.model.steps.db.jdbc.JDBCStatement;

@@ -2,12 +2,12 @@ package org.ananas.runner.model.steps.api;
 
 import java.io.IOException;
 import java.io.Serializable;
-import org.ananas.runner.model.errors.AnanasException;
-import org.ananas.runner.model.errors.ExceptionHandler;
-import org.ananas.runner.model.steps.commons.AbstractStepRunner;
-import org.ananas.runner.model.steps.commons.ErrorHandler;
-import org.ananas.runner.model.steps.commons.StepRunner;
-import org.ananas.runner.model.steps.commons.StepType;
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.errors.AnanasException;
+import org.ananas.runner.kernel.errors.ErrorHandler;
+import org.ananas.runner.kernel.errors.ExceptionHandler;
+import org.ananas.runner.kernel.model.StepType;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.Create;

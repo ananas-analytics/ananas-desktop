@@ -1,7 +1,7 @@
 package org.ananas.runner.model.steps.files.txt;
 
 import java.io.Serializable;
-import org.ananas.runner.model.steps.commons.ErrorHandler;
+import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.PTransform;

@@ -1,6 +1,6 @@
 package org.ananas.runner.model.steps.dataview;
 
-import org.ananas.runner.model.steps.commons.StepRunner;
+import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.model.steps.db.JdbcLoader;
 import org.ananas.runner.model.steps.db.jdbc.JDBCDriver;
 import org.slf4j.Logger;

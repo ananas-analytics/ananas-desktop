@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.ananas.runner.model.core.Step;
+import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.ml.MLHookTemplate;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;

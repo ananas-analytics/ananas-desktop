@@ -1,6 +1,6 @@
 package org.ananas.runner.model.steps.ml;
 
-import org.ananas.runner.model.core.Step;
+import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.filters.StepFilter;
 

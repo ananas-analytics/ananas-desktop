@@ -1,7 +1,7 @@
 package org.ananas.runner.model.api.job;
 
 import java.io.IOException;
-import org.ananas.runner.model.core.DagRequest;
+import org.ananas.runner.kernel.model.DagRequest;
 
 public interface JobClient {
 

@@ -1,6 +1,6 @@
 package org.ananas.runner.model.steps.commons.paginate;
 
-import org.ananas.runner.model.core.Dataframe;
+import org.ananas.runner.kernel.model.Dataframe;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;

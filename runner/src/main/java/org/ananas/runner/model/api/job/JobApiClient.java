@@ -4,13 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.ananas.runner.api.JsonUtil;
+import org.ananas.runner.kernel.common.JsonUtil;
+import org.ananas.runner.kernel.errors.ExceptionHandler;
+import org.ananas.runner.kernel.model.DagRequest;
 import org.ananas.runner.misc.HttpClient;
 import org.ananas.runner.model.api.AnanasApiClient;
 import org.ananas.runner.model.api.pipeline.SimpleMapResponse;
-import org.ananas.runner.model.core.DagRequest;
 import org.ananas.runner.model.core.Job;
-import org.ananas.runner.model.errors.ExceptionHandler;
 import org.ananas.runner.model.steps.commons.jobs.LocalJobManager;
 import org.apache.commons.io.IOUtils;
 

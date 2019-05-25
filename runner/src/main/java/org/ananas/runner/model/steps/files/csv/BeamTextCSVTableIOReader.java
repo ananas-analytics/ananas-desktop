@@ -2,7 +2,7 @@ package org.ananas.runner.model.steps.files.csv;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import org.ananas.runner.model.steps.commons.ErrorHandler;
+import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.apache.beam.sdk.extensions.sql.impl.schema.BeamTableUtils;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.DoFn;

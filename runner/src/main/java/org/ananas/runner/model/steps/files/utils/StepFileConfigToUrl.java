@@ -1,8 +1,8 @@
 package org.ananas.runner.model.steps.files.utils;
 
 import java.util.Map;
+import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.model.core.StepConfig;
-import org.ananas.runner.model.steps.commons.StepType;
 import org.ananas.runner.model.steps.files.FileLoader;
 
 public class StepFileConfigToUrl {

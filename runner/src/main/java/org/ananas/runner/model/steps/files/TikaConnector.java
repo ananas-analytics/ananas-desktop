@@ -1,10 +1,10 @@
 package org.ananas.runner.model.steps.files;
 
 import java.io.Serializable;
-import org.ananas.runner.model.steps.commons.AbstractStepRunner;
-import org.ananas.runner.model.steps.commons.Sampler;
-import org.ananas.runner.model.steps.commons.StepRunner;
-import org.ananas.runner.model.steps.commons.StepType;
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.common.Sampler;
+import org.ananas.runner.kernel.model.StepType;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.tika.ParseResult;
 import org.apache.beam.sdk.io.tika.TikaIO;

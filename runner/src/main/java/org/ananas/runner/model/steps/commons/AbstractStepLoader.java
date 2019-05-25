@@ -1,5 +1,8 @@
 package org.ananas.runner.model.steps.commons;
 
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.common.DataReader;
+import org.ananas.runner.kernel.model.StepType;
 import org.apache.beam.sdk.schemas.Schema;
 
 public class AbstractStepLoader extends AbstractStepRunner {

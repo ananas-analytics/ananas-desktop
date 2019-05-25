@@ -3,10 +3,11 @@ package org.ananas.runner.api;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import org.ananas.runner.model.core.Dataframe;
+import org.ananas.runner.kernel.common.JsonUtil;
+import org.ananas.runner.kernel.errors.AnanasException;
+import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.model.core.Job;
 import org.ananas.runner.model.core.PaginationBody;
-import org.ananas.runner.model.errors.AnanasException;
 import org.ananas.runner.model.healthcheck.HealthCheck;
 import org.ananas.runner.model.steps.commons.paginate.Paginator;
 import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
@@ -63,7 +64,7 @@ class HttpHandler {
               ApiResponseBuilder.Of()
                   .KO(
                       new AnanasException(
-                          org.ananas.runner.model.errors.ExceptionHandler.ErrorCode.GENERAL,
+                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
                           "missing body"))
                   .build());
         }
@@ -83,7 +84,7 @@ class HttpHandler {
               ApiResponseBuilder.Of()
                   .KO(
                       new AnanasException(
-                          org.ananas.runner.model.errors.ExceptionHandler.ErrorCode.GENERAL,
+                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
                           "missing body"))
                   .build());
         }

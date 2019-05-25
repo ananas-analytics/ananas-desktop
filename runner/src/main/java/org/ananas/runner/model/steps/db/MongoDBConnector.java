@@ -1,12 +1,12 @@
 package org.ananas.runner.model.steps.db;
 
 import java.io.Serializable;
-import org.ananas.runner.model.schema.SchemaBasedRowConverter;
-import org.ananas.runner.model.steps.commons.AbstractStepRunner;
-import org.ananas.runner.model.steps.commons.StepRunner;
-import org.ananas.runner.model.steps.commons.StepType;
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.common.BsonDocumentFlattenerReader;
+import org.ananas.runner.kernel.model.StepType;
+import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
 import org.ananas.runner.model.steps.commons.json.BsonDocumentAsTextReader;
-import org.ananas.runner.model.steps.commons.json.BsonDocumentFlattenerReader;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 

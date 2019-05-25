@@ -1,6 +1,6 @@
 package org.ananas.runner.model.steps.files;
 
-import org.ananas.runner.model.steps.commons.ErrorHandler;
+import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.model.steps.commons.paginate.AbstractPaginator;
 import org.apache.beam.sdk.schemas.Schema;
 

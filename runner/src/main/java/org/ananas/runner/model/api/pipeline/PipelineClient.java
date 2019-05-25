@@ -1,7 +1,7 @@
 package org.ananas.runner.model.api.pipeline;
 
 import java.io.IOException;
-import org.ananas.runner.model.core.Pipeline;
+import org.ananas.runner.kernel.pipeline.Pipeline;
 
 public interface PipelineClient {
 

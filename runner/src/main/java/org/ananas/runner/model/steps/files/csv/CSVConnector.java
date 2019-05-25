@@ -1,8 +1,8 @@
 package org.ananas.runner.model.steps.files.csv;
 
 import java.io.Serializable;
-import org.ananas.runner.model.steps.commons.AbstractStepRunner;
-import org.ananas.runner.model.steps.commons.StepType;
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.model.StepType;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.SerializableFunction;

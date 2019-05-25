@@ -1,10 +1,10 @@
 package org.ananas.runner.model.steps.stat;
 
 import com.google.common.base.Preconditions;
-import org.ananas.runner.model.core.Step;
-import org.ananas.runner.model.steps.commons.AbstractStepRunner;
-import org.ananas.runner.model.steps.commons.StepRunner;
-import org.ananas.runner.model.steps.commons.StepType;
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.model.steps.ml.ObjectToDouble;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.Count;

@@ -4,11 +4,11 @@ import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Map;
-import org.ananas.runner.api.JsonUtil;
+import org.ananas.runner.kernel.common.JsonUtil;
+import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.kernel.pipeline.Pipeline;
 import org.ananas.runner.misc.HttpClient;
 import org.ananas.runner.model.api.AnanasApiClient;
-import org.ananas.runner.model.core.Pipeline;
-import org.ananas.runner.model.core.Step;
 
 public class PipelineApiClient extends AnanasApiClient implements PipelineClient {
 

@@ -1,7 +1,7 @@
 package org.ananas.runner.model.schema;
 
 import java.util.*;
-import org.ananas.runner.model.datatype.TypeInferer;
+import org.ananas.runner.kernel.schema.TypeInferer;
 import org.apache.beam.sdk.schemas.Schema;
 
 public class StringFieldAutodetect implements SchemaAutodetect<String> {

@@ -3,10 +3,11 @@ package org.ananas.runner.api;
 import freemarker.template.TemplateException;
 import java.util.HashMap;
 import java.util.Map;
-import org.ananas.runner.model.core.DagRequest;
-import org.ananas.runner.model.core.Dataframe;
-import org.ananas.runner.model.steps.commons.build.Builder;
-import org.ananas.runner.model.steps.commons.build.DagBuilder;
+import org.ananas.runner.kernel.build.Builder;
+import org.ananas.runner.kernel.build.DagBuilder;
+import org.ananas.runner.kernel.common.JsonUtil;
+import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.model.steps.commons.run.BeamRunner;
 import org.ananas.runner.model.steps.commons.run.Runner;
 

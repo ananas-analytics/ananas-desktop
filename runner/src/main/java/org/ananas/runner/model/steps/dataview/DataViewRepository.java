@@ -2,9 +2,9 @@ package org.ananas.runner.model.steps.dataview;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.ananas.runner.model.core.Dataframe;
+import org.ananas.runner.kernel.model.Dataframe;
+import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.model.core.StepConfig;
-import org.ananas.runner.model.steps.commons.StepType;
 import org.ananas.runner.model.steps.commons.paginate.Paginator;
 import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
 import org.ananas.runner.model.steps.db.jdbc.JDBCDriver;

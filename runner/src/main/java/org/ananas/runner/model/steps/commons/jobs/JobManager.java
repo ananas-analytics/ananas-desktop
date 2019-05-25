@@ -1,7 +1,7 @@
 package org.ananas.runner.model.steps.commons.jobs;
 
 import java.io.IOException;
-import org.ananas.runner.model.steps.commons.build.Builder;
+import org.ananas.runner.kernel.build.Builder;
 
 public interface JobManager {
 

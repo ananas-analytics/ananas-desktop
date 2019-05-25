@@ -4,8 +4,12 @@ import static org.apache.beam.sdk.values.Row.toRow;
 
 import java.io.Serializable;
 import java.util.stream.IntStream;
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.common.Sampler;
+import org.ananas.runner.kernel.errors.ErrorHandler;
+import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.model.schema.JdbcSchemaDetecter;
-import org.ananas.runner.model.steps.commons.*;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;

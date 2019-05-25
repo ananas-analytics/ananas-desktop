@@ -1,7 +1,7 @@
 package org.ananas.runner.model.steps.ml.featureselection;
 
 import java.util.Map;
-import org.ananas.runner.model.core.Step;
+import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.model.steps.ml.MLHookTemplate;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
 import org.apache.beam.repackaged.beam_sdks_java_core.org.apache.commons.lang3.tuple.MutableTriple;

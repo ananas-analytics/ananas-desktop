@@ -2,13 +2,13 @@ package org.ananas.runner.model.steps.commons.paginate;
 
 import com.google.common.base.Preconditions;
 import java.util.Map;
-import org.ananas.runner.misc.VariableRender;
-import org.ananas.runner.model.core.DagRequest;
-import org.ananas.runner.model.core.Dataframe;
+import org.ananas.runner.kernel.common.VariableRender;
+import org.ananas.runner.kernel.model.Dataframe;
+import org.ananas.runner.kernel.model.StepType;
+import org.ananas.runner.kernel.model.Variable;
 import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.api.APIPaginator;
 import org.ananas.runner.model.steps.api.APIStepConfig;
-import org.ananas.runner.model.steps.commons.StepType;
 import org.ananas.runner.model.steps.db.JdbcPaginator;
 import org.ananas.runner.model.steps.db.JdbcStepConfig;
 import org.ananas.runner.model.steps.db.MongoDBPaginator;
@@ -34,10 +34,7 @@ public class SourcePaginator implements Paginator {
   }
 
   public static SourcePaginator of(
-      String id,
-      String type,
-      Map<String, Object> config,
-      Map<String, DagRequest.Variable> variables) {
+      String id, String type, Map<String, Object> config, Map<String, Variable> variables) {
     Preconditions.checkNotNull(config, "config cannot be null");
     config = VariableRender.renderConfig(variables, config);
     StepType t = StepType.from(type);

@@ -3,7 +3,9 @@ package org.ananas.runner.model.schema;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.ananas.runner.model.steps.commons.RowConverter;
+import org.ananas.runner.kernel.common.RowConverter;
+import org.ananas.runner.kernel.schema.JsonAutodetect;
+import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 

@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Data;
+import org.ananas.runner.kernel.model.Dag;
+import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.kernel.model.Variable;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -41,7 +45,7 @@ public class Project {
     public boolean deleted;
   }
 
-  public DagRequest toDagRequest(String stepId, Map<String, DagRequest.Variable> params) {
+  public DagRequest toDagRequest(String stepId, Map<String, Variable> params) {
     DagRequest req = new DagRequest();
     req.dag = new Dag();
     req.dag.connections = this.dag.connections;

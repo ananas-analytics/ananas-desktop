@@ -6,10 +6,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
+import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.build.Builder;
+import org.ananas.runner.kernel.pipeline.PipelineContext;
 import org.ananas.runner.model.core.Job;
-import org.ananas.runner.model.core.PipelineContext;
-import org.ananas.runner.model.steps.commons.StepRunner;
-import org.ananas.runner.model.steps.commons.build.Builder;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -91,6 +91,7 @@ public class LocalJobManager implements JobManager, JobRepository {
                   return MutablePair.of(lastIntermediateResult, (Exception) null);
                 } catch (Exception e) {
                   System.out.println(e.getMessage());
+                  e.printStackTrace();
                   return MutablePair.of((PipelineResult) null, e);
                 }
               });

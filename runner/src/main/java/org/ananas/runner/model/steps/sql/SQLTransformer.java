@@ -1,8 +1,8 @@
 package org.ananas.runner.model.steps.sql;
 
-import org.ananas.runner.model.steps.commons.AbstractStepRunner;
-import org.ananas.runner.model.steps.commons.StepRunner;
-import org.ananas.runner.model.steps.commons.StepType;
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.model.steps.sql.udf.*;
 import org.apache.beam.sdk.extensions.sql.SqlTransform;
 

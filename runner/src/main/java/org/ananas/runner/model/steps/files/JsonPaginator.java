@@ -1,9 +1,9 @@
 package org.ananas.runner.model.steps.files;
 
 import java.util.List;
-import org.ananas.runner.model.schema.JsonAutodetect;
-import org.ananas.runner.model.schema.SchemaBasedRowConverter;
-import org.ananas.runner.model.steps.commons.json.JsonStringBasedFlattenerReader;
+import org.ananas.runner.kernel.common.JsonStringBasedFlattenerReader;
+import org.ananas.runner.kernel.schema.JsonAutodetect;
+import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
 import org.ananas.runner.model.steps.commons.paginate.AbstractPaginator;
 import org.ananas.runner.model.steps.commons.paginate.PageProcessor;
 import org.ananas.runner.model.steps.commons.paginate.Paginator;

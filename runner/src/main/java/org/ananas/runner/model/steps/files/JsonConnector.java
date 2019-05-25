@@ -2,12 +2,12 @@ package org.ananas.runner.model.steps.files;
 
 import java.io.File;
 import java.io.Serializable;
-import org.ananas.runner.model.schema.JsonAutodetect;
-import org.ananas.runner.model.schema.SchemaBasedRowConverter;
-import org.ananas.runner.model.steps.commons.AbstractStepRunner;
-import org.ananas.runner.model.steps.commons.Sampler;
-import org.ananas.runner.model.steps.commons.StepType;
-import org.ananas.runner.model.steps.commons.json.JsonStringBasedFlattenerReader;
+import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.common.JsonStringBasedFlattenerReader;
+import org.ananas.runner.kernel.common.Sampler;
+import org.ananas.runner.kernel.model.StepType;
+import org.ananas.runner.kernel.schema.JsonAutodetect;
+import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
 import org.ananas.runner.model.steps.files.txt.TruncatedTextIO;
 import org.ananas.runner.model.steps.files.utils.FileIterator;
 import org.apache.beam.sdk.Pipeline;

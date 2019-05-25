@@ -2,7 +2,8 @@ package org.ananas.runner.model.steps.commons.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import org.ananas.runner.model.steps.commons.ErrorHandler;
+import org.ananas.runner.kernel.common.Jsonifier;
+import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.SimpleFunction;

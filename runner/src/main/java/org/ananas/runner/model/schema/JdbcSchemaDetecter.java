@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.TimeZone;
-import org.ananas.runner.model.datatype.TypeInferer;
+import org.ananas.runner.kernel.schema.TypeInferer;
 import org.ananas.runner.model.steps.db.jdbc.JDBCDriver;
 import org.ananas.runner.model.steps.db.jdbc.JDBCStatement;
 import org.apache.beam.sdk.schemas.Schema;
