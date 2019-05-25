@@ -1,6 +1,5 @@
 package org.ananas.runner.kernel.pipeline;
 
-import org.ananas.runner.kernel.hooks.NoHook;
 import org.apache.beam.sdk.PipelineResult;
 
 public class PipelineContext implements Comparable<PipelineContext> {

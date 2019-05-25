@@ -3,7 +3,7 @@ package org.ananas.runner.kernel.build;
 import com.google.common.base.Preconditions;
 import java.util.*;
 import org.ananas.runner.kernel.StepRunner;
-import org.ananas.runner.kernel.hooks.NoHook;
+import org.ananas.runner.kernel.pipeline.NoHook;
 import org.ananas.runner.kernel.model.AnanasGraph;
 import org.ananas.runner.kernel.model.Dag;
 import org.ananas.runner.kernel.model.DagRequest;

@@ -2,7 +2,7 @@ package org.ananas.runner.steprunner.files.csv;
 
 import org.ananas.runner.kernel.common.Sampler;
 import org.ananas.runner.kernel.errors.ErrorHandler;
-import org.ananas.runner.model.steps.files.txt.TruncatedTextIO;
+import org.ananas.runner.steprunner.files.txt.TruncatedTextIO;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.schemas.Schema;

@@ -1,4 +1,4 @@
-package org.ananas.runner.kernel.hooks;
+package org.ananas.runner.kernel.pipeline;
 
 import org.ananas.runner.kernel.pipeline.PipelineHook;
 

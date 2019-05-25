@@ -1,4 +1,4 @@
-package org.ananas.runner.model.steps.files.txt;
+package org.ananas.runner.steprunner.files.txt;
 
 import static com.google.common.base.Preconditions.checkState;
 
