@@ -7,10 +7,10 @@ import java.util.Optional;
 import org.ananas.runner.kernel.LoaderStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.model.schema.JdbcSchemaDetecter;
-import org.ananas.runner.model.steps.db.jdbc.JDBCDataType;
-import org.ananas.runner.model.steps.db.jdbc.JDBCDriver;
-import org.ananas.runner.model.steps.db.jdbc.JDBCStatement;
+import org.ananas.runner.steprunner.jdbc.JDBCDataType;
+import org.ananas.runner.steprunner.jdbc.JDBCDriver;
+import org.ananas.runner.steprunner.jdbc.JDBCStatement;
+import org.ananas.runner.steprunner.jdbc.JdbcSchemaDetecter;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.Schema.Field;
@@ -38,14 +38,12 @@ public class JdbcLoader extends LoaderStepRunner {
   }
 
   public void build() {
-    JDBCDriver driver =
-            JDBCDriver.NONE.getDriverByName((String) step.config.get(JDBC_TYPE));
+    JDBCDriver driver = JDBCDriver.NONE.getDriverByName((String) step.config.get(JDBC_TYPE));
     boolean overwrite = (boolean) step.config.getOrDefault(JDBC_OVERWRITE, false);
     String tablename = (String) step.config.get(JDBC_TABLENAME);
     String url = (String) step.config.get(JDBC_URL);
     String username = (String) step.config.get(JDBC_USER);
     String password = (String) step.config.get(JDBC_PASSWORD);
-
 
     super.output = null;
 
@@ -107,7 +105,6 @@ public class JdbcLoader extends LoaderStepRunner {
                       }
                     }));
   }
-
 
   private void validateSQLName(String name, String prefix) {
     if (!name.matches("[\\w_\\d]+")) {

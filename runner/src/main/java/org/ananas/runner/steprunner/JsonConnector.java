@@ -8,7 +8,7 @@ import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.schema.JsonAutodetect;
 import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
 import org.ananas.runner.model.steps.files.txt.TruncatedTextIO;
-import org.ananas.runner.model.steps.files.utils.FileIterator;
+import org.ananas.runner.steprunner.files.utils.FileIterator;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.schemas.Schema;

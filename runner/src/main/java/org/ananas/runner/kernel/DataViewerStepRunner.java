@@ -18,5 +18,4 @@ public class DataViewerStepRunner extends AbstractStepRunner {
     this.previous = previous;
     this.isTest = isTest;
   }
-
 }

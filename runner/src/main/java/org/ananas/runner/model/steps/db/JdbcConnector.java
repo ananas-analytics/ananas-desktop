@@ -9,7 +9,7 @@ import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.common.Sampler;
 import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.model.schema.JdbcSchemaDetecter;
+import org.ananas.runner.steprunner.jdbc.JdbcSchemaDetecter;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;

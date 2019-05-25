@@ -8,7 +8,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.model.DagRequest;
 import org.ananas.runner.kernel.model.Variable;
 

@@ -2,7 +2,7 @@ package org.ananas.runner.model.steps.dataview;
 
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.model.steps.db.JdbcLoader;
-import org.ananas.runner.model.steps.db.jdbc.JDBCDriver;
+import org.ananas.runner.steprunner.jdbc.JDBCDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

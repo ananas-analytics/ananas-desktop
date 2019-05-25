@@ -40,18 +40,18 @@ public class StepBuilderV2 {
     PipelineOptions options = PipelineOptionsFactory.create(isTest, engine);
     org.apache.beam.sdk.Pipeline p = org.apache.beam.sdk.Pipeline.create(options);
     Class[] classes =
-      new Class[]{
-        BigDecimal.class,
-        Integer.class,
-        String.class,
-        Boolean.class,
-        Long.class,
-        Float.class,
-        Double.class,
-        Timestamp.class,
-        Date.class,
-        Byte.class
-      };
+        new Class[] {
+          BigDecimal.class,
+          Integer.class,
+          String.class,
+          Boolean.class,
+          Long.class,
+          Float.class,
+          Double.class,
+          Timestamp.class,
+          Date.class,
+          Byte.class
+        };
     for (Class clazz : classes) {
       Coder coder;
       try {
@@ -66,22 +66,25 @@ public class StepBuilderV2 {
   }
 
   public static StepRunner connector(
-    Step step, PipelineContext context, boolean doSampling, boolean isTest) {
+      Step step, PipelineContext context, boolean doSampling, boolean isTest) {
     if (!REGISTRY.containsKey(step.metadataId)) {
       throw new AnanasException(
-        ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
+          ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
     Class<? extends StepRunner> clazz = REGISTRY.get(step.metadataId);
 
     try {
       Constructor<? extends StepRunner> ctor =
-        clazz.getDeclaredConstructor(Pipeline.class, Step.class, Boolean.TYPE, Boolean.TYPE);
+          clazz.getDeclaredConstructor(Pipeline.class, Step.class, Boolean.TYPE, Boolean.TYPE);
       ctor.setAccessible(true);
       StepRunner connector = ctor.newInstance(context.getPipeline(), step, doSampling, isTest);
       connector.build();
       return connector;
-    } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+    } catch (InstantiationException
+        | NoSuchMethodException
+        | IllegalAccessException
+        | InvocationTargetException e) {
       System.out.println(e.getMessage());
       throw new AnanasException(ErrorCode.DAG, e.getLocalizedMessage());
     }
@@ -90,19 +93,22 @@ public class StepBuilderV2 {
   public static StepRunner transformer(Step step, StepRunner previous, boolean isTest) {
     if (!REGISTRY.containsKey(step.metadataId)) {
       throw new AnanasException(
-        ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
+          ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
     Class<? extends StepRunner> clazz = REGISTRY.get(step.metadataId);
 
     try {
       Constructor<? extends StepRunner> ctor =
-        clazz.getDeclaredConstructor(Step.class, StepRunner.class);
+          clazz.getDeclaredConstructor(Step.class, StepRunner.class);
       ctor.setAccessible(true);
       StepRunner transformer = ctor.newInstance(step, previous);
       transformer.build();
       return transformer;
-    } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+    } catch (InstantiationException
+        | NoSuchMethodException
+        | IllegalAccessException
+        | InvocationTargetException e) {
       System.out.println(e.getMessage());
       throw new AnanasException(ErrorCode.DAG, e.getLocalizedMessage());
     }
@@ -111,19 +117,22 @@ public class StepBuilderV2 {
   public static StepRunner loader(Step step, StepRunner previous, boolean isTest) {
     if (!REGISTRY.containsKey(step.metadataId)) {
       throw new AnanasException(
-        ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
+          ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
     Class<? extends StepRunner> clazz = REGISTRY.get(step.metadataId);
 
     try {
       Constructor<? extends StepRunner> ctor =
-        clazz.getDeclaredConstructor(Step.class, StepRunner.class, Boolean.TYPE);
+          clazz.getDeclaredConstructor(Step.class, StepRunner.class, Boolean.TYPE);
       ctor.setAccessible(true);
       StepRunner loader = ctor.newInstance(step, previous, isTest);
       loader.build();
       return loader;
-    } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+    } catch (InstantiationException
+        | NoSuchMethodException
+        | IllegalAccessException
+        | InvocationTargetException e) {
       System.out.println(e.getMessage());
       throw new AnanasException(ErrorCode.DAG, e.getLocalizedMessage());
     }
@@ -132,19 +141,22 @@ public class StepBuilderV2 {
   public static StepRunner dataViewer(Step step, StepRunner previous, boolean isTest) {
     if (!REGISTRY.containsKey(step.metadataId)) {
       throw new AnanasException(
-        ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
+          ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
     Class<? extends StepRunner> clazz = REGISTRY.get(step.metadataId);
 
     try {
       Constructor<? extends StepRunner> ctor =
-        clazz.getDeclaredConstructor(Step.class, StepRunner.class, Boolean.TYPE);
+          clazz.getDeclaredConstructor(Step.class, StepRunner.class, Boolean.TYPE);
       ctor.setAccessible(true);
       StepRunner viewer = ctor.newInstance(step, previous, isTest);
       viewer.build();
       return viewer;
-    } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+    } catch (InstantiationException
+        | NoSuchMethodException
+        | IllegalAccessException
+        | InvocationTargetException e) {
       System.out.println(e.getMessage());
       throw new AnanasException(ErrorCode.DAG, e.getLocalizedMessage());
     }
@@ -172,11 +184,11 @@ public class StepBuilderV2 {
   }
 
   public static StepRunner mlTransformer(
-    Step step,
-    PipelineContext ctxt,
-    StepRunner previous,
-    boolean isTest,
-    Set<MutablePair<Step, Schema>> mlSources) {
+      Step step,
+      PipelineContext ctxt,
+      StepRunner previous,
+      boolean isTest,
+      Set<MutablePair<Step, Schema>> mlSources) {
     return null;
   }
 

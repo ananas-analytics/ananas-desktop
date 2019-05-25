@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import org.ananas.runner.kernel.DataViewerStepRunner;
 import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.common.Paginator;
 import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.model.steps.commons.paginate.Paginator;
 import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
-import org.ananas.runner.model.steps.db.jdbc.JDBCDriver;
-import org.ananas.runner.model.steps.files.utils.HomeManager;
+import org.ananas.runner.steprunner.files.utils.HomeManager;
+import org.ananas.runner.steprunner.jdbc.JDBCDriver;
+import org.ananas.runner.steprunner.sql.SQLTransformer;
 
 public class DefaultDataViewer extends DataViewerStepRunner {
 

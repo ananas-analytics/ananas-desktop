@@ -3,7 +3,7 @@ package org.ananas.runner.model.steps.sql;
 import org.ananas.runner.kernel.AbstractStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.model.steps.sql.udf.*;
+import org.ananas.runner.steprunner.sql.udf.*;
 import org.apache.beam.sdk.extensions.sql.SqlTransform;
 
 public class SQLTransformer extends AbstractStepRunner implements StepRunner {
