@@ -18,7 +18,7 @@ import org.ananas.runner.model.steps.db.*;
 import org.ananas.runner.model.steps.files.*;
 import org.ananas.runner.model.steps.files.csv.CSVConnector;
 import org.ananas.runner.steprunner.files.csv.CSVStepConfig;
-import org.ananas.runner.model.steps.join.JoinConnector;
+import org.ananas.runner.model.steps.join.JoinStepRunner;
 import org.ananas.runner.model.steps.messaging.kafka.KafkaConnector;
 import org.ananas.runner.model.steps.ml.IsStepTrainingMode;
 import org.ananas.runner.model.steps.ml.MLModelPredictor;
@@ -89,11 +89,11 @@ public class StepBuilder {
     // List<String> leftColumns = Arrays.asList("inventoryId");
     String joinType =
         (String)
-            step.config.getOrDefault(StepConfig.JOIN_TYPE, JoinConnector.JoinType.LEFT_JOIN.name);
+            step.config.getOrDefault(StepConfig.JOIN_TYPE, JoinStepRunner.JoinType.LEFT_JOIN.name);
     List<String> leftColumns = (List) step.config.get(StepConfig.JOIN_LEFT_COLUMNS);
     List<String> rightColumns = (List) step.config.get(StepConfig.JOIN_RIGHT_COLUMNS);
     // List<String> rightColumns = Arrays.asList("inventoryId");
-    return new JoinConnector(
+    return new JoinStepRunner(
         step.id, joinType, leftStep, rightStep, leftColumns, rightColumns, columnsMap);
   }
 

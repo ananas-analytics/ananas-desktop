@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.ananas.runner.kernel.JoinStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode;
@@ -176,7 +178,9 @@ public class StepBuilderV2 {
   }
 
   public static StepRunner join(Step step, StepRunner one, StepRunner other) {
-    return null;
+    StepRunner joinStepRunner = new JoinStepRunner(step, one, other);
+    joinStepRunner.build();
+    return joinStepRunner;
   }
 
   public static StepRunner concat(Step step, StepRunner one, StepRunner other) {

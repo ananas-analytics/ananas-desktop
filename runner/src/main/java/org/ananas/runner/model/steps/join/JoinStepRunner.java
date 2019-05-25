@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
 import org.ananas.runner.kernel.AbstractStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.StepType;
@@ -13,8 +14,8 @@ import org.apache.beam.sdk.values.TupleTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JoinConnector extends AbstractStepRunner implements StepRunner, Serializable {
-  private static final Logger LOG = LoggerFactory.getLogger(JoinConnector.class);
+public class JoinStepRunner extends AbstractStepRunner implements StepRunner, Serializable {
+  private static final Logger LOG = LoggerFactory.getLogger(JoinStepRunner.class);
   private static final long serialVersionUID = 8310470332280930099L;
 
   /**
@@ -28,7 +29,7 @@ public class JoinConnector extends AbstractStepRunner implements StepRunner, Ser
    * @param rightColumns The right Pipeline Column projected
    * @param columnsMap The columns mapped ( map[leftColumns]=rightColumns
    */
-  public JoinConnector(
+  public JoinStepRunner(
       String id,
       String joinType,
       StepRunner leftStep,
