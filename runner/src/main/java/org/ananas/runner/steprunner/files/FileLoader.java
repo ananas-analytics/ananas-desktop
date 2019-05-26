@@ -44,7 +44,7 @@ public class FileLoader extends LoaderStepRunner {
   public void build() {
     String directory = (String) step.config.get(CONFIG_PATH);
     String prefix = (String) step.config.get(CONFIG_PREFIX);
-    SupportedFormat format = SupportedFormat.valueOf((String) step.config.get(CONFIG_FORMAT));
+    SupportedFormat format = SupportedFormat.valueOf(((String) step.config.get(CONFIG_FORMAT)).toUpperCase());
     String shardStr = (String) step.config.get(CONFIG_SHARD);
 
     super.output = previous.getOutput();
@@ -72,7 +72,7 @@ public class FileLoader extends LoaderStepRunner {
                     .withNumShards(shard));
         break;
       case CSV:
-        boolean isHeader = (Boolean) step.config.get(CONFIG_HEADER);
+        boolean isHeader = true; // (Boolean) step.config.get(CONFIG_HEADER);
         this.output.apply(
             FileIO.<Row>write()
                 .via(new CSVFileSink(isHeader, previous.getSchema().getFieldNames()))
