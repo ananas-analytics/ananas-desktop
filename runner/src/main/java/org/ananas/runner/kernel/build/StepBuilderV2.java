@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.ananas.runner.kernel.ConcatStepRunner;
 import org.ananas.runner.kernel.JoinStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.errors.AnanasException;
@@ -177,14 +178,16 @@ public class StepBuilderV2 {
     }
   }
 
-  public static StepRunner join(Step step, StepRunner one, StepRunner other) {
-    StepRunner joinStepRunner = new JoinStepRunner(step, one, other);
+  public static StepRunner join(Step step, StepRunner one, StepRunner another) {
+    StepRunner joinStepRunner = new JoinStepRunner(step, one, another);
     joinStepRunner.build();
     return joinStepRunner;
   }
 
-  public static StepRunner concat(Step step, StepRunner one, StepRunner other) {
-    return null;
+  public static StepRunner concat(Step step, StepRunner one, StepRunner another) {
+    StepRunner concatStepRunner = new ConcatStepRunner(step, one, another);
+    concatStepRunner.build();
+    return concatStepRunner;
   }
 
   public static StepRunner mlTransformer(
