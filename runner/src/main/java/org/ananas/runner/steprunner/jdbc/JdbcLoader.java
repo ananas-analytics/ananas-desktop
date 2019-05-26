@@ -1,4 +1,4 @@
-package org.ananas.runner.steprunner;
+package org.ananas.runner.steprunner.jdbc;
 
 import avro.shaded.com.google.common.base.Preconditions;
 import java.sql.PreparedStatement;
@@ -7,10 +7,6 @@ import java.util.Optional;
 import org.ananas.runner.kernel.LoaderStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.steprunner.jdbc.JDBCDataType;
-import org.ananas.runner.steprunner.jdbc.JDBCDriver;
-import org.ananas.runner.steprunner.jdbc.JDBCStatement;
-import org.ananas.runner.steprunner.jdbc.JdbcSchemaDetecter;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.Schema.Field;

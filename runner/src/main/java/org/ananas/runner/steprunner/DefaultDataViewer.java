@@ -11,6 +11,7 @@ import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
 import org.ananas.runner.steprunner.files.utils.HomeManager;
 import org.ananas.runner.steprunner.jdbc.JDBCDriver;
+import org.ananas.runner.steprunner.jdbc.JdbcLoader;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
 
 public class DefaultDataViewer extends DataViewerStepRunner {

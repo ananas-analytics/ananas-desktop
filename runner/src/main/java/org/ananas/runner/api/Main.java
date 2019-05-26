@@ -3,7 +3,7 @@ package org.ananas.runner.api;
 import org.ananas.runner.kernel.build.StepBuilderV2;
 import org.ananas.runner.steprunner.files.csv.CSVConnector;
 import org.ananas.runner.steprunner.DefaultDataViewer;
-import org.ananas.runner.steprunner.JdbcLoader;
+import org.ananas.runner.steprunner.jdbc.JdbcLoader;
 import org.ananas.runner.steprunner.JsonConnector;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
 
