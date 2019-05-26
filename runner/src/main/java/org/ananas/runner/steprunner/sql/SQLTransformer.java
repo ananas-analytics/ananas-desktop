@@ -12,6 +12,8 @@ import org.apache.beam.sdk.extensions.sql.SqlTransform;
 
 public class SQLTransformer extends TransformerStepRunner {
 
+  private static final long serialVersionUID = -64482147086202330L;
+
   public static final String CONFIG_SQL = "sql";
 
   public SQLTransformer(Step step, StepRunner previous) {

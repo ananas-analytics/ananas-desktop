@@ -9,6 +9,8 @@ import org.apache.commons.csv.CSVFormat;
 
 public class CSVConnector extends ConnectorStepRunner {
 
+  private static final long serialVersionUID = -6637097842918012864L;
+
   public CSVConnector(Pipeline pipeline, Step step, boolean doSampling, boolean isTest) {
     super(pipeline, step, doSampling, isTest);
   }

@@ -5,6 +5,8 @@ import org.ananas.runner.kernel.model.StepType;
 
 public class LoaderStepRunner extends AbstractStepRunner {
 
+  private static final long serialVersionUID = -1873968600892797483L;
+
   protected transient Step step;
   protected transient StepRunner previous;
   protected boolean isTest;

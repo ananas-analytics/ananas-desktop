@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.ananas.runner.kernel.ConcatStepRunner;
 import org.ananas.runner.kernel.JoinStepRunner;
 import org.ananas.runner.kernel.StepRunner;

@@ -4,7 +4,6 @@ import com.google.common.base.Joiner;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
 import org.ananas.runner.kernel.AbstractStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.StepType;

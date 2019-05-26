@@ -21,6 +21,7 @@ public class JsonConnector extends ConnectorStepRunner {
   private static final Logger LOG = LoggerFactory.getLogger(JsonConnector.class);
 
   public static final String CONFIG_PATH = "path";
+  private static final long serialVersionUID = -8661090069401345444L;
 
   public JsonConnector(Pipeline pipeline, Step step, boolean doSampling, boolean isTest) {
     super(pipeline, step, doSampling, isTest);

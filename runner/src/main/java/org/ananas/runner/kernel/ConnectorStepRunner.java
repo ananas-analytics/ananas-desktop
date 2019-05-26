@@ -6,6 +6,7 @@ import org.apache.beam.sdk.Pipeline;
 
 public class ConnectorStepRunner extends AbstractStepRunner {
 
+  private static final long serialVersionUID = 6428329144693419800L;
   protected transient Pipeline pipeline;
   protected transient Step step;
   protected boolean doSampling;

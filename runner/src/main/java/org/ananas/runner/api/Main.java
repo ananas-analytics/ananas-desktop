@@ -1,10 +1,12 @@
 package org.ananas.runner.api;
 
+import org.ananas.runner.kernel.build.StepBuilder;
 import org.ananas.runner.kernel.build.StepBuilderV2;
-import org.ananas.runner.steprunner.files.csv.CSVConnector;
 import org.ananas.runner.steprunner.DefaultDataViewer;
-import org.ananas.runner.steprunner.jdbc.JdbcLoader;
+import org.ananas.runner.steprunner.files.FileLoader;
 import org.ananas.runner.steprunner.files.JsonConnector;
+import org.ananas.runner.steprunner.files.csv.CSVConnector;
+import org.ananas.runner.steprunner.jdbc.JdbcLoader;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
 
 public class Main {
@@ -28,6 +30,10 @@ public class Main {
 
     StepBuilderV2.register("org.ananas.destination.jdbc.mysql", JdbcLoader.class);
     StepBuilderV2.register("org.ananas.destination.jdbc.postgres", JdbcLoader.class);
+
+    StepBuilderV2.register("org.ananas.destination.file.csv", FileLoader.class);
+    StepBuilderV2.register("org.ananas.destination.file.json", FileLoader.class);
+    StepBuilderV2.register("org.ananas.destination.file.txt", FileLoader.class);
 
     StepBuilderV2.register("org.ananas.visualization.barchart", DefaultDataViewer.class);
     StepBuilderV2.register("org.ananas.visualization.linechart", DefaultDataViewer.class);

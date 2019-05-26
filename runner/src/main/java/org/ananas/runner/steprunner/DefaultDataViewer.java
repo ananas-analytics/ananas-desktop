@@ -16,6 +16,8 @@ import org.ananas.runner.steprunner.sql.SQLTransformer;
 
 public class DefaultDataViewer extends DataViewerStepRunner {
 
+  private static final long serialVersionUID = 4331603846982823797L;
+
   public DefaultDataViewer(Step step, StepRunner previous, boolean isTest) {
     super(step, previous, isTest);
   }
@@ -25,6 +27,7 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       StepRunner sqlQuery = new SQLTransformer(step, previous);
       sqlQuery.build();
     } else {
+      // TODO: accept these configurations from settings
       step.config.put(JdbcLoader.JDBC_OVERWRITE, true);
       step.config.put(JdbcLoader.JDBC_TABLENAME, "table_" + step.id);
       step.config.put(JdbcLoader.JDBC_TYPE, JDBCDriver.DERBY.toString());

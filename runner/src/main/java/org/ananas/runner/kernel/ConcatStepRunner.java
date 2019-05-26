@@ -11,6 +11,8 @@ import org.apache.beam.sdk.values.TupleTag;
 
 public class ConcatStepRunner extends AbstractStepRunner {
 
+  private static final long serialVersionUID = 4839750924289849371L;
+
   public transient Step step;
   public transient StepRunner leftStep;
   public transient StepRunner rightStep;
@@ -23,7 +25,6 @@ public class ConcatStepRunner extends AbstractStepRunner {
     this.step = step;
     this.leftStep = leftStep;
     this.rightStep = rightStep;
-
   }
 
   public void build() {

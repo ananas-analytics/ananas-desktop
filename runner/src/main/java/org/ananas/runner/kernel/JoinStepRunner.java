@@ -1,16 +1,18 @@
 package org.ananas.runner.kernel;
 
 import com.google.common.base.Joiner;
+import java.util.List;
+import java.util.Map;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
 import org.apache.beam.sdk.extensions.sql.SqlTransform;
 import org.apache.beam.sdk.values.PCollectionTuple;
 import org.apache.beam.sdk.values.TupleTag;
 
-import java.util.List;
-import java.util.Map;
+public class JoinStepRunner extends AbstractStepRunner {
 
-public class JoinStepRunner extends AbstractStepRunner{
+  private static final long serialVersionUID = 5288723478526285311L;
+
   public static final String JOIN_LEFT_STEPID = "leftstepid";
   public static final String JOIN_MAP = "joinedcolumnmap";
   public static final String JOIN_TYPE = "jointype";
@@ -66,8 +68,7 @@ public class JoinStepRunner extends AbstractStepRunner{
     }
     Map<String, String> columnsMap = (Map) step.config.get(JOIN_MAP);
     String joinType =
-        (String)
-            step.config.getOrDefault(JOIN_TYPE, JoinStepRunner.JoinType.LEFT_JOIN.name);
+        (String) step.config.getOrDefault(JOIN_TYPE, JoinStepRunner.JoinType.LEFT_JOIN.name);
     List<String> leftColumns = (List) step.config.get(JOIN_LEFT_COLUMNS);
     List<String> rightColumns = (List) step.config.get(JOIN_RIGHT_COLUMNS);
 
