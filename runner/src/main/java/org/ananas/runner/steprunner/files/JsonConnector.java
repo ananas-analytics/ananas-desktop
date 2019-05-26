@@ -1,4 +1,4 @@
-package org.ananas.runner.steprunner;
+package org.ananas.runner.steprunner.files;
 
 import java.io.File;
 import org.ananas.runner.kernel.ConnectorStepRunner;

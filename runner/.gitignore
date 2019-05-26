@@ -8,3 +8,8 @@ derby.log
 /tags
 out/
 derby.log
+cscope.files
+cscope.in.out
+cscope.out
+cscope.po.out
+
