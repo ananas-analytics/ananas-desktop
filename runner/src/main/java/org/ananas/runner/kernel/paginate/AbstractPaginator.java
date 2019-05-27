@@ -1,4 +1,4 @@
-package org.ananas.runner.kernel.common;
+package org.ananas.runner.kernel.paginate;
 
 import org.ananas.runner.kernel.model.Dataframe;
 import org.apache.beam.sdk.schemas.Schema;
@@ -6,7 +6,7 @@ import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public abstract class AbstractPaginator implements Paginator {
-  protected static int DEFAULT_LIMIT = new Integer(100);
+  protected static int DEFAULT_LIMIT = 100;
   protected String id;
   protected Schema schema;
 

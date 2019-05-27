@@ -1,6 +1,8 @@
 package org.ananas.runner.api;
 
 import org.ananas.runner.kernel.build.StepBuilderV2;
+import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.paginator.files.CSVPaginator;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import org.ananas.runner.steprunner.files.FileLoader;
 import org.ananas.runner.steprunner.files.JsonConnector;
@@ -12,6 +14,7 @@ public class Main {
 
   public static void main(String[] args) {
     registerStepRunners();
+    registerPaginators();
 
     if (args.length == 0) {
       RestApiRoutes.initRestApi(args);
@@ -37,5 +40,9 @@ public class Main {
     StepBuilderV2.register("org.ananas.visualization.barchart", DefaultDataViewer.class);
     StepBuilderV2.register("org.ananas.visualization.linechart", DefaultDataViewer.class);
     StepBuilderV2.register("org.ananas.visualization.bignumber", DefaultDataViewer.class);
+  }
+
+  public static void registerPaginators() {
+    PaginatorFactory.register("org.ananas.source.file.csv", CSVPaginator.class);
   }
 }

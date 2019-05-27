@@ -1,4 +1,4 @@
-package org.ananas.runner.model.steps.commons.paginate;
+package org.ananas.runner.paginator.files;
 
 import java.io.*;
 import java.nio.MappedByteBuffer;

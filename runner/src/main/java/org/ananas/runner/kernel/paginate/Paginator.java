@@ -1,4 +1,4 @@
-package org.ananas.runner.kernel.common;
+package org.ananas.runner.kernel.paginate;
 
 import org.ananas.runner.kernel.model.Dataframe;
 import org.apache.beam.sdk.schemas.Schema;

@@ -1,4 +1,4 @@
-package org.ananas.runner.model.core;
+package org.ananas.runner.kernel.paginate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Map;
@@ -9,6 +9,7 @@ import org.ananas.runner.kernel.model.Variable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PaginationBody {
   public String type;
-  public Map<String, Variable> params;
+  public String metadataId;
   public Map<String, Object> config;
+  public Map<String, Variable> params;
 }

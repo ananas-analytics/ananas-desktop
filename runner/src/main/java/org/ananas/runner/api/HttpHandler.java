@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import org.ananas.runner.kernel.common.JsonUtil;
-import org.ananas.runner.kernel.common.Paginator;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.model.Dataframe;
+import org.ananas.runner.kernel.paginate.PaginationBody;
+import org.ananas.runner.kernel.paginate.Paginator;
+import org.ananas.runner.kernel.paginate.PaginatorFactory;
 import org.ananas.runner.model.core.Job;
-import org.ananas.runner.model.core.PaginationBody;
 import org.ananas.runner.model.healthcheck.HealthCheck;
-import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
 import org.ananas.runner.model.steps.commons.run.BeamRunner;
 import org.ananas.runner.model.steps.commons.run.Runner;
 import org.ananas.runner.steprunner.DefaultDataViewer;
@@ -43,9 +43,12 @@ class HttpHandler {
                 ? new PaginationBody()
                 : JsonUtil.fromJson(body, PaginationBody.class);
 
+        /*
         Paginator paginator =
             SourcePaginator.of(
                 id, paginationBody.type, paginationBody.config, paginationBody.params);
+         */
+        Paginator paginator = PaginatorFactory.of(id, paginationBody);
         Dataframe dataframe =
             paginator.paginate(
                 page == null ? 0 : Integer.valueOf(page),
@@ -133,7 +136,8 @@ class HttpHandler {
               ApiResponseBuilder.Of().KO(new NoSuchElementException("stepid not found")).build());
         }
 
-        DefaultDataViewer.DataViewRepository repository = new DefaultDataViewer.DataViewRepository();
+        DefaultDataViewer.DataViewRepository repository =
+            new DefaultDataViewer.DataViewRepository();
         return JsonUtil.toJson(
             ApiResponseBuilder.Of()
                 .OK(repository.query(request.queryParams("sql"), tablename))

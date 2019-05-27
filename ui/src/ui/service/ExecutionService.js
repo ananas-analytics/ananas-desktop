@@ -125,6 +125,7 @@ export default class ExecutionService {
       // TODO: add project id in the url
       url: `${this.getRunnerURL()}/${step.id}/paginate?page=${page}&pagesize=${pageSize}`,
       data: {
+        metadataId: step.metadataId,
         type: step.type,
         config, //this.variableService.injectExpressions(config, variables),
         params: dict,

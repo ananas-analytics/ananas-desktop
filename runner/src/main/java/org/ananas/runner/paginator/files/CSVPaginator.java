@@ -1,16 +1,13 @@
-package org.ananas.runner.steprunner.files.csv;
+package org.ananas.runner.paginator.files;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.ananas.runner.kernel.errors.ErrorHandler;
-import org.ananas.runner.kernel.paginate.Paginator;
+import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.schema.SchemaAutodetect;
 import org.ananas.runner.kernel.schema.StringFieldAutodetect;
-import org.ananas.runner.paginator.files.AbstractFilePaginator;
-import org.ananas.runner.paginator.files.PageProcessor;
 import org.apache.beam.sdk.extensions.sql.impl.schema.BeamTableUtils;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
@@ -18,33 +15,50 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-public class CSVPaginator extends AbstractFilePaginator implements Paginator {
-  CSVStepConfig csvConfig;
+public class CSVPaginator extends AutoDetectedSchemaPaginator {
+  public static final String CONFIG_URL = "path";
+  public static final String CONFIG_HEADER = "header";
+  public static final String CONFIG_DELIMITER = "delimiter";
+  public static final String CONFIG_RECORD_SEPARATOR = "recordSeparator";
 
-  ErrorHandler handler;
-  CSVFormat format;
+  private String url;
+  private boolean hasHeader;
+  private char delimiter;
+  private String recordSeparator;
 
-  public CSVPaginator(String id, CSVStepConfig csvConfig) {
-    super(id, csvConfig.url);
-    this.csvConfig = csvConfig;
-    this.handler = new ErrorHandler();
-    this.format =
-        CSVFormat.DEFAULT
-            .withDelimiter(this.csvConfig.delimiter)
-            .withRecordSeparator(this.csvConfig.recordSeparator);
-    this.schema = autodetect(DEFAULT_LIMIT);
+  private CSVFormat format;
+
+  public CSVPaginator(String id, Map<String, Object> config, Schema schema) {
+    super(id, config, schema);
   }
 
   @Override
-  protected Schema autodetect(Integer pageSize) {
-    List<String> lines = PageProcessor.readFile(this.url, 0, pageSize, (e, i) -> e);
+  public void parseConfig(Map<String, Object> config) {
+    this.url = (String) config.get(CONFIG_URL);
+    this.hasHeader = (Boolean) config.getOrDefault(CONFIG_HEADER, false);
+    this.delimiter =
+        config.containsKey(CONFIG_DELIMITER)
+            ? (char) config.get(CONFIG_DELIMITER)
+            : CSVFormat.DEFAULT.getDelimiter();
+    this.recordSeparator =
+        config.get(CONFIG_RECORD_SEPARATOR) == null
+            ? CSVFormat.DEFAULT.getRecordSeparator()
+            : (String) config.get(CONFIG_RECORD_SEPARATOR);
+
+    this.format =
+        CSVFormat.DEFAULT.withDelimiter(this.delimiter).withRecordSeparator(this.recordSeparator);
+  }
+
+  @Override
+  public Schema autodetect() {
+    List<String> lines = PageProcessor.readFile(this.url, 0, DEFAULT_LIMIT, (e, i) -> e);
     Schema inputschema;
     try {
       Iterator<String> it = lines.iterator();
       Map<Integer, String> headerReversedMap = new HashMap<>();
-      if (this.csvConfig.hasHeader) {
+      if (hasHeader) {
         String header = it.next();
-        CSVParser headerParser = CSVParser.parse(header, this.format);
+        CSVParser headerParser = CSVParser.parse(header, format);
         CSVRecord headerRecord = headerParser.iterator().next();
         for (int i = 0; i < headerRecord.size(); i++) {
           headerReversedMap.put(i, headerRecord.get(i));
@@ -52,8 +66,7 @@ public class CSVPaginator extends AbstractFilePaginator implements Paginator {
       }
       inputschema = withoutHeader(it, this.format, headerReversedMap);
     } catch (Exception e) {
-      throw new RuntimeException(
-          "Can't parse CSV file " + this.csvConfig.url + " :" + e.getMessage());
+      throw new RuntimeException("Can't parse CSV file " + url + " :" + e.getMessage());
     }
     return inputschema;
   }
@@ -85,7 +98,7 @@ public class CSVPaginator extends AbstractFilePaginator implements Paginator {
         page,
         pageSize,
         (e, i) -> {
-          if (page == 0 && this.csvConfig.hasHeader && i == 0) {
+          if (page == 0 && hasHeader && i == 0) {
             return null;
           }
           Iterator<Row> it =

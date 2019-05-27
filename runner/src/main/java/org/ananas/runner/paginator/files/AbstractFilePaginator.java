@@ -1,7 +1,7 @@
-package org.ananas.runner.model.steps.files;
+package org.ananas.runner.paginator.files;
 
-import org.ananas.runner.kernel.common.AbstractPaginator;
 import org.ananas.runner.kernel.errors.ErrorHandler;
+import org.ananas.runner.kernel.paginate.AbstractPaginator;
 import org.apache.beam.sdk.schemas.Schema;
 
 public abstract class AbstractFilePaginator extends AbstractPaginator {
