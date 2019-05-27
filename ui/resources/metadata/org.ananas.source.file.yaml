@@ -2,7 +2,7 @@
 # file type source
 org.ananas.source.file.csv:
   id: org.ananas.source.file.csv
-  name: CSV
+  name: CSV Source
   description: Connect data from a CSV file
   type: Source
   icon: images/csv.svg
@@ -17,7 +17,7 @@ org.ananas.source.file.csv:
 
 #org.ananas.source.file.excel:
 #  id: org.ananas.source.file.excel
-#  name: EXCEL
+#  name: EXCEL Source
 #  description: Connect data from an excel file
 #  type: Source
 #  icon: images/excel.svg
@@ -32,7 +32,7 @@ org.ananas.source.file.csv:
 #
 #org.ananas.source.file.json:
 #  id: org.ananas.source.file.json
-#  name: JSON
+#  name: JSON Source
 #  description: Connect data from a file, with each row as a json string
 #  type: Source
 #  icon: images/json-file.svg
