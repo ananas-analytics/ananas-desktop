@@ -72,10 +72,9 @@ public class FileLoader extends LoaderStepRunner {
                     .withNumShards(shard));
         break;
       case CSV:
-        boolean isHeader = true; // (Boolean) step.config.get(CONFIG_HEADER);
         this.output.apply(
             FileIO.<Row>write()
-                .via(new CSVFileSink(isHeader, previous.getSchema().getFieldNames()))
+                .via(new CSVFileSink(true, previous.getSchema().getFieldNames()))
                 .withNumShards(shard)
                 .to(directory)
                 .withPrefix(prefix)

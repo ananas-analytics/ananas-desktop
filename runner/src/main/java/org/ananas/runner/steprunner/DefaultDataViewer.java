@@ -23,9 +23,12 @@ public class DefaultDataViewer extends DataViewerStepRunner {
   }
 
   public void build() {
+    // DefaultDataViewer is actually a wrapper of SQLTransformer in test mode and a jdbcLoader in run mode
+    // don't forget to copy the delegation state to the wrapper. (output, for example)
     if (isTest) {
       StepRunner sqlQuery = new SQLTransformer(step, previous);
       sqlQuery.build();
+      this.output = sqlQuery.getOutput();
     } else {
       // TODO: accept these configurations from settings
       step.config.put(JdbcLoader.JDBC_OVERWRITE, true);
@@ -37,6 +40,7 @@ public class DefaultDataViewer extends DataViewerStepRunner {
 
       StepRunner jdbcLoader = new JdbcLoader(step, previous, isTest);
       jdbcLoader.build();
+      this.output = jdbcLoader.getOutput();
     }
   }
 
