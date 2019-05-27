@@ -13,7 +13,7 @@ import org.ananas.runner.model.healthcheck.HealthCheck;
 import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
 import org.ananas.runner.model.steps.commons.run.BeamRunner;
 import org.ananas.runner.model.steps.commons.run.Runner;
-import org.ananas.runner.model.steps.dataview.DataViewRepository;
+import org.ananas.runner.steprunner.DefaultDataViewer;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
@@ -133,7 +133,7 @@ class HttpHandler {
               ApiResponseBuilder.Of().KO(new NoSuchElementException("stepid not found")).build());
         }
 
-        DataViewRepository repository = new DataViewRepository();
+        DefaultDataViewer.DataViewRepository repository = new DefaultDataViewer.DataViewRepository();
         return JsonUtil.toJson(
             ApiResponseBuilder.Of()
                 .OK(repository.query(request.queryParams("sql"), tablename))
