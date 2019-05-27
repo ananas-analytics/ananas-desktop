@@ -1,4 +1,4 @@
-package org.ananas.runner.steprunner.files.csv;
+package org.ananas.runner.model.steps.files.csv;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,6 +11,7 @@ import org.ananas.runner.kernel.schema.SchemaAutodetect;
 import org.ananas.runner.kernel.schema.StringFieldAutodetect;
 import org.ananas.runner.paginator.files.AbstractFilePaginator;
 import org.ananas.runner.paginator.files.PageProcessor;
+import org.ananas.runner.steprunner.files.csv.CSVStepConfig;
 import org.apache.beam.sdk.extensions.sql.impl.schema.BeamTableUtils;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;

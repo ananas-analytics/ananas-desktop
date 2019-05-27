@@ -4,7 +4,6 @@ import java.io.Serializable;
 import org.ananas.runner.kernel.AbstractStepRunner;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.steprunner.files.csv.BeamTextCSVCustomTable;
-import org.ananas.runner.steprunner.files.csv.CSVPaginator;
 import org.ananas.runner.steprunner.files.csv.CSVStepConfig;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
