@@ -282,6 +282,14 @@ class DAGEditor extends Component {
           // [ 'Arrow', { location: 1 } ],
         ],
       })
+
+      this.jsPlumbInstance.addEndpoint(node.id, { anchor: 'RightMiddle' }, {
+        endpoint: [ 'Dot', { radius: 5 } ],
+        maxConnections: node.metadata.options.maxOutgoing,
+        connectorStyle: { stroke: CONNECTION_COLOR, strokeWidth: 3 },
+        isSource: true,
+        uniqueEndpoint: true,
+      })
     }
 
     if (['Transform', 'Destination', 'Visualization'].indexOf(node.type) >= 0) {
