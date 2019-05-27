@@ -44,7 +44,8 @@ public class FileLoader extends LoaderStepRunner {
   public void build() {
     String directory = (String) step.config.get(CONFIG_PATH);
     String prefix = (String) step.config.get(CONFIG_PREFIX);
-    SupportedFormat format = SupportedFormat.valueOf(((String) step.config.get(CONFIG_FORMAT)).toUpperCase());
+    SupportedFormat format =
+        SupportedFormat.valueOf(((String) step.config.get(CONFIG_FORMAT)).toUpperCase());
     String shardStr = (String) step.config.get(CONFIG_SHARD);
 
     super.output = previous.getOutput();
