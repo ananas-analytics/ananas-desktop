@@ -17,7 +17,7 @@
     },
     {
       "name": "dob",
-      "type": "DATE",
+      "type": "DATETIME",
       "mode": "NULLABLE"
     },
     {

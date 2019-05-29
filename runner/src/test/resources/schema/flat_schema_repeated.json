@@ -2,23 +2,23 @@
   "fields" : [
     {
       "name": "id",
-      "type": "VARCHAR",
+      "type": "STRING",
       "mode": "NULLABLE"
     },
     {
       "name": "first_name",
-      "type": "VARCHAR",
+      "type": "STRING",
       "mode": "NULLABLE"
     },
     {
       "name": "last_name",
-      "type": "VARCHAR",
+      "type": "STRING",
       "mode": "NULLABLE"
     },
     {
       "name": "dob",
       "type": "DATETIME",
-      "mode": "NULLABLE"
+      "mode": "REPEATED"
     }
   ]
 }

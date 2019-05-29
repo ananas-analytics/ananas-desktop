@@ -12,13 +12,13 @@ import org.apache.commons.lang3.tuple.MutablePair;
 @Data
 public class Dataframe {
   public String id; //     string                            `json:"id"`
-  public org.ananas.runner.kernel.schema.Schema
+  public org.ananas.runner.kernel.schema.SchemaV2
       schema; // map[string]map[string]interface{} `json:"schemas"`
   public List<List<Object>> data; // `json:"data"`
   public String message;
 
   private Dataframe(String id) {
-    this.schema = new org.ananas.runner.kernel.schema.Schema();
+    this.schema = new org.ananas.runner.kernel.schema.SchemaV2();
     this.data = new ArrayList<>();
     this.id = id;
     this.message = null;
@@ -39,7 +39,7 @@ public class Dataframe {
         }
       }
     }
-    o.schema = org.ananas.runner.kernel.schema.Schema.Of(schema);
+    o.schema = org.ananas.runner.kernel.schema.SchemaV2.Of(schema);
     o.message = message;
     return o;
   }
@@ -68,7 +68,7 @@ public class Dataframe {
         }
       }
     }
-    o.schema = org.ananas.runner.kernel.schema.Schema.Of(schema);
+    o.schema = org.ananas.runner.kernel.schema.SchemaV2.Of(schema);
     o.message = message;
     return o;
   }

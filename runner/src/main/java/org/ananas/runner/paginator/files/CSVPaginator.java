@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.schema.SchemaAutodetect;
 import org.ananas.runner.kernel.schema.StringFieldAutodetect;
