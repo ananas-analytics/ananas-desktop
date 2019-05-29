@@ -24,16 +24,18 @@ public class CSVConnector extends ConnectorStepRunner {
             .withDelimiter(config.delimiter)
             .withRecordSeparator(config.recordSeparator);
 
-    // TODO: get schema from step dataframe if exist or if no force auto detection is specified
-    CSVPaginator csvPaginator = new CSVPaginator(stepId, step.config, null);
-    Schema inputschema = csvPaginator.getSchema();
+    Schema schema = step.getBeamSchema();
+    if (schema == null || step.forceAutoDetectSchema()) {
+      CSVPaginator csvPaginator = new CSVPaginator(stepId, step.config, null);
+      schema = csvPaginator.getSchema();
+    }
 
     this.stepId = stepId;
 
     this.output =
         new BeamTextCSVCustomTable(
-                this.errors, inputschema, config.url, format, config.hasHeader, doSampling, isTest)
+                this.errors, schema, config.url, format, config.hasHeader, doSampling, isTest)
             .buildIOReader(pipeline);
-    this.output.setRowSchema(inputschema);
+    this.output.setRowSchema(schema);
   }
 }

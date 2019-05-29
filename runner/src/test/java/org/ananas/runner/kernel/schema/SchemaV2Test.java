@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import org.ananas.runner.kernel.common.JsonUtil;
-import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.Schema.TypeName;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,7 +19,7 @@ public class SchemaV2Test {
     String json =
         new String(Files.readAllBytes(Paths.get(resource.getPath())), StandardCharsets.UTF_8);
 
-    SchemaV2 schema = JsonUtil.fromJson(json, SchemaV2.class);
+    Schema schema = JsonUtil.fromJson(json, Schema.class);
     Assert.assertEquals(4, schema.fields.size());
 
     Assert.assertEquals("id", schema.fields.get(0).name);
@@ -47,7 +46,7 @@ public class SchemaV2Test {
     String json =
         new String(Files.readAllBytes(Paths.get(resource.getPath())), StandardCharsets.UTF_8);
 
-    SchemaV2 schema = JsonUtil.fromJson(json, SchemaV2.class);
+    Schema schema = JsonUtil.fromJson(json, Schema.class);
     Assert.assertEquals(5, schema.fields.size());
 
     Assert.assertEquals("id", schema.fields.get(0).name);
@@ -70,7 +69,7 @@ public class SchemaV2Test {
     Assert.assertEquals("RECORD", schema.fields.get(4).type);
     Assert.assertEquals("REPEATED", schema.fields.get(4).mode);
 
-    List<SchemaFieldV2> nestedFields = schema.fields.get(4).fields;
+    List<SchemaField> nestedFields = schema.fields.get(4).fields;
     Assert.assertEquals(6, nestedFields.size());
     Assert.assertEquals("status", nestedFields.get(0).name);
     Assert.assertEquals("numberOfYears", nestedFields.get(5).name);
@@ -83,9 +82,9 @@ public class SchemaV2Test {
     String json =
         new String(Files.readAllBytes(Paths.get(resource.getPath())), StandardCharsets.UTF_8);
 
-    SchemaV2 ananasSchema = JsonUtil.fromJson(json, SchemaV2.class);
+    Schema ananasSchema = JsonUtil.fromJson(json, Schema.class);
 
-    Schema schema = ananasSchema.toBeamSchema();
+    org.apache.beam.sdk.schemas.Schema schema = ananasSchema.toBeamSchema();
 
     Assert.assertEquals(4, schema.getFieldCount());
     Assert.assertEquals("id", schema.getFields().get(0).getName());
@@ -104,9 +103,9 @@ public class SchemaV2Test {
     String json =
         new String(Files.readAllBytes(Paths.get(resource.getPath())), StandardCharsets.UTF_8);
 
-    SchemaV2 ananasSchema = JsonUtil.fromJson(json, SchemaV2.class);
+    Schema ananasSchema = JsonUtil.fromJson(json, Schema.class);
 
-    Schema schema = ananasSchema.toBeamSchema();
+    org.apache.beam.sdk.schemas.Schema schema = ananasSchema.toBeamSchema();
 
     Assert.assertEquals(4, schema.getFieldCount());
     Assert.assertEquals("id", schema.getFields().get(0).getName());
@@ -125,9 +124,9 @@ public class SchemaV2Test {
     String json =
         new String(Files.readAllBytes(Paths.get(resource.getPath())), StandardCharsets.UTF_8);
 
-    SchemaV2 ananasSchema = JsonUtil.fromJson(json, SchemaV2.class);
+    Schema ananasSchema = JsonUtil.fromJson(json, Schema.class);
 
-    Schema schema = ananasSchema.toBeamSchema();
+    org.apache.beam.sdk.schemas.Schema schema = ananasSchema.toBeamSchema();
 
     Assert.assertEquals(5, schema.getFieldCount());
     Assert.assertEquals("id", schema.getFields().get(0).getName());
@@ -136,12 +135,12 @@ public class SchemaV2Test {
     Assert.assertEquals("dob", schema.getFields().get(3).getName());
     Assert.assertEquals("addresses", schema.getFields().get(4).getName());
 
-    Schema.Field field = schema.getFields().get(4);
+    org.apache.beam.sdk.schemas.Schema.Field field = schema.getFields().get(4);
 
     Assert.assertEquals(false, field.getType().getTypeName().isCollectionType());
     Assert.assertEquals(true, field.getType().getTypeName().isCompositeType());
 
-    Schema rowSchema = field.getType().getRowSchema();
+    org.apache.beam.sdk.schemas.Schema rowSchema = field.getType().getRowSchema();
     Assert.assertEquals("status", rowSchema.getField(0).getName());
     Assert.assertEquals("address", rowSchema.getField(1).getName());
     Assert.assertEquals("city", rowSchema.getField(2).getName());
@@ -157,9 +156,9 @@ public class SchemaV2Test {
     String json =
         new String(Files.readAllBytes(Paths.get(resource.getPath())), StandardCharsets.UTF_8);
 
-    SchemaV2 ananasSchema = JsonUtil.fromJson(json, SchemaV2.class);
+    Schema ananasSchema = JsonUtil.fromJson(json, Schema.class);
 
-    Schema schema = ananasSchema.toBeamSchema();
+    org.apache.beam.sdk.schemas.Schema schema = ananasSchema.toBeamSchema();
 
     Assert.assertEquals(5, schema.getFieldCount());
     Assert.assertEquals("id", schema.getFields().get(0).getName());
@@ -168,15 +167,15 @@ public class SchemaV2Test {
     Assert.assertEquals("dob", schema.getFields().get(3).getName());
     Assert.assertEquals("addresses", schema.getFields().get(4).getName());
 
-    Schema.Field field = schema.getFields().get(4);
+    org.apache.beam.sdk.schemas.Schema.Field field = schema.getFields().get(4);
 
     Assert.assertEquals(true, field.getType().getTypeName().isCollectionType());
     Assert.assertEquals(false, field.getType().getTypeName().isCompositeType());
 
-    Schema.FieldType rowFieldType = field.getType().getCollectionElementType();
+    org.apache.beam.sdk.schemas.Schema.FieldType rowFieldType = field.getType().getCollectionElementType();
     Assert.assertEquals(TypeName.ROW, rowFieldType.getTypeName());
 
-    Schema rowSchema = rowFieldType.getRowSchema();
+    org.apache.beam.sdk.schemas.Schema rowSchema = rowFieldType.getRowSchema();
     Assert.assertEquals("status", rowSchema.getField(0).getName());
     Assert.assertEquals("address", rowSchema.getField(1).getName());
     Assert.assertEquals("city", rowSchema.getField(2).getName());

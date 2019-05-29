@@ -129,6 +129,9 @@ export default class ExecutionService {
         type: step.type,
         config, //this.variableService.injectExpressions(config, variables),
         params: dict,
+        dataframe: {
+          schema: step.dataframe && step.dataframe.schema ? step.dataframe.schema : null,
+        }
       }
     })
     .then(res=>{
@@ -152,6 +155,9 @@ export default class ExecutionService {
         type: step.type,
         metadataId: step.metadataId,
         config,
+        dataframe: {
+          schema: step.dataframe && step.dataframe.schema ? step.dataframe.schema : null,
+        }
       })
     }
     return axios({
@@ -192,6 +198,9 @@ export default class ExecutionService {
         type: step.type,
         metadataId: step.metadataId,
         config: config,
+        dataframe: {
+          schema: step.dataframe && step.dataframe.schema ? step.dataframe.schema : null,
+        }
       })
     }
 

@@ -16,11 +16,26 @@ public class Schema implements Serializable {
     if (schema == null) {
       return s;
     }
-    int i = 1;
     for (org.apache.beam.sdk.schemas.Schema.Field f : schema.getFields()) {
-      s.fields.add(SchemaField.Of(i, f.getName(), f.getType()));
-      i++;
+      s.fields.add(SchemaField.Of(f.getName(), f.getType()));
     }
     return s;
+  }
+
+
+  public static org.apache.beam.sdk.schemas.Schema fieldsToBeamSchema(List<SchemaField> fields) {
+    if (fields == null) {
+      throw new IllegalArgumentException();
+    }
+     org.apache.beam.sdk.schemas.Schema.Builder builder =
+        org.apache.beam.sdk.schemas.Schema.builder();
+    for (SchemaField field : fields) {
+      builder.addField(field.toBeamField());
+    }
+    return builder.build();
+  }
+
+  public org.apache.beam.sdk.schemas.Schema toBeamSchema() {
+    return fieldsToBeamSchema(fields);
   }
 }

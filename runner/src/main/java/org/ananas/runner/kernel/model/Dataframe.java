@@ -1,5 +1,8 @@
 package org.ananas.runner.kernel.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -10,15 +13,19 @@ import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class Dataframe {
   public String id; //     string                            `json:"id"`
-  public org.ananas.runner.kernel.schema.SchemaV2
+  public org.ananas.runner.kernel.schema.Schema
       schema; // map[string]map[string]interface{} `json:"schemas"`
   public List<List<Object>> data; // `json:"data"`
   public String message;
 
+  public Dataframe() {}
+
   private Dataframe(String id) {
-    this.schema = new org.ananas.runner.kernel.schema.SchemaV2();
+    this.schema = new org.ananas.runner.kernel.schema.Schema();
     this.data = new ArrayList<>();
     this.id = id;
     this.message = null;
@@ -39,7 +46,7 @@ public class Dataframe {
         }
       }
     }
-    o.schema = org.ananas.runner.kernel.schema.SchemaV2.Of(schema);
+    o.schema = org.ananas.runner.kernel.schema.Schema.Of(schema);
     o.message = message;
     return o;
   }
@@ -68,7 +75,7 @@ public class Dataframe {
         }
       }
     }
-    o.schema = org.ananas.runner.kernel.schema.SchemaV2.Of(schema);
+    o.schema = org.ananas.runner.kernel.schema.Schema.Of(schema);
     o.message = message;
     return o;
   }
