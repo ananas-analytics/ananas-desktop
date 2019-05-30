@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.pipeline.Pipeline;
-import org.ananas.runner.model.core.StepConfig;
+import org.ananas.runner.model.api.model.StepConfig;
 
 public class MockPipelineApiClient {
 

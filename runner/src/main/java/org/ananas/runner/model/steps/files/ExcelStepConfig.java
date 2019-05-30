@@ -1,7 +1,7 @@
 package org.ananas.runner.model.steps.files;
 
 import java.util.Map;
-import org.ananas.runner.model.core.StepConfig;
+import org.ananas.runner.model.api.model.StepConfig;
 
 public class ExcelStepConfig {
 

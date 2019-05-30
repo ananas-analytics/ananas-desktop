@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.misc.MutableQuadruple;
-import org.ananas.runner.model.core.StepConfig;
+import org.ananas.runner.model.api.model.StepConfig;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
 import org.ananas.runner.model.steps.ml.regression.common.RegressionLinearHook;
 import org.apache.beam.sdk.Pipeline;

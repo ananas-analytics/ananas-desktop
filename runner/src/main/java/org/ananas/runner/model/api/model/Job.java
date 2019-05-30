@@ -1,4 +1,4 @@
-package org.ananas.runner.model.core;
+package org.ananas.runner.model.api.model;
 
 import java.io.IOException;
 import java.util.Set;

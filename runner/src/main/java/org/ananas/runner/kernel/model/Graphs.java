@@ -11,7 +11,7 @@ import com.google.common.graph.Graph;
 import java.util.*;
 
 /** Graph algorithms */
-public class Graphs<N> {
+public class Graphs {
 
   public static <N> Set<N> topologicallySortedNodes(Graph<N> graph) {
     return new TopologicallySortedNodes<>(graph);

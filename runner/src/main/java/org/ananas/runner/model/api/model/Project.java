@@ -1,4 +1,4 @@
-package org.ananas.runner.model.core;
+package org.ananas.runner.model.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashSet;

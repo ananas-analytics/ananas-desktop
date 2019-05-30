@@ -1,4 +1,4 @@
-package org.ananas.runner.model.core;
+package org.ananas.runner.model.api.model;
 
 public class StepConfig {
   public static final String SHARD = "shard";

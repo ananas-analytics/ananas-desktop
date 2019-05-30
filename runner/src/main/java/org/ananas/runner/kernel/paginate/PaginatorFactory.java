@@ -54,7 +54,7 @@ public class PaginatorFactory implements Paginator {
       boolean forceSchemaAutodetect =
         (Boolean)this.config.getOrDefault(Step.FORCE_AUTODETECT_SCHEMA, false);
       Schema schema = null;
-      if (!forceSchemaAutodetect || (dataframe != null && dataframe.schema != null)) {
+      if (!forceSchemaAutodetect && (dataframe != null && dataframe.schema != null)) {
         schema = dataframe.schema.toBeamSchema();
       }
       return ctor.newInstance(this.id, this.config, schema);

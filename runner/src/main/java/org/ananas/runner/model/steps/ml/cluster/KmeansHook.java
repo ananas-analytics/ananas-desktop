@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.model.core.StepConfig;
+import org.ananas.runner.model.api.model.StepConfig;
 import org.ananas.runner.model.steps.ml.MLHookTemplate;
 import org.ananas.runner.model.steps.ml.MLModelTrainer;
 import org.apache.beam.repackaged.beam_sdks_java_core.org.apache.commons.lang3.tuple.MutableTriple;

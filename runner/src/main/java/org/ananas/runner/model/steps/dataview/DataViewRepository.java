@@ -5,7 +5,7 @@ import java.util.Map;
 import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.paginate.Paginator;
-import org.ananas.runner.model.core.StepConfig;
+import org.ananas.runner.model.api.model.StepConfig;
 import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
 import org.ananas.runner.steprunner.files.utils.HomeManager;
 import org.ananas.runner.steprunner.jdbc.JDBCDriver;

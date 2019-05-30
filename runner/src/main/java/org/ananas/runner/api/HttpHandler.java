@@ -9,7 +9,7 @@ import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.paginate.PaginationBody;
 import org.ananas.runner.kernel.paginate.Paginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.model.core.Job;
+import org.ananas.runner.model.api.model.Job;
 import org.ananas.runner.model.healthcheck.HealthCheck;
 import org.ananas.runner.model.steps.commons.run.BeamRunner;
 import org.ananas.runner.model.steps.commons.run.Runner;

@@ -7,7 +7,7 @@ import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.model.Variable;
 import org.ananas.runner.kernel.paginate.Paginator;
-import org.ananas.runner.model.core.StepConfig;
+import org.ananas.runner.model.api.model.StepConfig;
 import org.ananas.runner.model.steps.api.APIPaginator;
 import org.ananas.runner.model.steps.api.APIStepConfig;
 import org.ananas.runner.model.steps.db.JdbcPaginator;
