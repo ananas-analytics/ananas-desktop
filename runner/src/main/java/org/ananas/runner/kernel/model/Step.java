@@ -47,6 +47,7 @@ public class Step implements DeepComparable {
 
   /**
    * Get the output schema, or null if not defined
+   *
    * @return
    */
   public Schema getBeamSchema() {

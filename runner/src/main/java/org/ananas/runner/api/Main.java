@@ -1,11 +1,9 @@
 package org.ananas.runner.api;
 
-import org.ananas.runner.kernel.build.StepBuilderV2;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.kernel.ExtensionRegistry;
 import org.ananas.runner.paginator.files.CSVPaginator;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import org.ananas.runner.steprunner.files.FileLoader;
-import org.ananas.runner.steprunner.files.JsonConnector;
 import org.ananas.runner.steprunner.files.csv.CSVConnector;
 import org.ananas.runner.steprunner.jdbc.JdbcLoader;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
@@ -13,8 +11,7 @@ import org.ananas.runner.steprunner.sql.SQLTransformer;
 public class Main {
 
   public static void main(String[] args) {
-    registerStepRunners();
-    registerPaginators();
+    registerExtensions();
 
     if (args.length == 0) {
       RestApiRoutes.initRestApi(args);
@@ -23,26 +20,46 @@ public class Main {
     }
   }
 
+  public static void registerExtensions() {
+    ExtensionRegistry.registerConnector(
+        "org.ananas.source.file.csv", CSVConnector.class, CSVPaginator.class);
+
+    ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
+
+    ExtensionRegistry.registerLoader("org.ananas.destination.jdbc.mysql", JdbcLoader.class, null);
+    ExtensionRegistry.registerLoader(
+        "org.ananas.destination.jdbc.postgres", JdbcLoader.class, null);
+
+    ExtensionRegistry.registerLoader(
+        "org.ananas.destination.file.csv", FileLoader.class, CSVPaginator.class);
+
+    ExtensionRegistry.registerViewer("org.ananas.visualization.barchart", DefaultDataViewer.class);
+    ExtensionRegistry.registerViewer("org.ananas.visualization.linechart", DefaultDataViewer.class);
+    ExtensionRegistry.registerViewer("org.ananas.visualization.bignumber", DefaultDataViewer.class);
+  }
+
+  /*
   public static void registerStepRunners() {
     // register step runners
-    StepBuilderV2.register("org.ananas.source.file.csv", CSVConnector.class);
-    StepBuilderV2.register("org.ananas.source.file.json", JsonConnector.class);
+    StepBuilder.register("org.ananas.source.file.csv", CSVConnector.class);
+    StepBuilder.register("org.ananas.source.file.json", JsonConnector.class);
 
-    StepBuilderV2.register("org.ananas.transform.sql", SQLTransformer.class);
+    StepBuilder.register("org.ananas.transform.sql", SQLTransformer.class);
 
-    StepBuilderV2.register("org.ananas.destination.jdbc.mysql", JdbcLoader.class);
-    StepBuilderV2.register("org.ananas.destination.jdbc.postgres", JdbcLoader.class);
+    StepBuilder.register("org.ananas.destination.jdbc.mysql", JdbcLoader.class);
+    StepBuilder.register("org.ananas.destination.jdbc.postgres", JdbcLoader.class);
 
-    StepBuilderV2.register("org.ananas.destination.file.csv", FileLoader.class);
-    StepBuilderV2.register("org.ananas.destination.file.json", FileLoader.class);
-    StepBuilderV2.register("org.ananas.destination.file.txt", FileLoader.class);
+    StepBuilder.register("org.ananas.destination.file.csv", FileLoader.class);
+    StepBuilder.register("org.ananas.destination.file.json", FileLoader.class);
+    StepBuilder.register("org.ananas.destination.file.txt", FileLoader.class);
 
-    StepBuilderV2.register("org.ananas.visualization.barchart", DefaultDataViewer.class);
-    StepBuilderV2.register("org.ananas.visualization.linechart", DefaultDataViewer.class);
-    StepBuilderV2.register("org.ananas.visualization.bignumber", DefaultDataViewer.class);
+    StepBuilder.register("org.ananas.visualization.barchart", DefaultDataViewer.class);
+    StepBuilder.register("org.ananas.visualization.linechart", DefaultDataViewer.class);
+    StepBuilder.register("org.ananas.visualization.bignumber", DefaultDataViewer.class);
   }
 
   public static void registerPaginators() {
     PaginatorFactory.register("org.ananas.source.file.csv", CSVPaginator.class);
   }
+   */
 }

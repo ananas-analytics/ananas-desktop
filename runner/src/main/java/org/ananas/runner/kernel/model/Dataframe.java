@@ -46,7 +46,7 @@ public class Dataframe {
         }
       }
     }
-    o.schema = org.ananas.runner.kernel.schema.Schema.Of(schema);
+    o.schema = org.ananas.runner.kernel.schema.Schema.of(schema);
     o.message = message;
     return o;
   }
@@ -75,7 +75,7 @@ public class Dataframe {
         }
       }
     }
-    o.schema = org.ananas.runner.kernel.schema.Schema.Of(schema);
+    o.schema = org.ananas.runner.kernel.schema.Schema.of(schema);
     o.message = message;
     return o;
   }

@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.schema.SchemaAutodetect;
 import org.ananas.runner.kernel.schema.StringFieldAutodetect;
+import org.ananas.runner.steprunner.files.csv.CSVStepConfig;
 import org.apache.beam.sdk.extensions.sql.impl.schema.BeamTableUtils;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
@@ -16,47 +18,30 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class CSVPaginator extends AutoDetectedSchemaPaginator {
-  public static final String CONFIG_URL = "path";
-  public static final String CONFIG_HEADER = "header";
-  public static final String CONFIG_DELIMITER = "delimiter";
-  public static final String CONFIG_RECORD_SEPARATOR = "recordSeparator";
-
-  private String url;
-  private boolean hasHeader;
-  private char delimiter;
-  private String recordSeparator;
-
+  private CSVStepConfig csvStepConfig;
   private CSVFormat format;
 
-  public CSVPaginator(String id, Map<String, Object> config, Schema schema) {
-    super(id, config, schema);
+  public CSVPaginator(String id, String type, Map<String, Object> config, Schema schema) {
+    super(id, type, config, schema);
   }
 
   @Override
   public void parseConfig(Map<String, Object> config) {
-    this.url = (String) config.get(CONFIG_URL);
-    this.hasHeader = (Boolean) config.getOrDefault(CONFIG_HEADER, false);
-    this.delimiter =
-        config.containsKey(CONFIG_DELIMITER)
-            ? (char) config.get(CONFIG_DELIMITER)
-            : CSVFormat.DEFAULT.getDelimiter();
-    this.recordSeparator =
-        config.get(CONFIG_RECORD_SEPARATOR) == null
-            ? CSVFormat.DEFAULT.getRecordSeparator()
-            : (String) config.get(CONFIG_RECORD_SEPARATOR);
-
+    csvStepConfig = new CSVStepConfig(StepType.from(type), config);
     this.format =
-        CSVFormat.DEFAULT.withDelimiter(this.delimiter).withRecordSeparator(this.recordSeparator);
+        CSVFormat.DEFAULT
+            .withDelimiter(csvStepConfig.delimiter)
+            .withRecordSeparator(csvStepConfig.recordSeparator);
   }
 
   @Override
   public Schema autodetect() {
-    List<String> lines = PageProcessor.readFile(this.url, 0, DEFAULT_LIMIT, (e, i) -> e);
+    List<String> lines = PageProcessor.readFile(csvStepConfig.url, 0, DEFAULT_LIMIT, (e, i) -> e);
     Schema inputschema;
     try {
       Iterator<String> it = lines.iterator();
       Map<Integer, String> headerReversedMap = new HashMap<>();
-      if (hasHeader) {
+      if (csvStepConfig.hasHeader) {
         String header = it.next();
         CSVParser headerParser = CSVParser.parse(header, format);
         CSVRecord headerRecord = headerParser.iterator().next();
@@ -66,7 +51,8 @@ public class CSVPaginator extends AutoDetectedSchemaPaginator {
       }
       inputschema = withoutHeader(it, this.format, headerReversedMap);
     } catch (Exception e) {
-      throw new RuntimeException("Can't parse CSV file " + url + " :" + e.getMessage());
+      throw new RuntimeException(
+          "Can't parse CSV file " + csvStepConfig.url + " :" + e.getMessage());
     }
     return inputschema;
   }
@@ -94,11 +80,11 @@ public class CSVPaginator extends AutoDetectedSchemaPaginator {
   @Override
   public Iterable<Row> iterateRows(Integer page, Integer pageSize) {
     return PageProcessor.readFile(
-        this.url,
+        csvStepConfig.url,
         page,
         pageSize,
         (e, i) -> {
-          if (page == 0 && hasHeader && i == 0) {
+          if (page == 0 && csvStepConfig.hasHeader && i == 0) {
             return null;
           }
           Iterator<Row> it =

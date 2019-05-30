@@ -20,21 +20,20 @@ public class SchemaField implements Serializable {
   public List<SchemaField> fields; // only available for RECORD type
 
   /**
-   *
-   *
    * @param fieldName the name of the field
    * @param type, the type of the field. Supports all beam field types
    * @return
    */
-  public static SchemaField Of(String fieldName, org.apache.beam.sdk.schemas.Schema.FieldType type) {
+  public static SchemaField Of(
+      String fieldName, org.apache.beam.sdk.schemas.Schema.FieldType type) {
     SchemaField o = new SchemaField();
     o.name = fieldName;
     if (type.getTypeName().isCompositeType()) {
       o.type = "RECORD";
-      o.fields = Schema.Of(type.getRowSchema()).fields;
-    } else if (type.getTypeName().isCollectionType()){
+      o.fields = Schema.of(type.getRowSchema()).fields;
+    } else if (type.getTypeName().isCollectionType()) {
       o.mode = "REPEATED";
-      o.fields = Schema.Of(type.getCollectionElementType().getRowSchema()).fields;
+      o.fields = Schema.of(type.getCollectionElementType().getRowSchema()).fields;
       if (type.getCollectionElementType().getTypeName().isCompositeType()) {
         o.type = "RECORD";
       } else {
@@ -52,7 +51,6 @@ public class SchemaField implements Serializable {
     return CalciteUtils.toSqlTypeName(type).getName();
   }
 
-
   public org.apache.beam.sdk.schemas.Schema.Field toBeamField() {
     String beamType = type;
 
@@ -64,23 +62,32 @@ public class SchemaField implements Serializable {
     }
 
     try {
-      org.apache.beam.sdk.schemas.Schema.TypeName typeName = org.apache.beam.sdk.schemas.Schema.TypeName.valueOf(beamType);
+      org.apache.beam.sdk.schemas.Schema.TypeName typeName =
+          org.apache.beam.sdk.schemas.Schema.TypeName.valueOf(beamType);
       if (mode != null && mode.equals("REPEATED")) {
-        return org.apache.beam.sdk.schemas.Schema.Field.of(name, org.apache.beam.sdk.schemas.Schema.FieldType.array(
-          org.apache.beam.sdk.schemas.Schema.FieldType.of(typeName)));
+        return org.apache.beam.sdk.schemas.Schema.Field.of(
+            name,
+            org.apache.beam.sdk.schemas.Schema.FieldType.array(
+                org.apache.beam.sdk.schemas.Schema.FieldType.of(typeName)));
       } else {
-        return org.apache.beam.sdk.schemas.Schema.Field.of(name, org.apache.beam.sdk.schemas.Schema.FieldType.of(typeName))
-          .withNullable(mode == null || mode.equals("NULLABLE"));
+        return org.apache.beam.sdk.schemas.Schema.Field.of(
+                name, org.apache.beam.sdk.schemas.Schema.FieldType.of(typeName))
+            .withNullable(mode == null || mode.equals("NULLABLE"));
       }
-    } catch ( IllegalArgumentException e ) {
+    } catch (IllegalArgumentException e) {
       if (type.equals("RECORD")) {
         if (mode != null && mode.equals("REPEATED")) {
-          return org.apache.beam.sdk.schemas.Schema.Field.of(name, org.apache.beam.sdk.schemas.Schema.FieldType.array(
-            org.apache.beam.sdk.schemas.Schema.FieldType.row(Schema.fieldsToBeamSchema(fields))));
+          return org.apache.beam.sdk.schemas.Schema.Field.of(
+              name,
+              org.apache.beam.sdk.schemas.Schema.FieldType.array(
+                  org.apache.beam.sdk.schemas.Schema.FieldType.row(
+                      Schema.fieldsToBeamSchema(fields))));
         } else {
-          return org.apache.beam.sdk.schemas.Schema.Field.of(name, org.apache.beam.sdk.schemas.Schema.FieldType.row(
-            Schema.fieldsToBeamSchema(fields)))
-            .withNullable(mode == null || mode.equals("NULLABLE"));
+          return org.apache.beam.sdk.schemas.Schema.Field.of(
+                  name,
+                  org.apache.beam.sdk.schemas.Schema.FieldType.row(
+                      Schema.fieldsToBeamSchema(fields)))
+              .withNullable(mode == null || mode.equals("NULLABLE"));
         }
       }
       throw new IllegalArgumentException(e);

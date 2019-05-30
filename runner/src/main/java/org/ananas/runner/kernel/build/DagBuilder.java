@@ -99,16 +99,16 @@ public class DagBuilder implements Builder {
           if (contexts.empty()) {
             PipelineContext ctxt =
                 PipelineContext.of(
-                    new NoHook(), StepBuilderV2.createPipelineRunner(this.isTest, this.engine));
+                    new NoHook(), StepBuilder.createPipelineRunner(this.isTest, this.engine));
             contexts.push(ctxt);
           }
-          stepRunner = StepBuilderV2.connector(step, contexts.peek(), this.isTest, this.isTest);
+          stepRunner = StepBuilder.connector(step, contexts.peek(), this.isTest, this.isTest);
           stepRunnerMap.put(step.id, stepRunner);
           break;
         case 1:
           // if one predecessor
           stepRunner =
-              StepBuilderV2.append(
+              StepBuilder.append(
                   step, stepRunnerMap.get(predecessors.iterator().next().id), this.isTest);
           break;
         case 2:
@@ -117,12 +117,12 @@ public class DagBuilder implements Builder {
             Iterator<Step> it = predecessors.iterator();
             StepRunner one = stepRunnerMap.get(it.next().id);
             StepRunner other = stepRunnerMap.get(it.next().id);
-            stepRunner = StepBuilderV2.join(step, one, other);
+            stepRunner = StepBuilder.join(step, one, other);
           } else if (step.config.get("subtype").equals("concat")) {
             Iterator<Step> it = predecessors.iterator();
             StepRunner one = stepRunnerMap.get(it.next().id);
             StepRunner other = stepRunnerMap.get(it.next().id);
-            stepRunner = StepBuilderV2.concat(step, one, other);
+            stepRunner = StepBuilder.concat(step, one, other);
           } else if (step.config.get("subtype").equals("ml")) {
             stepRunner = mlStep(stepRunnerMap, contexts, step, predecessors);
           } else {
@@ -173,7 +173,7 @@ public class DagBuilder implements Builder {
       }
       // start a new context here for ML batching
       PipelineContext mlCtxt =
-          PipelineContext.of(null, StepBuilderV2.createPipelineRunner(this.isTest, this.engine));
+          PipelineContext.of(null, StepBuilder.createPipelineRunner(this.isTest, this.engine));
       contexts.push(mlCtxt);
     }
     StepRunner previous = null;
@@ -183,7 +183,7 @@ public class DagBuilder implements Builder {
       }
     }
     stepRunner =
-        StepBuilderV2.mlTransformer(mlstep, contexts.peek(), previous, this.isTest, mlSources);
+        StepBuilder.mlTransformer(mlstep, contexts.peek(), previous, this.isTest, mlSources);
     return stepRunner;
     */
   }
@@ -212,7 +212,7 @@ public class DagBuilder implements Builder {
 
     if (cachedPredecessors == null || !Step.deepEquals(cachedPredecessors, predecessors)) {
       // if no cache or predecessors has changed (comparing them to cached predecessors )
-      StepBuilderV2.append(step, stepRunner, false);
+      StepBuilder.append(step, stepRunner, false);
       stepsCache.put(stepId, predecessors); // cache it for next execution
     }
     return MutablePair.of(step, stepRunner.getSchema());

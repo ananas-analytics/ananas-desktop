@@ -172,7 +172,8 @@ public class SchemaV2Test {
     Assert.assertEquals(true, field.getType().getTypeName().isCollectionType());
     Assert.assertEquals(false, field.getType().getTypeName().isCompositeType());
 
-    org.apache.beam.sdk.schemas.Schema.FieldType rowFieldType = field.getType().getCollectionElementType();
+    org.apache.beam.sdk.schemas.Schema.FieldType rowFieldType =
+        field.getType().getCollectionElementType();
     Assert.assertEquals(TypeName.ROW, rowFieldType.getTypeName());
 
     org.apache.beam.sdk.schemas.Schema rowSchema = rowFieldType.getRowSchema();

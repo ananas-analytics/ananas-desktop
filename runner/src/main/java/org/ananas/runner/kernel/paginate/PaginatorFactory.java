@@ -20,6 +20,7 @@ public class PaginatorFactory implements Paginator {
 
   String id;
   String metadataId;
+  String type;
   Map<String, Object> config;
   Dataframe dataframe;
 
@@ -29,10 +30,21 @@ public class PaginatorFactory implements Paginator {
   }
 
   private PaginatorFactory(String id, PaginationBody body) {
+    this(
+        id,
+        body.metadataId,
+        body.type,
+        VariableRender.renderConfig(body.params, body.config),
+        body.dataframe);
+  }
+
+  private PaginatorFactory(
+      String id, String metadataId, String type, Map<String, Object> config, Dataframe dataframe) {
     this.id = id;
-    this.metadataId = body.metadataId;
-    this.config = VariableRender.renderConfig(body.params, body.config);
-    this.dataframe = body.dataframe;
+    this.type = type;
+    this.metadataId = metadataId;
+    this.config = config;
+    this.dataframe = dataframe;
   }
 
   public static PaginatorFactory of(String id, PaginationBody body) {
@@ -40,7 +52,21 @@ public class PaginatorFactory implements Paginator {
     return new PaginatorFactory(id, body);
   }
 
-  public Paginator buildPaginator() {
+  public static PaginatorFactory of(
+      String id, String metadataId, String type, Map<String, Object> config, Dataframe dataframe) {
+    Preconditions.checkNotNull(config, "config cannot be null");
+    return new PaginatorFactory(id, metadataId, type, config, dataframe);
+  }
+
+  public static PaginatorFactory of(
+      String id, String metadataId, String type, Map<String, Object> config, Schema schema) {
+    Preconditions.checkNotNull(config, "config cannot be null");
+    Dataframe dataframe = new Dataframe();
+    dataframe.schema = org.ananas.runner.kernel.schema.Schema.of(schema);
+    return new PaginatorFactory(id, metadataId, type, config, dataframe);
+  }
+
+  public AutoDetectedSchemaPaginator buildPaginator() {
     if (!REGISTRY.containsKey(this.metadataId)) {
       throw new IllegalStateException("Unsupported source type '" + this.metadataId + "'");
     }
@@ -48,16 +74,16 @@ public class PaginatorFactory implements Paginator {
 
     try {
       Constructor<? extends AutoDetectedSchemaPaginator> ctor =
-          clazz.getDeclaredConstructor(String.class, Map.class, Schema.class);
+          clazz.getDeclaredConstructor(String.class, String.class, Map.class, Schema.class);
       ctor.setAccessible(true);
       // get the schema here if user choose to use the schema from dataframe
       boolean forceSchemaAutodetect =
-        (Boolean)this.config.getOrDefault(Step.FORCE_AUTODETECT_SCHEMA, false);
+          (Boolean) this.config.getOrDefault(Step.FORCE_AUTODETECT_SCHEMA, false);
       Schema schema = null;
-      if (!forceSchemaAutodetect || (dataframe != null && dataframe.schema != null)) {
+      if (!forceSchemaAutodetect && (dataframe != null && dataframe.schema != null)) {
         schema = dataframe.schema.toBeamSchema();
       }
-      return ctor.newInstance(this.id, this.config, schema);
+      return ctor.newInstance(this.id, this.type, this.config, schema);
     } catch (InstantiationException
         | NoSuchMethodException
         | IllegalAccessException

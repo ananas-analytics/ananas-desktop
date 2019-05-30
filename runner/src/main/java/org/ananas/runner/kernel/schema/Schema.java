@@ -10,7 +10,7 @@ public class Schema implements Serializable {
 
   public List<SchemaField> fields;
 
-  public static Schema Of(org.apache.beam.sdk.schemas.Schema schema) {
+  public static Schema of(org.apache.beam.sdk.schemas.Schema schema) {
     Schema s = new Schema();
     s.fields = new ArrayList<>();
     if (schema == null) {
@@ -22,12 +22,11 @@ public class Schema implements Serializable {
     return s;
   }
 
-
   public static org.apache.beam.sdk.schemas.Schema fieldsToBeamSchema(List<SchemaField> fields) {
     if (fields == null) {
       throw new IllegalArgumentException();
     }
-     org.apache.beam.sdk.schemas.Schema.Builder builder =
+    org.apache.beam.sdk.schemas.Schema.Builder builder =
         org.apache.beam.sdk.schemas.Schema.builder();
     for (SchemaField field : fields) {
       builder.addField(field.toBeamField());

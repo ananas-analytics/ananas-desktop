@@ -71,7 +71,7 @@ public class PageProcessor {
 
       long endT = System.currentTimeMillis();
       long tot = endT - startT;
-      LOG.debug(String.format("No Of Message %s , Time(ms) %s ", counter, tot));
+      LOG.debug(String.format("No of Message %s , Time(ms) %s ", counter, tot));
       return linkedList;
     } catch (IOException e) {
       throw new AnanasException(
