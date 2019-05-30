@@ -28,6 +28,9 @@ public class FileLoader extends LoaderStepRunner {
   public static final String CONFIG_FORMAT = "format";
   public static final String CONFIG_SHARD = "shard";
 
+  // config specific for CSV
+  public static final String CONFIG_HEADER = "header";
+
   public enum SupportedFormat {
     JSON,
     CSV,

@@ -12,7 +12,7 @@ import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.pipeline.PipelineContext;
 import org.ananas.runner.kernel.pipeline.PipelineHook;
-import org.ananas.runner.model.api.model.StepConfig;
+import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.ml.classifier.*;
 import org.ananas.runner.model.steps.ml.cluster.*;
 import org.ananas.runner.model.steps.ml.featureselection.GAFeatureSelectionHook;

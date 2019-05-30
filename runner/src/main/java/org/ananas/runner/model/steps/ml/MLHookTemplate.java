@@ -8,7 +8,7 @@ import org.ananas.runner.kernel.AbstractStepRunner;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.pipeline.PipelineHook;
 import org.ananas.runner.misc.SerializationUtils;
-import org.ananas.runner.model.api.model.StepConfig;
+import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.files.FileLoader;
 import org.ananas.runner.model.steps.ml.ft.*;
 import org.ananas.runner.steprunner.files.utils.HomeManager;

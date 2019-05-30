@@ -8,7 +8,7 @@ import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.misc.SerializationUtils;
-import org.ananas.runner.model.api.model.StepConfig;
+import org.ananas.runner.model.core.StepConfig;
 import org.apache.beam.sdk.coders.CannotProvideCoderException;
 import org.apache.beam.sdk.coders.Coder;
 import org.apache.beam.sdk.coders.CoderRegistry;
