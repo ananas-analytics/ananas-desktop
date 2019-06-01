@@ -36,7 +36,7 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       step.config.put(JdbcStepConfig.JDBC_OVERWRITE, true);
       step.config.put(JdbcStepConfig.JDBC_TABLENAME, "table_" + step.id);
       step.config.put(JdbcStepConfig.JDBC_TYPE, JDBCDriver.DERBY.toString());
-      step.config.put(JdbcStepConfig.JDBC_URL, DataViewRepository.URL(true));
+      step.config.put(JdbcStepConfig.JDBC_URL, DataViewRepository.URL(false));
       step.config.put(JdbcStepConfig.JDBC_USER, null);
       step.config.put(JdbcStepConfig.JDBC_PASSWORD, null);
 
