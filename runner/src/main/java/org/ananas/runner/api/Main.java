@@ -2,6 +2,7 @@ package org.ananas.runner.api;
 
 import org.ananas.runner.kernel.ExtensionRegistry;
 import org.ananas.runner.paginator.files.CSVPaginator;
+import org.ananas.runner.paginator.files.JdbcPaginator;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import org.ananas.runner.steprunner.files.FileLoader;
 import org.ananas.runner.steprunner.files.csv.CSVConnector;
@@ -26,12 +27,12 @@ public class Main {
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
 
-    ExtensionRegistry.registerLoader("org.ananas.destination.jdbc.mysql", JdbcLoader.class, null);
-    ExtensionRegistry.registerLoader(
-        "org.ananas.destination.jdbc.postgres", JdbcLoader.class, null);
-
     ExtensionRegistry.registerLoader(
         "org.ananas.destination.file.csv", FileLoader.class, CSVPaginator.class);
+    ExtensionRegistry.registerLoader(
+        "org.ananas.destination.jdbc.mysql", JdbcLoader.class, JdbcPaginator.class);
+    ExtensionRegistry.registerLoader(
+        "org.ananas.destination.jdbc.postgres", JdbcLoader.class, JdbcPaginator.class);
 
     ExtensionRegistry.registerViewer("org.ananas.visualization.barchart", DefaultDataViewer.class);
     ExtensionRegistry.registerViewer("org.ananas.visualization.linechart", DefaultDataViewer.class);

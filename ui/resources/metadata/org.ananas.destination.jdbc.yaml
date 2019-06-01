@@ -15,17 +15,17 @@
 #    maxIncoming: 1
 #    maxOutgoing: 0 
 #
-#org.ananas.destination.jdbc.mysql:
-#  id: org.ananas.destination.jdbc.mysql
-#  name: MySQL
-#  description: Save your data to MySQL database
-#  icon: images/mysql.svg
-#  type: Destination
-#  step:
-#    type: loader
-#    config: 
-#      subtype: jdbc
-#      database: mysql
-#  options:
-#    maxIncoming: 1
-#    maxOutgoing: 0 
+org.ananas.destination.jdbc.mysql:
+  id: org.ananas.destination.jdbc.mysql
+  name: MySQL Destination
+  description: Save your data to MySQL database
+  icon: images/mysql.svg
+  type: Destination
+  step:
+    type: loader
+    config: 
+      subtype: jdbc
+      database: mysql
+  options:
+    maxIncoming: 1
+    maxOutgoing: 0 

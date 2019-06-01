@@ -1,34 +1,48 @@
-package org.ananas.runner.model.steps.db;
+package org.ananas.runner.paginator.files;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.ananas.runner.kernel.errors.ErrorHandler;
-import org.ananas.runner.kernel.paginate.AbstractPaginator;
-import org.ananas.runner.kernel.paginate.Paginator;
+import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.model.steps.db.JdbcConnector;
+import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;
 import org.ananas.runner.steprunner.jdbc.JDBCStatement;
 import org.ananas.runner.steprunner.jdbc.JdbcSchemaDetecter;
-import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 import org.jooq.Query;
-import org.jooq.SQLDialect;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JdbcPaginator extends AbstractPaginator implements Paginator {
+public class JdbcPaginator extends AutoDetectedSchemaPaginator {
 
   private static final Logger LOG = LoggerFactory.getLogger(JdbcPaginator.class);
 
-  JdbcStepConfig config;
+  JdbcStepConfig jdbcConfig;
 
-  public JdbcPaginator(String id, JdbcStepConfig config) {
-    super(id, null);
-    this.config = config;
-    this.schema = autodetect();
+  public JdbcPaginator(String id, String type, Map<String, Object> config, Schema schema) {
+    super(id, type, config, schema);
+  }
+
+  @Override
+  public Schema autodetect() {
+    SelectQuery q = outputQuery(true);
+    return JdbcSchemaDetecter.autodetect(
+        this.jdbcConfig.driver,
+        this.jdbcConfig.url,
+        this.jdbcConfig.username,
+        this.jdbcConfig.password,
+        q.toString());
+  }
+
+  @Override
+  public void parseConfig(Map<String, Object> config) {
+    this.jdbcConfig = new JdbcStepConfig(config);
   }
 
   @Override
@@ -59,10 +73,10 @@ public class JdbcPaginator extends AbstractPaginator implements Paginator {
     JdbcIO.RowMapper<org.apache.beam.sdk.values.Row> rowMapper =
         JdbcConnector.rowMapper(this.schema, errors);
     return JDBCStatement.Execute(
-        this.config.driver,
-        this.config.url,
-        this.config.username,
-        this.config.password,
+        this.jdbcConfig.driver,
+        this.jdbcConfig.url,
+        this.jdbcConfig.username,
+        this.jdbcConfig.password,
         (conn, statement) -> {
           List<Row> results = new ArrayList<>();
 
@@ -84,32 +98,13 @@ public class JdbcPaginator extends AbstractPaginator implements Paginator {
 
   public SelectQuery outputQuery(boolean isLimit) {
     Query inputQuery =
-        DSL.using(this.config.sqlDialect.JOOQdialect).parser().parseQuery(this.config.sql);
-    String outputSQL = DSL.using(this.config.driver.JOOQdialect).render(inputQuery);
+        DSL.using(this.jdbcConfig.sqlDialect.JOOQdialect).parser().parseQuery(this.jdbcConfig.sql);
+    String outputSQL = DSL.using(this.jdbcConfig.driver.JOOQdialect).render(inputQuery);
     SelectQuery q =
-        (SelectQuery) DSL.using(this.config.driver.JOOQdialect).parser().parseQuery(outputSQL);
+        (SelectQuery) DSL.using(this.jdbcConfig.driver.JOOQdialect).parser().parseQuery(outputSQL);
     if (isLimit) {
       q.addLimit(DEFAULT_LIMIT);
     }
     return q;
-  }
-
-  public Schema autodetect() {
-    SelectQuery q = outputQuery(true);
-    return JdbcSchemaDetecter.autodetect(
-        this.config.driver,
-        this.config.url,
-        this.config.username,
-        this.config.password,
-        q.toString());
-  }
-
-  public static void main(String[] args) {
-    SelectQuery inputQuery =
-        (SelectQuery) DSL.using(SQLDialect.DERBY).parser().parseQuery("select * from table_test2");
-    inputQuery.addLimit(0, DEFAULT_LIMIT);
-
-    // inputQuery = DSL.using(SQLDialect.DEFAULT).select().from("mytable").limit(10);
-    System.out.println(inputQuery.getSQL());
   }
 }

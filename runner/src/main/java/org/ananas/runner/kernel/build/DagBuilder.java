@@ -72,6 +72,7 @@ public class DagBuilder implements Builder {
       if (stepRunner == null) {
         throw new RuntimeException("Ooops . Somthing went wrong with step " + stepId);
       }
+      // TODO: fix this, unify the way to get step schema
       List<List<Object>> data =
           this.isTest && stepRunner.getReader() != null
               ? stepRunner.getReader().getData()

@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 import org.ananas.runner.kernel.LoaderStepRunner;
 import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.common.DataReader;
 import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.model.steps.commons.NullDataReader;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.Schema.Field;
@@ -20,26 +22,29 @@ public class JdbcLoader extends LoaderStepRunner {
   private static final Logger LOG = LoggerFactory.getLogger(JdbcLoader.class);
   private static final long serialVersionUID = -8461806107228452027L;
 
-  public static final String JDBC_OVERWRITE = "overwrite";
-  public static final String JDBC_TYPE = "database";
-  public static final String JDBC_URL = "url";
-  public static final String JDBC_USER = "user";
-  public static final String JDBC_PASSWORD = "password";
-  public static final String JDBC_SQL = "sql";
-  public static final String JDBC_SQL_DIALECT_TYPE = "inputDialect";
-  public static final String JDBC_TABLENAME = "tablename";
-
   public JdbcLoader(Step step, StepRunner previous, boolean isTest) {
     super(step, previous, isTest);
   }
 
+  @Override
+  public DataReader getReader() {
+    return NullDataReader.of();
+  }
+
+  @Override
+  public Schema getSchema() {
+    return Schema.builder().build();
+  }
+
+  @Override
+  public void setReader() {
+    // NO OPER
+  }
+
   public void build() {
-    JDBCDriver driver = JDBCDriver.NONE.getDriverByName((String) step.config.get(JDBC_TYPE));
-    boolean overwrite = (boolean) step.config.getOrDefault(JDBC_OVERWRITE, false);
-    String tablename = (String) step.config.get(JDBC_TABLENAME);
-    String url = (String) step.config.get(JDBC_URL);
-    String username = (String) step.config.get(JDBC_USER);
-    String password = (String) step.config.get(JDBC_PASSWORD);
+    JdbcStepConfig jdbcConfig = new JdbcStepConfig(step.config);
+    String tablename = (String) step.config.get(JdbcStepConfig.JDBC_TABLENAME);
+    Boolean overwrite = (Boolean) step.config.getOrDefault(JdbcStepConfig.JDBC_OVERWRITE, true);
 
     super.output = null;
 
@@ -48,13 +53,13 @@ public class JdbcLoader extends LoaderStepRunner {
     Schema schema = ((SchemaCoder) previous.getOutput().getCoder()).getSchema();
 
     for (int i = 0; i < schema.getFields().size(); i++) {
-      JDBCDataType dataType = driver.getDefaultDataType(schema.getField(i).getType());
+      JDBCDataType dataType = jdbcConfig.driver.getDefaultDataType(schema.getField(i).getType());
       if (dataType == null) {
         throw new RuntimeException(
             String.format(
                 schema.getField(i).getName() + " field type [%s] is not supported for %s",
                 schema.getField(i).getType().getTypeName(),
-                driver.driverName + ". Please use a transformer to exclude this column."));
+                jdbcConfig.driver.driverName + ". Please use a transformer to exclude this column."));
       }
       validateSQLName(schema.getField(i).getName(), "field name");
     }
@@ -62,23 +67,23 @@ public class JdbcLoader extends LoaderStepRunner {
     if (isTest) {
       // test connection
       JDBCStatement.Execute(
-          driver,
-          url,
-          username,
-          password,
+          jdbcConfig.driver,
+          jdbcConfig.url,
+          jdbcConfig.username,
+          jdbcConfig.password,
           (conn, statement) -> {
             return null;
           });
-      driver.SQLDialect().createTableStatement(driver, tablename, schema);
+      jdbcConfig.driver.SQLDialect().createTableStatement(jdbcConfig.driver, tablename, schema);
       return;
     }
 
-    migrateTable(overwrite, tablename, driver, url, username, password, schema);
+    migrateTable(overwrite, tablename, jdbcConfig.driver, jdbcConfig.url, jdbcConfig.username, jdbcConfig.password, schema);
     JdbcIO.DataSourceConfiguration jdbcConfiguration =
-        JdbcIO.DataSourceConfiguration.create(driver.driverClassName, driver.ddl.rewrite(url));
+        JdbcIO.DataSourceConfiguration.create(jdbcConfig.driver.driverClassName, jdbcConfig.driver.ddl.rewrite(jdbcConfig.url));
 
-    if (driver != JDBCDriver.DERBY) {
-      jdbcConfiguration = jdbcConfiguration.withUsername(username).withPassword(password);
+    if (jdbcConfig.driver != JDBCDriver.DERBY) {
+      jdbcConfiguration = jdbcConfiguration.withUsername(jdbcConfig.username).withPassword(jdbcConfig.password);
     }
 
     previous
@@ -86,7 +91,7 @@ public class JdbcLoader extends LoaderStepRunner {
         .apply(
             JdbcIO.<Row>write()
                 .withDataSourceConfiguration(jdbcConfiguration)
-                .withStatement(driver.SQLDialect().insertStatement(tablename, schema))
+                .withStatement(jdbcConfig.driver.SQLDialect().insertStatement(tablename, schema))
                 .withPreparedStatementSetter(
                     new JdbcIO.PreparedStatementSetter<Row>() {
                       private static final long serialVersionUID = 4709687496583896251L;
@@ -95,7 +100,7 @@ public class JdbcLoader extends LoaderStepRunner {
                       public void setParameters(Row element, PreparedStatement query)
                           throws SQLException {
                         for (int i = 0; i < schema.getFields().size(); i++) {
-                          driver.setParameter(
+                          jdbcConfig.driver.setParameter(
                               i + 1, schema.getField(i).getType(), query, element.getValue(i));
                         }
                       }
