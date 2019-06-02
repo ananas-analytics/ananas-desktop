@@ -11,6 +11,7 @@ org.ananas.source.file.csv:
     config: 
       subtype: file
       format: csv
+      forceAutoDetectSchema: false
   options:
     maxIncoming: 0
     maxOutgoing: -1
@@ -41,6 +42,7 @@ org.ananas.source.file.json:
     config: 
       subtype: file
       format: json
+      forceAutoDetectSchema: false
   options:
     maxIncoming: 0
     maxOutgoing: -1
@@ -58,6 +60,7 @@ org.ananas.source.file.gcs:
       format: csv
       bucket: bucket-name
       path: ""
+      forceAutoDetectSchema: false
   options:
     maxIncoming: 0
     maxOutgoing: -1

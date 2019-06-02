@@ -11,7 +11,7 @@ import org.ananas.runner.model.core.StepConfig;
 import org.ananas.runner.model.steps.api.APIPaginator;
 import org.ananas.runner.model.steps.api.APIStepConfig;
 import org.ananas.runner.model.steps.db.JdbcPaginator;
-import org.ananas.runner.model.steps.db.JdbcStepConfig;
+import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;
 import org.ananas.runner.model.steps.db.MongoDBPaginator;
 import org.ananas.runner.model.steps.db.MongoStepConfig;
 import org.ananas.runner.model.steps.files.*;

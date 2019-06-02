@@ -10,6 +10,7 @@ import org.ananas.runner.kernel.common.Sampler;
 import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.steprunner.jdbc.JdbcSchemaDetecter;
+import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
@@ -24,7 +25,7 @@ public class JdbcConnector extends AbstractStepRunner implements StepRunner, Ser
   private static final String LIMIT_PATTERN = "(LIMIT\\s+\\d+)\\s*;?\\s*$";
 
   public JdbcConnector(
-      Pipeline pipeline, String stepId, JdbcStepConfig config, boolean doSampling, boolean isTest) {
+    Pipeline pipeline, String stepId, JdbcStepConfig config, boolean doSampling, boolean isTest) {
     super(StepType.Connector);
     // config.sql = "select * from table_test2";
     JdbcPaginator paginator = new JdbcPaginator(stepId, config);

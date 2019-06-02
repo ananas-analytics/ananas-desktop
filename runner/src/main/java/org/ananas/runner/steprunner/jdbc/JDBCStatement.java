@@ -38,7 +38,7 @@ public class JDBCStatement {
               .connect(driver.ddl.rewrite(url), properties);
       if (conn == null) {
         throw new RuntimeException(
-            "Oops we can't connector to your DB. Please review you connection parameter.");
+            "Oops we can't connect to your DB. Please review you connection parameter.");
       }
       stmt = conn.createStatement();
       return l.doWith(conn, stmt);

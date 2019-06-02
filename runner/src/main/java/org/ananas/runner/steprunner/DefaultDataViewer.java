@@ -12,6 +12,7 @@ import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
 import org.ananas.runner.steprunner.files.utils.HomeManager;
 import org.ananas.runner.steprunner.jdbc.JDBCDriver;
 import org.ananas.runner.steprunner.jdbc.JdbcLoader;
+import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
 
 public class DefaultDataViewer extends DataViewerStepRunner {
@@ -32,12 +33,12 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       this.output = sqlQuery.getOutput();
     } else {
       // TODO: accept these configurations from settings
-      step.config.put(JdbcLoader.JDBC_OVERWRITE, true);
-      step.config.put(JdbcLoader.JDBC_TABLENAME, "table_" + step.id);
-      step.config.put(JdbcLoader.JDBC_TYPE, JDBCDriver.DERBY.toString());
-      step.config.put(JdbcLoader.JDBC_URL, DataViewRepository.URL(true));
-      step.config.put(JdbcLoader.JDBC_USER, null);
-      step.config.put(JdbcLoader.JDBC_PASSWORD, null);
+      step.config.put(JdbcStepConfig.JDBC_OVERWRITE, true);
+      step.config.put(JdbcStepConfig.JDBC_TABLENAME, "table_" + step.id);
+      step.config.put(JdbcStepConfig.JDBC_TYPE, JDBCDriver.DERBY.toString());
+      step.config.put(JdbcStepConfig.JDBC_URL, DataViewRepository.URL(false));
+      step.config.put(JdbcStepConfig.JDBC_USER, null);
+      step.config.put(JdbcStepConfig.JDBC_PASSWORD, null);
 
       StepRunner jdbcLoader = new JdbcLoader(step, previous, isTest);
       jdbcLoader.build();
@@ -66,13 +67,13 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       Map<String, Object> config = new HashMap<>();
 
       config.put("subtype", "jdbc");
-      config.put(JdbcLoader.JDBC_TYPE, JDBCDriver.DERBY.driverName);
-      config.put(JdbcLoader.JDBC_SQL, s);
-      config.put(JdbcLoader.JDBC_URL, URL(false));
-      config.put(JdbcLoader.JDBC_TABLENAME, tName);
-      config.put(JdbcLoader.JDBC_OVERWRITE, true);
-      config.put(JdbcLoader.JDBC_USER, "");
-      config.put(JdbcLoader.JDBC_PASSWORD, "");
+      config.put(JdbcStepConfig.JDBC_TYPE, JDBCDriver.DERBY.driverName);
+      config.put(JdbcStepConfig.JDBC_SQL, s);
+      config.put(JdbcStepConfig.JDBC_URL, URL(false));
+      config.put(JdbcStepConfig.JDBC_TABLENAME, tName);
+      config.put(JdbcStepConfig.JDBC_OVERWRITE, true);
+      config.put(JdbcStepConfig.JDBC_USER, "");
+      config.put(JdbcStepConfig.JDBC_PASSWORD, "");
 
       Paginator paginator =
           SourcePaginator.of(tName, StepType.Connector.name(), config, new HashMap<>());
