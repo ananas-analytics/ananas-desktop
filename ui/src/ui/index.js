@@ -26,6 +26,7 @@ import {
   VariableService,
   NotificationService,
   MetadataService,
+  SettingService,
 } from './service'
 
 // #if process.env.NODE_ENV !== 'production'
@@ -33,16 +34,22 @@ const logger              = createLogger({})
 // #endif
 const notificationService = new NotificationService()
 const modelService        = new ModelService()
-const jobService          = new JobService(state.settings.runnerEndpoint, notificationService)
+const jobService          = new JobService(state.Settings.global.runnerEndpoint, notificationService)
 const variableService     = new VariableService()
 const executionService    = new ExecutionService(variableService)
 const metadataService     = new MetadataService()
+const settingService      = new SettingService()
 
 // start initializing application
 proxy.getLocalUserName()
   .then(username => {
     state.model.user.name = username 
-    // load engines
+    return settingService.loadGlobalSettings()
+  })
+  .then(globalSettings => {
+    state.Settings.global = Object.assign({ // default settings
+      runnerEndpoint: 'http://localhost:3003/v1'
+    }, globalSettings) 
     return modelService.loadExecutionEngines()
   })
   .then(engines => {
@@ -63,6 +70,7 @@ proxy.getLocalUserName()
       variableService, 
       notificationService,
       metadataService,
+      settingService,
     }
     state.model.metadata = {
       node: metadatas[0],
@@ -83,6 +91,7 @@ proxy.getLocalUserName()
     modelService.setStore(store)
     executionService.setStore(store)
     variableService.setStore(store)
+    settingService.setStore(store)
 
     ReactDOM.render(
       <Provider store={store}>

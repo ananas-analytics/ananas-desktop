@@ -136,6 +136,7 @@ class LocalDB {
         deleted: project.deleted,
         steps: project.steps,
         variables: project.variables,
+        settings: {},
       }
 
       resolve(plainProject)

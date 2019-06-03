@@ -37,8 +37,8 @@ export default class ExecutionService {
       return ''
     }
     let state = this.store.getState()
-    if (state.settings) {
-      return state.settings.runnerEndpoint
+    if (state.Settings.global) {
+      return state.Settings.global.runnerEndpoint
     }
     return ''
   }

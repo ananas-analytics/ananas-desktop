@@ -5,8 +5,8 @@ import AppToolBar from './AppToolBar'
 import AnalysisBoard from './AnalysisBoard'
 import ExecutionEngine from './ExecutionEngine'
 import Message from './Message'
+import Settings from './Settings'
 import model from './model'
-import settings from './settings'
 
 const reducer = combineReducers({
   AppSideBar,
@@ -14,8 +14,8 @@ const reducer = combineReducers({
   AnalysisBoard,
   ExecutionEngine, 
 	Message,
+	Settings,
   model,
-	settings,
 })
 
 export default reducer

@@ -105,6 +105,7 @@ export type PlainProject = {
   dag         : PlainDAG,
   steps       : {[string] : PlainStep},
   variables   : Array<PlainVariable>,
+  settings    : Setting,
   deleted?    : boolean,
 }
 
@@ -200,6 +201,14 @@ export type NodeEditorContext = {
   services  : {[string] : any},
 }
 
+
+/**
+ * Settings
+ */
+export type Setting = {
+  [string]: any
+}
+
 /**
  * Utils
  */
@@ -208,3 +217,4 @@ export type APIResponse<T> = {
   message? : string,
   data?    : T,
 }
+

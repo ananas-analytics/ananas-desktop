@@ -68,6 +68,7 @@ const state = {
         },
         steps: {},
         variables: [],
+        settings: {}, // project based settings
       },
       // other projects here
     },
@@ -78,9 +79,11 @@ const state = {
     }, // metadata    
   },
 
-  /* settings */
-  settings: {
-    runnerEndpoint: 'http://localhost:3003/v1',
+  /* global settings */
+  Settings: {
+    global: {
+      runnerEndpoint: 'http://localhost:3003/v1',
+    }
   }
 }
 

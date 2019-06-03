@@ -10,8 +10,10 @@ export default function(state, action) {
 function defaultHandler(state, action) {
 	if (!state) {
 		return {
-			apiEndpoint: 'http://ananasanalytics.com/api/v1',
-			runnerEndpoint: 'http://localhost:3003'
+      global: {
+        apiEndpoint: 'http://ananasanalytics.com/api/v1',
+        runnerEndpoint: 'http://localhost:3003'
+      }
 		}
 	}
 	return state

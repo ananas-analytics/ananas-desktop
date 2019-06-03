@@ -11,6 +11,7 @@ export { default as VariableService } from './VariableService'
 export { default as ExecutionService } from './ExecutionService'
 export { default as NotificationService } from './NotificationService'
 export { default as MetadataService } from './MetadataService'
+export { default as SettingService } from './SettingService'
 
 export default class ServiceRegistry {
   registry = {}

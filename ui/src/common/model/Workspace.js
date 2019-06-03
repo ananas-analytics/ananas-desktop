@@ -16,17 +16,20 @@ class Workspace {
 
 	path: string
   projects: Array<ProjectMeta> // metadata of the projects in the workspace
+  settings: { [string]: any }
 
   static defaultProps = {
     INSTANCE : null,
     path     : '',
     project  : [],
+    settings : {},
   }
 
 	constructor(path: string, workspace: any) {
 		let obj = workspace || {}
 		this.path = path
 		this.projects = obj.projects || []
+    this.settings = obj.settings || {}
 	}
 
 	insertOrUpdateProject(project: ProjectMeta) {
@@ -50,13 +53,15 @@ class Workspace {
 
 	toString() {
 		return YAML.stringify({
-			projects: this.projects
+      projects: this.projects,
+      settings: this.settings,
 		})
 	}
 
 	toPlainObject() {
 		return {
-			projects: this.projects
+      projects: this.projects,
+      settings: this.settings,
 		}
 	}
 

@@ -56,6 +56,30 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
       })
   })
 
+  ipcMain.on('load-global-settings', (event) => {
+    Workspace.Load(path.join(home, 'workspace.yml'))
+      .then(workspace => {
+        event.sender.send('load-global-settings-result', { code: 200, data: workspace })
+      })
+      .catch(err => {
+        event.sender.send('load-global-settings-result', { code: 500, message: err.message })
+      })
+  })
+
+  ipcMain.on('save-global-settings', (event, settings) => {
+    Workspace.Load(path.join(home, 'workspace.yml'))
+      .then(workspace => {
+        workspace.settings = settings
+        return workspace.save()
+      })
+      .then(() => {
+        event.sender.send('save-global-settings-result', { code: 200, data: 'OK' })
+      })
+      .catch(err => {
+        event.sender.send('save-global-settings-result', { code: 500, message: err.message })
+      })
+  })
+
   ipcMain.on('load-projects', (event) => {
     Workspace.Load(path.join(home, 'workspace.yml'))
       .then(workspace => {
