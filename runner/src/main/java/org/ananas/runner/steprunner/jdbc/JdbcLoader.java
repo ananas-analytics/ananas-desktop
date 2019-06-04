@@ -59,7 +59,8 @@ public class JdbcLoader extends LoaderStepRunner {
             String.format(
                 schema.getField(i).getName() + " field type [%s] is not supported for %s",
                 schema.getField(i).getType().getTypeName(),
-                jdbcConfig.driver.driverName + ". Please use a transformer to exclude this column."));
+                jdbcConfig.driver.driverName
+                    + ". Please use a transformer to exclude this column."));
       }
       validateSQLName(schema.getField(i).getName(), "field name");
     }
@@ -78,12 +79,21 @@ public class JdbcLoader extends LoaderStepRunner {
       return;
     }
 
-    migrateTable(overwrite, tablename, jdbcConfig.driver, jdbcConfig.url, jdbcConfig.username, jdbcConfig.password, schema);
+    migrateTable(
+        overwrite,
+        tablename,
+        jdbcConfig.driver,
+        jdbcConfig.url,
+        jdbcConfig.username,
+        jdbcConfig.password,
+        schema);
     JdbcIO.DataSourceConfiguration jdbcConfiguration =
-        JdbcIO.DataSourceConfiguration.create(jdbcConfig.driver.driverClassName, jdbcConfig.driver.ddl.rewrite(jdbcConfig.url));
+        JdbcIO.DataSourceConfiguration.create(
+            jdbcConfig.driver.driverClassName, jdbcConfig.driver.ddl.rewrite(jdbcConfig.url));
 
     if (jdbcConfig.driver != JDBCDriver.DERBY) {
-      jdbcConfiguration = jdbcConfiguration.withUsername(jdbcConfig.username).withPassword(jdbcConfig.password);
+      jdbcConfiguration =
+          jdbcConfiguration.withUsername(jdbcConfig.username).withPassword(jdbcConfig.password);
     }
 
     previous

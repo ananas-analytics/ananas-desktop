@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.Stack;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Dataframe;
+import org.ananas.runner.kernel.model.Engine;
 import org.ananas.runner.kernel.pipeline.PipelineContext;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -16,4 +17,6 @@ public interface Builder {
 
   // get the goals
   Set<String> getGoals();
+
+  Engine getEngine();
 }

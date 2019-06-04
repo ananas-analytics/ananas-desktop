@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.build.Builder;
 import org.ananas.runner.kernel.pipeline.PipelineContext;
-import org.ananas.runner.model.core.Job;
+import org.ananas.runner.kernel.model.Job;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -97,17 +97,18 @@ public class LocalJobManager implements JobManager, JobRepository {
               });
 
       pipelineFuture.thenApply(
-          pipelineResult -> {
+          result -> {
             this.jobs.put(
                 jobId,
                 Job.of(
                     jobId,
-                    pipelineResult.getLeft(),
-                    pipelineResult.getRight(),
+                    builder.getEngine(),
+                    result.getLeft(),
+                    result.getRight(),
                     projectId,
                     builder.getGoals(),
                     token));
-            return pipelineResult != null;
+            return result != null;
           });
 
     } finally {

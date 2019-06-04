@@ -2,7 +2,7 @@ package org.ananas.runner.model.hooks;
 
 import java.io.IOException;
 import java.util.Set;
-import org.ananas.runner.model.core.Job;
+import org.ananas.runner.kernel.model.Job;
 import org.ananas.runner.model.steps.commons.run.BeamRunner;
 import org.ananas.runner.model.steps.commons.run.Runner;
 import org.apache.beam.sdk.PipelineResult;

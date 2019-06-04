@@ -2,8 +2,6 @@ package org.ananas.runner.steprunner.jdbc;
 
 import java.io.Serializable;
 import java.util.Map;
-import org.ananas.runner.model.core.StepConfig;
-import org.ananas.runner.steprunner.jdbc.JDBCDriver;
 
 public class JdbcStepConfig implements Serializable {
 
@@ -24,7 +22,6 @@ public class JdbcStepConfig implements Serializable {
   public String password;
   public String sql;
   public JDBCDriver sqlDialect;
-
 
   public JdbcStepConfig(Map<String, Object> config) {
     this.driver = JDBCDriver.NONE.getDriverByName((String) config.get(JDBC_TYPE));

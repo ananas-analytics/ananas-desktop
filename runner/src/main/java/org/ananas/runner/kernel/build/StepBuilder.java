@@ -78,7 +78,8 @@ public class StepBuilder {
 
     try {
       Constructor<? extends StepRunner> ctor =
-          clazz.getDeclaredConstructor(Pipeline.class, Step.class, Boolean.TYPE, Boolean.TYPE);
+          clazz.getDeclaredConstructor(
+              Pipeline.class, Step.class, Boolean.TYPE, Boolean.TYPE);
       ctor.setAccessible(true);
       StepRunner connector = ctor.newInstance(context.getPipeline(), step, doSampling, isTest);
       connector.build();
@@ -140,7 +141,8 @@ public class StepBuilder {
     }
   }
 
-  public static StepRunner dataViewer(Step step, StepRunner previous, boolean isTest) {
+  public static StepRunner dataViewer(
+      Engine engine, Step step, StepRunner previous, boolean isTest) {
     if (!REGISTRY.containsKey(step.metadataId)) {
       throw new AnanasException(
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
@@ -150,9 +152,9 @@ public class StepBuilder {
 
     try {
       Constructor<? extends StepRunner> ctor =
-          clazz.getDeclaredConstructor(Step.class, StepRunner.class, Boolean.TYPE);
+          clazz.getDeclaredConstructor(Engine.class, Step.class, StepRunner.class, Boolean.TYPE);
       ctor.setAccessible(true);
-      StepRunner viewer = ctor.newInstance(step, previous, isTest);
+      StepRunner viewer = ctor.newInstance(engine, step, previous, isTest);
       viewer.build();
       return viewer;
     } catch (InstantiationException
@@ -164,14 +166,15 @@ public class StepBuilder {
     }
   }
 
-  public static StepRunner append(Step step, StepRunner previous, boolean isTest) {
+  public static StepRunner append(Engine engine, Step step, StepRunner previous, boolean isTest) {
+    // TODO: maybe pass engine to all steps? Engine settings might be useful for all step types
     switch (step.type) {
       case TYPE_TRANSFORMER:
         return transformer(step, previous, isTest);
       case TYPE_LOADER:
         return loader(step, previous, isTest);
       case TYPE_DATAVIEWER:
-        return dataViewer(step, previous, isTest);
+        return dataViewer(engine, step, previous, isTest);
       default:
         throw new IllegalStateException("Unsupported transformer/loader type '" + step.type + "'");
     }

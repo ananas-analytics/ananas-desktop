@@ -10,7 +10,7 @@ import org.ananas.runner.kernel.model.DagRequest;
 import org.ananas.runner.misc.HttpClient;
 import org.ananas.runner.model.api.AnanasApiClient;
 import org.ananas.runner.model.api.pipeline.SimpleMapResponse;
-import org.ananas.runner.model.core.Job;
+import org.ananas.runner.kernel.model.Job;
 import org.ananas.runner.model.steps.commons.jobs.LocalJobManager;
 import org.apache.commons.io.IOUtils;
 

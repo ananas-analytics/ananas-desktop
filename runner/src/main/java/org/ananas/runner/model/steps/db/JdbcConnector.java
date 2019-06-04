@@ -25,7 +25,7 @@ public class JdbcConnector extends AbstractStepRunner implements StepRunner, Ser
   private static final String LIMIT_PATTERN = "(LIMIT\\s+\\d+)\\s*;?\\s*$";
 
   public JdbcConnector(
-    Pipeline pipeline, String stepId, JdbcStepConfig config, boolean doSampling, boolean isTest) {
+      Pipeline pipeline, String stepId, JdbcStepConfig config, boolean doSampling, boolean isTest) {
     super(StepType.Connector);
     // config.sql = "select * from table_test2";
     JdbcPaginator paginator = new JdbcPaginator(stepId, config);

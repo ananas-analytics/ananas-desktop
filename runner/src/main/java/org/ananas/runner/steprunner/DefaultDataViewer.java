@@ -5,6 +5,7 @@ import java.util.Map;
 import org.ananas.runner.kernel.DataViewerStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Dataframe;
+import org.ananas.runner.kernel.model.Engine;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.paginate.Paginator;
@@ -19,8 +20,8 @@ public class DefaultDataViewer extends DataViewerStepRunner {
 
   private static final long serialVersionUID = 4331603846982823797L;
 
-  public DefaultDataViewer(Step step, StepRunner previous, boolean isTest) {
-    super(step, previous, isTest);
+  public DefaultDataViewer(Engine engine, Step step, StepRunner previous, boolean isTest) {
+    super(engine, step, previous, isTest);
   }
 
   public void build() {
@@ -35,15 +36,40 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       // TODO: accept these configurations from settings
       step.config.put(JdbcStepConfig.JDBC_OVERWRITE, true);
       step.config.put(JdbcStepConfig.JDBC_TABLENAME, "table_" + step.id);
-      step.config.put(JdbcStepConfig.JDBC_TYPE, JDBCDriver.DERBY.toString());
-      step.config.put(JdbcStepConfig.JDBC_URL, DataViewRepository.URL(false));
-      step.config.put(JdbcStepConfig.JDBC_USER, null);
-      step.config.put(JdbcStepConfig.JDBC_PASSWORD, null);
+      step.config.put(JdbcStepConfig.JDBC_TYPE, this.getJdbcType());
+      step.config.put(JdbcStepConfig.JDBC_URL, this.getJdbcURL());
+      step.config.put(JdbcStepConfig.JDBC_USER, this.getJdbcUser());
+      step.config.put(JdbcStepConfig.JDBC_PASSWORD, this.getJdbcPassword());
 
       StepRunner jdbcLoader = new JdbcLoader(step, previous, isTest);
       jdbcLoader.build();
       this.output = jdbcLoader.getOutput();
     }
+  }
+
+  private String getJdbcType() {
+    String type = engine.getProperty(Engine.VIEW_DB_TYPE, "derby");
+    return type;
+  }
+
+  private String getJdbcURL() {
+    return engine.getProperty(Engine.VIEW_DB_URL, DataViewRepository.URL(false));
+  }
+
+  private String getJdbcUser() {
+    String user =  engine.getProperty(Engine.VIEW_DB_USER, "");
+    if ("".equals(user)) {
+      return null;
+    }
+    return user;
+  }
+
+  private String getJdbcPassword() {
+    String password =  engine.getProperty(Engine.VIEW_DB_PASSWORD, "");
+    if ("".equals(password)) {
+      return null;
+    }
+    return password;
   }
 
   public static class DataViewRepository {

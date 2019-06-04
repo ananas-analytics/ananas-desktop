@@ -40,7 +40,7 @@ public class DagBuilder implements Builder {
   private DagBuilder(
       Dag d, Set<String> goals, Map<String, Variable> variables, Engine engine, boolean isTest) {
     this.dag = new AnanasGraph(d, goals).reverse().subDag(goals).reverse();
-    System.out.println(this.dag);
+    LOG.debug(this.dag.toString());
     this.stepIds = goals;
     this.isTest = isTest;
     Preconditions.checkNotNull(variables);
@@ -50,6 +50,11 @@ public class DagBuilder implements Builder {
 
   public Set<String> getGoals() {
     return this.stepIds;
+  }
+
+  @Override
+  public Engine getEngine() {
+    return this.engine;
   }
 
   public Map<String, Dataframe> test() {
@@ -110,7 +115,10 @@ public class DagBuilder implements Builder {
           // if one predecessor
           stepRunner =
               StepBuilder.append(
-                  step, stepRunnerMap.get(predecessors.iterator().next().id), this.isTest);
+                  this.engine,
+                  step,
+                  stepRunnerMap.get(predecessors.iterator().next().id),
+                  this.isTest);
           break;
         case 2:
           // if two predecessors then join both
