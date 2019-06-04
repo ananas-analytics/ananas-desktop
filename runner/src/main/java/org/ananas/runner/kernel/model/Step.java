@@ -3,6 +3,8 @@ package org.ananas.runner.kernel.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,7 +14,9 @@ import org.apache.beam.sdk.schemas.Schema;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class Step implements DeepComparable {
+public class Step implements DeepComparable, Serializable {
+
+  private static final long serialVersionUID = -3839588188691082907L;
 
   // Reserved configuration name
   public static final String FORCE_AUTODETECT_SCHEMA = "forceAutoDetectSchema";
