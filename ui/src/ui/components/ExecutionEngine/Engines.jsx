@@ -148,7 +148,7 @@ class Engines extends Component<Props, State> {
           background={{opacity:'strong', color:'light-1'}} fill >
           <Box background='light-1' direction='column' 
             elevation='xsmall' pad='medium' 
-            style={{minWidth: '500px'}}>
+            style={{minWidth: '500px', maxHeight: '80%'}}>
             <EngineEditor 
               name={this.state.selected != null ? this.state.selected.name : ''}
               type={this.state.selected != null ? this.state.selected.type : 'Flink'}

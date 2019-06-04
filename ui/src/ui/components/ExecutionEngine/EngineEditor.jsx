@@ -105,32 +105,36 @@ class EngineEditor extends Component<Props, State> {
       <Box flex fill>
         <Box flex fill>
           <Heading level={4} color='brand'>Edit Execution Engine</Heading>
-          <TextInput label='Engine Name' value={this.state.name} 
-            onChange={v=>{this.handleChangeName(v)}}
-          />
-          { this.state.errMsg ? <Text color='status-error' size='small'>{this.state.errMsg}</Text> : null }
-          <SelectInput label='Engine Type' value={this.state.type} 
-            options={typeOptions}
-            onChange={v=>{
-              this.setState({type: v, properties: this.getDefaultPropertiesByType(v)})  
-            }}
-          />
-          <TextArea label='Engine Description' value={this.state.description} 
-            onChange={v=>this.setState({description: v})} />
+          <Box flex fill overflow={{vertical: 'auto'}}>
+            <Box flex={false} fill>
+              <TextInput label='Engine Name' value={this.state.name} 
+                onChange={v=>{this.handleChangeName(v)}}
+              />
+              { this.state.errMsg ? <Text color='status-error' size='small'>{this.state.errMsg}</Text> : null }
+              <SelectInput label='Engine Type' value={this.state.type} 
+                options={typeOptions}
+                onChange={v=>{
+                  this.setState({type: v, properties: this.getDefaultPropertiesByType(v)})  
+                }}
+              />
+              <TextArea label='Engine Description' value={this.state.description} 
+              onChange={v=>this.setState({description: v})} />
+            </Box>
+            {
+              this.props.templates[this.state.type].map(row => {
+              return (<Box key={row.name} flex={false}>
+                <TextInput label={row.label} value={this.state.properties[row.name] ? this.state.properties[row.name] : row.default} 
+                  onChange={v=>{
+                    let properties = { ... this.state.properties }
+                    properties[row.name] = v
+                    this.setState({ properties })
+                  }}
+                />
+                </Box>)
+              })
+            }
+          </Box>
         </Box>
-        {
-          this.props.templates[this.state.type].map(row => {
-          return (<Box key={row.name}>
-            <TextInput label={row.label} value={this.state.properties[row.name] ? this.state.properties[row.name] : row.default} 
-              onChange={v=>{
-                let properties = { ... this.state.properties }
-                properties[row.name] = v
-                this.setState({ properties })
-              }}
-            />
-            </Box>)
-          })
-        }
         <Box direction='row' height='40px' justify='end' flex={false} fill='horizontal' gap='medium' margin={{top: 'medium'}}>
           <Button label='Save' primary 
             disabled={this.state.disabled}

@@ -21,9 +21,9 @@ let win = null
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({ 
-    width: 1440, height: 1280, 
+    width: 1440, height: 960, 
   })
-	win.maximize()
+  // win.maximize()
 
   // and load the index.html of the app.
   win.loadFile('public/index.html')

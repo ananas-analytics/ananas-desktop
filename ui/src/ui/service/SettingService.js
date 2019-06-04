@@ -19,6 +19,11 @@ export default class SettingService {
     return proxy.getGlobalSettings()
   }
 
+  saveGlobalSettings() {
+    let globalSettings = this.getGlobalSettings()
+    return proxy.saveGlobalSettings(globalSettings)
+  }
+
   getProjectSettings(projectId: string) :Setting {
     let globalSettings = this.getGlobalSettings()
     let localSettings = this.store.getState().model.projects[projectId] || {}

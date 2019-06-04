@@ -27,10 +27,12 @@ const AppSideBarMenu = ({ activeIndex, expand,
         { expand ? <Text>Variables</Text> : <Code size='20px' /> }
       </AppSideBarMenuItem>
 
+      {/*
       <AppSideBarMenuItem active={activeIndex === 3} expand={expand}
         onClick={() => onClickMenu(3)} >
         { expand ? <Text>Project Settings</Text> : <SettingsOption size='20px' /> }
       </AppSideBarMenuItem>
+      */}
 
     </Box>
   )
