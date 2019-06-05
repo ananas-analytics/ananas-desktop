@@ -1,13 +1,10 @@
-package org.ananas.runner.model.steps.commons.run;
+package org.ananas.runner.kernel.job;
 
 import java.io.IOException;
 import java.util.Set;
 import org.ananas.runner.kernel.build.Builder;
 import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.model.api.job.JobClient;
-import org.ananas.runner.model.api.job.LocalJobApiClient;
-import org.ananas.runner.model.core.Job;
-import org.ananas.runner.model.steps.commons.jobs.LocalJobManager;
+import org.ananas.runner.kernel.model.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -36,7 +36,7 @@ const notificationService = new NotificationService()
 const modelService        = new ModelService()
 const jobService          = new JobService(state.Settings.global.runnerEndpoint, notificationService)
 const variableService     = new VariableService()
-const executionService    = new ExecutionService(variableService)
+const executionService    = new ExecutionService(variableService, jobService)
 const metadataService     = new MetadataService()
 const settingService      = new SettingService()
 

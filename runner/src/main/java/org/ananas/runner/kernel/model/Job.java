@@ -1,4 +1,4 @@
-package org.ananas.runner.model.core;
+package org.ananas.runner.kernel.model;
 
 import java.io.IOException;
 import java.util.Set;
@@ -12,10 +12,12 @@ public class Job {
   public String id;
   public String projectId;
   public Set<String> goals;
+  public Engine engine;
+  public String token;
+
   private PipelineResult pipelineResult;
   private Exception e;
   public PipelineResult.State lastUpdate;
-  public String token;
 
   public void cancel() throws IOException {
     this.pipelineResult.cancel();
@@ -28,16 +30,28 @@ public class Job {
     return MutablePair.of(this.pipelineResult.getState(), this.e);
   }
 
-  public static Job of(
-      String id, PipelineResult r, Exception e, String projectId, Set<String> goals, String token) {
+  public void setResult(MutablePair<PipelineResult, Exception> result) {
+    this.pipelineResult = result.getLeft();
+    this.e = result.getRight();
+  }
+
+  public static Job of(String token, String id, String projectId, Engine engine, Set<String> goals) {
     Job s = new Job();
-    s.id = id;
-    s.pipelineResult = r;
-    s.projectId = projectId;
-    s.goals = goals;
     s.token = token;
-    s.e = e;
+    s.id = id;
+    s.projectId = projectId;
+    s.engine = engine;
+    s.goals = goals;
+    s.pipelineResult = null;
+    s.e = null;
     s.lastUpdate = PipelineResult.State.UNKNOWN;
+    return s;
+  }
+
+  public static Job of(
+      String token, String id, String projectId, Engine engine, Set<String> goals, PipelineResult r, Exception e) {
+    Job s = Job.of(token, id, projectId, engine, goals);
+    s.setResult(new MutablePair<>(r, e));
     return s;
   }
 }

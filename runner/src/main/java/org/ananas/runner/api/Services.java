@@ -8,8 +8,8 @@ import org.ananas.runner.kernel.build.DagBuilder;
 import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.model.DagRequest;
 import org.ananas.runner.kernel.model.Dataframe;
-import org.ananas.runner.model.steps.commons.run.BeamRunner;
-import org.ananas.runner.model.steps.commons.run.Runner;
+import org.ananas.runner.kernel.job.BeamRunner;
+import org.ananas.runner.kernel.job.Runner;
 
 public class Services {
 

@@ -25,6 +25,10 @@ const state = {
           parallelism: 10,
           maxBundleSize: 1000000,
           objectReuse: true,
+          database_type: 'derby',
+          database_url: null,
+          database_user: null,
+          database_pass: null,
         }
       }
     ],

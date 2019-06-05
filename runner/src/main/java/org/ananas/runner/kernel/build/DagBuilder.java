@@ -40,7 +40,7 @@ public class DagBuilder implements Builder {
   private DagBuilder(
       Dag d, Set<String> goals, Map<String, Variable> variables, Engine engine, boolean isTest) {
     this.dag = new AnanasGraph(d, goals).reverse().subDag(goals).reverse();
-    System.out.println(this.dag);
+    LOG.debug(this.dag.toString());
     this.stepIds = goals;
     this.isTest = isTest;
     Preconditions.checkNotNull(variables);
@@ -52,11 +52,16 @@ public class DagBuilder implements Builder {
     return this.stepIds;
   }
 
+  @Override
+  public Engine getEngine() {
+    return this.engine;
+  }
+
   public Map<String, Dataframe> test() {
     Map<String, Dataframe> p = new HashMap<>();
 
     // build
-    MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> runnableDag = build();
+    MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> runnableDag = build(null);
     Map<String, StepRunner> stepRunners = runnableDag.getLeft();
     Stack<PipelineContext> contexts = runnableDag.getRight();
 
@@ -88,7 +93,7 @@ public class DagBuilder implements Builder {
     return p;
   }
 
-  public MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> build() {
+  public MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> build(String jobId) {
     Map<String, StepRunner> stepRunnerMap = new HashMap<>();
     Stack<PipelineContext> contexts = new Stack<>();
     Set<Step> topologicallySortedSteps = this.dag.topologicalSort();
@@ -99,7 +104,7 @@ public class DagBuilder implements Builder {
         case 0:
           if (contexts.empty()) {
             PipelineContext ctxt =
-                PipelineContext.of(
+                PipelineContext.of(jobId,
                     new NoHook(), StepBuilder.createPipelineRunner(this.isTest, this.engine));
             contexts.push(ctxt);
           }
@@ -110,7 +115,11 @@ public class DagBuilder implements Builder {
           // if one predecessor
           stepRunner =
               StepBuilder.append(
-                  step, stepRunnerMap.get(predecessors.iterator().next().id), this.isTest);
+                  jobId,
+                  this.engine,
+                  step,
+                  stepRunnerMap.get(predecessors.iterator().next().id),
+                  this.isTest);
           break;
         case 2:
           // if two predecessors then join both

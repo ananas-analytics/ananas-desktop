@@ -1,4 +1,4 @@
-package org.ananas.runner.model.steps.commons.jobs;
+package org.ananas.runner.kernel.job;
 
 import java.io.IOException;
 import java.util.*;
@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.build.Builder;
 import org.ananas.runner.kernel.pipeline.PipelineContext;
-import org.ananas.runner.model.core.Job;
+import org.ananas.runner.kernel.model.Job;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -65,13 +65,14 @@ public class LocalJobManager implements JobManager, JobRepository {
   @Override
   public String run(String jobId, Builder builder, String projectId, String token) {
     this.lock.lock();
+    Job job = Job.of(token, jobId, projectId, builder.getEngine(), builder.getGoals());
     try {
       CompletableFuture<MutablePair<PipelineResult, Exception>> pipelineFuture =
           CompletableFuture.supplyAsync(
               () -> {
                 try {
                   MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> build =
-                      builder.build();
+                      builder.build(jobId);
                   Iterator<PipelineContext> it = build.getRight().iterator();
                   PipelineResult lastIntermediateResult = null;
                   while (it.hasNext()) {
@@ -97,17 +98,10 @@ public class LocalJobManager implements JobManager, JobRepository {
               });
 
       pipelineFuture.thenApply(
-          pipelineResult -> {
-            this.jobs.put(
-                jobId,
-                Job.of(
-                    jobId,
-                    pipelineResult.getLeft(),
-                    pipelineResult.getRight(),
-                    projectId,
-                    builder.getGoals(),
-                    token));
-            return pipelineResult != null;
+          result -> {
+            job.setResult(result);
+            this.jobs.put(jobId, job);
+            return result != null;
           });
 
     } finally {

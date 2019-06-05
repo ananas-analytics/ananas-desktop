@@ -3,7 +3,6 @@ package org.ananas.runner.kernel.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;

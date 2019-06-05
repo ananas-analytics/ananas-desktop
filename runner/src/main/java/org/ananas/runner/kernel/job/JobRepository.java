@@ -1,7 +1,7 @@
-package org.ananas.runner.model.steps.commons.jobs;
+package org.ananas.runner.kernel.job;
 
 import java.util.Set;
-import org.ananas.runner.model.core.Job;
+import org.ananas.runner.kernel.model.Job;
 
 public interface JobRepository {
   Job getJob(String id);
