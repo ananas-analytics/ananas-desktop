@@ -1,4 +1,4 @@
-package org.ananas.runner.model.api.job;
+package org.ananas.runner.kernel.job;
 
 import java.io.IOException;
 import org.ananas.runner.kernel.model.DagRequest;

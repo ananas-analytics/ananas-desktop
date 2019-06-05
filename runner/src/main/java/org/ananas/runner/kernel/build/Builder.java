@@ -11,7 +11,12 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 public interface Builder {
 
-  MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> build();
+  /**
+   * Build the intermediate structure and attach it to a speficified job
+   * @param jobId
+   * @return
+   */
+  MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> build(String jobId);
 
   Map<String, Dataframe> test();
 

@@ -1,4 +1,4 @@
-package org.ananas.runner.model.steps.commons.jobs;
+package org.ananas.runner.kernel.job;
 
 import java.io.IOException;
 import org.ananas.runner.kernel.build.Builder;

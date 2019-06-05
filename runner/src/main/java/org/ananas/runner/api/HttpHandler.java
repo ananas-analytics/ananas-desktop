@@ -11,8 +11,8 @@ import org.ananas.runner.kernel.paginate.Paginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
 import org.ananas.runner.kernel.model.Job;
 import org.ananas.runner.model.healthcheck.HealthCheck;
-import org.ananas.runner.model.steps.commons.run.BeamRunner;
-import org.ananas.runner.model.steps.commons.run.Runner;
+import org.ananas.runner.kernel.job.BeamRunner;
+import org.ananas.runner.kernel.job.Runner;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import spark.ExceptionHandler;
 import spark.Request;
@@ -130,17 +130,22 @@ class HttpHandler {
 
   static Route dataView =
       (Request request, Response response) -> {
-        String tablename = request.params(":tablename");
-        if (tablename == null) {
+        String jobid = request.params(":jobid");
+        String stepid = request.params(":stepid");
+        if (stepid == null) {
           return JsonUtil.toJson(
               ApiResponseBuilder.Of().KO(new NoSuchElementException("stepid not found")).build());
+        }
+        if (jobid == null) {
+          return JsonUtil.toJson(
+              ApiResponseBuilder.Of().KO(new NoSuchElementException("jobid not found")).build());
         }
 
         DefaultDataViewer.DataViewRepository repository =
             new DefaultDataViewer.DataViewRepository();
         return JsonUtil.toJson(
             ApiResponseBuilder.Of()
-                .OK(repository.query(request.queryParams("sql"), tablename))
+                .OK(repository.query(request.queryParams("sql"), jobid, stepid))
                 .build());
       };
 

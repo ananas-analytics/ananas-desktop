@@ -1,7 +1,8 @@
-package org.ananas.runner.model.api.job;
+package org.ananas.runner.kernel.job;
 
 import java.io.IOException;
 import java.util.UUID;
+
 import org.ananas.runner.kernel.model.DagRequest;
 
 public class LocalJobApiClient implements JobClient {

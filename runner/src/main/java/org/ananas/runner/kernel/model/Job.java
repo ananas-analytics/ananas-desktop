@@ -3,7 +3,6 @@ package org.ananas.runner.kernel.model;
 import java.io.IOException;
 import java.util.Set;
 import lombok.Data;
-import org.ananas.runner.kernel.pipeline.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -50,16 +49,9 @@ public class Job {
   }
 
   public static Job of(
-      String id, Engine engine, Set<String> goals, String projectId, String token, PipelineResult r, Exception e) {
-    Job s = new Job();
-    s.id = id;
-    s.engine = engine;
-    s.pipelineResult = r;
-    s.projectId = projectId;
-    s.goals = goals;
-    s.token = token;
-    s.e = e;
-    s.lastUpdate = PipelineResult.State.UNKNOWN;
+      String token, String id, String projectId, Engine engine, Set<String> goals, PipelineResult r, Exception e) {
+    Job s = Job.of(token, id, projectId, engine, goals);
+    s.setResult(new MutablePair<>(r, e));
     return s;
   }
 }

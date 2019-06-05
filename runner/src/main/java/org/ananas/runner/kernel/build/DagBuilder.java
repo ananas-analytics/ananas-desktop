@@ -61,7 +61,7 @@ public class DagBuilder implements Builder {
     Map<String, Dataframe> p = new HashMap<>();
 
     // build
-    MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> runnableDag = build();
+    MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> runnableDag = build(null);
     Map<String, StepRunner> stepRunners = runnableDag.getLeft();
     Stack<PipelineContext> contexts = runnableDag.getRight();
 
@@ -93,7 +93,7 @@ public class DagBuilder implements Builder {
     return p;
   }
 
-  public MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> build() {
+  public MutablePair<Map<String, StepRunner>, Stack<PipelineContext>> build(String jobId) {
     Map<String, StepRunner> stepRunnerMap = new HashMap<>();
     Stack<PipelineContext> contexts = new Stack<>();
     Set<Step> topologicallySortedSteps = this.dag.topologicalSort();
@@ -104,7 +104,7 @@ public class DagBuilder implements Builder {
         case 0:
           if (contexts.empty()) {
             PipelineContext ctxt =
-                PipelineContext.of(
+                PipelineContext.of(jobId,
                     new NoHook(), StepBuilder.createPipelineRunner(this.isTest, this.engine));
             contexts.push(ctxt);
           }
@@ -115,6 +115,7 @@ public class DagBuilder implements Builder {
           // if one predecessor
           stepRunner =
               StepBuilder.append(
+                  jobId,
                   this.engine,
                   step,
                   stepRunnerMap.get(predecessors.iterator().next().id),

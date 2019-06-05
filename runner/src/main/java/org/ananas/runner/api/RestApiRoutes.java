@@ -55,7 +55,7 @@ public class RestApiRoutes {
     get("/v1/jobs/", HttpHandler.listJobs);
     post("/v1/jobs/:id/cancel", HttpHandler.cancelPipeline);
 
-    get("/v1/data/:tablename", HttpHandler.dataView);
+    get("/v1/data/:jobid/:stepid", HttpHandler.dataView);
 
     get("/healthcheck", HttpHandler.healtcheck);
 

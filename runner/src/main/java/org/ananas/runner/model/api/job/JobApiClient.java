@@ -6,12 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
+import org.ananas.runner.kernel.job.JobClient;
 import org.ananas.runner.kernel.model.DagRequest;
 import org.ananas.runner.misc.HttpClient;
 import org.ananas.runner.model.api.AnanasApiClient;
 import org.ananas.runner.model.api.pipeline.SimpleMapResponse;
 import org.ananas.runner.kernel.model.Job;
-import org.ananas.runner.model.steps.commons.jobs.LocalJobManager;
+import org.ananas.runner.kernel.job.LocalJobManager;
 import org.apache.commons.io.IOUtils;
 
 public class JobApiClient extends AnanasApiClient implements JobClient {

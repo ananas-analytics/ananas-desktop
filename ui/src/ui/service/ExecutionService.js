@@ -14,13 +14,16 @@ import type {
 } from '../../common/model/flowtypes.js'
 
 import type VariableService from './VariableService'
+import type JobService from './JobService'
 
 export default class ExecutionService {
   store: any
   variableService: VariableService
+  jobService: JobService
 
-  constructor(variableService: VariableService) {
+  constructor(variableService: VariableService, jobService: JobService) {
     this.variableService = variableService
+    this.jobService = jobService
   }
 
   getServiceName() {
@@ -110,10 +113,14 @@ export default class ExecutionService {
     }
 
     if (step.type === 'viewer') {
+      // TODO: refactor this, to have a unified interface to query data for any job
+      // get last done job
+      let jobs = this.jobService.getJobsByStepId(step.id).filter(job => job.state === 'DONE')
+      let lastDoneJobId = jobs.length > 0 ? jobs[jobs.length - 1].id : '-'
       // use viewer api
       return axios({
         method: 'GET',
-        url: `${this.getRunnerURL()}/data/${step.id}?sql=${encodeURIComponent(config.sql)}`
+        url: `${this.getRunnerURL()}/data/${lastDoneJobId}/${step.id}?sql=${encodeURIComponent(config.sql)}`
       })
       .then(res=>{
         return res.data

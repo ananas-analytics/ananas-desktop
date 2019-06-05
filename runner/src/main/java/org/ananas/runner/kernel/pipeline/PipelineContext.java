@@ -4,11 +4,12 @@ import org.apache.beam.sdk.PipelineResult;
 
 public class PipelineContext implements Comparable<PipelineContext> {
 
+  String jobId;
   long timeMillis;
   PipelineHook hook;
   org.apache.beam.sdk.Pipeline pipeline;
 
-  private PipelineContext(PipelineHook hook, org.apache.beam.sdk.Pipeline pipeline) {
+  private PipelineContext(String jobId, PipelineHook hook, org.apache.beam.sdk.Pipeline pipeline) {
     this.hook = hook;
     this.pipeline = pipeline;
     this.timeMillis = System.currentTimeMillis();
@@ -18,8 +19,8 @@ public class PipelineContext implements Comparable<PipelineContext> {
     return this.getHook() != null && !(this.getHook() instanceof NoHook);
   }
 
-  public static PipelineContext of(PipelineHook hook, org.apache.beam.sdk.Pipeline pipeline) {
-    return new PipelineContext(hook, pipeline);
+  public static PipelineContext of(String jobId, PipelineHook hook, org.apache.beam.sdk.Pipeline pipeline) {
+    return new PipelineContext(jobId, hook, pipeline);
   }
 
   public PipelineHook getHook() {

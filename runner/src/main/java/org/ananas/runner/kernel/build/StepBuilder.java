@@ -141,7 +141,7 @@ public class StepBuilder {
     }
   }
 
-  public static StepRunner dataViewer(
+  public static StepRunner dataViewer(String jobId,
       Engine engine, Step step, StepRunner previous, boolean isTest) {
     if (!REGISTRY.containsKey(step.metadataId)) {
       throw new AnanasException(
@@ -152,9 +152,9 @@ public class StepBuilder {
 
     try {
       Constructor<? extends StepRunner> ctor =
-          clazz.getDeclaredConstructor(Engine.class, Step.class, StepRunner.class, Boolean.TYPE);
+          clazz.getDeclaredConstructor(Step.class, StepRunner.class, Engine.class, String.class, Boolean.TYPE);
       ctor.setAccessible(true);
-      StepRunner viewer = ctor.newInstance(engine, step, previous, isTest);
+      StepRunner viewer = ctor.newInstance(step, previous, engine, jobId, isTest);
       viewer.build();
       return viewer;
     } catch (InstantiationException
@@ -166,7 +166,7 @@ public class StepBuilder {
     }
   }
 
-  public static StepRunner append(Engine engine, Step step, StepRunner previous, boolean isTest) {
+  public static StepRunner append(String jobId, Engine engine, Step step, StepRunner previous, boolean isTest) {
     // TODO: maybe pass engine to all steps? Engine settings might be useful for all step types
     switch (step.type) {
       case TYPE_TRANSFORMER:
@@ -174,7 +174,7 @@ public class StepBuilder {
       case TYPE_LOADER:
         return loader(step, previous, isTest);
       case TYPE_DATAVIEWER:
-        return dataViewer(engine, step, previous, isTest);
+        return dataViewer(jobId, engine, step, previous, isTest);
       default:
         throw new IllegalStateException("Unsupported transformer/loader type '" + step.type + "'");
     }
