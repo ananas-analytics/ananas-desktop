@@ -4,12 +4,11 @@ import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
-
 import org.ananas.runner.kernel.job.JobClient;
-import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.model.api.AnanasApiClient;
-import org.ananas.runner.kernel.model.Job;
 import org.ananas.runner.kernel.job.LocalJobManager;
+import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.runner.kernel.model.Job;
+import org.ananas.runner.model.api.AnanasApiClient;
 
 public class JobApiMock extends AnanasApiClient implements JobClient {
 

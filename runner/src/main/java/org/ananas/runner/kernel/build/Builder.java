@@ -13,6 +13,7 @@ public interface Builder {
 
   /**
    * Build the intermediate structure and attach it to a speficified job
+   *
    * @param jobId
    * @return
    */

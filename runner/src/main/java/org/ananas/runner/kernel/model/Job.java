@@ -35,7 +35,8 @@ public class Job {
     this.e = result.getRight();
   }
 
-  public static Job of(String token, String id, String projectId, Engine engine, Set<String> goals) {
+  public static Job of(
+      String token, String id, String projectId, Engine engine, Set<String> goals) {
     Job s = new Job();
     s.token = token;
     s.id = id;
@@ -49,7 +50,13 @@ public class Job {
   }
 
   public static Job of(
-      String token, String id, String projectId, Engine engine, Set<String> goals, PipelineResult r, Exception e) {
+      String token,
+      String id,
+      String projectId,
+      Engine engine,
+      Set<String> goals,
+      PipelineResult r,
+      Exception e) {
     Job s = Job.of(token, id, projectId, engine, goals);
     s.setResult(new MutablePair<>(r, e));
     return s;

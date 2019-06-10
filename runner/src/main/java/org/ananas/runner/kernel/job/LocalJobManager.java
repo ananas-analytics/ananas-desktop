@@ -8,8 +8,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.build.Builder;
-import org.ananas.runner.kernel.pipeline.PipelineContext;
 import org.ananas.runner.kernel.model.Job;
+import org.ananas.runner.kernel.pipeline.PipelineContext;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.commons.lang3.tuple.MutablePair;
 

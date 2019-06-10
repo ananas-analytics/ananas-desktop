@@ -1,10 +1,12 @@
 package org.ananas.runner.kernel.common;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import java.io.IOException;
 import java.io.InputStream;
+import org.ananas.runner.api.ApiResponse;
 
 public class JsonUtil {
 
@@ -31,5 +33,21 @@ public class JsonUtil {
   public static <T> T fromJson(InputStream in, Class<T> type) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
     return objectMapper.readerFor(type).readValue(in);
+  }
+
+  public static <T> ApiResponse<T> fromJsonToApiResponse(String in, Class<T> type)
+      throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    JavaType dataType =
+        objectMapper.getTypeFactory().constructParametricType(ApiResponse.class, type);
+    return objectMapper.readerFor(dataType).readValue(in);
+  }
+
+  public static <T> ApiResponse<T> fromJsonToApiResponse(InputStream in, Class<T> type)
+      throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    JavaType dataType =
+        objectMapper.getTypeFactory().constructParametricType(ApiResponse.class, type);
+    return objectMapper.readerFor(dataType).readValue(in);
   }
 }

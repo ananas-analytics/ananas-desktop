@@ -50,6 +50,7 @@ public class RestApiRoutes {
 
     post("/v1/:projectid/dag/test", HttpHandler.testDag);
     post("/v1/:projectid/dag/run", HttpHandler.runDag);
+    post("/v1/:projectid/dag/schedule", HttpHandler.scheduleDag);
 
     get("/v1/jobs/:jobid/poll", HttpHandler.pollJob);
     get("/v1/jobs/", HttpHandler.listJobs);

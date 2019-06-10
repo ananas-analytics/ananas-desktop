@@ -51,6 +51,7 @@ dependencies {
     compile 'org.apache.maven:maven-model:3.3.9'
     compile 'org.apache.poi:poi:3.17'
     compile 'org.apache.poi:poi-ooxml:3.17'
+    compile 'org.quartz-scheduler:quartz:2.3.0'
     compile 'org.apache.spark:spark-core_2.11:2.4.3'
     compile 'org.apache.spark:spark-streaming_2.11:2.4.3'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5'

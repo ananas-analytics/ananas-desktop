@@ -38,7 +38,7 @@ public class Engine implements Serializable {
   }
 
   public Integer getProperty(String name, Integer defaultValue) {
-    if (this.properties.containsKey(name)&& this.properties.get(name) != null) {
+    if (this.properties.containsKey(name) && this.properties.get(name) != null) {
       try {
         return Integer.parseInt(this.properties.get(name));
       } catch (NumberFormatException e) {
@@ -49,7 +49,7 @@ public class Engine implements Serializable {
   }
 
   public Long getProperty(String name, Long defaultValue) {
-    if (this.properties.containsKey(name)&& this.properties.get(name) != null) {
+    if (this.properties.containsKey(name) && this.properties.get(name) != null) {
       try {
         return Long.parseLong(this.properties.get(name));
       } catch (NumberFormatException e) {
@@ -60,7 +60,7 @@ public class Engine implements Serializable {
   }
 
   public Boolean getProperty(String name, Boolean defaultValue) {
-    if (this.properties.containsKey(name)&& this.properties.get(name) != null) {
+    if (this.properties.containsKey(name) && this.properties.get(name) != null) {
       return new Boolean(this.properties.get(name));
     }
     return defaultValue;

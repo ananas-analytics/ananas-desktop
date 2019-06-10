@@ -104,8 +104,10 @@ public class DagBuilder implements Builder {
         case 0:
           if (contexts.empty()) {
             PipelineContext ctxt =
-                PipelineContext.of(jobId,
-                    new NoHook(), StepBuilder.createPipelineRunner(this.isTest, this.engine));
+                PipelineContext.of(
+                    jobId,
+                    new NoHook(),
+                    StepBuilder.createPipelineRunner(this.isTest, this.engine));
             contexts.push(ctxt);
           }
           stepRunner = StepBuilder.connector(step, contexts.peek(), this.isTest, this.isTest);

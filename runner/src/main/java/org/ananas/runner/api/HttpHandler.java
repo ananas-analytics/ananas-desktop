@@ -5,14 +5,14 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.errors.AnanasException;
+import org.ananas.runner.kernel.job.BeamRunner;
+import org.ananas.runner.kernel.job.Runner;
 import org.ananas.runner.kernel.model.Dataframe;
+import org.ananas.runner.kernel.model.Job;
 import org.ananas.runner.kernel.paginate.PaginationBody;
 import org.ananas.runner.kernel.paginate.Paginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.kernel.model.Job;
 import org.ananas.runner.model.healthcheck.HealthCheck;
-import org.ananas.runner.kernel.job.BeamRunner;
-import org.ananas.runner.kernel.job.Runner;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import spark.ExceptionHandler;
 import spark.Request;
@@ -95,6 +95,23 @@ class HttpHandler {
         return Services.runDag(id, token, body);
       };
 
+  static Route scheduleDag =
+      (Request request, Response response) -> {
+        String body = request.body();
+
+        if (body == null || body.length() == 0) {
+          return JsonUtil.toJson(
+              ApiResponseBuilder.Of()
+                  .KO(
+                      new AnanasException(
+                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
+                          "missing body"))
+                  .build());
+        }
+
+        return Services.scheduleDag(body);
+      };
+
   static Route cancelPipeline =
       (Request request, Response response) -> {
         String id = request.params(":id");
@@ -148,6 +165,7 @@ class HttpHandler {
                 .OK(repository.query(request.queryParams("sql"), jobid, stepid))
                 .build());
       };
+
 
   static ExceptionHandler error =
       (Exception e, Request request, Response response) -> {

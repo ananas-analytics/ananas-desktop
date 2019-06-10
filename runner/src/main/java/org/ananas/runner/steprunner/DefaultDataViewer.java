@@ -18,7 +18,8 @@ public class DefaultDataViewer extends DataViewerStepRunner {
 
   private static final long serialVersionUID = 4331603846982823797L;
 
-  public DefaultDataViewer(Step step, StepRunner previous, Engine engine, String jobId, boolean isTest) {
+  public DefaultDataViewer(
+      Step step, StepRunner previous, Engine engine, String jobId, boolean isTest) {
     super(step, previous, engine, jobId, isTest);
   }
 
@@ -33,19 +34,19 @@ public class DefaultDataViewer extends DataViewerStepRunner {
     } else {
       // TODO: accept these configurations from settings
       step.config.put(JdbcStepConfig.JDBC_OVERWRITE, true);
-      step.config.put(JdbcStepConfig.JDBC_TABLENAME, DataViewRepository.buildTableName(jobId, step.id));
+      step.config.put(
+          JdbcStepConfig.JDBC_TABLENAME, DataViewRepository.buildTableName(jobId, step.id));
       step.config.put(JdbcStepConfig.JDBC_TYPE, DataViewRepository.getJdbcType(this.engine));
       step.config.put(JdbcStepConfig.JDBC_URL, DataViewRepository.getJdbcURL(this.engine));
       step.config.put(JdbcStepConfig.JDBC_USER, DataViewRepository.getJdbcUser(this.engine));
-      step.config.put(JdbcStepConfig.JDBC_PASSWORD, DataViewRepository.getJdbcPassword(this.engine));
+      step.config.put(
+          JdbcStepConfig.JDBC_PASSWORD, DataViewRepository.getJdbcPassword(this.engine));
 
       StepRunner jdbcLoader = new JdbcLoader(step, previous, isTest);
       jdbcLoader.build();
       this.output = jdbcLoader.getOutput();
     }
   }
-
-
 
   public static class DataViewRepository {
     private JDBCDriver driver;
@@ -79,7 +80,6 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       config.put(JdbcStepConfig.JDBC_USER, DataViewRepository.getJdbcUser(job.engine));
       config.put(JdbcStepConfig.JDBC_PASSWORD, DataViewRepository.getJdbcPassword(job.engine));
 
-
       Paginator paginator =
           SourcePaginator.of(tName, StepType.Connector.name(), config, new HashMap<>());
       Dataframe dataframe = paginator.paginate(0, Integer.MAX_VALUE);
@@ -99,7 +99,7 @@ public class DefaultDataViewer extends DataViewerStepRunner {
     }
 
     static String getJdbcUser(Engine engine) {
-      String user =  engine.getProperty(Engine.VIEW_DB_USER, "");
+      String user = engine.getProperty(Engine.VIEW_DB_USER, "");
       if ("".equals(user)) {
         return null;
       }

@@ -2,9 +2,9 @@ package org.ananas.runner.model.hooks;
 
 import java.io.IOException;
 import java.util.Set;
-import org.ananas.runner.kernel.model.Job;
 import org.ananas.runner.kernel.job.BeamRunner;
 import org.ananas.runner.kernel.job.Runner;
+import org.ananas.runner.kernel.model.Job;
 import org.apache.beam.sdk.PipelineResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -19,7 +19,8 @@ public class PipelineContext implements Comparable<PipelineContext> {
     return this.getHook() != null && !(this.getHook() instanceof NoHook);
   }
 
-  public static PipelineContext of(String jobId, PipelineHook hook, org.apache.beam.sdk.Pipeline pipeline) {
+  public static PipelineContext of(
+      String jobId, PipelineHook hook, org.apache.beam.sdk.Pipeline pipeline) {
     return new PipelineContext(jobId, hook, pipeline);
   }
 

@@ -12,7 +12,8 @@ public class DataViewerStepRunner extends AbstractStepRunner {
   protected transient StepRunner previous;
   protected boolean isTest;
 
-  public DataViewerStepRunner(Step step, StepRunner previous, Engine engine, String jobId, boolean isTest) {
+  public DataViewerStepRunner(
+      Step step, StepRunner previous, Engine engine, String jobId, boolean isTest) {
     super(StepType.Viewer);
 
     this.stepId = step.id;
