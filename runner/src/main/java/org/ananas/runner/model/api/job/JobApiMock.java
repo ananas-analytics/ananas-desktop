@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.ananas.runner.kernel.job.JobClient;
 import org.ananas.runner.kernel.job.LocalJobManager;
 import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.kernel.model.Job;
+import org.ananas.runner.kernel.job.Job;
 import org.ananas.runner.model.api.AnanasApiClient;
 
 public class JobApiMock extends AnanasApiClient implements JobClient {
@@ -30,11 +30,11 @@ public class JobApiMock extends AnanasApiClient implements JobClient {
 
     Job job = LocalJobManager.Of().getJob(jobId);
 
-    if (job != null && job.getState().getLeft() != job.lastUpdate) {
-      job.lastUpdate = job.getState().getLeft();
+    if (job != null && job.getResult().getLeft() != job.lastUpdate) {
+      job.lastUpdate = job.getResult().getLeft();
       String url = String.format("%s/job/%s/state", this.endpoint, jobId);
 
-      Map<String, Object> body = ImmutableMap.of("state", job.getState().getLeft().name());
+      Map<String, Object> body = ImmutableMap.of("state", job.getResult().getLeft().name());
 
       System.out.println(body);
     }

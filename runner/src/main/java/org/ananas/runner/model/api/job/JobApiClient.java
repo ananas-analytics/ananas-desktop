@@ -7,9 +7,9 @@ import java.util.Map;
 import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
 import org.ananas.runner.kernel.job.JobClient;
-import org.ananas.runner.kernel.job.LocalJobManager;
+import org.ananas.runner.kernel.job.JobRepositoryFactory;
 import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.kernel.model.Job;
+import org.ananas.runner.kernel.job.Job;
 import org.ananas.runner.misc.HttpClient;
 import org.ananas.runner.model.api.AnanasApiClient;
 import org.ananas.runner.model.api.pipeline.SimpleMapResponse;
@@ -53,20 +53,20 @@ public class JobApiClient extends AnanasApiClient implements JobClient {
     // -H "Authorization: $TOKEN" \
     // -d "{\"state\": \"done\"}" \
 
-    Job job = LocalJobManager.Of().getJob(jobId);
-    if (job != null && job.getState() != null && job.getState().getLeft() != null) {
-      System.out.println(job.getState().toString());
+    Job job = JobRepositoryFactory.getJobRepostory().getJob(jobId);
+    if (job != null && job.getResult() != null && job.getResult().getLeft() != null) {
+      System.out.println(job.getResult().toString());
     }
-    if (job != null && job.getState() != null && job.getState().getLeft() != job.lastUpdate) {
-      job.lastUpdate = job.getState().getLeft();
+    if (job != null && job.getResult() != null && job.getResult().getLeft() != job.lastUpdate) {
+      job.lastUpdate = job.getResult().getLeft();
       String url = String.format("%s/job/%s/state", this.endpoint, jobId);
       Map<String, String> params =
           ImmutableMap.<String, String>builder().put("Authorization", job.token).build();
 
       Map<String, Object> body = new HashMap<>();
-      body.put("state", job.getState().getLeft().name());
-      if (job.getState().getRight() != null) {
-        body.put("message", ExceptionHandler.valueOf(job.getState().getRight()).error.getRight());
+      body.put("state", job.getResult().getLeft().name());
+      if (job.getResult().getRight() != null) {
+        body.put("message", ExceptionHandler.valueOf(job.getResult().getRight()).error.getRight());
       }
 
       HttpClient.PUT(

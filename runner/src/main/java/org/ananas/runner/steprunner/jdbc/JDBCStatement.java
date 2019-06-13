@@ -45,7 +45,7 @@ public class JDBCStatement {
     } catch (SQLException se) {
       throw new RuntimeException("SQL Error : " + se.getMessage());
     } catch (Exception e) {
-      throw new RuntimeException("Database Error : " + e.getMessage());
+      throw new RuntimeException("DatabaseHelper Error : " + e.getMessage());
     } finally {
       try {
         if (stmt != null) {

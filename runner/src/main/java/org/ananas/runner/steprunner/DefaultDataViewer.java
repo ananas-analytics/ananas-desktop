@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.ananas.runner.kernel.DataViewerStepRunner;
 import org.ananas.runner.kernel.StepRunner;
+import org.ananas.runner.kernel.job.Job;
+import org.ananas.runner.kernel.job.JobRepositoryFactory;
 import org.ananas.runner.kernel.job.LocalJobManager;
 import org.ananas.runner.kernel.model.*;
 import org.ananas.runner.kernel.paginate.Paginator;
@@ -69,7 +71,7 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       Map<String, Object> config = new HashMap<>();
 
       // find the job
-      Job job = LocalJobManager.Of().getJob(jobId);
+      Job job = JobRepositoryFactory.getJobRepostory().getJob(jobId);
 
       config.put("subtype", "jdbc");
       config.put(JdbcStepConfig.JDBC_SQL, s);

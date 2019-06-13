@@ -73,8 +73,8 @@ import org.slf4j.LoggerFactory;
  *
  * <p>
  *
- * <p>To configure a MongoDB sink, you must specify a connection {@code URI}, a {@code Database}
- * name, a {@code Collection} name. For instance:
+ * <p>To configure a MongoDB sink, you must specify a connection {@code URI}, a {@code
+ * DatabaseHelper} name, a {@code Collection} name. For instance:
  *
  * <p>
  *

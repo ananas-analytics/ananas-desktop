@@ -54,6 +54,8 @@ public class RestApiRoutes {
 
     get("/v1/jobs/:jobid/poll", HttpHandler.pollJob);
     get("/v1/jobs/", HttpHandler.listJobs);
+    get("/v1/goal/:goalid/jobs", HttpHandler.getJobsByGoal);
+    get("/v1/trigger/:triggerid/jobs", HttpHandler.getJobsByTrigger);
     post("/v1/jobs/:id/cancel", HttpHandler.cancelPipeline);
 
     get("/v1/data/:jobid/:stepid", HttpHandler.dataView);

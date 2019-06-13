@@ -12,6 +12,7 @@ import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.Variable;
 import org.ananas.runner.kernel.pipeline.NoHook;
 import org.ananas.runner.kernel.pipeline.PipelineContext;
+import org.ananas.runner.kernel.model.TriggerOptions;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.Logger;
@@ -23,9 +24,13 @@ public class DagBuilder implements Builder {
 
   private AnanasGraph dag;
 
+  private Dag originalDag;
+
   private Set<String> stepIds;
 
   private Engine engine;
+
+  private TriggerOptions trigger;
 
   // private static Cache<String, Iterable<Step>> stepsCache =
   // CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES).build();
@@ -34,11 +39,12 @@ public class DagBuilder implements Builder {
   private Map<String, Variable> variables;
 
   public DagBuilder(DagRequest dagRequest, boolean isTest) {
-    this(dagRequest.dag, dagRequest.goals, dagRequest.params, dagRequest.engine, isTest);
+    this(dagRequest.dag, dagRequest.goals, dagRequest.params, dagRequest.engine, dagRequest.trigger, isTest);
   }
 
   private DagBuilder(
-      Dag d, Set<String> goals, Map<String, Variable> variables, Engine engine, boolean isTest) {
+      Dag d, Set<String> goals, Map<String, Variable> variables, Engine engine, TriggerOptions trigger, boolean isTest) {
+    this.originalDag = d;
     this.dag = new AnanasGraph(d, goals).reverse().subDag(goals).reverse();
     LOG.debug(this.dag.toString());
     this.stepIds = goals;
@@ -46,6 +52,7 @@ public class DagBuilder implements Builder {
     Preconditions.checkNotNull(variables);
     this.variables = variables == null ? new HashMap<>() : variables;
     this.engine = engine;
+    this.trigger = trigger;
   }
 
   public Set<String> getGoals() {
@@ -55,6 +62,14 @@ public class DagBuilder implements Builder {
   @Override
   public Engine getEngine() {
     return this.engine;
+  }
+
+  @Override
+  public Dag getDag() { return this.originalDag; }
+
+  @Override
+  public TriggerOptions getTrigger() {
+    return this.trigger;
   }
 
   public Map<String, Dataframe> test() {

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Set;
 import org.ananas.runner.kernel.build.Builder;
 import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.kernel.model.Job;
 
 public interface Runner {
 

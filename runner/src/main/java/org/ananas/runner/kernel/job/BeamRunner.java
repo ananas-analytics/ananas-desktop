@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Set;
 import org.ananas.runner.kernel.build.Builder;
 import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.kernel.model.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,24 +17,24 @@ public class BeamRunner implements Runner {
 
     String jobId = jobApiClient.createJob(projectId, token, req);
 
-    LocalJobManager.Of().run(jobId, p, projectId, token);
+    JobManagerFactory.getJobManager().run(jobId, p, projectId, token);
     return jobId;
   }
 
   @Override
   public void cancel(String id) throws IOException {
-    LocalJobManager.Of().cancelJob(id);
+    JobManagerFactory.getJobManager().cancelJob(id);
     LOG.debug("cancelled job id " + id);
   }
 
   @Override
   public Job getJob(String id) {
-    return LocalJobManager.Of().getJob(id);
+    return JobRepositoryFactory.getJobRepostory().getJob(id);
   }
 
   @Override
   public Set<Job> getJobs() {
-    return LocalJobManager.Of().getJobs();
+    return JobRepositoryFactory.getJobRepostory().getJobs(0, Integer.MAX_VALUE);
   }
 
   @Override
@@ -51,6 +50,6 @@ public class BeamRunner implements Runner {
 
   @Override
   public void removeJob(String jobId) {
-    LocalJobManager.Of().removeJob(jobId);
+    JobRepositoryFactory.getJobRepostory().deleteJob(jobId);
   }
 }

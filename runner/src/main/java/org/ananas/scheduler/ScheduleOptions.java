@@ -3,6 +3,7 @@ package org.ananas.scheduler;
 import java.io.Serializable;
 import lombok.Data;
 import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.runner.kernel.model.TriggerOptions;
 
 @Data
 public class ScheduleOptions implements Serializable {

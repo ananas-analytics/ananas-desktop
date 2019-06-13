@@ -6,11 +6,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.build.Builder;
-import org.ananas.runner.kernel.model.Job;
 import org.ananas.runner.kernel.pipeline.PipelineContext;
 import org.apache.beam.sdk.PipelineResult;
+import org.apache.beam.sdk.PipelineResult.State;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class LocalJobManager implements JobManager, JobRepository {
@@ -33,39 +34,11 @@ public class LocalJobManager implements JobManager, JobRepository {
   }
 
   @Override
-  public void cancelJob(String id) throws IOException {
-    Job r = this.jobs.get(id);
-    if (r != null) {
-      this.lock.lock();
-      try {
-        r.cancel();
-      } finally {
-        this.lock.unlock();
-      }
-    }
-  }
-
-  @Override
-  public Job getJob(String id) {
-    return this.jobs.get(id);
-  }
-
-  @Override
-  public Set<Job> getJobs() {
-    Set<Job> jobs = new HashSet<>();
-    for (String id : this.jobs.keySet()) {
-      Job j = getJob(id);
-      if (j != null) {
-        jobs.add(getJob(id));
-      }
-    }
-    return jobs;
-  }
-
-  @Override
   public String run(String jobId, Builder builder, String projectId, String token) {
     this.lock.lock();
-    Job job = Job.of(token, jobId, projectId, builder.getEngine(), builder.getGoals());
+    Job job = Job.of(token, jobId, projectId, builder.getEngine(), builder.getDag(), builder.getGoals(),
+      builder.getTrigger());
+    this.jobs.put(jobId, job);
     try {
       CompletableFuture<MutablePair<PipelineResult, Exception>> pipelineFuture =
           CompletableFuture.supplyAsync(
@@ -81,6 +54,8 @@ public class LocalJobManager implements JobManager, JobRepository {
                       return MutablePair.of(lastIntermediateResult, (Exception) null); // We abort
                     }
                     PipelineContext next = it.next();
+                    // update the job state
+                    job.state = State.RUNNING.name();
                     if (it.hasNext()) {
                       // Important : we wait for a pipelines to finish before we trigger the next
                       // one.
@@ -100,9 +75,8 @@ public class LocalJobManager implements JobManager, JobRepository {
       pipelineFuture.thenApply(
           result -> {
             job.setResult(result);
-            this.jobs.put(jobId, job);
-            return result != null;
-          });
+      return result != null;
+    });
 
     } finally {
       this.lock.unlock();
@@ -111,7 +85,52 @@ public class LocalJobManager implements JobManager, JobRepository {
   }
 
   @Override
-  public void removeJob(String jobId) {
+  public void cancelJob(String id) throws IOException {
+    Job r = this.jobs.get(id);
+    if (r != null) {
+      this.lock.lock();
+      try {
+        r.cancel();
+      } finally {
+        this.lock.unlock();
+      }
+    }
+  }
+
+  @Override
+  public Job getJob(String id) {
+    return this.jobs.get(id);
+  }
+
+  @Override
+  public Set<Job> getJobs(int offset, int n) {
+    // ingore offset and n for now, as it is in memory
+    Set<Job> jobs = new HashSet<>();
+    for (String id : this.jobs.keySet()) {
+      Job j = getJob(id);
+      if (j != null) {
+        jobs.add(getJob(id));
+      }
+    }
+    return jobs;
+  }
+
+  @Override
+  public List<Job> getJobsByTrigger(String triggerId, int offset, int n) {
+    return jobs.values().stream()
+      .filter(job -> triggerId.equals(job.trigger.id))
+      .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<Job> getJobsByGoal(String goalId, int offset, int n) {
+    return jobs.values().stream()
+      .filter(job -> job.goals != null && job.goals.contains(goalId))
+      .collect(Collectors.toList());
+  }
+
+  @Override
+  public void deleteJob(String jobId) {
     this.lock.lock();
     try {
       this.jobs.remove(jobId);

@@ -1,6 +1,5 @@
 package org.ananas.scheduler;
 
-import static org.quartz.DateBuilder.*;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
@@ -15,6 +14,7 @@ import java.util.*;
 import java.util.Date;
 import java.util.stream.Collectors;
 import org.ananas.runner.kernel.common.JsonUtil;
+import org.ananas.runner.kernel.model.TriggerOptions;
 import org.ananas.runner.steprunner.files.utils.HomeManager;
 import org.ananas.runner.steprunner.jdbc.JDBCDriver;
 import org.ananas.runner.steprunner.jdbc.JDBCStatement;
@@ -45,7 +45,7 @@ public class DefaultScheduler implements Scheduler {
     prop.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
     prop.put("org.quartz.jobStore.isClustered", "false");
 
-    // Database properties
+    // DatabaseHelper properties
     prop.put(
         "org.quartz.dataSource.quartzDataSource.driver", "org.apache.derby.jdbc.EmbeddedDriver");
     prop.put(
@@ -57,33 +57,37 @@ public class DefaultScheduler implements Scheduler {
 
     this.quartsScheduler = new StdSchedulerFactory(prop).getScheduler();
 
-    this.quartsScheduler.getListenerManager().addJobListener(new JobListener() {
-      @Override
-      public String getName() {
-        return "example job listener";
-      }
+    this.quartsScheduler
+        .getListenerManager()
+        .addJobListener(
+            new JobListener() {
+              @Override
+              public String getName() {
+                return "example job listener";
+              }
 
-      @Override
-      public void jobToBeExecuted(JobExecutionContext context) {
-        String id = UUID.randomUUID().toString();
-        context.getJobDetail().getJobDataMap().put("id", id);
-        System.out.println("job to be executed");
-        System.out.println(id);
-      }
+              @Override
+              public void jobToBeExecuted(JobExecutionContext context) {
+                String id = UUID.randomUUID().toString();
+                context.getJobDetail().getJobDataMap().put("id", id);
+                System.out.println("job to be executed");
+                System.out.println(id);
+              }
 
-      @Override
-      public void jobExecutionVetoed(JobExecutionContext context) {
-        System.out.println("job execution vetoed");
-      }
+              @Override
+              public void jobExecutionVetoed(JobExecutionContext context) {
+                System.out.println("job execution vetoed");
+              }
 
-      @Override
-      public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-        System.out.println("Job executed");
-        String id = context.getJobDetail().getJobDataMap().getString("id");
-        System.out.println(id);
-        System.out.println(jobException.getLocalizedMessage());
-      }
-    });
+              @Override
+              public void jobWasExecuted(
+                  JobExecutionContext context, JobExecutionException jobException) {
+                System.out.println("Job executed");
+                String id = context.getJobDetail().getJobDataMap().getString("id");
+                System.out.println(id);
+                System.out.println(jobException.getLocalizedMessage());
+              }
+            });
   }
 
   public static DefaultScheduler of() throws SchedulerException {
@@ -149,25 +153,29 @@ public class DefaultScheduler implements Scheduler {
   public void schedule(ScheduleOptions options) {
     TriggerOptions triggerOptions = options.trigger;
     ScheduleBuilder builder = null;
-    Date startDate = dateOf(triggerOptions.startHour, triggerOptions.startMinute, 0,
-      triggerOptions.startDay, triggerOptions.startMonth, triggerOptions.startYear);
+    Date startDate = new Date(options.trigger.startTimestamp);
 
     switch (options.trigger.type) {
-      case TriggerOptions.SECONDS:
+      case TriggerOptions.REPEAT:
         builder = simpleSchedule().withIntervalInSeconds(options.trigger.interval).repeatForever();
         break;
       case TriggerOptions.HOURLY:
         builder = simpleSchedule().withIntervalInHours(1).repeatForever();
         break;
       case TriggerOptions.WEEKLY:
-        builder = CronScheduleBuilder.weeklyOnDayAndHourAndMinute(options.trigger.dayOfWeek, options.trigger.hour, options.trigger.minute);
+        builder =
+            CronScheduleBuilder.weeklyOnDayAndHourAndMinute(
+                options.trigger.dayOfWeek, options.trigger.hour, options.trigger.minute);
         break;
       case TriggerOptions.MONTHLY:
-        builder = CronScheduleBuilder.monthlyOnDayAndHourAndMinute(options.trigger.dayOfMonth, options.trigger.hour, options.trigger.minute);
+        builder =
+            CronScheduleBuilder.monthlyOnDayAndHourAndMinute(
+                options.trigger.dayOfMonth, options.trigger.hour, options.trigger.minute);
         break;
       case TriggerOptions.DAILY:
       default:
-        builder = CronScheduleBuilder.dailyAtHourAndMinute(options.trigger.hour, options.trigger.minute);
+        builder =
+            CronScheduleBuilder.dailyAtHourAndMinute(options.trigger.hour, options.trigger.minute);
     }
 
     Trigger trigger =
@@ -175,7 +183,7 @@ public class DefaultScheduler implements Scheduler {
             .withIdentity(options.id, TriggerKey.DEFAULT_GROUP)
             .usingJobData("options", JsonUtil.toJson(options))
             .startAt(startDate)
-            //.startNow()
+            // .startNow()
             .withSchedule((ScheduleBuilder<? extends Trigger>) builder)
             .build();
 
@@ -204,11 +212,6 @@ public class DefaultScheduler implements Scheduler {
   @Override
   public ScheduleOptions getTriggerById(String id) throws SchedulerException, IOException {
     Trigger trigger = this.quartsScheduler.getTrigger(triggerKey(id));
-
-    System.out.println(trigger.getStartTime());
-    System.out.println(trigger.getPreviousFireTime());
-    System.out.println(trigger.getNextFireTime());
-    System.out.println(new Date());
 
     JobDataMap data = trigger.getJobDataMap();
     return JsonUtil.fromJson(data.getString("options"), ScheduleOptions.class);
@@ -243,10 +246,12 @@ public class DefaultScheduler implements Scheduler {
   }
 
   public void getJobsByTriggerId(String id) throws SchedulerException, IOException {
-    this.quartsScheduler.getJobKeys(GroupMatcher.jobGroupEquals(JobKey.DEFAULT_GROUP))
-      .forEach(jobKey -> {
-        System.out.println(jobKey.getName());
-      });
+    this.quartsScheduler
+        .getJobKeys(GroupMatcher.jobGroupEquals(JobKey.DEFAULT_GROUP))
+        .forEach(
+            jobKey -> {
+              System.out.println(jobKey.getName());
+            });
   }
 
   private static void executeSQLFromResource(Connection connection, String name)
@@ -261,6 +266,4 @@ public class DefaultScheduler implements Scheduler {
     Statement statement = connection.createStatement();
     statement.execute(sql);
   }
-
-
 }

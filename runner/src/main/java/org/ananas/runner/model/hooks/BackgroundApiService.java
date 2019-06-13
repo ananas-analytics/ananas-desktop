@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 import org.ananas.runner.kernel.job.BeamRunner;
 import org.ananas.runner.kernel.job.Runner;
-import org.ananas.runner.kernel.model.Job;
+import org.ananas.runner.kernel.job.Job;
 import org.apache.beam.sdk.PipelineResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class BackgroundApiService implements Runnable {
     Runner runner = new BeamRunner();
     Set<Job> jobs = runner.getJobs();
     for (Job job : jobs) {
-      if (job.getState().getLeft() == PipelineResult.State.RUNNING) {
+      if (job.getResult().getLeft() == PipelineResult.State.RUNNING) {
         boolean cancelled = false;
         try {
           runner.cancel(job.id);
@@ -66,7 +66,7 @@ public class BackgroundApiService implements Runnable {
     Set<Job> jobs = runner.getJobs();
     for (Job job : jobs) {
       runner.updateJobState(job.id);
-      if (job.getState().getLeft().isTerminal()) {
+      if (job.getResult().getLeft().isTerminal()) {
         // NOTE: keep all jobs in memory for now
         // runner.removeJob(job.id);
         // LOG.debug("removed job - " + job.id);

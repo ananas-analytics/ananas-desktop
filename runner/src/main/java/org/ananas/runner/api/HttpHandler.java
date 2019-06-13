@@ -1,14 +1,17 @@
 package org.ananas.runner.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.job.BeamRunner;
+import org.ananas.runner.kernel.job.JobRepositoryFactory;
 import org.ananas.runner.kernel.job.Runner;
 import org.ananas.runner.kernel.model.Dataframe;
-import org.ananas.runner.kernel.model.Job;
+import org.ananas.runner.kernel.job.Job;
 import org.ananas.runner.kernel.paginate.PaginationBody;
 import org.ananas.runner.kernel.paginate.Paginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
@@ -127,6 +130,39 @@ class HttpHandler {
         return JsonUtil.toJson(ApiResponseBuilder.Of().OK(jobs).build());
       };
 
+  static Route getJobsByGoal =
+      (Request request, Response response) -> {
+        String goalid = request.params(":goalid");
+        String offset = request.queryParams("offset");
+        String size = request.queryParams("size");
+
+        List<Job> jobs = JobRepositoryFactory.getJobRepostory().getJobsByGoal(goalid,
+          offset == null ? 0 : Integer.valueOf(offset),
+          size == null ? 0 : Integer.valueOf(size));
+
+        List<Job> output = jobs.stream()
+          .map(Job::JobStateResultFilter)
+          .collect(Collectors.toList());
+
+        return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
+      };
+  static Route getJobsByTrigger =
+      (Request request, Response response) -> {
+        String triggerid = request.params(":triggerid");
+        String offset = request.queryParams("offset");
+        String size = request.queryParams("size");
+
+        List<Job> jobs = JobRepositoryFactory.getJobRepostory().getJobsByTrigger(triggerid,
+          offset == null ? 0 : Integer.valueOf(offset),
+          size == null ? 0 : Integer.valueOf(size));
+
+        List<Job> output = jobs.stream()
+          .map(Job::JobStateResultFilter)
+          .collect(Collectors.toList());
+
+        return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
+      };
+
   static Route pollJob =
       (Request request, Response response) -> {
         Runner runner = new BeamRunner();
@@ -137,9 +173,9 @@ class HttpHandler {
               ApiResponseBuilder.Of().KO(new NoSuchElementException("job not found")).build());
         } else {
           HashMap<String, String> stateResponse = new HashMap<String, String>();
-          stateResponse.put("state", job.getState().getLeft().toString());
-          if (job.getState().getRight() != null) {
-            stateResponse.put("message", job.getState().getRight().getLocalizedMessage());
+          stateResponse.put("state", job.getResult().getLeft().toString());
+          if (job.getResult().getRight() != null) {
+            stateResponse.put("message", job.getResult().getRight().getLocalizedMessage());
           }
           return JsonUtil.toJson(ApiResponseBuilder.Of().OK(stateResponse).build());
         }
@@ -165,7 +201,6 @@ class HttpHandler {
                 .OK(repository.query(request.queryParams("sql"), jobid, stepid))
                 .build());
       };
-
 
   static ExceptionHandler error =
       (Exception e, Request request, Response response) -> {

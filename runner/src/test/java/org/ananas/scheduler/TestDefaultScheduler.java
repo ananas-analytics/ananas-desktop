@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.runner.kernel.model.TriggerOptionsFactory;
 import org.junit.Test;
 import org.quartz.SchedulerException;
 
@@ -17,8 +19,7 @@ public class TestDefaultScheduler {
     ScheduleOptions options = new ScheduleOptions();
     options.id = "test-trigger";
     options.dag = new DagRequest();
-    options.trigger = TriggerOptionsFactory.repeatInSeconds(3);
-    TriggerOptionsFactory.startNow(options.trigger);
+    options.trigger = TriggerOptionsFactory.repeat(UUID.randomUUID().toString(), System.currentTimeMillis(), 3);
 
     scheduler.schedule(options);
 
