@@ -41,6 +41,8 @@ type State = {
   pageSize: number, // for explorer data
   loading: boolean,
 
+  jobId: ?string,
+
   mode: 'EXPLORE' | 'TEST' | 'JOB_RESULT' | 'STATIC' // static: data will not change, dynamic: load data by page 
 }
 
@@ -90,6 +92,8 @@ export default class DataTable extends PureComponent<Props, State> {
     page: 0,
     pageSize: this.props.pageSize || 25, 
 
+    jobId: null,
+
     loading: false,
     mode: 'STATIC',
   }
@@ -103,32 +107,36 @@ export default class DataTable extends PureComponent<Props, State> {
   }
 
   getDataframe(options: GetDataEventOption) :void {
+    this.setState({dataframe: DataTable.defaultProps.value, loading: true})
     switch(options.getType()) {
       case 'EXPLORE':
         this.setState({ 
           description: options.getDescription(), 
           mode: 'EXPLORE', loading: true, page: 0 
         })
+        this.explore(this.state.page, this.state.pageSize, false)    
         break
       case 'TEST':
         this.setState({ 
           description: options.getDescription(), 
           mode: 'TEST', loading: true, page: 0 
         })
+        this.testStep()
         break
       case 'JOB_RESULT':
         this.setState({ 
           description: options.getDescription(), 
-          mode: 'JOB_RESULT', loading: true, page: 0 
+          mode: 'JOB_RESULT', loading: true, page: 0, jobId: options.getProperty('jobId') 
         })
+        this.explore(0, this.state.pageSize, false, options.getProperty('jobId'))    
         break
       default:
         this.setState({ description: '', mode: 'STATIC', loading: true, page: 0 })
     }
-    this.fetchData(this.state.page, this.state.pageSize)
+    this.props.ee.emit('END_GET_DATAFRAME')
   }
 
-  fetchData(page: number, pageSize: number) :void {
+  fetchData(page: number, pageSize: number, jobId: ?string) :void {
     this.setState({dataframe: DataTable.defaultProps.value, loading: true})
     switch(this.state.mode) {
       case 'EXPLORE':
@@ -144,7 +152,7 @@ export default class DataTable extends PureComponent<Props, State> {
     }
   }
 
-  explore(page: number, pageSize: number, controlled: boolean) {
+  explore(page: number, pageSize: number, controlled: boolean, jobId: ?string) {
     let { variableService, executionService } = this.props.context.services
     if (!variableService || !executionService) {
       return
@@ -157,6 +165,7 @@ export default class DataTable extends PureComponent<Props, State> {
           dict,
           page,
           pageSize,
+          jobId,
         )
       })
       .then(res => {

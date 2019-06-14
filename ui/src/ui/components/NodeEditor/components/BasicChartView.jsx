@@ -8,7 +8,8 @@ import Chart from 'react-google-charts'
 
 import type { PlainDataframe, NodeEditorContext } from '../../../../common/model/flowtypes.js'
 import type { EventEmitter3 } from 'eventemitter3'
-import type { GetDataEventOption } from '../../../model/NodeEditor'
+import type { GetDataEventOption, JobResultOption } from '../../../model/NodeEditor'
+
 
 type Props = {
   context: NodeEditorContext,
@@ -26,9 +27,10 @@ type Props = {
 
 type State = {
   dataframe: PlainDataframe,
+  jobId: ?string,
   loading: boolean,
 
-  mode: 'EXPLORE' | 'TEST' | 'STATIC' // static: data will not change, dynamic: load data by page 
+  mode: 'JOB_RESULT' | 'EXPLORE' | 'TEST' | 'STATIC' // static: data will not change, dynamic: load data by page 
 }
 export default class BasicChartView extends PureComponent<Props, State> {
   static defaultProps = {
@@ -46,6 +48,7 @@ export default class BasicChartView extends PureComponent<Props, State> {
   state = {
     dataframe: this.props.value || BasicChartView.defaultProps.value,
     loading: false,
+    jobId: null,
 
     mode: 'STATIC'
   }
@@ -60,37 +63,28 @@ export default class BasicChartView extends PureComponent<Props, State> {
   }
 
   getDataframe(options: GetDataEventOption) :void {
+    this.setState({dataframe: BasicChartView.defaultProps.value, loading: true})
     switch(options.getType()) {
       case 'EXPLORE':
         this.setState({ 
-          mode: 'EXPLORE', loading: true
+          mode: 'EXPLORE', loading: true, jobId: null,
         })
-        break
-      case 'TEST':
-        this.setState({ 
-          mode: 'TEST', loading: true 
-        })
-        break
-      case 'JOB_RESULT':
-        this.setState({ 
-          loading: true 
-        })
-        break
-      default:
-        this.setState({ loading: true })
-    }
-    this.fetchData()
-  }
-
-  fetchData() :void {
-    this.setState({dataframe: BasicChartView.defaultProps.value, loading: true})
-    switch(this.state.mode) {
-      case 'EXPLORE':
         this.explore()
         break
       case 'TEST':
+        this.setState({ 
+          mode: 'TEST', loading: true, jobId: null,
+        })
         this.testStep()
         break
+      case 'JOB_RESULT':
+        this.setState({ 
+          mode: 'JOB_RESULT', loading: true, jobId: options.getProperty('jobId'),
+        })
+        this.explore(options.getProperty('jobId'))
+        break
+      default:
+        this.setState({ loading: true })
     }
     this.props.ee.emit('END_GET_DATAFRAME')
   }
@@ -130,7 +124,7 @@ export default class BasicChartView extends PureComponent<Props, State> {
       })
   }
 
-  explore(){
+  explore(jobId: ?string){
     let { variableService, executionService } = this.props.context.services
     if (!variableService || !executionService) {
       return
@@ -143,6 +137,7 @@ export default class BasicChartView extends PureComponent<Props, State> {
           dict,
           0, // for viewer, need to start to 0 always
           99999, // for viewer, need to return all
+          jobId,
         )
       })
       .then(res => {

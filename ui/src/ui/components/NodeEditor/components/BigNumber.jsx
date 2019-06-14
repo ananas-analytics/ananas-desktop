@@ -30,8 +30,9 @@ type Props = {
 type State = {
   dataframe: PlainDataframe,
   loading: boolean,
+  jobId: ?string,
 
-  mode: 'EXPLORE' | 'TEST' | 'STATIC' // static: data will not change, dynamic: load data by page 
+  mode: 'JOB_RESULT' | 'EXPLORE' | 'TEST' | 'STATIC' // static: data will not change, dynamic: load data by page 
 }
 
 export default class BigNumberView extends PureComponent<Props, State> {
@@ -50,6 +51,7 @@ export default class BigNumberView extends PureComponent<Props, State> {
   state = {
     dataframe: this.props.value || BigNumberView.defaultProps.value,
     loading: false,
+    jobId: null,
 
     mode: 'STATIC'
   }
@@ -70,37 +72,28 @@ export default class BigNumberView extends PureComponent<Props, State> {
   */
 
   getDataframe(options: GetDataEventOption) :void {
+    this.setState({dataframe: BigNumberView.defaultProps.value, loading: true})
     switch(options.getType()) {
       case 'EXPLORE':
         this.setState({ 
           mode: 'EXPLORE', loading: true
         })
+        this.explore()
         break
       case 'TEST':
         this.setState({ 
           mode: 'TEST', loading: true 
         })
+        this.testStep()
         break
       case 'JOB_RESULT':
         this.setState({ 
-          loading: true 
+          mode: 'JOB_RESULT', loading: true, jobId: options.getProperty('jobId')
         })
+        this.explore(options.getProperty('jobId'))
         break
       default:
         this.setState({ loading: true })
-    }
-    this.fetchData()
-  }
-
-  fetchData() :void {
-    this.setState({dataframe: BigNumberView.defaultProps.value, loading: true})
-    switch(this.state.mode) {
-      case 'EXPLORE':
-        this.explore()
-        break
-      case 'TEST':
-        this.testStep()
-        break
     }
     this.props.ee.emit('END_GET_DATAFRAME')
   }
@@ -140,7 +133,7 @@ export default class BigNumberView extends PureComponent<Props, State> {
       })
   }
 
-  explore(){
+  explore(jobId: string){
     let { variableService, executionService } = this.props.context.services
     if (!variableService || !executionService) {
       return
@@ -153,6 +146,7 @@ export default class BigNumberView extends PureComponent<Props, State> {
           dict,
           0, // for viewer, need to start to 0 always
           99999, // for viewer, need to return all
+          jobId,
         )
       })
       .then(res => {

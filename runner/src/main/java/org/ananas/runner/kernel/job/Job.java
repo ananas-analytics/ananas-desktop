@@ -3,7 +3,6 @@ package org.ananas.runner.kernel.job;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.Set;
 import lombok.Data;
 import org.ananas.runner.kernel.model.Dag;
@@ -48,11 +47,17 @@ public class Job {
 
   public void setResult(MutablePair<PipelineResult, Exception> result) {
     this.pipelineResult = result.getLeft();
-    this.lastUpdate = this.pipelineResult.getState();
+    if (pipelineResult != null) {
+      this.lastUpdate = this.pipelineResult.getState();
+    } else {
+      this.lastUpdate = State.FAILED;
+    }
     this.state = this.lastUpdate.name();
+
     this.e = result.getRight();
     if (this.e != null) {
       this.message = this.e.getLocalizedMessage();
+      this.state = State.FAILED.name();
     }
   }
 

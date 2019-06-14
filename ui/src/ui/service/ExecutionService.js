@@ -97,7 +97,7 @@ export default class ExecutionService {
    * @dict {[string]: any} the dictionary of the variables used in the config
    * @return Promise<APIResponse<PlainDataframe>>
    */
-  exploreDataSource(projectId: ID, step: PlainStep, dict: {[string]:any}, page: number, pageSize: number) :Promise<APIResponse<PlainDataframe>> {
+  exploreDataSource(projectId: ID, step: PlainStep, dict: {[string]:any}, page: number, pageSize: number, jobId: string) :Promise<APIResponse<PlainDataframe>> {
     let config = this.getStepConfig(step)
     // get expressions from the step, and inject the value from the dictionary
     let variables = {}
@@ -118,9 +118,10 @@ export default class ExecutionService {
       let jobs = this.jobService.getJobsByStepId(step.id).filter(job => job.state === 'DONE')
       let lastDoneJobId = jobs.length > 0 ? jobs[jobs.length - 1].id : '-'
       // use viewer api
+      let viewerJobId = jobId || lastDoneJobId
       return axios({
         method: 'GET',
-        url: `${this.getRunnerURL()}/data/${lastDoneJobId}/${step.id}?sql=${encodeURIComponent(config.sql)}`
+        url: `${this.getRunnerURL()}/data/${viewerJobId}/${step.id}?sql=${encodeURIComponent(config.sql)}`
       })
       .then(res=>{
         return res.data
