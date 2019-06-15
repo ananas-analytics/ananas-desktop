@@ -133,7 +133,7 @@ export default class BigNumberView extends PureComponent<Props, State> {
       })
   }
 
-  explore(jobId: string){
+  explore(jobId: ?string){
     let { variableService, executionService } = this.props.context.services
     if (!variableService || !executionService) {
       return

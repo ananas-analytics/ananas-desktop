@@ -10,6 +10,7 @@ import type { PlainDataframe, NodeEditorContext } from '../../../../common/model
 import type { EventEmitter3 } from 'eventemitter3'
 import type { GetDataEventOption, JobResultOption } from '../../../model/NodeEditor'
 
+import ReactResizeDetector from 'react-resize-detector'
 
 type Props = {
   context: NodeEditorContext,
@@ -269,8 +270,9 @@ export default class BasicChartView extends PureComponent<Props, State> {
 
     if (this.props.type === 'bar') {
       return (<Box margin={{bottom: 'large'}}  fill>
-        <Chart
-            width={'100%'}
+        <ReactResizeDetector handleWidth handleHeight>
+          {(width, height) => <Chart 
+            width={width}
             height={'100%'}
             chartType='ColumnChart'
             loader={<div>Loading Chart</div>}
@@ -288,12 +290,14 @@ export default class BasicChartView extends PureComponent<Props, State> {
               },
             }}
             rootProps={{ 'data-testid': '2' }}
-          />
+          />}
+        </ReactResizeDetector>
       </Box>)
     } else {
       return (<Box margin={{bottom: 'large'}}  fill>
-        <Chart
-            width={'100%'}
+        <ReactResizeDetector handleWidth handleHeight>
+          {(width, height) => <Chart
+            width={width}
             height={'100%'}
             chartType='LineChart'
             loader={<div>Loading Chart</div>}
@@ -311,7 +315,8 @@ export default class BasicChartView extends PureComponent<Props, State> {
               },
             }}
             rootProps={{ 'data-testid': '2' }}
-          />
+          />}
+        </ReactResizeDetector>
       </Box>)
     }
     

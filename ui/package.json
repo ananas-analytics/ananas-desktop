@@ -105,6 +105,7 @@
     "react-dropzone": "^9.0.0",
     "react-google-charts": "^3.0.13",
     "react-redux": "^6.0.0",
+    "react-resize-detector": "^4.2.0",
     "react-table": "^6.9.0",
     "readdirp": "^3.0.1",
     "redux": "^4.0.1",
