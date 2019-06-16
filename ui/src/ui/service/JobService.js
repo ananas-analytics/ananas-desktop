@@ -119,7 +119,8 @@ export default class JobService {
     job.startStatusPolling(this.apiURL, 3000)
   }
 
-  getJobsByStepId(stepId: ID, orderBy?: 'createTime' | 'updateTime') : Array<Job> {
+  getJobsByStepId(stepId: ID, orderBy?: 'createTime' | 'updateTime') : Promise<Array<any>> {
+    /*
     let filtered = this.jobs.filter(job => job.stepId === stepId)
     switch(orderBy) {
       case 'createTime':
@@ -129,6 +130,26 @@ export default class JobService {
       default: 
         return filtered
     }
+    */
+    return axios({
+      method: 'GET',
+      url: `${this.apiURL}/goal/${stepId}/jobs?skip=0&size=10`,
+      headers: {
+        'content-type': 'application/json',
+        'authorization': this.token,
+      }
+    })
+    .then(res=>{
+      if (res.data.code !== 200) {
+        throw new Error(res.data.message)
+      }
+      console.log('get job by stepId', res.data.data)
+      return res.data.data
+    })
+    .catch(err => {
+      return []
+    })
+    
   }
 
   getJobsByStatus(state: JobStatus, orderBy?: 'createTime' | 'updateTime'): Array<Job> {

@@ -46,12 +46,16 @@ export default class JobHistory extends Component<Props, State> {
   componentDidMount() {
     // load latest jobs, and set interval
     let { jobService } = this.props.context.services
-    let jobs = jobService.getJobsByStepId(this.props.context.step.id)
-    this.setState({ jobs }) 
+    jobService.getJobsByStepId(this.props.context.step.id)
+      .then(jobs => {
+        this.setState({ jobs }) 
+      })
 
     this.interval = setInterval(() => {
-      let jobs = jobService.getJobsByStepId(this.props.context.step.id)
-      this.setState({ jobs }) 
+      jobService.getJobsByStepId(this.props.context.step.id)
+        .then(jobs => {
+          this.setState({ jobs }) 
+        })
     }, 3000)
   }
 
@@ -102,7 +106,7 @@ export default class JobHistory extends Component<Props, State> {
             </TableCell>
             */}
             <TableCell scope='row' >
-              <Text size='small'>{moment(datum.createTime).format('YYYYMMDD HH:mm:ss')}</Text>
+              <Text size='small'>{moment(datum.createAt).format('YYYYMMDD HH:mm:ss')}</Text>
             </TableCell>
             <TableCell scope='row' >
               <Text size='small'>{datum.state.toUpperCase()}</Text>

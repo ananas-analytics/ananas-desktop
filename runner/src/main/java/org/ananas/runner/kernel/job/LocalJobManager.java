@@ -116,16 +116,22 @@ public class LocalJobManager implements JobManager, JobRepository {
   }
 
   @Override
-  public List<Job> getJobsByTrigger(String triggerId, int offset, int n) {
+  public List<Job> getJobsByTrigger(String triggerId, int skip, int n) {
     return jobs.values().stream()
       .filter(job -> triggerId.equals(job.trigger.id))
+      .sorted((a, b) -> (int)(b.createAt - a.createAt))
+      .skip(skip)
+      .limit(n)
       .collect(Collectors.toList());
   }
 
   @Override
-  public List<Job> getJobsByGoal(String goalId, int offset, int n) {
+  public List<Job> getJobsByGoal(String goalId, int skip, int n) {
     return jobs.values().stream()
       .filter(job -> job.goals != null && job.goals.contains(goalId))
+      .sorted((a, b) -> (int)(b.createAt - a.createAt))
+      .skip(skip)
+      .limit(n)
       .collect(Collectors.toList());
   }
 

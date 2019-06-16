@@ -133,12 +133,12 @@ class HttpHandler {
   static Route getJobsByGoal =
       (Request request, Response response) -> {
         String goalid = request.params(":goalid");
-        String offset = request.queryParams("offset");
+        String skip = request.queryParams("skip");
         String size = request.queryParams("size");
 
         List<Job> jobs = JobRepositoryFactory.getJobRepostory().getJobsByGoal(goalid,
-          offset == null ? 0 : Integer.valueOf(offset),
-          size == null ? 0 : Integer.valueOf(size));
+          skip == null ? 0 : Integer.valueOf(skip),
+          size == null ? 10 : Integer.valueOf(size));
 
         List<Job> output = jobs.stream()
           .map(Job::JobStateResultFilter)
@@ -146,15 +146,16 @@ class HttpHandler {
 
         return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
       };
+
   static Route getJobsByTrigger =
       (Request request, Response response) -> {
         String triggerid = request.params(":triggerid");
-        String offset = request.queryParams("offset");
+        String skip = request.queryParams("skip");
         String size = request.queryParams("size");
 
         List<Job> jobs = JobRepositoryFactory.getJobRepostory().getJobsByTrigger(triggerid,
-          offset == null ? 0 : Integer.valueOf(offset),
-          size == null ? 0 : Integer.valueOf(size));
+          skip == null ? 0 : Integer.valueOf(skip),
+          size == null ? 10 : Integer.valueOf(size));
 
         List<Job> output = jobs.stream()
           .map(Job::JobStateResultFilter)

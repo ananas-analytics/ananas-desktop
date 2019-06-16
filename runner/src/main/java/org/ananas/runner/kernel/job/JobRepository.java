@@ -32,7 +32,6 @@ public interface JobRepository {
    */
   List<Job> getJobsByGoal(String goalId, int offset, int n);
 
-
   /**
    * Delete a job
    * @param jobId

@@ -115,6 +115,26 @@ export default class ExecutionService {
     if (step.type === 'viewer') {
       // TODO: refactor this, to have a unified interface to query data for any job
       // get last done job
+      return this.jobService.getJobsByStepId(step.id)
+        .then(jobs => {
+          let doneJobs = jobs.filter(job => job.state === 'DONE')
+          let lastDoneJobId = doneJobs.length > 0 ? doneJobs[doneJobs.length - 1].id : '-'
+          return lastDoneJobId
+        })
+        .then(lastDoneJobId => {
+          console.log('-----------------', lastDoneJobId)
+          let viewerJobId = jobId || lastDoneJobId
+          return axios({
+            method: 'GET',
+            url: `${this.getRunnerURL()}/data/${viewerJobId}/${step.id}?sql=${encodeURIComponent(config.sql)}`
+          })
+        })
+        .then(res => {
+          return res.data
+        })
+
+
+      /*
       let jobs = this.jobService.getJobsByStepId(step.id).filter(job => job.state === 'DONE')
       let lastDoneJobId = jobs.length > 0 ? jobs[jobs.length - 1].id : '-'
       // use viewer api
@@ -126,6 +146,7 @@ export default class ExecutionService {
       .then(res=>{
         return res.data
       })
+      */
     }
 
     return axios({

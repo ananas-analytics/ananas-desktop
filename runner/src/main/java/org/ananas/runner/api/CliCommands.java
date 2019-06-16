@@ -26,10 +26,10 @@ public class CliCommands {
     options.addOption(optionDir);
     Option optionProfiles =
         new Option(
-            "p",
-            "profile_file",
-            true,
-            "use given profile file. Variables are defined in this file.");
+      "p",
+      "profile_file",
+      true,
+      "use given profile file. Variables are defined in this file.");
     options.addOption(optionProfiles);
     Option optionStep = new Option("i", "step_id", true, "The id of the step");
     optionStep.setRequired(true);
