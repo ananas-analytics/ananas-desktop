@@ -15,7 +15,7 @@ import { TableCell } from 'grommet/components/TableCell'
 import { View } from 'grommet-icons'
 
 
-import type { PlainJob, NodeEditorContext } from '../../../../common/model/flowtypes.js'
+import type { NodeEditorContext } from '../../../../common/model/flowtypes.js'
 
 import { JobResultOption } from '../../../model/NodeEditor'
 
@@ -32,7 +32,7 @@ type Props = {
 }
 
 type State = {
-  jobs: Array<PlainJob>,
+  jobs: Array<any>, // TODO: use PlainJob here, need to refactor code 
   loading: boolean
 }
 

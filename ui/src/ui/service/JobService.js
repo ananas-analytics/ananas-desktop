@@ -136,7 +136,7 @@ export default class JobService {
       url: `${this.apiURL}/goal/${stepId}/jobs?skip=0&size=10`,
       headers: {
         'content-type': 'application/json',
-        'authorization': this.token,
+        'authorization': '', // TODO: add token here
       }
     })
     .then(res=>{
