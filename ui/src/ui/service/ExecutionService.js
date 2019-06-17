@@ -118,11 +118,10 @@ export default class ExecutionService {
       return this.jobService.getJobsByStepId(step.id)
         .then(jobs => {
           let doneJobs = jobs.filter(job => job.state === 'DONE')
-          let lastDoneJobId = doneJobs.length > 0 ? doneJobs[doneJobs.length - 1].id : '-'
+          let lastDoneJobId = doneJobs.length > 0 ? doneJobs[0].id : '-'
           return lastDoneJobId
         })
         .then(lastDoneJobId => {
-          console.log('-----------------', lastDoneJobId)
           let viewerJobId = jobId || lastDoneJobId
           return axios({
             method: 'GET',
