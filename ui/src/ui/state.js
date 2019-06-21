@@ -47,6 +47,10 @@ const state = {
     }
   },
 
+  Scheduler: {
+    triggers: [],
+  },
+
   Message: {
     open: true,
     messages: [], 
@@ -73,6 +77,7 @@ const state = {
         steps: {},
         variables: [],
         settings: {}, // project based settings
+        triggers: [],
       },
       // other projects here
     },

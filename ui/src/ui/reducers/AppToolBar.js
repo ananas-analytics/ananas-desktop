@@ -55,7 +55,7 @@ function handleClickAppMenu(state, action) {
   let newState = { ... state }
   // TODO: get shared app names
 	// const appNames = ['Analysis Board', 'Report', 'Automation', 'Monitoring', 'Variables']
-  const appNames = ['Analysis Board', 'Execution Engine', 'Variables', 'Project Settings']
+  const appNames = ['Analysis Board', 'Execution Engine', 'Variables', 'Schedule', 'Project Settings']
   newState.path.app = {
     id: action.index,
     name: appNames[action.index]

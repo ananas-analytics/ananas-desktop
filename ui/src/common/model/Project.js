@@ -95,6 +95,9 @@ class Project {
     })
     delete projectData.dag['nodes']
 
+    // remove triggers
+    let triggers = projectData.triggers || []
+
     let projectContent = YAML.stringify(projectData)
 
     let ananasFile = path.join(this.path, 'ananas.yml')
@@ -113,6 +116,9 @@ class Project {
       .then(() => {
         // save layout
         return util.promisify(fs.writeFile)(path.join(this.path, 'layout.yml'), YAML.stringify(layout), 'utf8')
+      })
+      .then(() => {
+        return util.promisify(fs.writeFile)(path.join(this.path, 'triggers.yml'), YAML.stringify(triggers), 'utf8')
       })
   }
 
@@ -155,6 +161,7 @@ class Project {
       steps: {},
       variables: [],
       settings: {},
+      triggers: [],
     }
 
     let layout = []
@@ -223,6 +230,18 @@ class Project {
       })
       .then(settings => {
         projectData.settings = settings
+      })
+      .then(() => {
+        return util.promisify(fs.readFile)(path.join(projectPath, 'triggers.yml'))
+      })
+      .then(data => {
+        return YAML.parse(data.toString())
+      })
+      .catch(()=> {
+        return Promise.resolve([])
+      })
+      .then(triggers => {
+        projectData.triggers = triggers
         return new Project(projectPath, projectData)
       })
   }

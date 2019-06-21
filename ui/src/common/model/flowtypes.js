@@ -106,6 +106,7 @@ export type PlainProject = {
   steps       : {[string] : PlainStep},
   variables   : Array<PlainVariable>,
   settings    : Setting,
+  triggers?   : Array<PlainTrigger>,
   deleted?    : boolean,
 }
 
@@ -186,6 +187,27 @@ export type MessageLevel = 'info' | 'success' | 'warning' | 'danger'
 export type MessageOptions = {
   body?    : string,
   timeout? : number
+}
+
+
+/**
+ * Trigger
+ */
+export type TriggerType = 'once' | 'repeat' | 'hourly' | 'daily' | 'weekly' | 'monthly'
+
+export type PlainTrigger = {
+  id             : ID,
+  projectId      : ID,
+  name           : string,
+  description    : string,
+  type           : TriggerType,
+  startTimestamp : number,
+  interval?      : number,
+  hour?          : number,
+  minute?        : number,
+  dayOfWeek?     : number,
+  dayOfMonth?    : number,
+  enabled        : boolean,
 }
 
 /**

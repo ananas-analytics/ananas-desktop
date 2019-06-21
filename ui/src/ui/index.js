@@ -27,6 +27,7 @@ import {
   NotificationService,
   MetadataService,
   SettingService,
+  SchedulerService,
 } from './service'
 
 // #if process.env.NODE_ENV !== 'production'
@@ -39,6 +40,7 @@ const variableService     = new VariableService()
 const executionService    = new ExecutionService(variableService, jobService)
 const metadataService     = new MetadataService()
 const settingService      = new SettingService()
+const schedulerService    = new SchedulerService()
 
 // start initializing application
 proxy.getLocalUserName()
@@ -71,6 +73,7 @@ proxy.getLocalUserName()
       notificationService,
       metadataService,
       settingService,
+      schedulerService,
     }
     state.model.metadata = {
       node: metadatas[0],
@@ -92,6 +95,7 @@ proxy.getLocalUserName()
     executionService.setStore(store)
     variableService.setStore(store)
     settingService.setStore(store)
+    schedulerService.setStore(store)
 
     ReactDOM.render(
       <Provider store={store}>

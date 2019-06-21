@@ -35,6 +35,9 @@ export default {
   /* Execution Engines*/
   CHANGE_EXECUTION_ENGINES: 'CHANGE_EXECUTION_ENGINES',
 
+  /* Scheduler */
+  CHANGE_TRIGGERS: 'CHANGE_TRIGGERS',
+
 	/* Notification */
 	DISPLAY_MESSAGE: 'DISPLAY_MESSAGE',
 	DISPOSE_MESSAGE: 'DISPOSE_MESSAGE',
