@@ -29,7 +29,7 @@ const AppSideBarMenu = ({ activeIndex, expand,
 
       <AppSideBarMenuItem active={activeIndex === 3} expand={expand}
         onClick={() => onClickMenu(3)} >
-        { expand ? <Text>Schedule</Text> : <SchedulePlay size='20px' /> }
+        { expand ? <Text>Automation</Text> : <SchedulePlay size='20px' /> }
       </AppSideBarMenuItem>
 
 

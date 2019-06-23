@@ -2,7 +2,6 @@
 
 export type ID = string
 
-export type VariableDictionary = {[string]:string}
 
 export type NodeType = "Source" | "Transform" | "Destination" | "Visualization"
 
@@ -137,6 +136,14 @@ export type PlainVariable = {
   scope       : VariableScope,
 }
 
+export type VariableValue = {
+  name  : string,
+  type  : VariableType,
+  value : any,
+}
+
+export type VariableDictionary = {[string]:VariableValue}
+
 /**
  * Engine
  */
@@ -209,6 +216,17 @@ export type PlainTrigger = {
   dayOfMonth?    : number,
   enabled        : boolean,
 }
+
+/**
+ * Schedule
+ */
+export type PlainSchedule = {
+  dag: PlainDAG,
+  engine: PlainEngine,
+  params: VariableDictionary,
+  trigger: PlainTrigger,
+} 
+
 
 /**
  * Node Editor

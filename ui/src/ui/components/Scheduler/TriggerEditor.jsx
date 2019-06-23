@@ -15,11 +15,12 @@ import TextInput from '../NodeEditor/components/TextInput'
 import DateTimeInput from '../NodeEditor/components/DateTimeInput'
 
 
-import type { PlainTrigger, TriggerType  } from '../../../common/model/flowtypes'
+import type { PlainEngine, PlainTrigger, TriggerType  } from '../../../common/model/flowtypes'
 
 type Props = {
   projectId: string,
   trigger: ?PlainTrigger,
+  engines: Array<PlainEngine>,
   triggers: Array<PlainTrigger>,
 
   onSubmit: (State) => void,
@@ -39,6 +40,8 @@ type State = {
   dayOfWeek: number,
   dayOfMonth: number,
   startTimestamp: number,
+
+  engine: ?PlainEngine,
 
   disabled: boolean,
   errMsg: ?string,
@@ -121,10 +124,13 @@ class TriggerEditor extends Component<Props, State> {
       dayOfWeek: 0,
       dayOfMonth: 0,
 
+
       enabled: false,
     },
 
     triggers: [],
+
+    engine: null,
 
     onSubmit: ()=>{},
     onCancel: ()=>{},
@@ -144,6 +150,8 @@ class TriggerEditor extends Component<Props, State> {
     dayOfMonth: (this.props.trigger != null && this.props.trigger.dayOfMonth != null) ? this.props.trigger.dayOfMonth : 0,
     startTimestamp: this.props.trigger != null ? this.props.trigger.startTimestamp : new Date().getTime() + 1000 * 60,
 
+    engine: null,
+
     disabled: false,
     errMsg: null,
   }
@@ -159,7 +167,6 @@ class TriggerEditor extends Component<Props, State> {
   }
 
   render() {
-    console.log(this.state)
     return (
       <Box flex fill>
         <Box flex fill>
@@ -167,6 +174,19 @@ class TriggerEditor extends Component<Props, State> {
           <Box flex fill overflow={{vertical: 'auto'}}>
             <Box flex={false} fill>
               {<Heading level={6} color='brand' margin={{vertical: 'xsmall'}}>The Task</Heading>}
+
+              {<Heading level={6} color='brand' margin={{vertical: 'xsmall'}}>The Engine</Heading>}
+              {/*
+              <SelectInput label='Engines' value={this.state.engine} 
+                options={this.props.engines.map(engine => {
+                  return {
+                    label: engine.name,
+                    value: engine
+                  }
+                })}
+                onChange={v=>this.setState({engine: v})}
+              />
+              */}
 
               {<Heading level={6} color='brand' margin={{vertical: 'xsmall'}}>Trigger Settings</Heading>}
               <TextInput label='Trigger Name' value={this.state.name} 

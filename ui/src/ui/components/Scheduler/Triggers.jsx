@@ -1,12 +1,15 @@
 // @flow
 
-import type { PlainTrigger } from '../../../common/model/flowtypes'
+import type { PlainEngine, PlainTrigger } from '../../../common/model/flowtypes'
 
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import moment from 'moment'
 
 import { Box } from 'grommet/components/Box'
+import { Button } from 'grommet/components/Button'
 import { Stack } from 'grommet/components/Stack'
+import { Text } from 'grommet/components/Text'
 
 import { Add } from 'grommet-icons'
 
@@ -27,6 +30,7 @@ const Trigger = styled(Box)`
 type Props = {
   projectId: string,
   filter: string,
+  engines: Array<PlainEngine>,
   triggers: Array<PlainTrigger>,
 
   onSelectTrigger: (PlainTrigger)=>void,
@@ -42,6 +46,7 @@ type State = {
 export default class Triggers extends Component<Props, State> {
   static defaultProps = {
     filter: '',
+    engines: [],
     triggers: [],
 
     onSelectTrigger: () => {},
@@ -103,6 +108,13 @@ export default class Triggers extends Component<Props, State> {
           <Box flex={false} height='50px'>
             <Search text={this.state.filter} onChange={(filter)=> this.setState({filter})}/>
           </Box>
+
+          <Box align='center' direction='row' flex={false} gap='small' pad='small' >
+            <Button primary label='Deploy'/>
+            <Button secondary label='Start/Stop'/>
+            <Text size='medium'>Current active deployment at {moment().format('YYYY/MM/DD')}</Text>
+          </Box>
+
           <Box direction='column' flex fill margin={{top: 'medium'}} >
             <Box direction='row'
               overflow={{vertical: 'auto'}} wrap={true} >
@@ -151,6 +163,7 @@ export default class Triggers extends Component<Props, State> {
               projectId={this.props.projectId}
               trigger={this.state.selected}
               triggers={this.props.triggers}
+              engines={[]}
 
               onSubmit={(v)=>this.handleSubmitEdit(v)}
               onCancel={()=>this.handleCancelEdit()}
