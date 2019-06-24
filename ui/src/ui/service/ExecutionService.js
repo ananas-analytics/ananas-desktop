@@ -188,6 +188,7 @@ export default class ExecutionService {
         }
       })
     }
+    console.log('-------------------', dict)
     return axios({
       method: 'POST',
       url: `${this.getRunnerURL()}/${projectId}/dag/test`,

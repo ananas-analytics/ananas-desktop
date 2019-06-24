@@ -18,10 +18,13 @@ public class Variable {
   public String value;
 
   public Date convertToDate() {
+    return new Date(Long.parseLong(this.value));
     // ISO8601
+    /*
     DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
     OffsetDateTime offsetDateTime = OffsetDateTime.parse(this.value, timeFormatter);
     return Date.from(Instant.from(offsetDateTime));
+     */
   }
 
   public Double convertToNumber() {

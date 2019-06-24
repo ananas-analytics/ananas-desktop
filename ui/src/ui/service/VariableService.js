@@ -152,7 +152,7 @@ export default class VariableService {
           variables.forEach(v => {
             if (v.type === 'date') {
               defaultDict[v.name] = { name: v.name, type: 'date', value: moment().valueOf() }  
-            } else if (v.type === 'string') {
+            } else if (v.type === 'string' || v.type === 'credential') {
               defaultDict[v.name] = { name: v.name, type: 'string', value: '' }
             } else if (v.type === 'number') {
               defaultDict[v.name] = { name: v.name, type: 'number', value: '0' }

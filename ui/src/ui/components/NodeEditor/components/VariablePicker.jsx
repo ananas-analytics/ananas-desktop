@@ -180,6 +180,14 @@ export default class VariablePicker extends Component<Props, State> {
               {this.renderDateVariable(v)}
             </Box>
           )
+        case 'credential':
+          return (
+            <Box key={v.name} pad='small'>
+              <TextInput label={v.name.toUpperCase()} type="password" value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
+                onChange={value=>this.handleChange(v.name, { name: v.name, type: 'string', value })}
+              />
+            </Box>
+          )
         case 'string':
         default:
         return (
@@ -202,7 +210,7 @@ export default class VariablePicker extends Component<Props, State> {
       <DateTimeInput key={variable.name} label={variable.name.toUpperCase()} 
         date={v.format('YYYY-MM-DD')} 
         time={v.format('HH:mm:ss')} showTime={true}
-        onChange={(value)=>{this.handleChange(variable.name, { name: variable.name, type: variable.type, value: value.toISOString() })}}
+        onChange={(value)=>{this.handleChange(variable.name, { name: variable.name, type: variable.type, value: value.valueOf() })}}
       />
     )
   }
