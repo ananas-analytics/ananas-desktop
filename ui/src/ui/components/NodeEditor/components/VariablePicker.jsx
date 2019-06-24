@@ -169,7 +169,7 @@ export default class VariablePicker extends Component<Props, State> {
         case 'number':
           return (
             <Box key={v.name} pad='small'>
-              <TextInput label={v.name.toUpperCase()} value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
+              <TextInput label={v.name.toUpperCase()} type="number" value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
                 onChange={value=>this.handleChange(v.name, { name: v.name, type: 'number', value })}
               />
             </Box>

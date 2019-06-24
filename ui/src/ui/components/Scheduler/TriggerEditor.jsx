@@ -173,6 +173,9 @@ class TriggerEditor extends Component<Props, State> {
           <Heading level={4} color='brand'>Edit Scheduling</Heading>
           <Box flex fill overflow={{vertical: 'auto'}}>
             <Box flex={false} fill>
+              <TextInput label='Scheduler Name' value={this.state.name} 
+                onChange={v=>{this.handleChangeName(v)}}
+              />
               {<Heading level={6} color='brand' margin={{vertical: 'xsmall'}}>The Task</Heading>}
 
               {<Heading level={6} color='brand' margin={{vertical: 'xsmall'}}>The Engine</Heading>}
@@ -189,9 +192,7 @@ class TriggerEditor extends Component<Props, State> {
               */}
 
               {<Heading level={6} color='brand' margin={{vertical: 'xsmall'}}>Trigger Settings</Heading>}
-              <TextInput label='Trigger Name' value={this.state.name} 
-                onChange={v=>{this.handleChangeName(v)}}
-              />
+              
               { this.state.errMsg ? <Text color='status-error' size='small'>{this.state.errMsg}</Text> : null }
               <SelectInput label='Trigger Type' value={this.state.type} 
                 options={TriggerEditor.TriggerOptions}
@@ -199,8 +200,10 @@ class TriggerEditor extends Component<Props, State> {
                   this.setState({type: v})  
                 }}
               />
-              <TextArea label='Trigger Description' value={this.state.description} 
+              {/*
+                <TextArea label='Trigger Description' value={this.state.description} 
                 onChange={v=>this.setState({description: v})} />
+              */}
               {
                 this.renderParameters()
               }
