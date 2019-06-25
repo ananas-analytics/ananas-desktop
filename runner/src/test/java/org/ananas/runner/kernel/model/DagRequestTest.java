@@ -33,9 +33,9 @@ public class DagRequestTest {
     assertEquals(6, newReq.dag.steps.size());
 
     String dateStrValue = newReq.params.get("DATE_VAR").value;
-    DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
-    OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateStrValue);
-    Date date = Date.from(Instant.from(offsetDateTime));
+    // DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
+    // OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateStrValue);
+    Date date = Date.from(Instant.ofEpochMilli(Long.parseLong(dateStrValue)));
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
     String dateString = sdf.format(date);
