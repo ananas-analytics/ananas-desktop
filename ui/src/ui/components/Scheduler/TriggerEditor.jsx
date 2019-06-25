@@ -217,7 +217,6 @@ class TriggerEditor extends Component<Props, State> {
               let trigger = { ... this.state }
               delete trigger['disabled']
               delete trigger['errMsg']
-              console.log('submit', trigger)
               this.props.onSubmit(trigger)
             }}/>
           <Button label='Cancel' onClick={()=>this.props.onCancel()}/>

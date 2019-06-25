@@ -156,9 +156,8 @@ export default class Triggers extends Component<Props, State> {
         this.state.editing ? (
         <Box align='center' direction='row' justify='center' 
           background={{opacity:'strong', color:'light-1'}} fill >
-          <Box background='light-1' direction='column' 
-            elevation='xsmall' pad='medium' 
-            style={{minWidth: '500px', maxWidth: '80%', maxHeight: '80%'}}>
+          <Box background='light-1' direction='column' fill 
+            elevation='xsmall' pad='medium' > 
             <TriggerEditor 
               projectId={this.props.projectId}
               trigger={this.state.selected}
