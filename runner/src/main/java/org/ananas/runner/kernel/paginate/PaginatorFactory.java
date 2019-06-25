@@ -82,6 +82,9 @@ public class PaginatorFactory implements Paginator {
       Schema schema = null;
       if (!forceSchemaAutodetect && (dataframe != null && dataframe.schema != null)) {
         schema = dataframe.schema.toBeamSchema();
+        if (schema.getFieldCount() == 0) {
+          schema = null;
+        }
       }
       return ctor.newInstance(this.id, this.type, this.config, schema);
     } catch (InstantiationException
