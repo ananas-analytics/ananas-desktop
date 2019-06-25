@@ -24,7 +24,7 @@ const VariableItem = ({
     <Stack fill>
       <Box fill pad='small' >
         <Box direction='row' justify='center' margin={{top: 'small'}} >
-          <Text color='brand' size='xsmall' truncate weight={900} >{name.toUpperCase()}</Text>
+          <Text color='brand' size='xsmall' truncate weight={900} >{name}</Text>
         </Box>
         <Box direction='row' justify='center' margin={{top: 'small'}} >
           <Text color='brand' size='xsmall' truncate weight={600} >SCOPE: {scope.toUpperCase()}</Text>
