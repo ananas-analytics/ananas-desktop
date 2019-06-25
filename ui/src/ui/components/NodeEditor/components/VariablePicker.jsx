@@ -8,6 +8,7 @@ import { Text } from 'grommet/components/Text'
 import { Button } from 'grommet/components/Button'
 
 import TextInput from './TextInput'
+import CredentialInput from './CredentialInput'
 import DateTimeInput from './DateTimeInput'
 import RunButton from '../../Common/RunButton'
 
@@ -183,8 +184,8 @@ export default class VariablePicker extends Component<Props, State> {
         case 'credential':
           return (
             <Box key={v.name} pad='small'>
-              <TextInput label={v.name.toUpperCase()} type="password" value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
-                onChange={value=>this.handleChange(v.name, { name: v.name, type: 'string', value })}
+              <CredentialInput label={v.name.toUpperCase()} value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
+                onChange={value=>this.handleChange(v.name, { name: v.name, type: 'credential', value })}
               />
             </Box>
           )
