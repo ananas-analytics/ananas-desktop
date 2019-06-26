@@ -23,7 +23,7 @@ public interface JobRepository {
    * @param triggerId
    * @return
    */
-  List<Job> getJobsByTrigger(String triggerId, int offset, int n);
+  List<Job> getJobsByScheduleId(String triggerId, int offset, int n);
 
   /**
    * Get jobs by goal

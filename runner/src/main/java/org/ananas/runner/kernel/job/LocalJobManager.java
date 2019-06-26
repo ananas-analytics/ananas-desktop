@@ -37,7 +37,7 @@ public class LocalJobManager implements JobManager, JobRepository {
   public String run(String jobId, Builder builder, String projectId, String token) {
     this.lock.lock();
     Job job = Job.of(token, jobId, projectId, builder.getEngine(), builder.getDag(), builder.getGoals(),
-      builder.getTrigger());
+      builder.getParams(), builder.getTrigger().id);
     this.jobs.put(jobId, job);
     try {
       CompletableFuture<MutablePair<PipelineResult, Exception>> pipelineFuture =
@@ -116,9 +116,9 @@ public class LocalJobManager implements JobManager, JobRepository {
   }
 
   @Override
-  public List<Job> getJobsByTrigger(String triggerId, int skip, int n) {
+  public List<Job> getJobsByScheduleId(String scheduleId, int skip, int n) {
     return jobs.values().stream()
-      .filter(job -> triggerId.equals(job.trigger.id))
+      .filter(job -> scheduleId.equals(job.scheduleId))
       .sorted((a, b) -> (int)(b.createAt - a.createAt))
       .skip(skip)
       .limit(n)

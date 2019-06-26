@@ -46,7 +46,7 @@ public class JdbcJobManager implements JobManager, JobRepository {
   }
 
   @Override
-  public List<Job> getJobsByTrigger(String triggerId, int offset, int n) {
+  public List<Job> getJobsByScheduleId(String triggerId, int offset, int n) {
     return null;
   }
 

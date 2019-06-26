@@ -3,11 +3,15 @@ package org.ananas.runner.kernel.job;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
+
+import com.google.errorprone.annotations.Var;
 import lombok.Data;
 import org.ananas.runner.kernel.model.Dag;
 import org.ananas.runner.kernel.model.Engine;
 import org.ananas.runner.kernel.model.TriggerOptions;
+import org.ananas.runner.kernel.model.Variable;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.PipelineResult.State;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -25,7 +29,8 @@ public class Job {
   public Dag dag;
   public Set<String> goals;
   public Engine engine;
-  public TriggerOptions trigger;
+  public Map<String, Variable> params;
+  public String scheduleId;
   public long createAt;
   public long updateAt;
 
@@ -62,7 +67,7 @@ public class Job {
   }
 
   public static Job of(
-      String token, String id, String projectId, Engine engine, Dag dag, Set<String> goals, TriggerOptions trigger) {
+      String token, String id, String projectId, Engine engine, Dag dag, Set<String> goals, Map<String, Variable> params, String scheduleId) {
     long current = System.currentTimeMillis();
     Job s = new Job();
     s.token = token;
@@ -70,7 +75,8 @@ public class Job {
     s.projectId = projectId;
     s.engine = engine;
     s.goals = goals;
-    s.trigger = trigger;
+    s.params = params;
+    s.scheduleId = scheduleId;
     s.pipelineResult = null;
     s.e = null;
     s.state = State.UNKNOWN.name();
@@ -89,10 +95,11 @@ public class Job {
       Engine engine,
       Dag dag,
       Set<String> goals,
-      TriggerOptions trigger,
+      Map<String, Variable> params,
+      String scheduleId,
       PipelineResult r,
       Exception e) {
-    Job s = Job.of(token, id, projectId, engine, dag, goals, trigger);
+    Job s = Job.of(token, id, projectId, engine, dag, goals, params, scheduleId);
     s.setResult(new MutablePair<>(r, e));
     return s;
   }
@@ -103,7 +110,7 @@ public class Job {
     j.projectId = job.projectId;
     j.state = job.state;
     j.message = job.message;
-    j.trigger = job.trigger;
+    j.scheduleId = job.scheduleId;
     j.updateAt = job.updateAt;
     j.createAt = job.createAt;
     return j;

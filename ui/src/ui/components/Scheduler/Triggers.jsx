@@ -108,12 +108,13 @@ export default class Triggers extends Component<Props, State> {
           <Box flex={false} height='50px'>
             <Search text={this.state.filter} onChange={(filter)=> this.setState({filter})}/>
           </Box>
-
+          {/*
           <Box align='center' direction='row' flex={false} gap='small' pad='small' >
             <Button primary label='Deploy'/>
             <Button secondary label='Start/Stop'/>
             <Text size='medium'>Current active deployment at {moment().format('YYYY/MM/DD')}</Text>
           </Box>
+          */}
 
           <Box direction='column' flex fill margin={{top: 'medium'}} >
             <Box direction='row'

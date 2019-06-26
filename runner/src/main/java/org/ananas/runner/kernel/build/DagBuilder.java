@@ -72,6 +72,11 @@ public class DagBuilder implements Builder {
     return this.trigger;
   }
 
+  @Override
+  public Map<String, Variable> getParams() {
+    return this.variables;
+  }
+
   public Map<String, Dataframe> test() {
     Map<String, Dataframe> p = new HashMap<>();
 

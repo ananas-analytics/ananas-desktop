@@ -21,7 +21,7 @@ public class Main {
     }
   }
 
-  public static void registerExtensions() {
+  static void registerExtensions() {
     ExtensionRegistry.registerConnector(
         "org.ananas.source.file.csv", CSVConnector.class, CSVPaginator.class);
 
@@ -39,28 +39,4 @@ public class Main {
     ExtensionRegistry.registerViewer("org.ananas.visualization.bignumber", DefaultDataViewer.class);
   }
 
-  /*
-  public static void registerStepRunners() {
-    // register step runners
-    StepBuilder.register("org.ananas.source.file.csv", CSVConnector.class);
-    StepBuilder.register("org.ananas.source.file.json", JsonConnector.class);
-
-    StepBuilder.register("org.ananas.transform.sql", SQLTransformer.class);
-
-    StepBuilder.register("org.ananas.destination.jdbc.mysql", JdbcLoader.class);
-    StepBuilder.register("org.ananas.destination.jdbc.postgres", JdbcLoader.class);
-
-    StepBuilder.register("org.ananas.destination.file.csv", FileLoader.class);
-    StepBuilder.register("org.ananas.destination.file.json", FileLoader.class);
-    StepBuilder.register("org.ananas.destination.file.txt", FileLoader.class);
-
-    StepBuilder.register("org.ananas.visualization.barchart", DefaultDataViewer.class);
-    StepBuilder.register("org.ananas.visualization.linechart", DefaultDataViewer.class);
-    StepBuilder.register("org.ananas.visualization.bignumber", DefaultDataViewer.class);
-  }
-
-  public static void registerPaginators() {
-    PaginatorFactory.register("org.ananas.source.file.csv", CSVPaginator.class);
-  }
-   */
 }

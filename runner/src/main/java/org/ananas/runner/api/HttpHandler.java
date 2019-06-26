@@ -153,7 +153,7 @@ class HttpHandler {
         String skip = request.queryParams("skip");
         String size = request.queryParams("size");
 
-        List<Job> jobs = JobRepositoryFactory.getJobRepostory().getJobsByTrigger(triggerid,
+        List<Job> jobs = JobRepositoryFactory.getJobRepostory().getJobsByScheduleId(triggerid,
           skip == null ? 0 : Integer.valueOf(skip),
           size == null ? 10 : Integer.valueOf(size));
 
