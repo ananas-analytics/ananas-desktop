@@ -21,8 +21,7 @@ const renderActiveApp = activeApp => {
     case 2:
 			return <Variables />
     case 3:
-      return <Scheduler />
-   
+      // return <Scheduler />
     default:
 			return null // <Box>AppIndex: {activeApp}</Box>
   }

@@ -27,11 +27,12 @@ const AppSideBarMenu = ({ activeIndex, expand,
         { expand ? <Text>Variables</Text> : <Code size='20px' /> }
       </AppSideBarMenuItem>
 
+      {/*
       <AppSideBarMenuItem active={activeIndex === 3} expand={expand}
         onClick={() => onClickMenu(3)} >
         { expand ? <Text>Automation</Text> : <SchedulePlay size='20px' /> }
       </AppSideBarMenuItem>
-
+      */}
 
       {/*
       <AppSideBarMenuItem active={activeIndex === 3} expand={expand}
