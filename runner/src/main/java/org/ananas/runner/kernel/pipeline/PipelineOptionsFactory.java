@@ -39,6 +39,7 @@ public class PipelineOptionsFactory {
       options.setObjectReuse(engine.getProperty("objectReuse", Boolean.TRUE));
     }
 
+    options.setAppName("ananas");
     options.setRunner(FlinkRunner.class);
     return options;
   }

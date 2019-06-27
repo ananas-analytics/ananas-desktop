@@ -91,11 +91,6 @@ public enum DerbyDataTypes implements JDBCDataType, DDL {
   @Override
   public JDBCDataType getDefaultDataType(Schema.FieldType type) {
     for (JDBCDataType t : DerbyDataTypes.values()) {
-      System.out.println("----------------------");
-      System.out.println(t.getFieldType());
-      System.out.println(type);
-      System.out.println(Objects.deepEquals(t.getFieldType(), type));
-      System.out.println(t.isDefault());
       if (Objects.deepEquals(t.getFieldType(), type) && t.isDefault()) {
         return t;
       }
