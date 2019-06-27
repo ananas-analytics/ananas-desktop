@@ -9,10 +9,10 @@ import org.ananas.runner.kernel.model.DagRequest;
 import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.model.Engine;
 import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.kernel.model.TriggerOptions;
 import org.ananas.runner.kernel.model.Variable;
 import org.ananas.runner.kernel.pipeline.NoHook;
 import org.ananas.runner.kernel.pipeline.PipelineContext;
-import org.ananas.runner.kernel.model.TriggerOptions;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.Logger;
@@ -39,11 +39,22 @@ public class DagBuilder implements Builder {
   private Map<String, Variable> variables;
 
   public DagBuilder(DagRequest dagRequest, boolean isTest) {
-    this(dagRequest.dag, dagRequest.goals, dagRequest.params, dagRequest.engine, dagRequest.trigger, isTest);
+    this(
+        dagRequest.dag,
+        dagRequest.goals,
+        dagRequest.params,
+        dagRequest.engine,
+        dagRequest.trigger,
+        isTest);
   }
 
   private DagBuilder(
-      Dag d, Set<String> goals, Map<String, Variable> variables, Engine engine, TriggerOptions trigger, boolean isTest) {
+      Dag d,
+      Set<String> goals,
+      Map<String, Variable> variables,
+      Engine engine,
+      TriggerOptions trigger,
+      boolean isTest) {
     this.originalDag = d;
     this.dag = new AnanasGraph(d, goals).reverse().subDag(goals).reverse();
     LOG.debug(this.dag.toString());
@@ -65,7 +76,9 @@ public class DagBuilder implements Builder {
   }
 
   @Override
-  public Dag getDag() { return this.originalDag; }
+  public Dag getDag() {
+    return this.originalDag;
+  }
 
   @Override
   public TriggerOptions getTrigger() {

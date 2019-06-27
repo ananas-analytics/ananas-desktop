@@ -6,7 +6,6 @@ import org.ananas.runner.kernel.DataViewerStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.job.Job;
 import org.ananas.runner.kernel.job.JobRepositoryFactory;
-import org.ananas.runner.kernel.job.LocalJobManager;
 import org.ananas.runner.kernel.model.*;
 import org.ananas.runner.kernel.paginate.Paginator;
 import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;

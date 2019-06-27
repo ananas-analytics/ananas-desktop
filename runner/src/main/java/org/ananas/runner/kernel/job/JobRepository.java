@@ -7,6 +7,7 @@ public interface JobRepository {
 
   /**
    * Get job by id
+   *
    * @param id
    * @return
    */
@@ -14,12 +15,14 @@ public interface JobRepository {
 
   /**
    * Get all jobs
+   *
    * @return
    */
   Set<Job> getJobs(int offset, int n);
 
   /**
    * Get jobs by trigger id, for scheduled job
+   *
    * @param triggerId
    * @return
    */
@@ -27,6 +30,7 @@ public interface JobRepository {
 
   /**
    * Get jobs by goal
+   *
    * @param goalId
    * @return
    */
@@ -34,6 +38,7 @@ public interface JobRepository {
 
   /**
    * Delete a job
+   *
    * @param jobId
    */
   void deleteJob(String jobId);

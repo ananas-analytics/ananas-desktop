@@ -1,9 +1,6 @@
 package org.ananas.runner.kernel.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import lombok.Data;
 

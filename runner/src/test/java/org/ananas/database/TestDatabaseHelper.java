@@ -67,12 +67,14 @@ public class TestDatabaseHelper {
               .execute();
         });
 
-    db.execute(context -> {
-      return context.update(DSL.table(TABLE_JOB))
-        .set(DSL.field("STATE"), "DONE")
-        .where(condition("ID = ?", jobId))
-        .execute();
-    });
+    db.execute(
+        context -> {
+          return context
+              .update(DSL.table(TABLE_JOB))
+              .set(DSL.field("STATE"), "DONE")
+              .where(condition("ID = ?", jobId))
+              .execute();
+        });
 
     List<Job> jobs =
         db.execute(
@@ -81,27 +83,33 @@ public class TestDatabaseHelper {
             });
 
     String goalId = UUID.randomUUID().toString();
-    db.execute(context -> {
-      return context.insertInto(DSL.table(TABLE_GOAL))
-        .set(DSL.field("ID"), goalId)
-        .set(DSL.field("JOB_ID"), jobId)
-        .execute();
-    });
+    db.execute(
+        context -> {
+          return context
+              .insertInto(DSL.table(TABLE_GOAL))
+              .set(DSL.field("ID"), goalId)
+              .set(DSL.field("JOB_ID"), jobId)
+              .execute();
+        });
 
-    List<Result> j = db.execute(context-> {
-      return context.select(DSL.field("DAG")).select(
-        DSL.field("JOB.ID").as("ID"),
-        DSL.field("STATE"),
-        DSL.field("TRIGGER_TYPE"),
-        DSL.field("GOAL.ID").as("GOAL_ID")
-      )
-        .from(TABLE_JOB)
-        .join(TABLE_GOAL)
-        .on(String.format("%s.ID = %s.JOB_ID", TABLE_JOB, TABLE_GOAL))
-        .where(condition(TABLE_JOB + ".ID = ?", jobId))
-        .orderBy(DSL.field("UPDATE_AT"))
-        .fetch().into(Result.class);
-    });
+    List<Result> j =
+        db.execute(
+            context -> {
+              return context
+                  .select(DSL.field("DAG"))
+                  .select(
+                      DSL.field("JOB.ID").as("ID"),
+                      DSL.field("STATE"),
+                      DSL.field("TRIGGER_TYPE"),
+                      DSL.field("GOAL.ID").as("GOAL_ID"))
+                  .from(TABLE_JOB)
+                  .join(TABLE_GOAL)
+                  .on(String.format("%s.ID = %s.JOB_ID", TABLE_JOB, TABLE_GOAL))
+                  .where(condition(TABLE_JOB + ".ID = ?", jobId))
+                  .orderBy(DSL.field("UPDATE_AT"))
+                  .fetch()
+                  .into(Result.class);
+            });
 
     assertEquals(1, j.size());
     assertEquals("{\"nkey\": 1}", new String(j.get(0).dag));

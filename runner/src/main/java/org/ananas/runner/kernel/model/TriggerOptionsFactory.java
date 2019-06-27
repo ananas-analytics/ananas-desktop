@@ -54,8 +54,8 @@ public class TriggerOptionsFactory {
     return options;
   }
 
-
-  public static TriggerOptions monthly(String id, long start, int dayOfMonth, int hour, int minute) {
+  public static TriggerOptions monthly(
+      String id, long start, int dayOfMonth, int hour, int minute) {
     TriggerOptions options = new TriggerOptions();
     options.id = id;
     options.type = TriggerOptions.MONTHLY;
@@ -65,6 +65,4 @@ public class TriggerOptionsFactory {
     options.startTimestamp = start;
     return options;
   }
-
-
 }

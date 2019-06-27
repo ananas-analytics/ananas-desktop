@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.ananas.runner.steprunner.jdbc.DDL;
 import org.ananas.runner.steprunner.jdbc.JDBCDataType;
 import org.apache.beam.sdk.schemas.Schema;
+import org.apache.beam.sdk.schemas.Schema.FieldType;
 
 public enum DerbyDataTypes implements JDBCDataType, DDL {
 
@@ -22,15 +23,17 @@ public enum DerbyDataTypes implements JDBCDataType, DDL {
   BPCHAR("bpchar", Schema.FieldType.STRING, false),
   CHARVAR("character varying", Schema.FieldType.STRING, false),
   CHARACTER("character", Schema.FieldType.STRING, false),
-  DATE_metadata("date", Schema.FieldType.DATETIME.withMetadata("DATE"), true),
-  TIME_metadata("time", Schema.FieldType.DATETIME.withMetadata("TIME"), true),
-  TIMESTAMP_metadata("timestamp", Schema.FieldType.DATETIME.withMetadata("TS"), true),
+  DATE_metadata("date", Schema.FieldType.DATETIME.withMetadata("subtype", "DATE"), true),
+  TIME_metadata("time", Schema.FieldType.DATETIME.withMetadata("subtype", "TIME"), true),
+  TIMESTAMP_metadata("timestamp", Schema.FieldType.DATETIME.withMetadata("subtype", "TS"), true),
   TIMESTAMP_WITHOUT_TS_metadata(
-      "timestamp without time zone", Schema.FieldType.DATETIME.withMetadata("TS"), true),
+      "timestamp without time zone", Schema.FieldType.DATETIME.withMetadata("subtype", "TS"), true),
   TIMESTAMP_WITH_TIME_ZONE_metadata(
-      "timestamp with time zone", Schema.FieldType.DATETIME.withMetadata("TS_WITH_LOCAL_TZ"), true),
+      "timestamp with time zone",
+      Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"),
+      true),
   TIMESTAMPZ_metadata(
-      "timestamptz", Schema.FieldType.DATETIME.withMetadata("TS_WITH_LOCAL_TZ"), false),
+      "timestamptz", Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"), false),
   DECIMAL00("decimal(29,2)", Schema.FieldType.DECIMAL, true),
   DECIMAL("decimal", Schema.FieldType.DECIMAL, false),
   REAL("real", Schema.FieldType.FLOAT, false),
@@ -49,8 +52,8 @@ public enum DerbyDataTypes implements JDBCDataType, DDL {
   TEXT("text", Schema.FieldType.STRING, false),
   TIMESTAMP("timestamp", Schema.FieldType.DATETIME, true),
   TIME("time", Schema.FieldType.DATETIME, true),
-  VARCHAR255("varchar(255)", Schema.FieldType.STRING, true),
-  VARCHAR("varchar", Schema.FieldType.STRING, false),
+  VARCHAR255("varchar(255)", FieldType.STRING.withNullable(true), true),
+  VARCHAR("varchar", FieldType.STRING, false),
   DATE("date", Schema.FieldType.DATETIME, true),
   XML("xml", Schema.FieldType.STRING, false);
 
@@ -88,6 +91,11 @@ public enum DerbyDataTypes implements JDBCDataType, DDL {
   @Override
   public JDBCDataType getDefaultDataType(Schema.FieldType type) {
     for (JDBCDataType t : DerbyDataTypes.values()) {
+      System.out.println("----------------------");
+      System.out.println(t.getFieldType());
+      System.out.println(type);
+      System.out.println(Objects.deepEquals(t.getFieldType(), type));
+      System.out.println(t.isDefault());
       if (Objects.deepEquals(t.getFieldType(), type) && t.isDefault()) {
         return t;
       }

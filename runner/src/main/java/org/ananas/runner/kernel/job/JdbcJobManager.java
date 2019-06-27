@@ -5,15 +5,11 @@ import java.util.List;
 import java.util.Set;
 import org.ananas.runner.kernel.build.Builder;
 
-/**
- * TODO: to be implemented
- *
- */
+/** TODO: to be implemented */
 public class JdbcJobManager implements JobManager, JobRepository {
   private static JdbcJobManager INSTANCE = null;
 
-  public JdbcJobManager() {
-  }
+  public JdbcJobManager() {}
 
   public JdbcJobManager of() {
     if (INSTANCE == null) {
@@ -28,9 +24,7 @@ public class JdbcJobManager implements JobManager, JobRepository {
   }
 
   @Override
-  public void cancelJob(String id) throws IOException {
-
-  }
+  public void cancelJob(String id) throws IOException {}
 
   @Override
   public void deleteJob(String jobId) {}

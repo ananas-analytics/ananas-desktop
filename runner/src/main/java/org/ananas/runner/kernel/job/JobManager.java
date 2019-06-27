@@ -8,5 +8,4 @@ public interface JobManager {
   String run(String jobId, Builder builder, String projectId, String token);
 
   void cancelJob(String id) throws IOException;
-
 }

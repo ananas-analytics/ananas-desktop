@@ -34,6 +34,8 @@ const state = {
     ],
     templates: {
       Flink: [
+        { name: 'flinkMaster', label: 'Master URL', type: 'string', description: '', default: '[auto]', advanced: false },
+        { name: 'tempLocation', label: 'Temp Location', type: 'string', description: '', default: '/tmp/', advanced: true },
         { name: 'parallelism', label: 'Parallelism', type: 'number', description: '', default: '10', advanced: false },
         { name: 'maxBundleSize', label: 'Max Bundle Size', type: 'number', description: '', default: '1000000', advanced: true },
         { name: 'objectReuse', label: 'Enable Object Reuse', type: 'boolean', description: '', default: 'true', advanced: true },

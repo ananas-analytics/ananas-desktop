@@ -38,5 +38,4 @@ public class Main {
     ExtensionRegistry.registerViewer("org.ananas.visualization.linechart", DefaultDataViewer.class);
     ExtensionRegistry.registerViewer("org.ananas.visualization.bignumber", DefaultDataViewer.class);
   }
-
 }

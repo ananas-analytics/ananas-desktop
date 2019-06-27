@@ -68,7 +68,7 @@ public class JdbcSchemaDetecter implements Serializable {
     Schema.FieldType type = schema.getField(idx).getType();
     try {
       if (type.getTypeName().equals(Schema.FieldType.DATETIME.getTypeName())) {
-        String metadata = String.valueOf(type.getMetadata());
+        String metadata = String.valueOf(type.getMetadata("subtype"));
         if (metadata.equals("TIME")) {
           Time ts = resultSet.getTime(idx + 1, UTC);
           return new DateTime(ts);

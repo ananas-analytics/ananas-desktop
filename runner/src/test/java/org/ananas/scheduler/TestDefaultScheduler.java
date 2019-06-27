@@ -19,7 +19,8 @@ public class TestDefaultScheduler {
     ScheduleOptions options = new ScheduleOptions();
     options.id = "test-trigger";
     options.dag = new DagRequest();
-    options.trigger = TriggerOptionsFactory.repeat(UUID.randomUUID().toString(), System.currentTimeMillis(), 3);
+    options.trigger =
+        TriggerOptionsFactory.repeat(UUID.randomUUID().toString(), System.currentTimeMillis(), 3);
 
     scheduler.schedule(options);
 

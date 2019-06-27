@@ -125,7 +125,7 @@ public enum JDBCDriver implements Serializable {
       }
       switch (type.getTypeName()) {
         case DATETIME:
-          String metadata = String.valueOf(type.getMetadata());
+          String metadata = String.valueOf(type.getMetadata("subtype"));
           if (metadata.equals("TIME")) {
             query.setTime(idx, new Time(((Instant) o).getMillis()));
             return;

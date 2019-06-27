@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.job.BeamRunner;
+import org.ananas.runner.kernel.job.Job;
 import org.ananas.runner.kernel.job.JobRepositoryFactory;
 import org.ananas.runner.kernel.job.Runner;
 import org.ananas.runner.kernel.model.Dataframe;
-import org.ananas.runner.kernel.job.Job;
 import org.ananas.runner.kernel.paginate.PaginationBody;
 import org.ananas.runner.kernel.paginate.Paginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
@@ -136,13 +136,15 @@ class HttpHandler {
         String skip = request.queryParams("skip");
         String size = request.queryParams("size");
 
-        List<Job> jobs = JobRepositoryFactory.getJobRepostory().getJobsByGoal(goalid,
-          skip == null ? 0 : Integer.valueOf(skip),
-          size == null ? 10 : Integer.valueOf(size));
+        List<Job> jobs =
+            JobRepositoryFactory.getJobRepostory()
+                .getJobsByGoal(
+                    goalid,
+                    skip == null ? 0 : Integer.valueOf(skip),
+                    size == null ? 10 : Integer.valueOf(size));
 
-        List<Job> output = jobs.stream()
-          .map(Job::JobStateResultFilter)
-          .collect(Collectors.toList());
+        List<Job> output =
+            jobs.stream().map(Job::JobStateResultFilter).collect(Collectors.toList());
 
         return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
       };
@@ -153,13 +155,15 @@ class HttpHandler {
         String skip = request.queryParams("skip");
         String size = request.queryParams("size");
 
-        List<Job> jobs = JobRepositoryFactory.getJobRepostory().getJobsByScheduleId(triggerid,
-          skip == null ? 0 : Integer.valueOf(skip),
-          size == null ? 10 : Integer.valueOf(size));
+        List<Job> jobs =
+            JobRepositoryFactory.getJobRepostory()
+                .getJobsByScheduleId(
+                    triggerid,
+                    skip == null ? 0 : Integer.valueOf(skip),
+                    size == null ? 10 : Integer.valueOf(size));
 
-        List<Job> output = jobs.stream()
-          .map(Job::JobStateResultFilter)
-          .collect(Collectors.toList());
+        List<Job> output =
+            jobs.stream().map(Job::JobStateResultFilter).collect(Collectors.toList());
 
         return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
       };

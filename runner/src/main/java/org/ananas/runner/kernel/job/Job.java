@@ -5,12 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.errorprone.annotations.Var;
 import lombok.Data;
 import org.ananas.runner.kernel.model.Dag;
 import org.ananas.runner.kernel.model.Engine;
-import org.ananas.runner.kernel.model.TriggerOptions;
 import org.ananas.runner.kernel.model.Variable;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.PipelineResult.State;
@@ -67,7 +64,14 @@ public class Job {
   }
 
   public static Job of(
-      String token, String id, String projectId, Engine engine, Dag dag, Set<String> goals, Map<String, Variable> params, String scheduleId) {
+      String token,
+      String id,
+      String projectId,
+      Engine engine,
+      Dag dag,
+      Set<String> goals,
+      Map<String, Variable> params,
+      String scheduleId) {
     long current = System.currentTimeMillis();
     Job s = new Job();
     s.token = token;

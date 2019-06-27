@@ -1,10 +1,16 @@
 package org.ananas.runner.kernel.job;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import org.ananas.runner.kernel.StepRunner;
@@ -13,6 +19,7 @@ import org.ananas.runner.kernel.pipeline.PipelineContext;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.PipelineResult.State;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.flink.metrics.reporter.Scheduled;
 
 public class LocalJobManager implements JobManager, JobRepository {
 
@@ -36,8 +43,16 @@ public class LocalJobManager implements JobManager, JobRepository {
   @Override
   public String run(String jobId, Builder builder, String projectId, String token) {
     this.lock.lock();
-    Job job = Job.of(token, jobId, projectId, builder.getEngine(), builder.getDag(), builder.getGoals(),
-      builder.getParams(), builder.getTrigger().id);
+    Job job =
+        Job.of(
+            token,
+            jobId,
+            projectId,
+            builder.getEngine(),
+            builder.getDag(),
+            builder.getGoals(),
+            builder.getParams(),
+            builder.getTrigger().id);
     this.jobs.put(jobId, job);
     try {
       CompletableFuture<MutablePair<PipelineResult, Exception>> pipelineFuture =
@@ -75,8 +90,14 @@ public class LocalJobManager implements JobManager, JobRepository {
       pipelineFuture.thenApply(
           result -> {
             job.setResult(result);
-      return result != null;
-    });
+            // create status polling
+            ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
+            es.submit(() -> {
+              result.getLeft().waitUntilFinish();
+              job.setResult(result);
+            });
+            return result != null;
+          });
 
     } finally {
       this.lock.unlock();
@@ -118,21 +139,21 @@ public class LocalJobManager implements JobManager, JobRepository {
   @Override
   public List<Job> getJobsByScheduleId(String scheduleId, int skip, int n) {
     return jobs.values().stream()
-      .filter(job -> scheduleId.equals(job.scheduleId))
-      .sorted((a, b) -> (int)(b.createAt - a.createAt))
-      .skip(skip)
-      .limit(n)
-      .collect(Collectors.toList());
+        .filter(job -> scheduleId.equals(job.scheduleId))
+        .sorted((a, b) -> (int) (b.createAt - a.createAt))
+        .skip(skip)
+        .limit(n)
+        .collect(Collectors.toList());
   }
 
   @Override
   public List<Job> getJobsByGoal(String goalId, int skip, int n) {
     return jobs.values().stream()
-      .filter(job -> job.goals != null && job.goals.contains(goalId))
-      .sorted((a, b) -> (int)(b.createAt - a.createAt))
-      .skip(skip)
-      .limit(n)
-      .collect(Collectors.toList());
+        .filter(job -> job.goals != null && job.goals.contains(goalId))
+        .sorted((a, b) -> (int) (b.createAt - a.createAt))
+        .skip(skip)
+        .limit(n)
+        .collect(Collectors.toList());
   }
 
   @Override

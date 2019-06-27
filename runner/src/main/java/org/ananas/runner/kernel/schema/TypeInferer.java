@@ -38,15 +38,15 @@ public class TypeInferer {
     COVARIANT_TYPES.put(Schema.FieldType.STRING, Arrays.asList(Schema.FieldType.STRING));
     COVARIANT_TYPES.put(Schema.FieldType.DATETIME, Arrays.asList(Schema.FieldType.STRING));
 
-    TYPES_CLASS.put(Schema.FieldType.INT32, Integer.class);
-    TYPES_CLASS.put(Schema.FieldType.INT64, Long.class);
-    TYPES_CLASS.put(Schema.FieldType.DOUBLE, Double.class);
-    TYPES_CLASS.put(Schema.FieldType.DECIMAL, BigDecimal.class);
-    TYPES_CLASS.put(Schema.FieldType.FLOAT, Float.class);
-    TYPES_CLASS.put(Schema.FieldType.BYTE, Byte[].class);
-    TYPES_CLASS.put(Schema.FieldType.BOOLEAN, Boolean.class);
-    TYPES_CLASS.put(Schema.FieldType.STRING, String.class);
-    TYPES_CLASS.put(Schema.FieldType.DATETIME, DateTime.class);
+    TYPES_CLASS.put(Schema.FieldType.INT32.withNullable(true), Integer.class);
+    TYPES_CLASS.put(Schema.FieldType.INT64.withNullable(true), Long.class);
+    TYPES_CLASS.put(Schema.FieldType.DOUBLE.withNullable(true), Double.class);
+    TYPES_CLASS.put(Schema.FieldType.DECIMAL.withNullable(true), BigDecimal.class);
+    TYPES_CLASS.put(Schema.FieldType.FLOAT.withNullable(true), Float.class);
+    TYPES_CLASS.put(Schema.FieldType.BYTE.withNullable(true), Byte[].class);
+    TYPES_CLASS.put(Schema.FieldType.BOOLEAN.withNullable(true), Boolean.class);
+    TYPES_CLASS.put(Schema.FieldType.STRING.withNullable(true), String.class);
+    TYPES_CLASS.put(Schema.FieldType.DATETIME.withNullable(true), DateTime.class);
   }
 
   /**

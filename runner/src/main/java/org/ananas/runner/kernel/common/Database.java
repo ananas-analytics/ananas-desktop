@@ -85,26 +85,28 @@ public class Database {
               .execute();
 
           // create goal table
-          context.createTable(TABLE_GOAL)
-            .column("ID", SQLDataType.VARCHAR.length(40))
-            .column("JOB_ID", SQLDataType.VARCHAR.length(40))
-            .constraints(
-              DSL.constraint("PK_GOAL").primaryKey("ID")
-              // TODO: add foreign key constraint here
-            )
-            .execute();
+          context
+              .createTable(TABLE_GOAL)
+              .column("ID", SQLDataType.VARCHAR.length(40))
+              .column("JOB_ID", SQLDataType.VARCHAR.length(40))
+              .constraints(
+                  DSL.constraint("PK_GOAL").primaryKey("ID")
+                  // TODO: add foreign key constraint here
+                  )
+              .execute();
 
           return null;
         });
   }
 
   public void clean() {
-    execute(context -> {
-      context.dropTable(TABLE_GOAL).execute();
-      context.dropTable(TABLE_JOB).execute();
-      context.dropSchema(SCHEMA).execute();
-      return null;
-    });
+    execute(
+        context -> {
+          context.dropTable(TABLE_GOAL).execute();
+          context.dropTable(TABLE_JOB).execute();
+          context.dropSchema(SCHEMA).execute();
+          return null;
+        });
   }
 
   public <T> T execute(LambdaDSLContext<T> l) {

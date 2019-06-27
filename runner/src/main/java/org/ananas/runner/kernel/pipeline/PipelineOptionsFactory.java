@@ -32,6 +32,8 @@ public class PipelineOptionsFactory {
       options.setMaxBundleSize(1000 * 1000L);
       options.setObjectReuse(true);
     } else {
+      options.setFlinkMaster(engine.getProperty("flinkMaster", "[auto]"));
+      options.setTempLocation(engine.getProperty("tempLocation", "/tmp/"));
       options.setParallelism(engine.getProperty("parallelism", Integer.valueOf(10)));
       options.setMaxBundleSize(engine.getProperty("maxBundleSize", Long.valueOf(1000 * 1000L)));
       options.setObjectReuse(engine.getProperty("objectReuse", Boolean.TRUE));
