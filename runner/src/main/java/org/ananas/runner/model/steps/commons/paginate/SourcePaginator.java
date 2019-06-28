@@ -15,6 +15,7 @@ import org.ananas.runner.model.steps.db.MongoDBPaginator;
 import org.ananas.runner.model.steps.db.MongoStepConfig;
 import org.ananas.runner.model.steps.files.*;
 import org.ananas.runner.model.steps.files.csv.CSVPaginator;
+import org.ananas.runner.steprunner.files.FileLoader;
 import org.ananas.runner.steprunner.files.csv.CSVStepConfig;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
 import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;

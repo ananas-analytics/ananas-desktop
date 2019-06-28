@@ -31,13 +31,16 @@ layout:
         - bucket
         - path-heading
         - path-input
-        #- header
+        - header
         - key: advanced-editor
           collapsible: true
           props:
             label: Advanced
           children:
           - description
+          - force-auto-detect-schema
+          - force-download-sample
+          - sample-size
     - key: update-container
       props:
         boder:
@@ -82,10 +85,10 @@ components:
       options:
         - label: CSV
           value: csv
-        - label: JSON
-          value: json 
-        - label: Text
-          value: txt
+        #- label: JSON
+        #  value: json 
+        #- label: Text
+        #  value: txt
   bucket:
     bind: bucket
     type: TextInput
@@ -98,18 +101,38 @@ components:
     props: {
       label: File Path/Pattern
     }
-  #header:
-  #  bind: header
-  #  type: CheckBox
-  #  default: true
-  #  props:
-  #    label: include header?
+  header:
+    bind: header
+    conditions:
+      format: [ 'csv' ]
+    type: CheckBox
+    default: true
+    props:
+      label: include header?
   description:
     bind: __description__
     type: TextArea
     default: Describe this step here
     props:
       label: Description
+  force-auto-detect-schema:
+    bind: forceAutoDetectSchema
+    type: CheckBox
+    default: false
+    props:
+      label: Force schema auto detection
+  force-download-sample:
+    bind: resampling
+    type: CheckBox
+    default: false
+    props:
+      label: Redownload sample file?
+  sample-size:
+    bind: sampleSize
+    type: TextInput
+    props:
+      label: Explore sample size limit (MB)
+      type: number
   update-btn:
     type: Button
     props:

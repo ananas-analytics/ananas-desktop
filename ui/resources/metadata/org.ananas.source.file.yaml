@@ -52,7 +52,7 @@ org.ananas.source.file.gcs:
   name: Google Cloud Storage
   description: Connect file on Google Cloud Storage
   type: Source
-  icon: images/google-cloud.svg
+  icon: images/google-gcs.svg
   step:
     type: connector
     config:
@@ -60,6 +60,8 @@ org.ananas.source.file.gcs:
       format: csv
       bucket: bucket-name
       path: ""
+      resampling: false
+      sampleSize: 5
       forceAutoDetectSchema: false
   options:
     maxIncoming: 0
