@@ -22,11 +22,18 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   BPCHAR("bpchar", Schema.FieldType.STRING, false),
   CHARVAR("character varying", Schema.FieldType.STRING, false),
   CHARACTER("character", Schema.FieldType.STRING, false),
-  DATE_metadata("date", Schema.FieldType.DATETIME.withMetadata("subtype", "DATE").withNullable(true), true),
-  TIME_metadata("time", Schema.FieldType.DATETIME.withMetadata("subtype", "TIME").withNullable(true), true),
-  TIMESTAMP_metadata("timestamp", Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true), true),
+  DATE_metadata(
+      "date", Schema.FieldType.DATETIME.withMetadata("subtype", "DATE").withNullable(true), true),
+  TIME_metadata(
+      "time", Schema.FieldType.DATETIME.withMetadata("subtype", "TIME").withNullable(true), true),
+  TIMESTAMP_metadata(
+      "timestamp",
+      Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true),
+      true),
   TIMESTAMP_WITHOUT_TS_metadata(
-      "timestamp without time zone", Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true), true),
+      "timestamp without time zone",
+      Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true),
+      true),
   TIMESTAMP_WITH_TIME_ZONE_metadata(
       "timestamp with time zone",
       Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ").withNullable(true),
@@ -93,7 +100,9 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   @Override
   public JDBCDataType getDefaultDataType(Schema.FieldType type) {
     for (JDBCDataType t : MySQLDataTypes.values()) {
-      if (Objects.deepEquals(t.getFieldType(), type) && t.isDefault()) {
+      if ((Objects.deepEquals(t.getFieldType().withNullable(false), type)
+              || Objects.deepEquals(t.getFieldType().withNullable(true), type))
+          && t.isDefault()) {
         return t;
       }
     }

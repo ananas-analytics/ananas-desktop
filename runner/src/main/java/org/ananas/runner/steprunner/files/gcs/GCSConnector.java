@@ -11,14 +11,13 @@ import org.apache.beam.sdk.schemas.Schema;
 import org.apache.commons.csv.CSVFormat;
 
 public class GCSConnector extends ConnectorStepRunner {
-  public GCSConnector(Pipeline pipeline,
-    Step step, boolean doSampling, boolean isTest) {
+  public GCSConnector(Pipeline pipeline, Step step, boolean doSampling, boolean isTest) {
     super(pipeline, step, doSampling, isTest);
   }
 
   public void build() {
     String format = (String) step.config.getOrDefault("format", "");
-    switch(format) {
+    switch (format) {
       case "csv":
         buildCsvConnector();
         break;

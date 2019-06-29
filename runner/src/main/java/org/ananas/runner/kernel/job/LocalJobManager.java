@@ -1,7 +1,5 @@
 package org.ananas.runner.kernel.job;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -9,8 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import org.ananas.runner.kernel.StepRunner;
@@ -19,7 +15,6 @@ import org.ananas.runner.kernel.pipeline.PipelineContext;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.PipelineResult.State;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.flink.metrics.reporter.Scheduled;
 
 public class LocalJobManager implements JobManager, JobRepository {
 
@@ -92,10 +87,11 @@ public class LocalJobManager implements JobManager, JobRepository {
             job.setResult(result);
             // create status polling
             ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
-            es.submit(() -> {
-              result.getLeft().waitUntilFinish();
-              job.setResult(result);
-            });
+            es.submit(
+                () -> {
+                  result.getLeft().waitUntilFinish();
+                  job.setResult(result);
+                });
             return result != null;
           });
 

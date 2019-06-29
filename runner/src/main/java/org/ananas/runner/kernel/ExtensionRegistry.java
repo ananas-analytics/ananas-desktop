@@ -30,5 +30,4 @@ public class ExtensionRegistry {
   public static void registerViewer(String metaId, Class<? extends StepRunner> stepRunnerClass) {
     StepBuilder.register(metaId, stepRunnerClass);
   }
-
 }

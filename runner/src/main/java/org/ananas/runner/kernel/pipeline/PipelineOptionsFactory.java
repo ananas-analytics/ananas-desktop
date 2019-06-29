@@ -14,10 +14,10 @@ public class PipelineOptionsFactory {
       return createFlinkOptions(null);
     }
 
-    switch (engine.type) {
-      case "Flink":
+    switch (engine.type.toLowerCase()) {
+      case "flink":
         return createFlinkOptions(engine);
-      case "Spark":
+      case "spark":
         return createSparkOptions(engine);
       default:
         return createFlinkOptions(null);
@@ -39,7 +39,7 @@ public class PipelineOptionsFactory {
       options.setObjectReuse(engine.getProperty("objectReuse", Boolean.TRUE));
     }
 
-    options.setAppName("ananas");
+    options.setAppName(engine.getProperty(Engine.APP_NAME, "ananas"));
     options.setRunner(FlinkRunner.class);
     return options;
   }
@@ -52,7 +52,7 @@ public class PipelineOptionsFactory {
     options.setStreaming(engine.getProperty("streaming", Boolean.FALSE));
     options.setEnableSparkMetricSinks(engine.getProperty("enableMetricSinks", Boolean.TRUE));
 
-    options.setAppName("ananas");
+    options.setAppName(engine.getProperty(Engine.APP_NAME, "ananas"));
     options.setRunner(SparkRunner.class);
 
     return options;

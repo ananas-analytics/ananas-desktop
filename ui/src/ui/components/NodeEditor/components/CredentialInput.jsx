@@ -7,22 +7,6 @@ import { Text } from 'grommet/components/Text'
 
 import { View } from 'grommet-icons'
 
-/*
-export default ({label=null, type='text', value='', onChange}) => {
-  let inputValue = value || ''
-  return (
-    <Box margin={{vertical: 'small'}}>
-      { typeof label === 'string' ? <Text size='small' margin={{bottom: 'xsmall'}}>{label}</Text> : null }
-      <TextInput 
-        type={type}
-        value={inputValue} 
-        onChange={e => onChange(e.target.value)} />
-    </Box>
-  )
-}
-*/
-
-
 type Props = {
   label: string,
   value: string,

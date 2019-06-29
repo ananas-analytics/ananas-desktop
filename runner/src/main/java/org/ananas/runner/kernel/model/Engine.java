@@ -10,6 +10,8 @@ import lombok.Data;
 public class Engine implements Serializable {
   private static final long serialVersionUID = 514210961358164868L;
 
+  public static final String APP_NAME = "app_name";
+
   public static final String VIEW_DB_TYPE = "database_type";
   public static final String VIEW_DB_URL = "database_url";
   public static final String VIEW_DB_USER = "database_user";

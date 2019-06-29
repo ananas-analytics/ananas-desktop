@@ -20,11 +20,18 @@ public enum PostgresqlDataTypes implements JDBCDataType, DDL {
   BPCHAR("bpchar", Schema.FieldType.STRING, false),
   CHARVAR("character varying", Schema.FieldType.STRING.withNullable(true), true),
   CHARACTER("character", Schema.FieldType.STRING, false),
-  DATE_metadata("date", Schema.FieldType.DATETIME.withMetadata("subtype", "DATE").withNullable(true), true),
-  TIME_metadata("time", Schema.FieldType.DATETIME.withMetadata("subtype", "TIME").withNullable(true), true),
-  TIMESTAMP_metadata("timestamp", Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true), true),
+  DATE_metadata(
+      "date", Schema.FieldType.DATETIME.withMetadata("subtype", "DATE").withNullable(true), true),
+  TIME_metadata(
+      "time", Schema.FieldType.DATETIME.withMetadata("subtype", "TIME").withNullable(true), true),
+  TIMESTAMP_metadata(
+      "timestamp",
+      Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true),
+      true),
   TIMESTAMP_WITHOUT_TS_metadata(
-      "timestamp without time zone", Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true), true),
+      "timestamp without time zone",
+      Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true),
+      true),
   TIMESTAMP_WITH_TIME_ZONE_metadata(
       "timestamp with time zone",
       Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ").withNullable(true),
@@ -51,7 +58,10 @@ public enum PostgresqlDataTypes implements JDBCDataType, DDL {
   SMALLINT("smallint", Schema.FieldType.INT32, false),
   STRING("string", Schema.FieldType.STRING, false),
   TEXT("text", Schema.FieldType.STRING, false),
-  TIMESTAMP("timestamp", Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true), true),
+  TIMESTAMP(
+      "timestamp",
+      Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true),
+      true),
   TIME("time", Schema.FieldType.DATETIME.withNullable(true), true),
   VARCHAR("varchar", Schema.FieldType.STRING, false),
   DATE("date", Schema.FieldType.DATETIME.withNullable(true), true),

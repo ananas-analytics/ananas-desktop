@@ -233,6 +233,8 @@ export default class ExecutionService {
       })
     }
 
+    // inject app name
+    engine.properties['app_name'] = `${user ? user.name : 'anonymous'}-${projectId}`
     // call runner API to get the jobId
     return axios({
       method: 'POST',

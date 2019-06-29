@@ -5,6 +5,7 @@ import CheckBox from './CheckBox'
 import CodeEditor from './CodeEditor'
 import ColorPicker from './ColorPicker'
 import ColumnMap from './ColumnMap'
+import CredentialInput from './CredentialInput'
 import DataTable from './DataTable'
 import DropFile from './DropFile'
 import Heading from './Heading'
@@ -26,6 +27,7 @@ export default {
   CodeEditor,
   ColorPicker,
   ColumnMap,
+  CredentialInput,
   DataTable,
   DropFile,
   Heading,

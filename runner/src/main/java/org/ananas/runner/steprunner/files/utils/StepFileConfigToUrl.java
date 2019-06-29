@@ -12,9 +12,7 @@ public class StepFileConfigToUrl {
   }
 
   public static String gcsSourceUrl(Map<String, Object> config) {
-    return String.format(
-        "gs://%s/%s",
-        config.get("bucket"), config.get("path"));
+    return String.format("gs://%s/%s", config.get("bucket"), config.get("path"));
   }
 
   public static String url(Map<String, Object> config, FileLoader.SupportedFormat f) {

@@ -89,7 +89,7 @@ public class CSVPaginator extends AutoDetectedSchemaPaginator {
           }
           try {
             Iterator<Row> it =
-              BeamTableUtils.csvLines2BeamRows(this.format, e, this.schema).iterator();
+                BeamTableUtils.csvLines2BeamRows(this.format, e, this.schema).iterator();
             return it.hasNext() ? it.next() : null;
           } catch (Exception ex) {
             return null;
