@@ -7,8 +7,8 @@ import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.job.Job;
 import org.ananas.runner.kernel.job.JobRepositoryFactory;
 import org.ananas.runner.kernel.model.*;
-import org.ananas.runner.kernel.paginate.Paginator;
-import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
+import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.kernel.paginate.PaginatorFactory;
 import org.ananas.runner.steprunner.files.utils.HomeManager;
 import org.ananas.runner.steprunner.jdbc.JDBCDriver;
 import org.ananas.runner.steprunner.jdbc.JdbcLoader;
@@ -81,8 +81,18 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       config.put(JdbcStepConfig.JDBC_USER, DataViewRepository.getJdbcUser(job.engine));
       config.put(JdbcStepConfig.JDBC_PASSWORD, DataViewRepository.getJdbcPassword(job.engine));
 
-      Paginator paginator =
-          SourcePaginator.of(tName, StepType.Connector.name(), config, new HashMap<>());
+      // Paginator paginator =
+      //    SourcePaginator.of(tName, StepType.Connector.name(), config, new HashMap<>());
+
+      // by default use jdbc paginator
+      AutoDetectedSchemaPaginator paginator =
+          PaginatorFactory.of(
+                  stepId,
+                  "org.ananas.destination.jdbc.mysql",
+                  StepType.Connector.name(),
+                  config,
+                  (Dataframe) null)
+              .buildPaginator();
       Dataframe dataframe = paginator.paginate(0, Integer.MAX_VALUE);
       return dataframe;
     }

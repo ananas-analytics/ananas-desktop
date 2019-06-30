@@ -101,9 +101,9 @@ public enum PostgresqlDataTypes implements JDBCDataType, DDL {
   @Override
   public JDBCDataType getDefaultDataType(Schema.FieldType type) {
     for (JDBCDataType t : PostgresqlDataTypes.values()) {
-      if ((Objects.deepEquals(t.getFieldType().withNullable(true), type) ||
-            Objects.deepEquals(t.getFieldType().withNullable(false), type) ) &&
-          t.isDefault()) {
+      if ((Objects.deepEquals(t.getFieldType().withNullable(true), type)
+              || Objects.deepEquals(t.getFieldType().withNullable(false), type))
+          && t.isDefault()) {
         return t;
       }
     }

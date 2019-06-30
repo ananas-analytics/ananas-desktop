@@ -127,3 +127,9 @@ test {
         showStandardStreams = true
     }
 }
+
+[run].each { runTask ->
+    configure(runTask) {
+        systemProperties System.properties
+    }
+}

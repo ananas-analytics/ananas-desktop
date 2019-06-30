@@ -49,7 +49,6 @@ export class Job {
   startStatusPolling(apiURL: string, interval: number = 10000) {
     this.endStatusPolling() 
 
-    /*
     this.pollingJob = setInterval(() => {
       if (this.state === 'DONE' || this.state === 'ERROR') {
         this.endStatusPolling()
@@ -77,10 +76,8 @@ export class Job {
         }
       })
       .catch(err => {
-
       })
     }, interval)
-    */
   }
 
   endStatusPolling() {

@@ -1,5 +1,5 @@
 ---
-id: org.ananas.source.file.gcs
+id: org.ananas.source.file.json
 layout:
   key: root
   props:
@@ -27,20 +27,23 @@ layout:
           flex: false
         children:
         - title
-        - format
-        - bucket
         - path-heading
-        - path-input
-        - header
+        - key: file-input
+          tabContainer: true
+          props:
+            label: File Path
+            tabs:
+            - Drag & Drop
+            - Text Input
+          children:
+          - drop-file
+          - path-input
         - key: advanced-editor
           collapsible: true
           props:
             label: Advanced
           children:
           - description
-          - force-auto-detect-schema
-          - force-download-sample
-          - sample-size
     - key: update-container
       props:
         boder:
@@ -74,65 +77,33 @@ components:
   title:
     bind: __name__
     type: TextInput
-    default: CSV Source
+    default: JSON Source
     props:
       label: Title
-  format:
-    bind: format
-    type: SelectInput 
+  path-heading:
+    type: Heading
+    box:
+      flex: false
     props:
-      label: File Format
-      options:
-        - label: CSV
-          value: csv
-        - label: JSON
-          value: json 
-        #- label: Text
-        #  value: txt
-  bucket:
-    bind: bucket
-    type: TextInput
-    props: 
-      label: Bucket Name
+      text: File Path
+      level: 5
+  drop-file:
+    bind: path
+    type: DropFile
+    default: ''
+    props: {}
   path-input:
     bind: path
     type: TextInput
     default: ''
-    props: {
-      label: File Path/Pattern
-    }
-  header:
-    bind: header
-    conditions:
-      format: [ 'csv' ]
-    type: CheckBox
-    default: true
     props:
-      label: include header?
+      label: File Path
   description:
     bind: __description__
     type: TextArea
     default: Describe this step here
     props:
       label: Description
-  force-auto-detect-schema:
-    bind: forceAutoDetectSchema
-    type: CheckBox
-    default: false
-    props:
-      label: Force schema auto detection
-  force-download-sample:
-    bind: resampling
-    type: CheckBox
-    default: false
-    props:
-      label: Redownload sample file?
-  sample-size:
-    bind: sampleSize
-    type: TextInput
-    props:
-      label: Explore sample size limit (MB)
-      type: number
   update-btn:
     type: Button
     props:

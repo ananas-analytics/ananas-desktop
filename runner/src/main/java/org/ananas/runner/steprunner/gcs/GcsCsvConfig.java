@@ -1,4 +1,4 @@
-package org.ananas.runner.steprunner.files.gcs;
+package org.ananas.runner.steprunner.gcs;
 
 import java.util.Map;
 import org.ananas.runner.kernel.model.StepType;

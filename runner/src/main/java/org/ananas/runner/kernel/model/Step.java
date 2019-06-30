@@ -151,4 +151,70 @@ public class Step implements DeepComparable, Serializable {
         + '\''
         + '}';
   }
+
+  public String getConfig(String name, String defaultValue) {
+    if (this.config.containsKey(name) && this.config.get(name) != null) {
+      Object v = this.config.get(name);
+      if (v instanceof String) {
+        return (String) v;
+      }
+      return v.toString();
+    }
+    return defaultValue;
+  }
+
+  public Boolean getConfig(String name, Boolean defaultValue) {
+    if (this.config.containsKey(name) && this.config.get(name) != null) {
+      Object v = this.config.get(name);
+      if (v instanceof String) {
+        return Boolean.valueOf((String) v);
+      }
+      if (v instanceof Boolean) {
+        return (Boolean) v;
+      }
+    }
+    return defaultValue;
+  }
+
+  public Integer getConfig(String name, Integer defaultValue) {
+    if (this.config.containsKey(name) && this.config.get(name) != null) {
+      Object v = this.config.get(name);
+      if (v instanceof String) {
+        try {
+          return Integer.parseInt((String) v);
+        } catch (Exception e) {
+          return defaultValue;
+        }
+      }
+      if (v instanceof Integer) {
+        return (Integer) v;
+      }
+    }
+    return defaultValue;
+  }
+
+  public Double getConfig(String name, Double defaultValue) {
+    if (this.config.containsKey(name) && this.config.get(name) != null) {
+      Object v = this.config.get(name);
+      if (v instanceof String) {
+        try {
+          return Double.parseDouble((String) v);
+        } catch (Exception e) {
+          return defaultValue;
+        }
+      }
+      if (v instanceof Integer) {
+        return new Double((Integer) v);
+      }
+      if (v instanceof Double) {
+        return (Double) v;
+      }
+    }
+    return defaultValue;
+  }
+
+  public Float getConfig(String name, Float defaultValue) {
+    Double d = this.getConfig(name, new Double(defaultValue));
+    return new Float(d);
+  }
 }

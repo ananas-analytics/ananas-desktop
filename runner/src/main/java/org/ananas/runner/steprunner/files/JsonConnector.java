@@ -1,14 +1,13 @@
 package org.ananas.runner.steprunner.files;
 
-import java.io.File;
 import org.ananas.runner.kernel.ConnectorStepRunner;
 import org.ananas.runner.kernel.common.JsonStringBasedFlattenerReader;
 import org.ananas.runner.kernel.common.Sampler;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.schema.JsonAutodetect;
+import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.kernel.paginate.PaginatorFactory;
 import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
 import org.ananas.runner.steprunner.files.txt.TruncatedTextIO;
-import org.ananas.runner.steprunner.files.utils.FileIterator;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.schemas.Schema;
@@ -30,7 +29,14 @@ public class JsonConnector extends ConnectorStepRunner {
   public void build() {
     String url = (String) this.step.config.get(JsonConnector.CONFIG_PATH);
 
-    Schema schema = autodetect(url);
+    Schema schema = step.getBeamSchema();
+    if (schema == null || step.forceAutoDetectSchema()) {
+      // find the paginator bind to it
+      AutoDetectedSchemaPaginator paginator =
+          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+              .buildPaginator();
+      schema = paginator.getSchema();
+    }
     PCollection<String> p =
         this.pipeline.apply(
             this.isTest ? TruncatedTextIO.read().from(url) : TextIO.read().from(url));
@@ -42,7 +48,8 @@ public class JsonConnector extends ConnectorStepRunner {
     this.output.setRowSchema(schema);
   }
 
-  private static Schema autodetect(String uri) {
+  /*
+  public static Schema autodetect(String uri) {
 
     File f = new File(uri);
     if (!f.canRead()) {
@@ -63,4 +70,5 @@ public class JsonConnector extends ConnectorStepRunner {
       LOG.debug("autodetect : {} ms", System.currentTimeMillis() - ts);
     }
   }
+   */
 }

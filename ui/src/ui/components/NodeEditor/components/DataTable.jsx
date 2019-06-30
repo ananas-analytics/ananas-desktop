@@ -324,16 +324,18 @@ export default class DataTable extends PureComponent<Props, State> {
     }
   }
 
-  dataAccessor(name:string, type:string, row:any) {
+  dataAccessor(name:string, type:string, row:any) :any {
     let value = row[name]
     if (value === null || value === undefined) {
       return 'null'
     }
     if (typeof value === 'boolean') {
       // $FlowFixMe
-      return String.valueOf(value)
+      return String(value)
     }
-    switch(type) {
+    switch(type.toUpperCase()) {
+      case 'BOOLEAN':
+        return String(value)
       case 'VARCHAR':
       default:
         return value

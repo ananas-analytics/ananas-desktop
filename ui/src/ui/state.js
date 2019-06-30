@@ -33,6 +33,11 @@ const state = {
       }
     ],
     templates: {
+      Dataflow: [
+        { name: 'projectId', label: 'ProjectId', type: 'string', description: '', default: '', advanced: false },
+        { name: 'tempLocation', label: 'Google Cloud Storage Temp Location', type: 'string', description: '', default: 'gs://', advanced: true },
+        { name: 'streaming', label: 'Use Streaming', type: 'boolean', description: '', default: 'false', advanced: true },
+      ],
       Flink: [
         { name: 'flinkMaster', label: 'Master URL', type: 'string', description: '', default: '[auto]', advanced: false },
         { name: 'tempLocation', label: 'Temp Location', type: 'string', description: '', default: '/tmp/', advanced: true },

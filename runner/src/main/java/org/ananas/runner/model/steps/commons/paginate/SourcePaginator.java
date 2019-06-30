@@ -7,18 +7,6 @@ import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.model.Variable;
 import org.ananas.runner.kernel.paginate.Paginator;
-import org.ananas.runner.model.core.StepConfig;
-import org.ananas.runner.model.steps.api.APIPaginator;
-import org.ananas.runner.model.steps.api.APIStepConfig;
-import org.ananas.runner.model.steps.db.JdbcPaginator;
-import org.ananas.runner.model.steps.db.MongoDBPaginator;
-import org.ananas.runner.model.steps.db.MongoStepConfig;
-import org.ananas.runner.model.steps.files.*;
-import org.ananas.runner.model.steps.files.csv.CSVPaginator;
-import org.ananas.runner.steprunner.files.FileLoader;
-import org.ananas.runner.steprunner.files.csv.CSVStepConfig;
-import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
-import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -54,6 +42,7 @@ public class SourcePaginator implements Paginator {
   }
 
   public Paginator createPaginator() {
+    /*
     switch ((String) this.config.get(StepConfig.SUBTYPE)) {
       case "mongo":
         MongoStepConfig mongoConfig = new MongoStepConfig(this.config);
@@ -90,5 +79,8 @@ public class SourcePaginator implements Paginator {
         throw new IllegalStateException(
             "Unsupported source type '" + this.config.get(StepConfig.SUBTYPE) + "'");
     }
+
+     */
+    return null;
   }
 }
