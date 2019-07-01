@@ -1,7 +1,5 @@
 package org.ananas.runner.steprunner.files;
 
-import static org.ananas.runner.steprunner.files.FileLoader.SupportedFormat.*;
-
 import com.google.common.base.Joiner;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +12,7 @@ import java.util.List;
 import org.ananas.runner.kernel.LoaderStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.model.steps.commons.json.AsJsons;
+import org.ananas.runner.legacy.steps.commons.json.AsJsons;
 import org.apache.beam.sdk.io.FileIO;
 import org.apache.beam.sdk.values.Row;
 

@@ -15,7 +15,7 @@ import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.paginate.PaginationBody;
 import org.ananas.runner.kernel.paginate.Paginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.model.healthcheck.HealthCheck;
+import org.ananas.runner.legacy.healthcheck.HealthCheck;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import spark.ExceptionHandler;
 import spark.Request;

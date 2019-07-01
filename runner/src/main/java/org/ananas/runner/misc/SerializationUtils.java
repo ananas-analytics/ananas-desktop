@@ -16,11 +16,11 @@ public class SerializationUtils {
       return o;
     } catch (FileNotFoundException e) {
       throw new RuntimeException(
-          "Oops could not find any model. Please train your model and test it. Details: "
+          "Oops could not find any legacy. Please train your legacy and test it. Details: "
               + e.getMessage());
     } catch (IOException e2) {
       throw new RuntimeException(
-          "Oops an error occurred while storing trained model. Details : " + e2.getMessage());
+          "Oops an error occurred while storing trained legacy. Details : " + e2.getMessage());
     }
   }
 
@@ -33,11 +33,11 @@ public class SerializationUtils {
       fileOutputStream.close();
     } catch (FileNotFoundException e) {
       throw new RuntimeException(
-          "Oops could not store trained model in disk. Please try again or contact our support service. Details: "
+          "Oops could not store trained legacy in disk. Please try again or contact our support service. Details: "
               + e.getMessage());
     } catch (IOException e2) {
       throw new RuntimeException(
-          "Oops an error occurred while storing trained model. Details : " + e2.getMessage());
+          "Oops an error occurred while storing trained legacy. Details : " + e2.getMessage());
     }
   }
 

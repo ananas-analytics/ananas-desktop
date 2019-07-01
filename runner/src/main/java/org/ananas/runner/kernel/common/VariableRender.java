@@ -24,7 +24,7 @@ public class VariableRender {
       return config;
     }
 
-    // build model
+    // build legacy
     Map model = new HashMap();
     for (String key : variables.keySet()) {
       Variable v = variables.get(key);

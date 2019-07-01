@@ -49,7 +49,7 @@ dependencies {
     compile 'org.apache.beam:beam-sdks-java-io-mongodb:2.13.0'
     compile 'org.apache.beam:beam-sdks-java-io-jdbc:2.13.0'
     compile 'org.apache.derby:derby:10.14.2.0'
-    compile 'org.apache.maven:maven-model:3.3.9'
+    compile 'org.apache.maven:maven-legacy:3.3.9'
     compile 'org.apache.poi:poi:3.17'
     compile 'org.apache.poi:poi-ooxml:3.17'
     compile 'org.apache.spark:spark-core_2.11:2.4.3'

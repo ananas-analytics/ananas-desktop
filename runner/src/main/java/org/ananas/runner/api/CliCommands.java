@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.ananas.runner.model.core.Project;
+import org.ananas.runner.legacy.core.Project;
 import org.apache.commons.cli.*;
 import spark.utils.IOUtils;
 

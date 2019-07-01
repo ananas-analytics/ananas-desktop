@@ -51,7 +51,7 @@ public class DagRequest {
 
     Template t = new Template("DagRequest", new StringReader(rawReq), TEMPLATE_CFG);
 
-    // build model
+    // build legacy
     Map model = new HashMap();
     for (String key : this.params.keySet()) {
       Variable v = this.params.get(key);
