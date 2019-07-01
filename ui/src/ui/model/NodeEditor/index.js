@@ -2,7 +2,8 @@
 
 export interface GetDataEventOption {
   getType(): string,
-  getDescription(): string
+  getDescription(): string,
+  getProperty(name: string): string
 }
 
 export class ExploreOption implements GetDataEventOption {
@@ -21,6 +22,10 @@ export class ExploreOption implements GetDataEventOption {
   getDescription() {
     return this.description
   }
+
+  getProperty(name: string) :any {
+    return null
+  }
 }
 
 export class TestOption implements GetDataEventOption {
@@ -38,6 +43,10 @@ export class TestOption implements GetDataEventOption {
 
   getDescription() {
     return this.description
+  }
+
+  getProperty(name: string) :any{
+    return null
   }
 }
 
@@ -62,5 +71,14 @@ export class JobResultOption implements GetDataEventOption {
 
   getJobId() {
     return this.jobid
+  }
+
+  getProperty(name: string) :any {
+    switch(name) {
+      case 'jobId':
+        return this.getJobId()
+      default:
+        return null
+    }
   }
 }

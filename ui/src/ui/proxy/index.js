@@ -40,6 +40,14 @@ class Proxy {
     return ipc('load-project', projectId)
   }
 
+  getGlobalSettings() {
+    return ipc('load-global-settings')
+  }
+
+  saveGlobalSettings(settings) {
+    return ipc('save-global-settings', settings)
+  }
+
 	importProject() {
 		return ipc('import-project')
 	}

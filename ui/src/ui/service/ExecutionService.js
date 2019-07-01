@@ -14,13 +14,16 @@ import type {
 } from '../../common/model/flowtypes.js'
 
 import type VariableService from './VariableService'
+import type JobService from './JobService'
 
 export default class ExecutionService {
   store: any
   variableService: VariableService
+  jobService: JobService
 
-  constructor(variableService: VariableService) {
+  constructor(variableService: VariableService, jobService: JobService) {
     this.variableService = variableService
+    this.jobService = jobService
   }
 
   getServiceName() {
@@ -37,8 +40,8 @@ export default class ExecutionService {
       return ''
     }
     let state = this.store.getState()
-    if (state.settings) {
-      return state.settings.runnerEndpoint
+    if (state.Settings.global) {
+      return state.Settings.global.runnerEndpoint
     }
     return ''
   }
@@ -94,7 +97,7 @@ export default class ExecutionService {
    * @dict {[string]: any} the dictionary of the variables used in the config
    * @return Promise<APIResponse<PlainDataframe>>
    */
-  exploreDataSource(projectId: ID, step: PlainStep, dict: {[string]:any}, page: number, pageSize: number) :Promise<APIResponse<PlainDataframe>> {
+  exploreDataSource(projectId: ID, step: PlainStep, dict: {[string]:any}, page: number, pageSize: number, jobId: string) :Promise<APIResponse<PlainDataframe>> {
     let config = this.getStepConfig(step)
     // get expressions from the step, and inject the value from the dictionary
     let variables = {}
@@ -110,14 +113,39 @@ export default class ExecutionService {
     }
 
     if (step.type === 'viewer') {
+      // TODO: refactor this, to have a unified interface to query data for any job
+      // get last done job
+      return this.jobService.getJobsByStepId(step.id)
+        .then(jobs => {
+          let doneJobs = jobs.filter(job => job.state === 'DONE')
+          let lastDoneJobId = doneJobs.length > 0 ? doneJobs[0].id : '-'
+          return lastDoneJobId
+        })
+        .then(lastDoneJobId => {
+          let viewerJobId = jobId || lastDoneJobId
+          return axios({
+            method: 'GET',
+            url: `${this.getRunnerURL()}/data/${viewerJobId}/${step.id}?sql=${encodeURIComponent(config.sql)}`
+          })
+        })
+        .then(res => {
+          return res.data
+        })
+
+
+      /*
+      let jobs = this.jobService.getJobsByStepId(step.id).filter(job => job.state === 'DONE')
+      let lastDoneJobId = jobs.length > 0 ? jobs[jobs.length - 1].id : '-'
       // use viewer api
+      let viewerJobId = jobId || lastDoneJobId
       return axios({
         method: 'GET',
-        url: `${this.getRunnerURL()}/data/${step.id}?sql=${encodeURIComponent(config.sql)}`
+        url: `${this.getRunnerURL()}/data/${viewerJobId}/${step.id}?sql=${encodeURIComponent(config.sql)}`
       })
       .then(res=>{
         return res.data
       })
+      */
     }
 
     return axios({
@@ -125,9 +153,13 @@ export default class ExecutionService {
       // TODO: add project id in the url
       url: `${this.getRunnerURL()}/${step.id}/paginate?page=${page}&pagesize=${pageSize}`,
       data: {
+        metadataId: step.metadataId,
         type: step.type,
         config, //this.variableService.injectExpressions(config, variables),
         params: dict,
+        dataframe: {
+          schema: step.dataframe && step.dataframe.schema ? step.dataframe.schema : null,
+        }
       }
     })
     .then(res=>{
@@ -147,10 +179,16 @@ export default class ExecutionService {
       let config = this.getStepConfig(step)
       newSteps.push({
         id,
+        name: step.name,
         type: step.type,
+        metadataId: step.metadataId,
         config,
+        dataframe: {
+          schema: step.dataframe && step.dataframe.schema ? step.dataframe.schema : null,
+        }
       })
     }
+    console.log('-------------------', dict)
     return axios({
       method: 'POST',
       url: `${this.getRunnerURL()}/${projectId}/dag/test`,
@@ -185,11 +223,18 @@ export default class ExecutionService {
       let config = this.getStepConfig(step)
       newSteps.push({
         id,
+        name: step.name,
         type: step.type,
+        metadataId: step.metadataId,
         config: config,
+        dataframe: {
+          schema: step.dataframe && step.dataframe.schema ? step.dataframe.schema : null,
+        }
       })
     }
 
+    // inject app name
+    engine.properties['app_name'] = `${user ? user.name : 'anonymous'}-${projectId}`
     // call runner API to get the jobId
     return axios({
       method: 'POST',

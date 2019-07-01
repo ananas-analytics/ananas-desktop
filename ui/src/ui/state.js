@@ -25,11 +25,22 @@ const state = {
           parallelism: 10,
           maxBundleSize: 1000000,
           objectReuse: true,
+          database_type: 'derby',
+          database_url: null,
+          database_user: null,
+          database_pass: null,
         }
       }
     ],
     templates: {
+      Dataflow: [
+        { name: 'projectId', label: 'ProjectId', type: 'string', description: '', default: '', advanced: false },
+        { name: 'tempLocation', label: 'Google Cloud Storage Temp Location', type: 'string', description: '', default: 'gs://', advanced: true },
+        { name: 'streaming', label: 'Use Streaming', type: 'boolean', description: '', default: 'false', advanced: true },
+      ],
       Flink: [
+        { name: 'flinkMaster', label: 'Master URL', type: 'string', description: '', default: '[auto]', advanced: false },
+        { name: 'tempLocation', label: 'Temp Location', type: 'string', description: '', default: '/tmp/', advanced: true },
         { name: 'parallelism', label: 'Parallelism', type: 'number', description: '', default: '10', advanced: false },
         { name: 'maxBundleSize', label: 'Max Bundle Size', type: 'number', description: '', default: '1000000', advanced: true },
         { name: 'objectReuse', label: 'Enable Object Reuse', type: 'boolean', description: '', default: 'true', advanced: true },
@@ -41,6 +52,10 @@ const state = {
         { name: 'enableMetricSinks', label: 'Enable Metric Sinks', type: 'boolean', description: '', default: 'true', advanced: true },
       ]
     }
+  },
+
+  Scheduler: {
+    triggers: [],
   },
 
   Message: {
@@ -68,6 +83,8 @@ const state = {
         },
         steps: {},
         variables: [],
+        settings: {}, // project based settings
+        triggers: [],
       },
       // other projects here
     },
@@ -78,9 +95,11 @@ const state = {
     }, // metadata    
   },
 
-  /* settings */
-  settings: {
-    runnerEndpoint: 'http://localhost:3003/v1',
+  /* global settings */
+  Settings: {
+    global: {
+      runnerEndpoint: 'http://localhost:3003/v1',
+    }
   }
 }
 

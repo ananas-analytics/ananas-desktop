@@ -39,6 +39,7 @@ export default class ProjectConfigurer extends Component<Props, State> {
       dag: { nodes: [], connections: [] },
       steps: {},
       variables: [],
+      settings: {},
     },
   }
 

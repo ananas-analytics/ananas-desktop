@@ -1,18 +1,22 @@
 package org.ananas.runner.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import org.ananas.runner.model.core.Dataframe;
-import org.ananas.runner.model.core.Job;
-import org.ananas.runner.model.core.PaginationBody;
-import org.ananas.runner.model.errors.AnanasException;
-import org.ananas.runner.model.healthcheck.HealthCheck;
-import org.ananas.runner.model.steps.commons.paginate.Paginator;
-import org.ananas.runner.model.steps.commons.paginate.SourcePaginator;
-import org.ananas.runner.model.steps.commons.run.BeamRunner;
-import org.ananas.runner.model.steps.commons.run.Runner;
-import org.ananas.runner.model.steps.dataview.DataViewRepository;
+import java.util.stream.Collectors;
+import org.ananas.runner.kernel.common.JsonUtil;
+import org.ananas.runner.kernel.errors.AnanasException;
+import org.ananas.runner.kernel.job.BeamRunner;
+import org.ananas.runner.kernel.job.Job;
+import org.ananas.runner.kernel.job.JobRepositoryFactory;
+import org.ananas.runner.kernel.job.Runner;
+import org.ananas.runner.kernel.model.Dataframe;
+import org.ananas.runner.kernel.paginate.PaginationBody;
+import org.ananas.runner.kernel.paginate.Paginator;
+import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.legacy.healthcheck.HealthCheck;
+import org.ananas.runner.steprunner.DefaultDataViewer;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
@@ -42,9 +46,12 @@ class HttpHandler {
                 ? new PaginationBody()
                 : JsonUtil.fromJson(body, PaginationBody.class);
 
+        /*
         Paginator paginator =
             SourcePaginator.of(
                 id, paginationBody.type, paginationBody.config, paginationBody.params);
+         */
+        Paginator paginator = PaginatorFactory.of(id, paginationBody);
         Dataframe dataframe =
             paginator.paginate(
                 page == null ? 0 : Integer.valueOf(page),
@@ -63,7 +70,7 @@ class HttpHandler {
               ApiResponseBuilder.Of()
                   .KO(
                       new AnanasException(
-                          org.ananas.runner.model.errors.ExceptionHandler.ErrorCode.GENERAL,
+                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
                           "missing body"))
                   .build());
         }
@@ -83,12 +90,29 @@ class HttpHandler {
               ApiResponseBuilder.Of()
                   .KO(
                       new AnanasException(
-                          org.ananas.runner.model.errors.ExceptionHandler.ErrorCode.GENERAL,
+                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
                           "missing body"))
                   .build());
         }
 
         return Services.runDag(id, token, body);
+      };
+
+  static Route scheduleDag =
+      (Request request, Response response) -> {
+        String body = request.body();
+
+        if (body == null || body.length() == 0) {
+          return JsonUtil.toJson(
+              ApiResponseBuilder.Of()
+                  .KO(
+                      new AnanasException(
+                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
+                          "missing body"))
+                  .build());
+        }
+
+        return Services.scheduleDag(body);
       };
 
   static Route cancelPipeline =
@@ -106,6 +130,44 @@ class HttpHandler {
         return JsonUtil.toJson(ApiResponseBuilder.Of().OK(jobs).build());
       };
 
+  static Route getJobsByGoal =
+      (Request request, Response response) -> {
+        String goalid = request.params(":goalid");
+        String skip = request.queryParams("skip");
+        String size = request.queryParams("size");
+
+        List<Job> jobs =
+            JobRepositoryFactory.getJobRepostory()
+                .getJobsByGoal(
+                    goalid,
+                    skip == null ? 0 : Integer.valueOf(skip),
+                    size == null ? 10 : Integer.valueOf(size));
+
+        List<Job> output =
+            jobs.stream().map(Job::JobStateResultFilter).collect(Collectors.toList());
+
+        return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
+      };
+
+  static Route getJobsByTrigger =
+      (Request request, Response response) -> {
+        String triggerid = request.params(":triggerid");
+        String skip = request.queryParams("skip");
+        String size = request.queryParams("size");
+
+        List<Job> jobs =
+            JobRepositoryFactory.getJobRepostory()
+                .getJobsByScheduleId(
+                    triggerid,
+                    skip == null ? 0 : Integer.valueOf(skip),
+                    size == null ? 10 : Integer.valueOf(size));
+
+        List<Job> output =
+            jobs.stream().map(Job::JobStateResultFilter).collect(Collectors.toList());
+
+        return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
+      };
+
   static Route pollJob =
       (Request request, Response response) -> {
         Runner runner = new BeamRunner();
@@ -116,9 +178,9 @@ class HttpHandler {
               ApiResponseBuilder.Of().KO(new NoSuchElementException("job not found")).build());
         } else {
           HashMap<String, String> stateResponse = new HashMap<String, String>();
-          stateResponse.put("state", job.getState().getLeft().toString());
-          if (job.getState().getRight() != null) {
-            stateResponse.put("message", job.getState().getRight().getLocalizedMessage());
+          stateResponse.put("state", job.getResult().getLeft().toString());
+          if (job.getResult().getRight() != null) {
+            stateResponse.put("message", job.getResult().getRight().getLocalizedMessage());
           }
           return JsonUtil.toJson(ApiResponseBuilder.Of().OK(stateResponse).build());
         }
@@ -126,16 +188,22 @@ class HttpHandler {
 
   static Route dataView =
       (Request request, Response response) -> {
-        String tablename = request.params(":tablename");
-        if (tablename == null) {
+        String jobid = request.params(":jobid");
+        String stepid = request.params(":stepid");
+        if (stepid == null) {
           return JsonUtil.toJson(
               ApiResponseBuilder.Of().KO(new NoSuchElementException("stepid not found")).build());
         }
+        if (jobid == null) {
+          return JsonUtil.toJson(
+              ApiResponseBuilder.Of().KO(new NoSuchElementException("jobid not found")).build());
+        }
 
-        DataViewRepository repository = new DataViewRepository();
+        DefaultDataViewer.DataViewRepository repository =
+            new DefaultDataViewer.DataViewRepository();
         return JsonUtil.toJson(
             ApiResponseBuilder.Of()
-                .OK(repository.query(request.queryParams("sql"), tablename))
+                .OK(repository.query(request.queryParams("sql"), jobid, stepid))
                 .build());
       };
 

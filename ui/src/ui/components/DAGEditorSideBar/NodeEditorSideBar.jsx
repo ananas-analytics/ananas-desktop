@@ -5,11 +5,6 @@ import { Accordion } from 'grommet/components/Accordion'
 import { AccordionPanel } from 'grommet/components/AccordionPanel'
 import { Box } from 'grommet/components/Box'
 import { Text } from 'grommet/components/Text'
-import { Table } from 'grommet/components/Table'
-import { TableBody } from 'grommet/components/TableBody'
-import { TableHeader } from 'grommet/components/TableHeader'
-import { TableRow } from 'grommet/components/TableRow'
-import { TableCell } from 'grommet/components/TableCell'
 
 class NodeEditorSideBar extends Component {
   constructor(props) {
@@ -81,39 +76,12 @@ class NodeEditorSideBar extends Component {
           })
           .map(datum => (<Box key={datum.name} direction='column' 
             pad={{ vertical: 'xsmall', horizontal: 'small' }} border='bottom'>
-            <Text size='small' color='brand'>{datum.name.toUpperCase()}</Text>
+            <Text size='small' color='brand'>{datum.name}</Text>
             <Text size='xsmall'>{`${datum.type}`}</Text>
           </Box>)) }
       </Box>
     )
-    /*
-    return (<Table caption="Default Table">
-      <TableHeader>
-        <TableRow>
-          <TableCell scope='col' >
-            <Text size='small' weight='bold'>Name</Text>
-          </TableCell>
-          <TableCell scope='col' >
-            <Text size='small' weight='bold'>Type</Text>
-          </TableCell>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {this.props.variables.sort((a, b)=>{
-          return a.name.localeCompare(b.name) 
-        }).map(datum => (
-          <TableRow key={datum.name}>
-            <TableCell scope='row' >
-              <Text size='small'>{datum.name.toUpperCase()}</Text>
-            </TableCell>
-            <TableCell scope='row' >
-              <Text size='small'>{datum.type}</Text>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>)
-    */
+    
   }
 
   renderContent() {

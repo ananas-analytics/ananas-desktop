@@ -130,7 +130,7 @@ export default class MultipleFieldsSelector extends React.Component<Props, State
           value={
             <Box wrap direction='row' width='small'>
               {selected && selected.length ? (
-                selected.map((v, index) => this.renderField(v))
+                selected.map(v => this.renderField(v))
               ) : (
                 <Box
                   pad={{ vertical: 'xsmall', horizontal: 'small' }}

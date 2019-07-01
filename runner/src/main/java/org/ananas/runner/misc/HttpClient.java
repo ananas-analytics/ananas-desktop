@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
-import org.ananas.runner.api.JsonUtil;
+import org.ananas.runner.kernel.common.JsonUtil;
 
 public class HttpClient {
 

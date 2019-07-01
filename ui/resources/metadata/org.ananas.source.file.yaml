@@ -2,7 +2,7 @@
 # file type source
 org.ananas.source.file.csv:
   id: org.ananas.source.file.csv
-  name: CSV
+  name: Local CSV Source
   description: Connect data from a CSV file
   type: Source
   icon: images/csv.svg
@@ -11,13 +11,14 @@ org.ananas.source.file.csv:
     config: 
       subtype: file
       format: csv
+      forceAutoDetectSchema: false
   options:
     maxIncoming: 0
     maxOutgoing: -1
 
 #org.ananas.source.file.excel:
 #  id: org.ananas.source.file.excel
-#  name: EXCEL
+#  name: Local EXCEL Source
 #  description: Connect data from an excel file
 #  type: Source
 #  icon: images/excel.svg
@@ -29,20 +30,40 @@ org.ananas.source.file.csv:
 #  options:
 #    maxIncoming: 0
 #    maxOutgoing: -1
-#
-#org.ananas.source.file.json:
-#  id: org.ananas.source.file.json
-#  name: JSON
-#  description: Connect data from a file, with each row as a json string
-#  type: Source
-#  icon: images/json-file.svg
-#  step: 
-#    type: connector
-#    config: 
-#      subtype: file
-#      format: json
-#  options:
-#    maxIncoming: 0
-#    maxOutgoing: -1
 
+org.ananas.source.file.json:
+  id: org.ananas.source.file.json
+  name: Local JSON Source
+  description: Connect data from a file, with each row as a json string
+  type: Source
+  icon: images/json-file.svg
+  step: 
+    type: connector
+    config: 
+      subtype: file
+      format: json
+      forceAutoDetectSchema: false
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
+
+org.ananas.source.file.gcs:
+  id: org.ananas.source.file.gcs
+  name: Google Cloud Storage
+  description: Connect file on Google Cloud Storage
+  type: Source
+  icon: images/google-gcs.svg
+  step:
+    type: connector
+    config:
+      subtype: gcs
+      format: csv
+      bucket: bucket-name
+      path: ""
+      resampling: false
+      sampleSize: "5"
+      forceAutoDetectSchema: false
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
 

@@ -5,7 +5,7 @@ import { Box } from 'grommet/components/Box'
 import { Text } from 'grommet/components/Text'
 import AppSideBarMenuItem from './AppSideBarMenuItem'
 
-import { Workshop, Code, Services } from 'grommet-icons'
+import { Workshop, Code, Services, SchedulePlay, SettingsOption } from 'grommet-icons'
 
 const AppSideBarMenu = ({ activeIndex, expand, 
   onClickMenu }) => {
@@ -26,6 +26,20 @@ const AppSideBarMenu = ({ activeIndex, expand,
         onClick={() => onClickMenu(2)} >
         { expand ? <Text>Variables</Text> : <Code size='20px' /> }
       </AppSideBarMenuItem>
+
+      {/*
+      <AppSideBarMenuItem active={activeIndex === 3} expand={expand}
+        onClick={() => onClickMenu(3)} >
+        { expand ? <Text>Automation</Text> : <SchedulePlay size='20px' /> }
+      </AppSideBarMenuItem>
+      */}
+
+      {/*
+      <AppSideBarMenuItem active={activeIndex === 3} expand={expand}
+        onClick={() => onClickMenu(3)} >
+        { expand ? <Text>Project Settings</Text> : <SettingsOption size='20px' /> }
+      </AppSideBarMenuItem>
+      */}
 
     </Box>
   )

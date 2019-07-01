@@ -14,7 +14,9 @@ import { Graph, Grid } from './DAGEditorStyle'
 import { Box } from 'grommet/components/Box'
 import { Button } from 'grommet/components/Button'
 
-import { Vulnerability } from 'grommet-icons'
+import { Vulnerability, Nodes } from 'grommet-icons'
+
+import { calculateLayout } from '../../../common/util/dag'
 
 
 const ZOOM_TO_FIT_MARGIN = 25 // must be the multiply of 25
@@ -282,6 +284,14 @@ class DAGEditor extends Component {
           // [ 'Arrow', { location: 1 } ],
         ],
       })
+
+      this.jsPlumbInstance.addEndpoint(node.id, { anchor: 'RightMiddle' }, {
+        endpoint: [ 'Dot', { radius: 5 } ],
+        maxConnections: node.metadata.options.maxOutgoing,
+        connectorStyle: { stroke: CONNECTION_COLOR, strokeWidth: 3 },
+        isSource: true,
+        uniqueEndpoint: true,
+      })
     }
 
     if (['Transform', 'Destination', 'Visualization'].indexOf(node.type) >= 0) {
@@ -389,6 +399,19 @@ class DAGEditor extends Component {
     }
   }
 
+  layout() {
+    let layout = calculateLayout(this.state.nodes, this.state.connections)
+    let nodes = this.state.nodes.map(node => {
+      let layoutNode = layout.find(n => n.id === node.id)
+      node.x = layoutNode.x
+      node.y = layoutNode.y
+      return node 
+    })
+    this.changeAndNotify(nodes, this.state.connections, {}, {
+      type: 'UPDATE_POSITION',
+    })
+    this.fitToContainer(ZOOM_TO_FIT_MARGIN)
+  }
 
   /* RENDER FUNCTIONS */
 
@@ -458,6 +481,10 @@ class DAGEditor extends Component {
         <Button icon={<Vulnerability />} 
           hoverIndicator 
           onClick={() => this.fitToContainer(ZOOM_TO_FIT_MARGIN)}
+        />
+        <Button icon={<Nodes />} 
+          hoverIndicator 
+          onClick={() => this.layout()}
         />
       </Box>
     )

@@ -250,6 +250,17 @@ export default class NodeEditor extends Component<Props, State> {
     }))
   }
 
+  acceptConditions(conditions: {[string]: Array<any>}) {
+    let match = true
+    for (let bind in conditions) {
+      if (!this.state.value || !this.state.value.hasOwnProperty(bind) ||
+        conditions[bind].indexOf(this.getConfigValue(bind)) < 0) {
+        match = false
+      }
+    }
+    return match
+  }
+
   render() {
     return this.renderContainer(this.state.viewData.layout, this.state.viewData.components) 
   }
@@ -291,6 +302,12 @@ export default class NodeEditor extends Component<Props, State> {
       return null
     }
     let view = components[key]
+
+    let conditions = view.conditions
+    
+    if (!this.acceptConditions(conditions)) {
+      return null
+    }    
 
     let props = view.props || {}
     // inject common props, these props are reserved

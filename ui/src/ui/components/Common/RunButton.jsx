@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import { Box } from 'grommet/components/Box'
 import { Button } from 'grommet/components/Button'
@@ -20,6 +21,14 @@ type Props = {
 type State = {
   open?: boolean
 }
+
+const DropDownButton = styled(Box)`
+  &:hover{
+    background: ${props => props.theme.global.colors['light-2']}; 
+  }
+  background: ${props => props.theme.global.colors['light-1']}; 
+  cursor: pointer;
+`
 
 export default class RunButton extends Component<Props, State> {
   static defaultProps = {
@@ -57,12 +66,12 @@ export default class RunButton extends Component<Props, State> {
     }
     return (<DropButton
       alignSelf='center'
+      primary
+      label={this.props.label}
       open={this.state.open}
       onClose={() => this.setState({ open: undefined })}
       dropContent={this.renderDropContent()}
       dropAlign={{top: 'bottom', left: 'left'}}
-    >
-      <Button label={this.props.label} primary />
-    </DropButton>)
+    />)
   }
 }

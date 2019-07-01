@@ -2,7 +2,7 @@
 # file type destination
 org.ananas.destination.file.csv:
   id: org.ananas.destination.file.csv
-  name: CSV
+  name: CSV Destination
   description: Save your data as CSV file
   type: Destination
   icon: images/csv.svg
@@ -12,6 +12,7 @@ org.ananas.destination.file.csv:
       subtype: file
       format: csv
       prefix: output
+      header: true
   options:
     maxIncoming: 1
     maxOutgoing: 0 

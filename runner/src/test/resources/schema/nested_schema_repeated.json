@@ -1,0 +1,61 @@
+{
+  "fields" : [
+    {
+      "name": "id",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "first_name",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "last_name",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "dob",
+      "type": "DATETIME",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "addresses",
+      "type": "RECORD",
+      "mode": "REPEATED",
+      "fields": [
+        {
+          "name": "status",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "address",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "city",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "state",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "zip",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "numberOfYears",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        }
+      ]
+    }
+  ]
+}

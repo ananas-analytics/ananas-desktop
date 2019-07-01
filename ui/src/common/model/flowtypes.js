@@ -2,7 +2,6 @@
 
 export type ID = string
 
-export type VariableDictionary = {[string]:string}
 
 export type NodeType = "Source" | "Transform" | "Destination" | "Visualization"
 
@@ -105,6 +104,8 @@ export type PlainProject = {
   dag         : PlainDAG,
   steps       : {[string] : PlainStep},
   variables   : Array<PlainVariable>,
+  settings    : Setting,
+  triggers?   : Array<PlainTrigger>,
   deleted?    : boolean,
 }
 
@@ -134,6 +135,14 @@ export type PlainVariable = {
   description : string,
   scope       : VariableScope,
 }
+
+export type VariableValue = {
+  name  : string,
+  type  : VariableType,
+  value : any,
+}
+
+export type VariableDictionary = {[string]:VariableValue}
 
 /**
  * Engine
@@ -187,6 +196,38 @@ export type MessageOptions = {
   timeout? : number
 }
 
+
+/**
+ * Trigger
+ */
+export type TriggerType = 'once' | 'repeat' | 'hourly' | 'daily' | 'weekly' | 'monthly'
+
+export type PlainTrigger = {
+  id             : ID,
+  projectId      : ID,
+  name           : string,
+  description    : string,
+  type           : TriggerType,
+  startTimestamp : number,
+  interval?      : number,
+  hour?          : number,
+  minute?        : number,
+  dayOfWeek?     : number,
+  dayOfMonth?    : number,
+  enabled        : boolean,
+}
+
+/**
+ * Schedule
+ */
+export type PlainSchedule = {
+  dag: PlainDAG,
+  engine: PlainEngine,
+  params: VariableDictionary,
+  trigger: PlainTrigger,
+} 
+
+
 /**
  * Node Editor
  */
@@ -200,6 +241,14 @@ export type NodeEditorContext = {
   services  : {[string] : any},
 }
 
+
+/**
+ * Settings
+ */
+export type Setting = {
+  [string]: any
+}
+
 /**
  * Utils
  */
@@ -208,3 +257,4 @@ export type APIResponse<T> = {
   message? : string,
   data?    : T,
 }
+

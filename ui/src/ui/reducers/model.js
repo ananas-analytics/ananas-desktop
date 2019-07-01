@@ -144,6 +144,7 @@ function handleDuplicateNode(newState, original, newNode) {
   let meta = newNode.metadata
   let newStep = {
     id: newNode.id,
+    metadataId: meta.id,
     name: meta.name,
     description: meta.description,
     type: meta.step.type,

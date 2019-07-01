@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import proxy from '../proxy'
 
-import type { ID, PlainVariable } from '../../common/model/flowtypes.js'
+import type { ID, PlainVariable, VariableDictionary } from '../../common/model/flowtypes.js'
 
 class Expression {
   // the expression string
@@ -53,7 +53,7 @@ class Expression {
 
 export default class VariableService {
   store: any
-  dict: {[string]: PlainVariable}
+  dict: ?VariableDictionary = null 
 
   getServiceName() {
     return 'VariableService'
@@ -61,13 +61,6 @@ export default class VariableService {
 
   setStore(store:any) {
     this.store = store
-  }
-  
-  updateDictionary(variables: Array<PlainVariable>) {
-    this.dict = {}
-    variables.forEach(v => {
-      this.dict[v.name.toUpperCase()] = v
-    })
   }
 
   findExpressions(str :string) :Array<Expression> {
@@ -142,19 +135,24 @@ export default class VariableService {
     ]
   }
 
-  saveVariableDict(projectID: ID, dict: {[string]: any}) :Promise<'OK'> {
+  saveVariableDict(projectID: ID, dict: VariableDictionary) :Promise<'OK'> {
     return proxy.saveProjectVariableDict(projectID, dict)
+      .then(result => {
+        this.dict = dict
+        return result
+      })
   }
 
-  loadVariableDict(projectID: ID, variables: Array<PlainVariable>) :Promise<{[string]: any}> {
-    return proxy.getProjectVariableDict(projectID)
+  loadVariableDict(projectID: ID, variables: Array<PlainVariable>) :Promise<VariableDictionary> {
+    let loadedDict = this.dict ? Promise.resolve(this.dict) : proxy.getProjectVariableDict(projectID)
+    return loadedDict
       .then(dict => {
         if (Object.keys(dict).length === 0) {
           let defaultDict = {}
           variables.forEach(v => {
             if (v.type === 'date') {
-              defaultDict[v.name] = { name: v.name, type: 'date', value: moment().toISOString() }  
-            } else if (v.type === 'string') {
+              defaultDict[v.name] = { name: v.name, type: 'date', value: moment().valueOf() }  
+            } else if (v.type === 'string' || v.type === 'credential') {
               defaultDict[v.name] = { name: v.name, type: 'string', value: '' }
             } else if (v.type === 'number') {
               defaultDict[v.name] = { name: v.name, type: 'number', value: '0' }
@@ -174,7 +172,7 @@ export default class VariableService {
 
         let newDict = { ... dict }  
         // override runtime variables, and remove unexpected variables
-        newDict['EXECUTE_DATE'] = {name: 'EXECUTE_DATE', type: 'date', value: moment().format()} 
+        newDict['EXECUTE_DATE'] = {name: 'EXECUTE_DATE', type: 'date', value: moment().valueOf()} 
         newDict['PROJECT_PATH'] = {name: 'PROJECT_PATH', type: 'string', value: this.getProjectPath(projectID)}
         return newDict
       })

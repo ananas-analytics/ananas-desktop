@@ -25,10 +25,13 @@ class Project {
   save() :Promise<any> { 
     log.debug('save project', this.project.id, 'to', this.path)
     let description = this.project.description
+    let settings = this.project.settings
     let projectData = { ... this.project }  
     delete projectData['description']
     delete projectData['path']
+    delete projectData['settings']
 
+    // let dataframe = {schema: {}, data: []}
     // remove internal config property 
     let newSteps = {}
     for (let k in projectData.steps) {
@@ -40,6 +43,7 @@ class Project {
         // clean up dataframe
         if (newSteps[k].hasOwnProperty('dataframe')) {
           newSteps[k].dataframe.data = [] 
+          /*
           if (typeof newSteps[k].dataframe.schema === 'object' && 
               Array.isArray(newSteps[k].dataframe.schema.fields)) {
             newSteps[k].dataframe.schema.fields = newSteps[k].dataframe.schema.fields.map(field => {
@@ -49,6 +53,14 @@ class Project {
               }
             })
           }
+          */
+          /*
+          dataframe[k] = {
+            schema: newSteps[k].dataframe.schema,
+            data: newSteps[k].dataframe.data.slice(0, 5),
+          }
+          delete newSteps[k]['dataframe']
+          */
         }
 
         let config = newSteps[k].config
@@ -83,12 +95,15 @@ class Project {
     })
     delete projectData.dag['nodes']
 
+    // remove triggers
+    let triggers = projectData.triggers || []
+
     let projectContent = YAML.stringify(projectData)
 
     let ananasFile = path.join(this.path, 'ananas.yml')
     return util.promisify(mkdirp)(this.path)
       .then(() => {
-        // same ananas.yml
+        // save ananas.yml
         return util.promisify(fs.writeFile)(ananasFile, projectContent, 'utf8')
       })
       .then(() => {
@@ -96,8 +111,14 @@ class Project {
         return util.promisify(fs.writeFile)(path.join(this.path, 'README.md'), description, 'utf8')
       })
       .then(() => {
+        return util.promisify(fs.writeFile)(path.join(this.path, 'settings.yml'), YAML.stringify(settings), 'utf8')
+      })
+      .then(() => {
         // save layout
         return util.promisify(fs.writeFile)(path.join(this.path, 'layout.yml'), YAML.stringify(layout), 'utf8')
+      })
+      .then(() => {
+        return util.promisify(fs.writeFile)(path.join(this.path, 'triggers.yml'), YAML.stringify(triggers), 'utf8')
       })
   }
 
@@ -139,6 +160,8 @@ class Project {
       },
       steps: {},
       variables: [],
+      settings: {},
+      triggers: [],
     }
 
     let layout = []
@@ -175,7 +198,7 @@ class Project {
         }
         layout = calculateLayout(stepList, projectData.dag.connections) 
         log.debug(layout)
-        return
+        return Promise.resolve('')
       })
       .then(() => {
         return layout
@@ -194,6 +217,31 @@ class Project {
       })
       .then(nodes => {
         projectData.dag.nodes = nodes
+      })
+      .then(() => {
+        return util.promisify(fs.readFile)(path.join(projectPath, 'settings.yml'))
+      })
+      .then(data => {
+        let settings = YAML.parse(data.toString()) 
+        return settings
+      })
+      .catch(() => {
+        return Promise.resolve({}) 
+      })
+      .then(settings => {
+        projectData.settings = settings
+      })
+      .then(() => {
+        return util.promisify(fs.readFile)(path.join(projectPath, 'triggers.yml'))
+      })
+      .then(data => {
+        return YAML.parse(data.toString())
+      })
+      .catch(()=> {
+        return Promise.resolve([])
+      })
+      .then(triggers => {
+        projectData.triggers = triggers
         return new Project(projectPath, projectData)
       })
   }

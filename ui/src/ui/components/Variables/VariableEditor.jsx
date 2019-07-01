@@ -76,6 +76,7 @@ class VariableEditor extends Component {
               {label: 'STRING', value: 'string'}, 
               {label: 'NUMBER', value: 'number'},
               {label: 'DATE', value: 'date'},
+              {label: 'CREDENTIAL', value: 'credential'},
             ]}
             onChange={v=>{
               this.setState({type: v})  

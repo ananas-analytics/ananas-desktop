@@ -1,0 +1,19 @@
+---
+org.ananas.destination.gcp.bigquery:
+  id: org.ananas.destination.gcp.bigquery
+  name: Google BigQuery Destination
+  description: Save your data to Google Cloud BigQuery
+  icon: images/google-bigquery.svg
+  type: Destination
+  step:
+    type: loader
+    config: 
+      subtype: bigquery
+      sql: |
+        SELECT * FROM `bigquery table` 
+        LIMIT 1000
+  options:
+    maxIncoming: 1
+    maxOutgoing: 0 
+
+

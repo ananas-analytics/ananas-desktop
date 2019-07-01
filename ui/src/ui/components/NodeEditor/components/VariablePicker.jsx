@@ -8,6 +8,7 @@ import { Text } from 'grommet/components/Text'
 import { Button } from 'grommet/components/Button'
 
 import TextInput from './TextInput'
+import CredentialInput from './CredentialInput'
 import DateTimeInput from './DateTimeInput'
 import RunButton from '../../Common/RunButton'
 
@@ -169,7 +170,7 @@ export default class VariablePicker extends Component<Props, State> {
         case 'number':
           return (
             <Box key={v.name} pad='small'>
-              <TextInput label={v.name.toUpperCase()} value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
+              <TextInput label={v.name.toUpperCase()} type="number" value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
                 onChange={value=>this.handleChange(v.name, { name: v.name, type: 'number', value })}
               />
             </Box>
@@ -178,6 +179,14 @@ export default class VariablePicker extends Component<Props, State> {
           return (
             <Box key={v.name} align='center' justify='center' pad='small'>
               {this.renderDateVariable(v)}
+            </Box>
+          )
+        case 'credential':
+          return (
+            <Box key={v.name} pad='small'>
+              <CredentialInput label={v.name.toUpperCase()} value={this.state.values[v.name] ? this.state.values[v.name].value : null} 
+                onChange={value=>this.handleChange(v.name, { name: v.name, type: 'credential', value })}
+              />
             </Box>
           )
         case 'string':
@@ -202,7 +211,7 @@ export default class VariablePicker extends Component<Props, State> {
       <DateTimeInput key={variable.name} label={variable.name.toUpperCase()} 
         date={v.format('YYYY-MM-DD')} 
         time={v.format('HH:mm:ss')} showTime={true}
-        onChange={(value)=>{this.handleChange(variable.name, { name: variable.name, type: variable.type, value: value.toISOString() })}}
+        onChange={(value)=>{this.handleChange(variable.name, { name: variable.name, type: variable.type, value: value.valueOf() })}}
       />
     )
   }

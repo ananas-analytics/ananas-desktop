@@ -5,6 +5,7 @@ import AppToolBar from './AppToolBar'
 import AnalysisBoard from './AnalysisBoard'
 import ExecutionEngine from './ExecutionEngine'
 import Message from './Message'
+import Scheduler from './Scheduler'
 import Variables from './Variables'
 
 
@@ -17,5 +18,6 @@ export default {
   AnalysisBoard,
   ExecutionEngine,
 	Message,
+  Scheduler,
   Variables,
 }

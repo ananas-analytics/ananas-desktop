@@ -72,8 +72,9 @@ const NodeTemplate = ({
           <Image src={icon} fit='cover' /> 
         </Box>
       </Content>
-      {
+      { /*
         selected && !isLeaf ? (<Endpoint className="node-endpoint"> <AddCircle className='node-endpoint' size='small' /> </Endpoint>) : null
+        */
       }
       {
         selected ? (<Controls 

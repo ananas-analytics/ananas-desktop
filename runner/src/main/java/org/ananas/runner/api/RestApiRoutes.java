@@ -2,7 +2,7 @@ package org.ananas.runner.api;
 
 import static spark.Spark.*;
 
-import org.ananas.runner.model.hooks.BackgroundApiService;
+import org.ananas.runner.legacy.hooks.BackgroundApiService;
 
 /** REST API Routes */
 public class RestApiRoutes {
@@ -53,9 +53,10 @@ public class RestApiRoutes {
 
     get("/v1/jobs/:jobid/poll", HttpHandler.pollJob);
     get("/v1/jobs/", HttpHandler.listJobs);
+    get("/v1/goal/:goalid/jobs", HttpHandler.getJobsByGoal);
     post("/v1/jobs/:id/cancel", HttpHandler.cancelPipeline);
 
-    get("/v1/data/:tablename", HttpHandler.dataView);
+    get("/v1/data/:jobid/:stepid", HttpHandler.dataView);
 
     get("/healthcheck", HttpHandler.healtcheck);
 

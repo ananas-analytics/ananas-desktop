@@ -55,6 +55,8 @@ layout:
         top: small
         left: small
         right: small
+      overflow:
+        vertical: auto
     children:
     - variable-editor
     - table-title
