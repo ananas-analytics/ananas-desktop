@@ -1,5 +1,5 @@
 ---
-id: org.ananas.destination.gcp.bigquery
+id: org.ananas.source.gcp.bigquery
 layout:
   key: root
   props:
@@ -44,13 +44,6 @@ layout:
           children:
           - description
           - overwrite
-        - key: job-history-container
-          collapsible: true
-          props:
-            label: Job History
-            open: true
-          children:
-          - job-history
     - key: update-container
       props:
         boder:
@@ -125,10 +118,6 @@ components:
       label: Explore your data with BigQuery SQL
       options:
         mode: sql
-  job-history:
-    type: JobHistory
-    box: {}
-    props: {}
   update-btn:
     type: Button
     props:
@@ -143,8 +132,8 @@ components:
         top: small
     props:
       exploreButton: true
-      testButton: true
-      runButton: true
+      testButton: false
+      runButton: false
   table-title:
     type: Heading
     box:

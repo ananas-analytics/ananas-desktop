@@ -10,9 +10,9 @@ import org.ananas.runner.kernel.job.Job;
 import org.ananas.runner.kernel.job.JobClient;
 import org.ananas.runner.kernel.job.JobRepositoryFactory;
 import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.misc.HttpClient;
 import org.ananas.runner.legacy.api.AnanasApiClient;
 import org.ananas.runner.legacy.api.pipeline.SimpleMapResponse;
+import org.ananas.runner.misc.HttpClient;
 import org.apache.commons.io.IOUtils;
 
 public class JobApiClient extends AnanasApiClient implements JobClient {

@@ -10,7 +10,7 @@ org.ananas.destination.gcp.bigquery:
     config: 
       subtype: bigquery
       sql: |
-        SELECT * FROM `bigquery table` 
+        SELECT * FROM [TABLE] 
         LIMIT 1000
   options:
     maxIncoming: 1

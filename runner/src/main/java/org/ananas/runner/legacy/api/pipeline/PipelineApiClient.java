@@ -7,8 +7,8 @@ import java.util.Map;
 import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.pipeline.Pipeline;
-import org.ananas.runner.misc.HttpClient;
 import org.ananas.runner.legacy.api.AnanasApiClient;
+import org.ananas.runner.misc.HttpClient;
 
 public class PipelineApiClient extends AnanasApiClient implements PipelineClient {
 
