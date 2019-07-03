@@ -35,7 +35,7 @@ public class BigqueryPaginator extends AutoDetectedSchemaPaginator {
 
   @Override
   public Schema autodetect() {
-    if (StepType.valueOf(type).equals(StepType.Loader)) {
+    if (StepType.from(type).equals(StepType.Loader)) {
       // Loader does not need to analyze the sql query
       BigQuery bigquery = BigQueryOptions.newBuilder().setProjectId(projectId).build().getService();
       Table table = bigquery.getTable(dataset, tablename);

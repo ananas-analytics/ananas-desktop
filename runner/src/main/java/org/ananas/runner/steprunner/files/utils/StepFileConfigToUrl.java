@@ -15,6 +15,15 @@ public class StepFileConfigToUrl {
     return String.format("gs://%s/%s", config.get("bucket"), config.get("path"));
   }
 
+  public static String gcsDestinationUrlWithoutPrefix(Map<String, Object> config) {
+    return String.format("gs://%s/%s", config.get("bucket"), config.get("path"));
+  }
+
+  public static String gcsDestinationUrlPatternWithPrefix(Map<String, Object> config) {
+    return String.format(
+        "gs://%s/%s/%s*", config.get("bucket"), config.get("path"), config.get("prefix"));
+  }
+
   public static String url(Map<String, Object> config, FileLoader.SupportedFormat f) {
     return String.format(
         "%s/%s-%s-of-%s.%s",

@@ -16,4 +16,22 @@ org.ananas.destination.gcp.bigquery:
     maxIncoming: 1
     maxOutgoing: 0 
 
+org.ananas.destination.gcp.gcs:
+  id: org.ananas.destination.gcp.gcs
+  name: Google Cloud Storage Destination
+  description: Save data to Google Cloud Storage
+  type: Destination
+  icon: images/google-gcs.svg
+  step:
+    type: loader
+    config:
+      subtype: gcs
+      format: csv
+      bucket: bucket-name
+      path: ""
+      resampling: false
+      sampleSize: "5"
+  options:
+    maxIncoming: 1
+    maxOutgoing: 0
 

@@ -13,6 +13,7 @@ import org.ananas.runner.steprunner.files.csv.CSVConnector;
 import org.ananas.runner.steprunner.gcs.BigQueryConnector;
 import org.ananas.runner.steprunner.gcs.BigQueryLoader;
 import org.ananas.runner.steprunner.gcs.GCSConnector;
+import org.ananas.runner.steprunner.gcs.GCSLoader;
 import org.ananas.runner.steprunner.jdbc.JdbcConnector;
 import org.ananas.runner.steprunner.jdbc.JdbcLoader;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
@@ -29,7 +30,7 @@ public class Main {
     }
   }
 
-  static void registerExtensions() {
+  private static void registerExtensions() {
     ExtensionRegistry.registerConnector(
         "org.ananas.source.file.csv", CSVConnector.class, CSVPaginator.class);
     ExtensionRegistry.registerConnector(
@@ -51,6 +52,8 @@ public class Main {
         "org.ananas.destination.jdbc.mysql", JdbcLoader.class, JdbcPaginator.class);
     ExtensionRegistry.registerLoader(
         "org.ananas.destination.jdbc.postgres", JdbcLoader.class, JdbcPaginator.class);
+    ExtensionRegistry.registerLoader(
+        "org.ananas.destination.gcp.gcs", GCSLoader.class, GCSPaginator.class);
     ExtensionRegistry.registerLoader(
         "org.ananas.destination.gcp.bigquery", BigQueryLoader.class, BigqueryPaginator.class);
 

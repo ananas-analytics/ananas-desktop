@@ -18,6 +18,9 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.commons.csv.CSVFormat;
 
 public class GCSConnector extends ConnectorStepRunner {
+
+  private static final long serialVersionUID = -393275056610716725L;
+
   public GCSConnector(Pipeline pipeline, Step step, boolean doSampling, boolean isTest) {
     super(pipeline, step, doSampling, isTest);
   }

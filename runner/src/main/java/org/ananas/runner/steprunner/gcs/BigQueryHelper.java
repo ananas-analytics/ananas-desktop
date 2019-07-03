@@ -110,5 +110,4 @@ public class BigQueryHelper {
     }
     return rawObj;
   }
-
 }

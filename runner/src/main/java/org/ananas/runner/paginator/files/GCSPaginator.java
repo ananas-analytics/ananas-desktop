@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.GZIPInputStream;
+import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.steprunner.files.utils.HomeManager;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
@@ -36,7 +37,13 @@ public class GCSPaginator extends AutoDetectedSchemaPaginator {
   }
 
   private String getSampleFileUrl(Map<String, Object> config) throws IOException {
-    String url = StepFileConfigToUrl.gcsSourceUrl(config);
+    String url = "";
+    if (StepType.from(type) == StepType.Connector) {
+      url = StepFileConfigToUrl.gcsSourceUrl(config);
+    } else {
+      // loader
+      url = StepFileConfigToUrl.gcsDestinationUrlPatternWithPrefix(config);
+    }
     FileSystems.setDefaultPipelineOptions(PipelineOptionsFactory.create());
 
     // Find Bucket

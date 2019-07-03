@@ -84,11 +84,11 @@ public class FileLoader extends LoaderStepRunner {
     }
   }
 
-  static class TextFileSink implements FileIO.Sink<String> {
+  public static class TextFileSink implements FileIO.Sink<String> {
     private static final long serialVersionUID = 1853551573522693151L;
     private PrintWriter writer;
 
-    TextFileSink() {}
+    public TextFileSink() {}
 
     @Override
     public void open(WritableByteChannel channel) throws IOException {
@@ -106,13 +106,13 @@ public class FileLoader extends LoaderStepRunner {
     }
   }
 
-  static class CSVFileSink implements FileIO.Sink<Row> {
+  public static class CSVFileSink implements FileIO.Sink<Row> {
     private static final long serialVersionUID = -3687387332727000370L;
     private boolean withHeader;
     private String header;
     private PrintWriter writer;
 
-    CSVFileSink(boolean withHeader, List<String> headers) {
+    public CSVFileSink(boolean withHeader, List<String> headers) {
       this.withHeader = withHeader;
       this.header = Joiner.on(",").join(headers);
     }
