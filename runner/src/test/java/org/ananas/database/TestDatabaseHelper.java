@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 import org.ananas.runner.kernel.common.Database;
 import org.ananas.runner.steprunner.jdbc.JDBCDriver;
+import org.ananas.scheduler.Job;
 import org.apache.commons.io.FileUtils;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;

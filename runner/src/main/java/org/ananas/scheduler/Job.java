@@ -1,4 +1,4 @@
-package org.ananas.database;
+package org.ananas.scheduler;
 
 import java.util.Date;
 
