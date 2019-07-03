@@ -84,7 +84,7 @@ public class PipelineOptionsFactory {
     options.setAppName(engine.getProperty(Engine.APP_NAME, "ananas"));
     options.setProject(engine.getProperty("projectId", ""));
     options.setFilesToStage(getFilesToStage());
-    options.setTempLocation(engine.getProperty("gcsTempLocation", "gs://cookiesync-gdpr-dev/tmp"));
+    options.setTempLocation(engine.getProperty("tempLocation", "gs://cookiesync-gdpr-dev/tmp"));
     options.setRunner(DataflowRunner.class);
     return options;
   }

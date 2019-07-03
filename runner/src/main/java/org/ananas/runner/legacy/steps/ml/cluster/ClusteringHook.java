@@ -2,9 +2,9 @@ package org.ananas.runner.legacy.steps.ml.cluster;
 
 import java.util.Map;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.misc.SerializationUtils;
 import org.ananas.runner.legacy.steps.ml.MLHookTemplate;
 import org.ananas.runner.legacy.steps.ml.MLModelTrainer;
+import org.ananas.runner.misc.SerializationUtils;
 import org.apache.beam.repackaged.beam_sdks_java_core.org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;

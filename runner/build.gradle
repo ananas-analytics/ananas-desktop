@@ -60,6 +60,7 @@ dependencies {
     compile 'com.github.wnameless:json-flattener:0.5.0'
     compile 'com.google.guava:guava:27.0.1-jre'
     compile 'com.google.cloud:google-cloud-storage:1.79.0'
+    compile 'com.google.cloud:google-cloud-bigquery:1.79.0'
     compile 'com.thoughtworks.xstream:xstream:1.4.11'
     compile 'com.sparkjava:spark-core:2.5'
     compile 'commons-io:commons-io:2.6'

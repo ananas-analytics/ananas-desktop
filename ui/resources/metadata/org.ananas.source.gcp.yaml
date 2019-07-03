@@ -1,0 +1,20 @@
+---
+org.ananas.source.gcp.bigquery:
+  id: org.ananas.source.gcp.bigquery
+  name: Google Cloud BigQuery Source
+  description: Connect data from a BigQuery table
+  type: Source
+  icon: images/google-bigquery.svg
+  step: 
+    type: connector
+    config: 
+      subtype: bigquery
+      sql: |
+        SELECT * FROM [TABLE]
+        LIMIT 100
+      forceAutoDetectSchema: false
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
+
+
