@@ -30,18 +30,18 @@ org.ananas.destination.jdbc.mysql:
     maxIncoming: 1
     maxOutgoing: 0 
 
-org.ananas.destination.jdbc.gcloudsql:
-  id: org.ananas.destination.jdbc.gcloudsql
-  name: Google Cloud SQL Destination
-  description: Save your data to Google Cloud SQL database
-  icon: images/gcloudsql.svg
-  type: Destination
-  step:
-    type: loader
-    config: 
-      subtype: jdbc
-      database: mysql
-       
-  options:
-    maxIncoming: 1
-    maxOutgoing: 0 
+#org.ananas.destination.jdbc.gcloudsql:
+#  id: org.ananas.destination.jdbc.gcloudsql
+#  name: Google Cloud SQL Destination
+#  description: Save your data to Google Cloud SQL database
+#  icon: images/gcloudsql.svg
+#  type: Destination
+#  step:
+#    type: loader
+#    config: 
+#      subtype: jdbc
+#      database: mysql
+#       
+#  options:
+#    maxIncoming: 1
+#    maxOutgoing: 0 

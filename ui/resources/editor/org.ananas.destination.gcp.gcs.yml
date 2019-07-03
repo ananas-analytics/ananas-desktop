@@ -27,12 +27,18 @@ layout:
           flex: false
         children:
         - title
-        - format
-        - bucket
-        - path-heading
-        - path-input
-        - prefix
-        - header
+        - key: basic-editor
+          collapsible: true
+          props:
+            label: Basic Settings
+            open: true
+          children:
+          - format
+          - bucket
+          - path-heading
+          - path-input
+          - prefix
+          - header
         - key: advanced-editor
           collapsible: true
           props:
