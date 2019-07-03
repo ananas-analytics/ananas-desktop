@@ -25,6 +25,10 @@ public class StepFileConfigToUrl {
   }
 
   public static String url(Map<String, Object> config, FileLoader.SupportedFormat f) {
+    String path = (String)config.get("path");
+    if (path.toLowerCase().endsWith("." + f.name().toLowerCase())) {
+      return path;
+    }
     return String.format(
         "%s/%s-%s-of-%s.%s",
         config.get("path"), config.get("prefix"), "00000", "00001", f.name().toLowerCase());
