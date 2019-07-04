@@ -25,7 +25,7 @@ public class StepFileConfigToUrl {
   }
 
   public static String url(Map<String, Object> config, FileLoader.SupportedFormat f) {
-    String path = (String)config.get("path");
+    String path = (String) config.get("path");
     if (path.toLowerCase().endsWith("." + f.name().toLowerCase())) {
       return path;
     }

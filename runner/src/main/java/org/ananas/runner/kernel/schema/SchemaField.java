@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.Data;
 import org.apache.beam.repackaged.beam_sdks_java_extensions_sql.org.apache.calcite.sql.type.SqlTypeName;
 import org.apache.beam.sdk.extensions.sql.impl.utils.CalciteUtils;
+import org.apache.beam.sdk.schemas.Schema.FieldType;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -48,7 +49,23 @@ public class SchemaField implements Serializable {
   public static String convert(org.apache.beam.sdk.schemas.Schema.FieldType type) {
     // convert beam field type to SQL type
     // NOTE: need to convert it back in toBeamField() method
-    return CalciteUtils.toSqlTypeName(type).getName();
+    if (type.getTypeName().name().equals(FieldType.DATETIME.getTypeName().name())) {
+      String subType = type.getMetadataString("subtype");
+      if ("DATETIME".equals(subType) || "TIMESTAMP".equals(subType)) {
+        return SqlTypeName.TIMESTAMP.getName();
+      }
+      if ("DATE".equals(subType)) {
+        return SqlTypeName.DATE.getName();
+      }
+      if ("TIME".equals(subType)) {
+        return SqlTypeName.TIME.getName();
+      }
+    }
+    String sqlType = CalciteUtils.toSqlTypeName(type).getName();
+    if (sqlType.equals(SqlTypeName.CHAR.getName())) {
+      return SqlTypeName.VARCHAR.getName();
+    }
+    return sqlType;
   }
 
   public org.apache.beam.sdk.schemas.Schema.Field toBeamField() {

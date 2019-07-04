@@ -230,7 +230,6 @@ export default class DataTable extends PureComponent<Props, State> {
 
     variableService.loadVariableDict(this.props.context.project.id, this.props.context.variables)
       .then(dict => {
-        console.log(this.props.context.project)
         return executionService.runStep(
           this.props.context.user,
           this.props.context.project.id,

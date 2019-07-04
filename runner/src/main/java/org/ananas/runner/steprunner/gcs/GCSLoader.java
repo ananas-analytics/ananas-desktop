@@ -3,10 +3,8 @@ package org.ananas.runner.steprunner.gcs;
 import org.ananas.runner.kernel.LoaderStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.legacy.steps.commons.json.AsJsons;
 import org.ananas.runner.misc.StepConfigHelper;
-import org.ananas.runner.steprunner.files.FileLoader;
 import org.ananas.runner.steprunner.files.FileLoader.CSVFileSink;
 import org.ananas.runner.steprunner.files.FileLoader.TextFileSink;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
@@ -28,6 +26,11 @@ public class GCSLoader extends LoaderStepRunner {
     prefix = StepConfigHelper.getConfig(step.config, "prefix", "output");
 
     this.output = previous.getOutput();
+
+    if (isTest) {
+      // TODO: check configuration here
+      return;
+    }
     String format = (String) step.config.getOrDefault("format", "");
     switch (format) {
       case "csv":
@@ -41,8 +44,7 @@ public class GCSLoader extends LoaderStepRunner {
   }
 
   private void buildCsvLoader() {
-    url =
-        StepFileConfigToUrl.gcsSourceUrl(step.config);
+    url = StepFileConfigToUrl.gcsSourceUrl(step.config);
     this.output.apply(
         FileIO.<Row>write()
             .via(new CSVFileSink(true, previous.getSchema().getFieldNames()))
@@ -53,8 +55,7 @@ public class GCSLoader extends LoaderStepRunner {
   }
 
   private void buildJsonLoader() {
-    url =
-        StepFileConfigToUrl.gcsDestinationUrlWithoutPrefix(step.config);
+    url = StepFileConfigToUrl.gcsDestinationUrlWithoutPrefix(step.config);
     this.output
         .apply(AsJsons.of(this.errors))
         .apply(

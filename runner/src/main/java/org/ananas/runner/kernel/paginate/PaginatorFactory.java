@@ -10,6 +10,7 @@ import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
 import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.kernel.model.StepType;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -76,11 +77,15 @@ public class PaginatorFactory implements Paginator {
       Constructor<? extends AutoDetectedSchemaPaginator> ctor =
           clazz.getDeclaredConstructor(String.class, String.class, Map.class, Schema.class);
       ctor.setAccessible(true);
+
       // get the schema here if user choose to use the schema from dataframe
       boolean forceSchemaAutodetect =
           (Boolean) this.config.getOrDefault(Step.FORCE_AUTODETECT_SCHEMA, false);
       Schema schema = null;
-      if (!forceSchemaAutodetect && (dataframe != null && dataframe.schema != null)) {
+
+      if (!forceSchemaAutodetect
+          && (dataframe != null && dataframe.schema != null)
+          && StepType.from(this.type).equals(StepType.Connector)) { // only avoid autodetect for connector
         schema = dataframe.schema.toBeamSchema();
         if (schema.getFieldCount() == 0) {
           schema = null;

@@ -44,6 +44,7 @@ layout:
             label: Advanced
           children:
           - description
+          - force-auto-detect-schema
     - key: update-container
       props:
         boder:
@@ -104,6 +105,12 @@ components:
     default: Describe this step here
     props:
       label: Description
+  force-auto-detect-schema:
+    bind: forceAutoDetectSchema
+    type: CheckBox
+    default: false
+    props:
+      label: Force schema auto detection
   update-btn:
     type: Button
     props:
