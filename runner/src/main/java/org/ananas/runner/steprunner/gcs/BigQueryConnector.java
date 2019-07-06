@@ -3,6 +3,9 @@ package org.ananas.runner.steprunner.gcs;
 import static org.apache.beam.sdk.values.Row.toRow;
 
 import com.google.api.services.bigquery.model.TableRow;
+import com.google.cloud.bigquery.FieldValue;
+import com.google.cloud.bigquery.FieldValueList;
+import com.google.cloud.bigquery.TableResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryUtils;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.SchemaCoder;
+import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.Row;
@@ -41,8 +45,24 @@ public class BigQueryConnector extends ConnectorStepRunner {
       schema = paginator.getSchema();
     }
 
+    if (isTest) {
+      String testQuery = config.getQuery();
+      if (!testQuery.toUpperCase().contains("LIMIT")) {
+        testQuery += " LIMIT 1000";
+      }
+      TableResult result = BigQueryHelper.query(config.projectId, testQuery);
+
+      List<Row> rowResults = new ArrayList<>();
+      for (FieldValueList row : result.iterateAll()) {
+        rowResults.add(BigQueryHelper.bigQueryRowToBeamRow(row, schema));
+      }
+
+      this.output = pipeline
+        .apply(Create.of(rowResults).withRowSchema(schema));
+      return;
+    }
+
     Schema finalSchema = schema;
-    // TableSchema s = BigQuerySchemaDetector.beamSchemaToTableSchema(finalSchema);
     String query = config.getQuery();
     this.output =
         pipeline

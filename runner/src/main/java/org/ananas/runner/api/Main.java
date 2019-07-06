@@ -1,7 +1,7 @@
 package org.ananas.runner.api;
 
 import org.ananas.runner.kernel.ExtensionRegistry;
-import org.ananas.runner.paginator.files.BigqueryPaginator;
+import org.ananas.runner.paginator.BigqueryPaginator;
 import org.ananas.runner.paginator.files.CSVPaginator;
 import org.ananas.runner.paginator.files.GCSPaginator;
 import org.ananas.runner.paginator.files.JdbcPaginator;

@@ -1,4 +1,4 @@
-package org.ananas.runner.paginator.files;
+package org.ananas.runner.paginator;
 
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
@@ -11,6 +11,7 @@ import java.util.Map;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.misc.StepConfigHelper;
+import org.ananas.runner.paginator.files.BigQuerySchemaDetector;
 import org.ananas.runner.steprunner.gcs.BigQueryHelper;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
