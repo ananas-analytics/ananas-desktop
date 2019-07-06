@@ -1,6 +1,11 @@
 package org.ananas.runner.steprunner.gcs;
 
+import static org.apache.beam.sdk.values.Row.toRow;
+
 import com.google.api.services.bigquery.model.TableRow;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.ananas.runner.kernel.ConnectorStepRunner;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
@@ -10,6 +15,7 @@ import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryUtils;
 import org.apache.beam.sdk.schemas.Schema;
+import org.apache.beam.sdk.schemas.SchemaCoder;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.Row;
@@ -40,22 +46,21 @@ public class BigQueryConnector extends ConnectorStepRunner {
     String query = config.getQuery();
     this.output =
         pipeline
-            .apply(BigQueryIO.readTableRows().fromQuery(query).usingStandardSql())
+            .apply(
+              BigQueryIO.readTableRows()
+                .fromQuery(query)
+                .usingStandardSql())
             .apply(
                 ParDo.of(
                     new DoFn<TableRow, Row>() {
                       private static final long serialVersionUID = 1617056466865611645L;
 
                       @ProcessElement
-                      public void processElement(ProcessContext c) {
-                        TableRow tableRow = c.element();
-                        LOG.warn(tableRow.getF().toString());
-                        Row row =
-                            BigQueryUtils.toBeamRow(
-                                finalSchema,
-                                BigQuerySchemaDetector.beamSchemaToTableSchema(finalSchema),
-                                tableRow);
-                        c.output(row);
+                      public void processElement(@Element TableRow tableRow, OutputReceiver<Row> outputReceiver) {
+                        Row row = finalSchema.getFields().stream()
+                          .map(field -> BigQueryHelper.autoCast(field, tableRow.get(field.getName())))
+                          .collect(toRow(finalSchema));
+                        outputReceiver.output(row);
                       }
                     }));
     this.output.setRowSchema(schema);
