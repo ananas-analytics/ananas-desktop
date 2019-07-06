@@ -1,5 +1,6 @@
 package org.ananas.runner.steprunner.gcs;
 
+import java.io.IOException;
 import org.ananas.runner.kernel.ConnectorStepRunner;
 import org.ananas.runner.kernel.common.JsonStringBasedFlattenerReader;
 import org.ananas.runner.kernel.common.Sampler;
@@ -8,6 +9,7 @@ import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
 import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
+import org.ananas.runner.paginator.files.GCSPaginator;
 import org.ananas.runner.steprunner.files.csv.BeamTextCSVCustomTable;
 import org.ananas.runner.steprunner.files.txt.TruncatedTextIO;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
@@ -47,17 +49,29 @@ public class GCSConnector extends ConnectorStepRunner {
             .withRecordSeparator(config.recordSeparator);
 
     Schema schema = step.getBeamSchema();
-    if (schema == null || step.forceAutoDetectSchema()) {
-      // find the paginator bind to it
-      AutoDetectedSchemaPaginator csvPaginator =
+    AutoDetectedSchemaPaginator csvPaginator =
           PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
               .buildPaginator();
+    if (schema == null || step.forceAutoDetectSchema()) {
+      // find the paginator bind to it
       schema = csvPaginator.getSchema();
+    }
+
+
+    String url = config.url;
+    // TODO: better not force paginator type here, move getSampleFileUrl method to some helper class?
+    if (isTest && csvPaginator instanceof GCSPaginator) {
+      try {
+        url = ((GCSPaginator) csvPaginator).getSampleFileUrl(step.config);
+      } catch (IOException e) {
+        e.printStackTrace();
+        throw new RuntimeException("Failed to get sample file");
+      }
     }
 
     this.output =
         new BeamTextCSVCustomTable(
-                this.errors, schema, config.url, format, config.hasHeader, doSampling, isTest)
+                this.errors, schema, url, format, config.hasHeader, doSampling, isTest)
             .buildIOReader(pipeline);
     this.output.setRowSchema(schema);
   }
@@ -66,13 +80,23 @@ public class GCSConnector extends ConnectorStepRunner {
     String url = StepFileConfigToUrl.gcsSourceUrl(this.step.config);
 
     Schema schema = step.getBeamSchema();
-    if (schema == null || step.forceAutoDetectSchema()) {
-      // find the paginator bind to it
-      AutoDetectedSchemaPaginator paginator =
+    AutoDetectedSchemaPaginator paginator =
           PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
               .buildPaginator();
+    if (schema == null || step.forceAutoDetectSchema()) {
       schema = paginator.getSchema();
     }
+
+    // TODO: better not force paginator type here, move getSampleFileUrl method to some helper class?
+    if (isTest && paginator instanceof GCSPaginator) {
+      try {
+        url = ((GCSPaginator) paginator).getSampleFileUrl(step.config);
+      } catch (IOException e) {
+        e.printStackTrace();
+        throw new RuntimeException("Failed to get sample file");
+      }
+    }
+
     PCollection<String> p =
         this.pipeline.apply(
             this.isTest ? TruncatedTextIO.read().from(url) : TextIO.read().from(url));

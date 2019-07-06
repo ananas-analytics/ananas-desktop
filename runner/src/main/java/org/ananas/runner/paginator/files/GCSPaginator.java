@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.GZIPInputStream;
 import org.ananas.runner.kernel.model.StepType;
@@ -36,7 +37,7 @@ public class GCSPaginator extends AutoDetectedSchemaPaginator {
     super(id, type, config, schema);
   }
 
-  private String getSampleFileUrl(Map<String, Object> config) throws IOException {
+  public String getSampleFileUrl(Map<String, Object> config) throws IOException {
     String url = "";
     if (StepType.from(type) == StepType.Connector) {
       url = StepFileConfigToUrl.gcsSourceUrl(config);
@@ -48,14 +49,15 @@ public class GCSPaginator extends AutoDetectedSchemaPaginator {
 
     // Find Bucket
     final AtomicReference<ResourceId> sampleResourceId = new AtomicReference<>();
-    long minSize = Long.MAX_VALUE;
+    AtomicLong minSize = new AtomicLong(Long.MAX_VALUE);
     MatchResult listResult = FileSystems.match(url);
     listResult
         .metadata()
         .forEach(
             metadata -> {
               long size = metadata.sizeBytes();
-              if (minSize > size && size > 0) {
+              if (minSize.get() > size && size > 0) {
+                minSize.set(size);
                 sampleResourceId.set(metadata.resourceId());
               }
             });

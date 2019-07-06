@@ -41,7 +41,7 @@ export default ({name, description, selected, onClick, onEdit, onConfig, onDelet
             left: 'medium', right: 'medium',
           }}>
             <Box height='5rem' overflow='hidden'>
-              <Text size='1rem' >{description}</Text>
+              <Text color='dark-2' size='1rem' >{description}</Text>
             </Box>
           </Box>
         </Box>

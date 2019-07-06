@@ -1,6 +1,12 @@
 // TODO: support multiple themes
 import merge from 'deepmerge'
 import { v1 } from 'grommet-theme-v1'
+import { hpe } from 'grommet-theme-hpe'
+import { hp } from 'grommet-theme-hp'
+import { aruba } from 'grommet-theme-aruba'
+import twenty from './twenty'
+import peach from './peach'
+import moodyBlue from './moody-blue'
 
 const theme = {
   global: {
@@ -30,6 +36,18 @@ export function getTheme(name) {
   switch(name) {
     case 'v1':
       return merge(v1, theme)
+    case 'twenty':
+      return twenty
+    case 'peach':
+      return peach
+    case 'moody-blue':
+      return moodyBlue
+    case 'hpe':
+      return hpe
+    case 'hp':
+      return hp
+    case 'aruba':
+      return aruba
     case 'default':
       default:
       return theme

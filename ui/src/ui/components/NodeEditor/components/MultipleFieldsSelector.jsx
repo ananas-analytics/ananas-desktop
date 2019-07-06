@@ -70,7 +70,7 @@ export default class MultipleFieldsSelector extends React.Component<Props, State
         gap='xsmall'
         pad={{ vertical: 'xsmall', horizontal: 'small' }}
         margin='xsmall'
-        background='accent-1'
+        background='tag'
         round='large'
       >
         <Text size='small' color='white'>
@@ -78,7 +78,7 @@ export default class MultipleFieldsSelector extends React.Component<Props, State
         </Text>
         <Box background='white' round='full' margin={{ left: 'xsmall' }}>
           <FormClose
-            color='accent-1'
+            color='tag'
             size='small'
             style={{ width: '12px', height: '12px' }}
           />

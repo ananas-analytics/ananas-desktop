@@ -39,37 +39,37 @@ public class BigQuerySchemaDetector implements Serializable {
             field -> {
               LegacySQLTypeName fieldType = field.getType();
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.BOOL.name())) {
-                builder.addField(field.getName(), FieldType.BOOLEAN);
+                builder.addNullableField(field.getName(), FieldType.BOOLEAN);
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.BYTES.name())) {
-                builder.addField(field.getName(), FieldType.BYTES);
+                builder.addNullableField(field.getName(), FieldType.BYTES);
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.DATE.name())) {
-                builder.addField(
+                builder.addNullableField(
                     field.getName(), FieldType.DATETIME.withMetadata("subtype", "DATE"));
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.DATETIME.name())) {
-                builder.addField(
+                builder.addNullableField(
                     field.getName(), FieldType.DATETIME.withMetadata("subtype", "DATETIME"));
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.FLOAT64.name())) {
-                builder.addField(field.getName(), FieldType.FLOAT);
+                builder.addNullableField(field.getName(), FieldType.FLOAT);
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.INT64.name())) {
-                builder.addField(field.getName(), FieldType.INT64);
+                builder.addNullableField(field.getName(), FieldType.INT64);
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.NUMERIC.name())) {
-                builder.addField(field.getName(), FieldType.DECIMAL);
+                builder.addNullableField(field.getName(), FieldType.DECIMAL);
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.STRING.name())) {
-                builder.addField(field.getName(), FieldType.STRING);
+                builder.addNullableField(field.getName(), FieldType.STRING);
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.TIME.name())) {
-                builder.addField(
+                builder.addNullableField(
                     field.getName(), FieldType.DATETIME.withMetadata("subtype", "TIME"));
               }
               if (fieldType.getStandardType().name().equals(StandardSQLTypeName.TIMESTAMP.name())) {
-                builder.addField(
+                builder.addNullableField(
                     field.getName(), FieldType.DATETIME.withMetadata("subtype", "TIMESTAMP"));
               }
             });

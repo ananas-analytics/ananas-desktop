@@ -81,7 +81,7 @@ public class BigQueryHelper {
       if (rawObj instanceof NlsString) {
         return ((NlsString) rawObj).getValue();
       } else {
-        return rawObj;
+        return rawObj.toString();
       }
     } else if (CalciteUtils.isDateTimeType(type)) {
       // Internal representation of DateType in Calcite is convertible to Joda's Datetime.
@@ -115,10 +115,17 @@ public class BigQueryHelper {
           return Float.valueOf(raw);
         case DOUBLE:
           return Double.valueOf(raw);
+        case DECIMAL:
+          return BigDecimal.valueOf(Double.valueOf(raw));
         default:
           throw new UnsupportedOperationException(
               String.format("Column type %s is not supported yet!", type));
       }
+    } else if (type.getTypeName().equals(FieldType.BOOLEAN.getTypeName())) {
+      if (rawObj instanceof String) {
+        return Boolean.valueOf((String)rawObj);
+      }
+      return rawObj;
     }
     return rawObj;
   }

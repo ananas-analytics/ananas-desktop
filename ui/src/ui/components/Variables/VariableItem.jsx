@@ -30,7 +30,7 @@ const VariableItem = ({
           <Text color='brand' size='xsmall' truncate weight={600} >SCOPE: {scope.toUpperCase()}</Text>
         </Box>
         <Box direction='column' flex margin={{top: 'small'}} overflow='hidden'>
-          <Text size='xsmall' >{type.toUpperCase()}. {description}</Text>
+          <Text color='dark-2' size='xsmall' >{type.toUpperCase()}. {description}</Text>
         </Box>
       </Box>
       {
