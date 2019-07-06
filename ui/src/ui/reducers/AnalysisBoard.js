@@ -8,6 +8,8 @@ export default function(state, action) {
       return handleOpenNodeEditor(state, action)
     case actionTypes.SELECT_NODE:
       return handleSelectNode(state, action)
+    case actionTypes.CHANGE_PROJECT:
+      return handleChangeProject(state, action)
     default:
       return defaultHandler(state, action)
   }
@@ -42,5 +44,12 @@ function handleSelectNode(state, action) {
   } else {
     newState.currentStepId = null
   }
+  return newState
+}
+
+function handleChangeProject(state, action) {
+  let newState = { ... state }
+  newState.currentStepId = null
+  newState.showEditor = false
   return newState
 }

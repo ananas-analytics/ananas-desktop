@@ -51,16 +51,20 @@ function deleteProject(projectId: ID) {
 }
 
 function changeCurrentProject(id: string) {
-  return (dispatch: Dispatch, getState: GetState, {modelService}: ThunkActionArgs) => {
+  return (dispatch: Dispatch, getState: GetState, {modelService, variableService}: ThunkActionArgs) => {
     if (!id) {
       dispatch({
         type: actions.CHANGE_PROJECT,
         id: null,
       })
     }
+
     // first load the current project
     modelService.loadProject(id)
       .then((project)=>{
+        // clear variable cache
+        variableService.clearCache()
+
         dispatch(projectLoaded(project))
 
         dispatch({

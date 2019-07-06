@@ -22,6 +22,7 @@ const theme = {
       'node-text': '#999',
       'node-border': '#7D4CDB',
       'node-border-highlight': '#00873D',
+      tag: 'accent-1',
       label: '#999',
     },
     font: {

@@ -135,6 +135,10 @@ export default class VariableService {
     ]
   }
 
+  clearCache() {
+    this.dict = null
+  }
+
   saveVariableDict(projectID: ID, dict: VariableDictionary) :Promise<'OK'> {
     return proxy.saveProjectVariableDict(projectID, dict)
       .then(result => {
