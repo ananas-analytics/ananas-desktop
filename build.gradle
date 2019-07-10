@@ -50,6 +50,8 @@ task packRunner(type: Exec) {
 
 	println "Packing settings: JDK_HOME=[${project.JDK_HOME}] for platform [${project.platform}]"
 
+    println "Jar: ${project.runnerJarName}"
+
 	workingDir "."
 
 	commandLine "java", "-jar", "buildSrc/src/main/resources/packr.jar",

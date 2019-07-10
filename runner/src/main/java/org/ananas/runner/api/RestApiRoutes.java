@@ -7,7 +7,7 @@ import org.ananas.runner.legacy.hooks.BackgroundApiService;
 /** REST API Routes */
 public class RestApiRoutes {
 
-  protected static void initRestApi(String[] args) {
+  public static void initRestApi(String[] args) {
     int maxThreads = 8;
     int minThreads = 2;
     int timeOutMillis = 30000;

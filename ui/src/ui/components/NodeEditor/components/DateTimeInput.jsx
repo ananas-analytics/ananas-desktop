@@ -30,11 +30,11 @@ export default class DateTimeInput extends Component<Props> {
 
   handleChangeDate = (date: moment) => {
     let newDate = date.format('YYYY-MM-DD')
-    this.props.onChange(moment(`${newDate} ${this.props.time}`))
+    this.props.onChange(moment(`${newDate} ${this.props.time}`).valueOf())
   }
 
   handleChangeTime = (time: string) => {
-    this.props.onChange(moment(`${this.props.date} ${time}`))
+    this.props.onChange(moment(`${this.props.date} ${time}`).valueOf())
   }
 
   render() {

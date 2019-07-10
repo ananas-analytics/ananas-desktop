@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- https://logback.qos.ch/manual/appenders.html -->
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/ananas/ananas.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -18,11 +19,19 @@
     </appender>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
                 %d{yyyy-MM-dd HH:mm:ss} %-5level - %msg%n
-            </Pattern>
-        </layout>
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CLI" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %-5level - %msg%n
+            </pattern>
+        </encoder>
     </appender>
 
     <logger name="org.apache.flink" level="debug"
@@ -37,4 +46,10 @@
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
+
+    <root level="off">
+        <appender-ref ref="CLI"/>
+    </root>
+
 </configuration>
+

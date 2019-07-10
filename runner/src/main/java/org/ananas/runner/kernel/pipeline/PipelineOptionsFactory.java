@@ -27,6 +27,10 @@ public class PipelineOptionsFactory {
       return createFlinkOptions(null);
     }
 
+    if (engine == null) {
+      return createFlinkOptions(null);
+    }
+
     switch (engine.type.toLowerCase()) {
       case "flink":
         return createFlinkOptions(engine);

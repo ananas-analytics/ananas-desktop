@@ -50,16 +50,16 @@ public class GCSConnector extends ConnectorStepRunner {
 
     Schema schema = step.getBeamSchema();
     AutoDetectedSchemaPaginator csvPaginator =
-          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
-              .buildPaginator();
+        PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+            .buildPaginator();
     if (schema == null || step.forceAutoDetectSchema()) {
       // find the paginator bind to it
       schema = csvPaginator.getSchema();
     }
 
-
     String url = config.url;
-    // TODO: better not force paginator type here, move getSampleFileUrl method to some helper class?
+    // TODO: better not force paginator type here, move getSampleFileUrl method to some helper
+    // class?
     if (isTest && csvPaginator instanceof GCSPaginator) {
       try {
         url = ((GCSPaginator) csvPaginator).getSampleFileUrl(step.config);
@@ -81,13 +81,14 @@ public class GCSConnector extends ConnectorStepRunner {
 
     Schema schema = step.getBeamSchema();
     AutoDetectedSchemaPaginator paginator =
-          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
-              .buildPaginator();
+        PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+            .buildPaginator();
     if (schema == null || step.forceAutoDetectSchema()) {
       schema = paginator.getSchema();
     }
 
-    // TODO: better not force paginator type here, move getSampleFileUrl method to some helper class?
+    // TODO: better not force paginator type here, move getSampleFileUrl method to some helper
+    // class?
     if (isTest && paginator instanceof GCSPaginator) {
       try {
         url = ((GCSPaginator) paginator).getSampleFileUrl(step.config);

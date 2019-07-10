@@ -38,6 +38,7 @@ public class JsonPaginator extends AutoDetectedSchemaPaginator {
 
   @Override
   public Iterable<Row> iterateRows(Integer page, Integer pageSize) {
-    return PageProcessor.readFile(this.url, page, pageSize, (e, i) -> this.reader.document2BeamRow(e));
+    return PageProcessor.readFile(
+        this.url, page, pageSize, (e, i) -> this.reader.document2BeamRow(e));
   }
 }
