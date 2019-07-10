@@ -4,7 +4,7 @@ const { spawn } = require('child_process')
 
 const log = require('./src/common/log')
 
-const { init } = require('./src/main')
+const { init, loadWorkspace } = require('./src/main')
 
 const MetadataLoader = require('./src/common/model/MetadataLoader')
 const EditorMetadataLoader = require('./src/common/model/EditorMetadataLoader')
@@ -13,6 +13,9 @@ const metadataResourcePath = getResourcePath('metadata')
 const editorResourcePath = getResourcePath('editor')
 
 let runner = null
+// these are initiated when app is ready
+let metadata = null
+let settings = {} 
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -63,7 +66,7 @@ function createWindow () {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
   // #if process.env.NODE_ENV === 'production'
-  startRunner()
+  startRunner(settings.env)
   // #endif
 }
 
@@ -91,14 +94,15 @@ function getRunnerPath() {
   // #endif
 }
 
-function startRunner() {
+function startRunner(env) {
   const runnerPath = getRunnerPath()  
 
-  log.info(`path: ${process.env.PATH}`)
-  log.info(`google application credential: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`)
   log.info(`runner path: ${runnerPath}`)
+  log.info(`runner environment: ${env}`)
 
-  runner = spawn(runnerPath)
+  runner = spawn(runnerPath, [], {
+    env,
+  })
   runner.stdout.on('data', (data) => {
     log.info(data.toString())
   })
@@ -122,7 +126,6 @@ function stopRunner() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-let metadata = null
 app.on('ready', () => {
   MetadataLoader.getInstance().loadFromDir(metadataResourcePath)
     .then(meta => {
@@ -133,6 +136,13 @@ app.on('ready', () => {
     })
     .then(editors => {
       init(metadata, editors)
+    })
+    .then(() => {
+      return loadWorkspace() 
+    })
+    .then(workspace => {
+      settings = workspace.settings || {} 
+      log.info(`workspace settings ${JSON.stringify(settings, null, 4)}`)
       createWindow()
     })
     // TODO: check updates
