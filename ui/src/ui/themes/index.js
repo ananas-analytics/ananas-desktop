@@ -7,6 +7,7 @@ import { aruba } from 'grommet-theme-aruba'
 import twenty from './twenty'
 import peach from './peach'
 import moodyBlue from './moody-blue'
+import ananas from './ananas'
 
 const theme = {
   global: {
@@ -49,6 +50,8 @@ export function getTheme(name) {
       return hp
     case 'aruba':
       return aruba
+    case 'ananas':
+      return ananas
     case 'default':
       default:
       return theme

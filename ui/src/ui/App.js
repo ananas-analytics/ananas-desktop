@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 // style related imports
 import './App.scss'
 import { getTheme } from './themes'
-const theme = getTheme('v1')
+const theme = getTheme('ananas')
 
 // component related imports
 import { Box } from 'grommet/components/Box'
