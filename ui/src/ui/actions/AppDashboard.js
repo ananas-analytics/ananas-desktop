@@ -59,12 +59,11 @@ function changeCurrentProject(id: string) {
       })
     }
 
+    variableService.clearCache()
     // first load the current project
     modelService.loadProject(id)
       .then((project)=>{
         // clear variable cache
-        variableService.clearCache()
-
         dispatch(projectLoaded(project))
 
         dispatch({

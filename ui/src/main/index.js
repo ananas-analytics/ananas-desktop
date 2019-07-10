@@ -15,10 +15,12 @@ const User           = require('../common/model/User')
 
 import type { PlainNodeMetadata } from '../common/model/flowtypes'
 
+
+const home = app.getPath('userData')
+const dbPath = path.join(home, 'db')
+
 function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) {
   // init localDB
-  const home = app.getPath('userData')
-  const dbPath = path.join(home, 'db')
   const localDB = new LocalDB(dbPath)
   log.debug('local db path', dbPath)
 
@@ -227,6 +229,11 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
   })
 }
 
+function loadWorkspace() :Promise<Workspace> {
+  return Workspace.Load(path.join(home, 'workspace.yml'))
+}
+
 module.exports = {
   init,
+  loadWorkspace,
 }
