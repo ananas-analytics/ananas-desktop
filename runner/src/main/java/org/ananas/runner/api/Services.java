@@ -16,7 +16,7 @@ import org.quartz.SchedulerException;
 
 public class Services {
 
-  protected static Object runDag(String id, String token, String body)
+  public static Object runDag(String id, String token, String body)
       throws java.io.IOException, TemplateException {
     DagRequest req = JsonUtil.fromJson(body, DagRequest.class);
     req = req.resolveVariables();
@@ -36,7 +36,7 @@ public class Services {
     return testDag(req);
   }
 
-  protected static Object testDag(DagRequest req) {
+  public static Object testDag(DagRequest req) {
     Map<String, Dataframe> results = new DagBuilder(req, true).test();
     return JsonUtil.toJson(ApiResponseBuilder.Of().OK(results).build());
   }

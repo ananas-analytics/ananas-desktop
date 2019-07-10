@@ -40,10 +40,15 @@ class CorePlugin implements Plugin<Settings> {
   private void injectRunnerJarName(Project project, ProjectVersion version) {
     project.getExtensions().add("runnerJarName", "runner-all-" + version);
     project.getExtensions().add("runnerJarBaseName", "runner-all");
+    project.getExtensions().add("cliJarName", "ananas-cli-" + version);
+    project.getExtensions().add("cliJarBaseName", "ananas-cli");
     Set<Project> projects = project.getSubprojects();
     for (Project subProject : projects) {
       subProject.getExtensions().add("runnerJarName", "runner-all-" + version);
       subProject.getExtensions().add("runnerJarBaseName", "runner-all");
+
+      subProject.getExtensions().add("cliJarName", "ananas-cli-" + version);
+      subProject.getExtensions().add("cliJarBaseName", "ananas-cli");
     }
   }
 }

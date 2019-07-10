@@ -62,6 +62,12 @@ public class DagRequest {
         case "date":
           model.put(key, v.convertToDate());
           break;
+        case "string":
+          model.put(key, v.convertToString());
+          break;
+        case "boolean":
+          model.put(key, v.convertToBoolean());
+          break;
         default:
           model.put(key, v.value);
       }

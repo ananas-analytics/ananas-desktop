@@ -3,22 +3,17 @@ package org.ananas.runner.steprunner.gcs;
 import static org.apache.beam.sdk.values.Row.toRow;
 
 import com.google.api.services.bigquery.model.TableRow;
-import com.google.cloud.bigquery.FieldValue;
 import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.TableResult;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.ananas.runner.kernel.ConnectorStepRunner;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.paginator.files.BigQuerySchemaDetector;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
-import org.apache.beam.sdk.io.gcp.bigquery.BigQueryUtils;
 import org.apache.beam.sdk.schemas.Schema;
-import org.apache.beam.sdk.schemas.SchemaCoder;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
@@ -57,8 +52,7 @@ public class BigQueryConnector extends ConnectorStepRunner {
         rowResults.add(BigQueryHelper.bigQueryRowToBeamRow(row, schema));
       }
 
-      this.output = pipeline
-        .apply(Create.of(rowResults).withRowSchema(schema));
+      this.output = pipeline.apply(Create.of(rowResults).withRowSchema(schema));
       return;
     }
 
@@ -66,20 +60,22 @@ public class BigQueryConnector extends ConnectorStepRunner {
     String query = config.getQuery();
     this.output =
         pipeline
-            .apply(
-              BigQueryIO.readTableRows()
-                .fromQuery(query)
-                .usingStandardSql())
+            .apply(BigQueryIO.readTableRows().fromQuery(query).usingStandardSql())
             .apply(
                 ParDo.of(
                     new DoFn<TableRow, Row>() {
                       private static final long serialVersionUID = 1617056466865611645L;
 
                       @ProcessElement
-                      public void processElement(@Element TableRow tableRow, OutputReceiver<Row> outputReceiver) {
-                        Row row = finalSchema.getFields().stream()
-                          .map(field -> BigQueryHelper.autoCast(field, tableRow.get(field.getName())))
-                          .collect(toRow(finalSchema));
+                      public void processElement(
+                          @Element TableRow tableRow, OutputReceiver<Row> outputReceiver) {
+                        Row row =
+                            finalSchema.getFields().stream()
+                                .map(
+                                    field ->
+                                        BigQueryHelper.autoCast(
+                                            field, tableRow.get(field.getName())))
+                                .collect(toRow(finalSchema));
                         outputReceiver.output(row);
                       }
                     }));

@@ -85,7 +85,8 @@ public class PaginatorFactory implements Paginator {
 
       if (!forceSchemaAutodetect
           && (dataframe != null && dataframe.schema != null)
-          && StepType.from(this.type).equals(StepType.Connector)) { // only avoid autodetect for connector
+          && StepType.from(this.type)
+              .equals(StepType.Connector)) { // only avoid autodetect for connector
         schema = dataframe.schema.toBeamSchema();
         if (schema.getFieldCount() == 0) {
           schema = null;

@@ -87,8 +87,9 @@ public class BigQueryHelper {
       // Internal representation of DateType in Calcite is convertible to Joda's Datetime.
       if (rawObj instanceof String) {
         try {
-          Float timestamp = Float.parseFloat((String)rawObj);
-          if (System.currentTimeMillis() / timestamp > 2) { // check if it is by seconds or milliseconds
+          Float timestamp = Float.parseFloat((String) rawObj);
+          if (System.currentTimeMillis() / timestamp
+              > 2) { // check if it is by seconds or milliseconds
             timestamp = timestamp * 1000;
           }
           return new DateTime(timestamp.longValue());
@@ -123,7 +124,7 @@ public class BigQueryHelper {
       }
     } else if (type.getTypeName().equals(FieldType.BOOLEAN.getTypeName())) {
       if (rawObj instanceof String) {
-        return Boolean.valueOf((String)rawObj);
+        return Boolean.valueOf((String) rawObj);
       }
       return rawObj;
     }

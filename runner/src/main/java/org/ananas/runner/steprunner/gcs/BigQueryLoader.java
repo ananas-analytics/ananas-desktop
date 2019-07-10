@@ -54,9 +54,9 @@ public class BigQueryLoader extends LoaderStepRunner {
             ParDo.of(
                 new DoFn<Row, TableRow>() {
                   @ProcessElement
-                  public void processElement(@Element Row row, OutputReceiver<TableRow> outputReceiver) {
-                    Row renamedRow = row.getValues().stream()
-                      .collect(toRow(finalSchema));
+                  public void processElement(
+                      @Element Row row, OutputReceiver<TableRow> outputReceiver) {
+                    Row renamedRow = row.getValues().stream().collect(toRow(finalSchema));
                     TableRow tableRow = BigQueryUtils.toTableRow(renamedRow);
                     outputReceiver.output(tableRow);
                   }
@@ -65,7 +65,8 @@ public class BigQueryLoader extends LoaderStepRunner {
             BigQueryIO.writeTableRows()
                 .withSchema(BigQueryUtils.toTableSchema(finalSchema))
                 .withCreateDisposition(CreateDisposition.CREATE_IF_NEEDED)
-                .withWriteDisposition(overwrite ? WriteDisposition.WRITE_TRUNCATE : WriteDisposition.WRITE_APPEND)
+                .withWriteDisposition(
+                    overwrite ? WriteDisposition.WRITE_TRUNCATE : WriteDisposition.WRITE_APPEND)
                 .to(projectId + ":" + dataset + "." + tablename));
   }
 
@@ -74,10 +75,13 @@ public class BigQueryLoader extends LoaderStepRunner {
 
     Schema.Builder builder = new Builder();
 
-    schema.getFields().forEach(field -> {
-      String name = renameFieldNameIfNecessary(field.getName());
-      builder.addField(name, field.getType());
-    });
+    schema
+        .getFields()
+        .forEach(
+            field -> {
+              String name = renameFieldNameIfNecessary(field.getName());
+              builder.addField(name, field.getType());
+            });
 
     return builder.build();
   }

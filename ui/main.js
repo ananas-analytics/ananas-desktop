@@ -94,6 +94,8 @@ function getRunnerPath() {
 function startRunner() {
   const runnerPath = getRunnerPath()  
 
+  log.info(`path: ${process.env.PATH}`)
+  log.info(`google application credential: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`)
   log.info(`runner path: ${runnerPath}`)
 
   runner = spawn(runnerPath)
