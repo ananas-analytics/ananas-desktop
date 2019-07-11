@@ -1,3 +1,15 @@
+/*
+Shades
+#388E2A
+ 
+#14730C
+ 
+#005800
+ 
+#003F00
+ 
+#002800
+*/
 export default {
   global: {
     colors: {
