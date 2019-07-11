@@ -1,16 +1,23 @@
 const { app, BrowserWindow, Menu } = require('electron')
 const path = require('path')
 const { spawn } = require('child_process')
+const os = require('os')
 
 const log = require('./src/common/log')
 
 const { init, loadWorkspace } = require('./src/main')
+
+const { trackEvent } = require('./src/main/analytics')
 
 const MetadataLoader = require('./src/common/model/MetadataLoader')
 const EditorMetadataLoader = require('./src/common/model/EditorMetadataLoader')
 const { getResourcePath } = require('./src/main/util')
 const metadataResourcePath = getResourcePath('metadata')
 const editorResourcePath = getResourcePath('editor')
+
+let platform = os.platform();
+
+let hrstart = process.hrtime()
 
 let runner = null
 // these are initiated when app is ready
@@ -68,6 +75,10 @@ function createWindow () {
   // #if process.env.NODE_ENV === 'production'
   startRunner(settings.env)
   // #endif
+  
+  let hrend = process.hrtime(hrstart)
+  log.info('start time: ', Math.ceil(hrend[1]/1000000))
+  trackEvent('usage', 'open-app', platform, Math.ceil(hrend[1] / 1000000))
 }
 
 function getRunnerPath() {
@@ -159,12 +170,16 @@ app.on('window-all-closed', () => {
     app.quit()
   }
   stopRunner()
+
+  let hrend = process.hrtime(hrstart)
+  trackEvent('usage', 'close-app', '', hrend[0])
 })
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
+    hrstart = process.hrtime()
     createWindow()
   }
 })

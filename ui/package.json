@@ -99,6 +99,7 @@
     "lokijs": "^1.5.6",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
+    "node-machine-id": "^1.1.12",
     "normalize-path": "^3.0.0",
     "panzoom": "^7.1.2",
     "react": "16.8.4",
@@ -117,6 +118,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.1.3",
+    "universal-analytics": "^0.4.20",
     "yaml": "^1.3.2"
   }
 }
