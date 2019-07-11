@@ -20,3 +20,6 @@ derby.log
 
 # ignore output file
 /bin
+/cli/*.jar
+/cli/ananas
+/cli/ananas_completion

@@ -81,4 +81,3 @@ task pack(type: Exec) {
 	commandLine "./node_modules/.bin/electron-builder", "--${project.platform}"
 }
 
-

@@ -124,25 +124,6 @@ shadowJar {
 	}
 }
 
-/*
-task cliJar(type: ShadowJar) {
-    from convention.sourceSets.main.output
-    configurations = [project.configurations.runtime]
-
-    zip64 true
-	archiveName = "${project.cliJarName}.jar"
-
-	mergeServiceFiles {
-		include 'reference.conf'
-	}
-
-	manifest {
-        attributes 'Implementation-Title': 'Ananas Analytics CLI', 'Implementation-Version': "$project.version"
-        attributes 'Main-Class': 'org.ananas.cli.Main'
-	}
-}
- */
-
 googleJavaFormat {
   toolVersion = '1.7'
 }
