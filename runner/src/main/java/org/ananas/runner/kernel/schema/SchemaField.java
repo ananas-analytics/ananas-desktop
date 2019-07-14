@@ -51,7 +51,7 @@ public class SchemaField implements Serializable {
     // NOTE: need to convert it back in toBeamField() method
     if (type.getTypeName().name().equals(FieldType.DATETIME.getTypeName().name())) {
       String subType = type.getMetadataString("subtype");
-      if ("DATETIME".equals(subType) || "TIMESTAMP".equals(subType)) {
+      if ("DATETIME".equals(subType) || "TIMESTAMP".equals(subType) || "TS".equals(subType)) {
         return SqlTypeName.TIMESTAMP.getName();
       }
       if ("DATE".equals(subType)) {
