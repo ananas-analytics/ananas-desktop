@@ -75,6 +75,10 @@ class Proxy {
 	login(apiEndpoint, email, password) {
 		return ipc('login', `${apiEndpoint}/user/login`, email, password)
 	}
+
+  checkUpdate(notifyUpdated) {
+    return ipc('check-update', notifyUpdated)
+  }
 }
 
 export default Proxy.getInstance()

@@ -25,7 +25,7 @@ const App = ({
   user, 
   /* AppDashboard */
   projectId, projects, onChangeCurrentProject, onNewProject, onUpdateProject, onDeleteProject,
-  onLogout,
+  onLogout, onCheckUpdate,
   /* AppSideBar */
   activeMenu, expand, onClickAppMenu, onToggleAppSideBar,
   /* AppToolBar */
@@ -46,6 +46,7 @@ const App = ({
           onUpdateProject={onUpdateProject}
           onDeleteProject={onDeleteProject}
           onLogout={onLogout}
+          onCheckUpdate={onCheckUpdate}
           onDisplayMessage={onDisplayMessage}
         />)
         }
@@ -120,6 +121,9 @@ const mapDispatchToProps = dispatch => {
     },
     onChangeCurrentProject: project => {
       dispatch(actions.AppDashboard.changeCurrentProject(project))
+    },
+    onCheckUpdate: () => {
+      dispatch(actions.AppDashboard.checkUpdate())
     },
     /* AppSideBar */
     onClickAppMenu: index => {

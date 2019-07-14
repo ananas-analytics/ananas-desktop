@@ -3,7 +3,8 @@
 const { 
 	app, 
 	dialog, 
-	ipcMain } = require('electron')
+  ipcMain,
+  shell } = require('electron')
 const path  = require('path')
 const os = require('os')
 
@@ -12,6 +13,8 @@ const log            = require('../common/log')
 const Workspace      = require('../common/model/Workspace')
 const Project        = require('../common/model/Project')
 const User           = require('../common/model/User')
+
+const { checkUpdate } = require('../common/util/update') 
 
 import type { PlainNodeMetadata } from '../common/model/flowtypes'
 
@@ -41,7 +44,7 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
   ipcMain.on('get-variable-dict', (event, projectId) => {
     localDB.getProjectVariableDict(projectId)
       .then(dict => {
-        console.log(dict)
+        log.info(dict)
         event.sender.send('get-variable-dict-result', { code: 200, data: dict })
       })
       .catch(err => {
@@ -227,13 +230,52 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
       data: editors
     })
   })
+
+  ipcMain.on('check-update', (event, notifyUpdated) => {
+    log.debug('check update')
+    checkUpdateWrapper(notifyUpdated)
+      .then(version => {
+        event.sender.send('check-update-result', {
+          code: 200,
+          data: version,
+        })  
+      })
+      .catch(err => {
+        event.sender.send('check-update-result', { code: 500, message: err.message })
+      })
+  })
 }
 
 function loadWorkspace() :Promise<Workspace> {
   return Workspace.Load(path.join(home, 'workspace.yml'))
 }
 
+function checkUpdateWrapper(notifyUpdated ?:boolean) {
+  return checkUpdate()
+    .then(version => {
+      if (version) {
+        log.info(`a new version ${version.version} is ready to download: ${version.downloadPage}`)
+        dialog.showMessageBox({
+          title: 'Update',
+          message: `A new version ${version.version} is ready for you to download. See: ${version.downloadPage}`
+        })
+        shell.openExternal(version.downloadPage)
+      } else {
+        log.info('no update')
+        if (notifyUpdated) {
+          dialog.showMessageBox({
+            title: 'Update',
+            message: 'You are running the latest version.'
+          })
+        }
+      }
+      return version
+    })
+}
+
+
 module.exports = {
   init,
   loadWorkspace,
+  checkUpdateWrapper
 }

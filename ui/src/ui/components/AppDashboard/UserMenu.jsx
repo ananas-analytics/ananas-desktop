@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Box } from 'grommet/components/Box'
 import { Text } from 'grommet/components/Text'
 
-import { Logout } from 'grommet-icons'
+import { Logout, Upgrade } from 'grommet-icons'
 
 const MenuItem = styled(Box)`
   &:hover {
@@ -15,8 +15,18 @@ const MenuItem = styled(Box)`
   cursor: pointer;
 `
 
-export default ({onLogout}) => {
-  return (<Box direction='column' elevation='small' width='120px'>
+export default ({onLogout, onCheckUpdate}) => {
+  return (<Box direction='column' elevation='small' width='200px'>
+    <MenuItem direction='row' align='center'
+      pad='small'
+      onClick={()=>{onCheckUpdate()}}>
+      <Box width='32px' ><Upgrade color='light-1' size='26px' /></Box>
+      <Box flex direction='row' justify='center'>
+        <Text size='small'>Check Update</Text>
+      </Box>
+    </MenuItem>
+
+    {/*
     <MenuItem direction='row' align='center'
       pad='small'
       onClick={()=>{onLogout()}}>
@@ -25,5 +35,6 @@ export default ({onLogout}) => {
         <Text size='small'>Sign out</Text>
       </Box>
     </MenuItem>
+    */}
   </Box>)
 }

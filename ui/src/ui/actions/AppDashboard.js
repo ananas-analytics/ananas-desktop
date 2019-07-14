@@ -91,6 +91,17 @@ function logout() {
   }
 }
 
+function checkUpdate() {
+  return (dispatch: Dispatch, getState: GetState, {proxy}: ThunkActionArgs) => {
+    proxy.checkUpdate(true)
+      .then(() => {
+        dispatch({
+          type: actions.CHECK_UPDATE
+        })
+      })
+  }
+}
+
 export default {
   changeCurrentProject,
   newProject,
@@ -98,4 +109,5 @@ export default {
   deleteProject,
   projectLoaded,
   logout,
+  checkUpdate,
 }

@@ -35,6 +35,7 @@ type Props = {
   onChangeCurrentProject: (ID) => void,
 
   onLogout: () => void,
+  onCheckUpdate: () => void,
 
 	onDisplayMessage: (title:string, level:string, options:MessageOptions) => void
 }
@@ -56,6 +57,7 @@ export default class AppDashboard extends Component<Props, State> {
     onDeleteProject: ()=>{},
     onChangeCurrentProject: ()=>{},
     onLogout: ()=>{},
+    onCheckUpdate: ()=>{},
   }
 
   state = {
@@ -200,6 +202,7 @@ export default class AppDashboard extends Component<Props, State> {
         </Box>
         <Box align='center' direction='row' >
           <DropButton alignSelf='center' dropContent={<UserMenu
+              onCheckUpdate={this.props.onCheckUpdate}
               onLogout={this.props.onLogout} />}
             dropAlign={{ top: 'bottom' }} >
             <UserSettings size='24px'/>

@@ -74,6 +74,7 @@ proxy.getLocalUserName()
       metadataService,
       settingService,
       schedulerService,
+      proxy,
     }
     state.model.metadata = {
       node: metadatas[0],

@@ -1,21 +1,22 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, dialog, Menu } = require('electron')
 const path = require('path')
 const { spawn } = require('child_process')
 const os = require('os')
 
 const log = require('./src/common/log')
 
-const { init, loadWorkspace } = require('./src/main')
+const { init, loadWorkspace, checkUpdateWrapper } = require('./src/main')
 
-const { trackEvent } = require('./src/main/analytics')
+const { uid, trackEvent } = require('./src/common/util/analytics')
 
 const MetadataLoader = require('./src/common/model/MetadataLoader')
 const EditorMetadataLoader = require('./src/common/model/EditorMetadataLoader')
 const { getResourcePath } = require('./src/main/util')
+const pack = require('./package.json')
 const metadataResourcePath = getResourcePath('metadata')
 const editorResourcePath = getResourcePath('editor')
 
-let platform = os.platform();
+// let platform = os.platform()
 
 let hrstart = process.hrtime()
 
@@ -23,6 +24,7 @@ let runner = null
 // these are initiated when app is ready
 let metadata = null
 let settings = {} 
+let version = pack.version || 'unknown'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -78,7 +80,12 @@ function createWindow () {
   
   let hrend = process.hrtime(hrstart)
   log.info('start time: ', Math.ceil(hrend[1]/1000000))
-  trackEvent('usage', 'open-app', platform, Math.ceil(hrend[1] / 1000000))
+  
+  trackEvent('usage', 'open-app', `${version}`, Math.ceil(hrend[1] / 1000000))
+
+  setTimeout(() => {
+    checkUpdateWrapper() 
+  }, 10000)
 }
 
 function getRunnerPath() {
