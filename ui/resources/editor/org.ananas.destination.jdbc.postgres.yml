@@ -1,5 +1,5 @@
 ---
-id: org.ananas.source.jdbc.postgres
+id: org.ananas.destination.jdbc.postgres
 layout:
   key: root
   props:
@@ -27,17 +27,31 @@ layout:
           flex: false
         children:
         - title
-        - db-url
-        - db-user
-        - db-password
-        - table-name
-        - sql-editor
+        - key: basic-editor
+          collapsible: true
+          props:
+            label: Basic Settings
+            open: true
+          children:
+          - db-url
+          - db-user
+          - db-password
+          - table-name
+          - sql-editor
         - key: advanced-editor
           collapsible: true
           props:
             label: Advanced
           children:
           - description
+          - overwrite
+        - key: job-history-container
+          collapsible: true
+          props:
+            label: Job History
+            open: true
+          children:
+          - job-history
     - key: update-container
       props:
         boder:
@@ -71,13 +85,13 @@ components:
   title:
     bind: __name__
     type: TextInput
-    default: PostgreSQL Source
+    default: PostgreSQL Destination
     props:
       label: Title
   db-url:
     bind: url
     type: TextInput
-    default: postgresql://localhost:5432/<your database>
+    default: mysql://localhost:5432/<your database>
     props:
       label: Database URL
   table-name:
@@ -94,7 +108,7 @@ components:
       label: Database User
   db-password:
     bind: password
-    type: CredentialInput
+    type: TextInput
     default: ''
     props:
       label: Database Password
@@ -105,14 +119,24 @@ components:
     default: Describe this step here
     props:
       label: Description
+  overwrite:
+    bind: overwrite
+    type: CheckBox
+    default: true
+    props:
+      label: Overwrite
   sql-editor:
     bind: sql
     type: CodeEditor
     default: SELECT * FROM <YOUR TABLE>
     props:
-      label: Limit your data with SQL query
+      label: Explore your data with SQL
       options:
         mode: sql
+  job-history:
+    type: JobHistory
+    box: {}
+    props: {}
   update-btn:
     type: Button
     props:
@@ -127,8 +151,8 @@ components:
         top: small
     props:
       exploreButton: true
-      testButton: false
-      runButton: false
+      testButton: true
+      runButton: true
   table-title:
     type: Heading
     box:

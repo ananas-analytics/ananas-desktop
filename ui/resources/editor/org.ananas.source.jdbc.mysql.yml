@@ -77,7 +77,7 @@ components:
   db-url:
     bind: url
     type: TextInput
-    default: mysql://localhost:3306/[your datebase]
+    default: mysql://localhost:3306/<your datebase>
     props:
       label: Database URL
   table-name:
@@ -107,7 +107,7 @@ components:
   sql-editor:
     bind: sql
     type: CodeEditor
-    default: SELECT * FROM [YOUR TABLE]
+    default: SELECT * FROM <YOUR TABLE>
     props:
       label: Limit your data with SQL query
       options:
