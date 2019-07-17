@@ -22,7 +22,7 @@ class HomeSplash extends React.Component {
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
 
     const SplashContainer = props => (
-      <div className="homeContainer">
+      <div className="homeContainer" >
         <div className="homeSplashFade">
           <div className="wrapper homeWrapper">{props.children}</div>
         </div>
@@ -36,10 +36,16 @@ class HomeSplash extends React.Component {
     );
 
     const ProjectTitle = () => (
-      <h2 className="projectTitle">
-        {siteConfig.title}
-        <small>{siteConfig.tagline}</small>
-      </h2>
+      <div>
+        <h2 className="projectTitle">
+          Build Analytics in minutes
+          <small>Connect data from anywhere. Transform, analyze, and visualize with simple steps</small>
+        </h2>
+        <video autoPlay={true} loop={true} muted={true} playsInline={true}>
+          <source src="videos/hero-img.webm" type="video/webm"/>
+          <source src="videos/hero-img.mp4" type="video/mp4"/>
+        </video>
+      </div>
     );
 
     const PromoSection = props => (
@@ -52,7 +58,7 @@ class HomeSplash extends React.Component {
 
     const Button = props => (
       <div className="pluginWrapper buttonWrapper">
-        <a className="button" href={props.href} target={props.target}>
+        <a className="button" style={{fontSize: '1.2rem', padding: '10px 20px'}} href={props.href} target={props.target}>
           {props.children}
         </a>
       </div>
@@ -60,13 +66,10 @@ class HomeSplash extends React.Component {
 
     return (
       <SplashContainer>
-        <Logo img_src={`${baseUrl}img/undraw_monitor.svg`} />
-        <div className="inner">
+        <div className="inner" style={{marginTop: '60px'}}>
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href="#try">Try It Out</Button>
-            <Button href={docUrl('doc1.html')}>Example Link</Button>
-            <Button href={docUrl('doc2.html')}>Example Link 2</Button>
+            <Button href={docUrl('user-guide/getting-started')} target='_blank'>Get Started</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -85,124 +88,217 @@ class Index extends React.Component {
         id={props.id}
         background={props.background}>
         <GridBlock
-          align="center"
+          align={props.align}
           contents={props.children}
           layout={props.layout}
         />
       </Container>
     );
 
-    const FeatureCallout = () => (
-      <div
+    
+
+    const Features = () => (
+      <Block align="center" layout="threeColumn" background="light">
+        {[
+          {
+            content: 'Designed for non-technical users at the first place. It keeps the technical barriers very low by providing a drag and drop interface to build both ETL and analysis.',
+            image: `${baseUrl}img/landing/data-share.svg`,
+            imageAlign: 'top',
+            title: 'Built for Non-technical User',
+          },
+          {
+            content: 'Make it possible to query, transform and analysis with standard SQL for not only tranditional relational database but also other data sources, for example, file.',
+            image: `${baseUrl}img/landing/sql.svg`,
+            imageAlign: 'top',
+            title: 'Powered by SQL',
+          },
+          {
+            content: 'Built-in analysis execution engine makes it possible to run your analysis job on your own computer without internet connection.',
+            image: `${baseUrl}img/landing/disconnected.svg`,
+            imageAlign: 'top',
+            title: 'Offline Mode',
+          },
+          {
+            content: 'Comes with technical tools for engineers to test, and run Ananas data projects in cloud or on premise. Share preconfigured project with non-technical users.',
+            image: `${baseUrl}img/landing/networking.svg`,
+            imageAlign: 'top',
+            title: 'Collaborate with Engineers',
+          },
+          {
+            content: 'Ananas Desktop has been used on production for both small ad-hoc queries and terabyte big data analysis',
+            image: `${baseUrl}img/landing/database.svg`,
+            imageAlign: 'top',
+            title: 'Scalable',
+          },
+        ]}
+      </Block>
+    );
+
+    const Connection = () => {
+      return (
+        <Block align="left" background="white">
+          {[
+            {
+              content: '- Connect to relational database, NoSQL, File, API, and more ...\n' + 
+              '- Support both structured and unstructured data\n' +
+              '- Join and concatenate data from different sources',
+              image: `${baseUrl}img/landing/undraw_process_e90d.svg`,
+              imageAlign: 'right',
+              title: 'Connect data from anywhere in any format',
+            },
+          ]}
+        </Block>
+      )
+    } 
+
+    const LessCode = () => {
+      return (
+        <Block align="left" background="light">
+          {[
+            {
+              content: '- Minimal knowledge required for Simple SQL\n' + 
+                '- User friendly desktop interface',
+              image: `${baseUrl}img/landing/undraw_code_typing_7jnv.svg`,
+              imageAlign: 'left',
+              title: 'Avoid the hassle of complex SQL or Python',
+            },
+          ]}
+        </Block>
+      )
+    }
+
+    const Visualization = () => {
+      return (
+        <Block align="left" background="white">
+          {[
+            {
+              content: '- Explore data with built-in charts\n' + 
+                '- Easy to use chart configuration',
+              image: `${baseUrl}img/landing/undraw_all_the_data_h4ki.svg`,
+              imageAlign: 'right',
+              title: 'Visualize with few clicks',
+            },
+          ]}
+        </Block>
+      )
+    }
+
+    const ExecutionEngine = () => {
+      return (
+        <Block align="left" background="light">
+          {[
+            {
+              content: '- Spark\n' + 
+                '- Flink\n' +
+                '- Google Dataflow\n' + 
+                '- Local Execution\n' +
+                '- More coming soon',
+              image: `${baseUrl}img/landing/undraw_processing_qj6a.svg`,
+              imageAlign: 'left',
+              title: 'Execute your job with your existing data platform',
+            },
+          ]}
+        </Block>
+      )
+    }
+    
+    const Secure = () => {
+      return (
+        <Block align="left" background="white">
+          {[
+            {
+              content: '- You own your data\n' + 
+                '- Data is processed on your computer or your infrastructure\n' +
+                '- No credential is stored',
+              image: `${baseUrl}img/landing/undraw_security_o890.svg`,
+              imageAlign: 'right',
+              title: 'Your data is safe and secure',
+            },
+          ]}
+        </Block>
+      )
+    }
+
+    const SupportedSources = () => (
+      <div 
         className="productShowcaseSection paddingBottom"
-        style={{textAlign: 'center'}}>
-        <h2>Feature Callout</h2>
-        <MarkdownBlock>These are features of this project</MarkdownBlock>
+        style={{textAlign: 'center', marginTop: '100px'}}>
+        <h2>Featured Data Sources</h2>
+        <Block align="center" layout="fourColumn" background="light">
+          {[
+            {
+              content: '',
+              image: `${baseUrl}img/landing/mysql.svg`,
+              imageAlign: 'top',
+              title: '#### MySQL',
+            },
+            {
+              content: '',
+              image: `${baseUrl}img/landing/PostgreSQL_logo.svg`,
+              imageAlign: 'top',
+              title: '#### Postgres',
+            },
+            {
+              content: '',
+              image: `${baseUrl}img/landing/csv.svg`,
+              imageAlign: 'top',
+              title: '#### CSV File',
+            },
+            {
+              content: '',
+              image: `${baseUrl}img/landing/json-file.svg`,
+              imageAlign: 'top',
+              title: '#### JSON Log',
+            },
+            {
+              content: '',
+              image: `${baseUrl}img/landing/google-gcs.svg`,
+              imageAlign: 'top',
+              title: '#### Google Cloud Storage',
+            },
+            {
+              content: '',
+              image: `${baseUrl}img/landing/google-bigquery.svg`,
+              imageAlign: 'top',
+              title: '#### Google BigQuery',
+            },
+            {
+              content: '',
+              image: `${baseUrl}img/landing/google-sql.svg`,
+              imageAlign: 'top',
+              title: '#### Google SQL',
+            },
+            {
+              content: '',
+              image: `${baseUrl}img/landing/log.svg`,
+              imageAlign: 'top',
+              title: '#### Plain Text Log',
+            },
+          ]}
+        </Block>
       </div>
     );
 
-    const TryOut = () => (
-      <Block id="try">
-        {[
-          {
-            content:
-              'To make your landing page more attractive, use illustrations! Check out ' +
-              '[**unDraw**](https://undraw.co/) which provides you with customizable illustrations which are free to use. ' +
-              'The illustrations you see on this page are from unDraw.',
-            image: `${baseUrl}img/undraw_code_review.svg`,
-            imageAlign: 'left',
-            title: 'Wonderful SVG Illustrations',
-          },
-        ]}
-      </Block>
+    const Examples = () => (
+      <div
+        className="productShowcaseSection paddingBottom"
+        style={{textAlign: 'center'}}>
+        <h2>Featured Data Sources</h2>
+        <MarkdownBlock>These are features of this project</MarkdownBlock>
+      </div>
     );
-
-    const Description = () => (
-      <Block background="dark">
-        {[
-          {
-            content:
-              'This is another description of how this project is useful',
-            image: `${baseUrl}img/undraw_note_list.svg`,
-            imageAlign: 'right',
-            title: 'Description',
-          },
-        ]}
-      </Block>
-    );
-
-    const LearnHow = () => (
-      <Block background="light">
-        {[
-          {
-            content:
-              'Each new Docusaurus project has **randomly-generated** theme colors.',
-            image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
-            imageAlign: 'right',
-            title: 'Randomly Generated Theme Colors',
-          },
-        ]}
-      </Block>
-    );
-
-    const Features = () => (
-      <Block layout="fourColumn">
-        {[
-          {
-            content: 'This is the content of my feature',
-            image: `${baseUrl}img/undraw_react.svg`,
-            imageAlign: 'top',
-            title: 'Feature One',
-          },
-          {
-            content: 'The content of my second feature',
-            image: `${baseUrl}img/undraw_operating_system.svg`,
-            imageAlign: 'top',
-            title: 'Feature Two',
-          },
-        ]}
-      </Block>
-    );
-
-    const Showcase = () => {
-      if ((siteConfig.users || []).length === 0) {
-        return null;
-      }
-
-      const showcase = siteConfig.users
-        .filter(user => user.pinned)
-        .map(user => (
-          <a href={user.infoLink} key={user.infoLink}>
-            <img src={user.image} alt={user.caption} title={user.caption} />
-          </a>
-        ));
-
-      const pageUrl = page => baseUrl + (language ? `${language}/` : '') + page;
-
-      return (
-        <div className="productShowcaseSection paddingBottom">
-          <h2>Who is Using This?</h2>
-          <p>This project is used by all these people</p>
-          <div className="logos">{showcase}</div>
-          <div className="more-users">
-            <a className="button" href={pageUrl('users.html')}>
-              More {siteConfig.title} Users
-            </a>
-          </div>
-        </div>
-      );
-    };
 
     return (
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
           <Features />
-          <FeatureCallout />
-          <LearnHow />
-          <TryOut />
-          <Description />
-          <Showcase />
+          <Connection />
+          <LessCode />
+          <Visualization />
+          <ExecutionEngine />
+          <Secure />
+          <SupportedSources />
         </div>
       </div>
     );

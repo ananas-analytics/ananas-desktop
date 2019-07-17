@@ -1,47 +1,64 @@
 {
-  "Docs": {
+	"Downloads": {
+		"Downloads": [
+			"downloads/overview",
+			"downloads/v0.8.0"
+		]
+	},
+	"Docs": {
     "Overview": [
-      "overview",
-      "steps",
-      "projects"
+      "user-guide/overview",
+      "user-guide/steps",
+      "user-guide/projects",
+			"user-guide/where-to-find"
     ],
     "Getting Started": [
-      "getting-started",
-      "install",
-      "exploring",
-      "testing",
-      "running",
-      "visualizing"
+      "user-guide/install",
+      "user-guide/getting-started",
+      "user-guide/exploring",
+      "user-guide/testing",
+      "user-guide/running",
+      "user-guide/visualizing"
     ],
     "Sources": [
-      "source-postgresql",
-      "source-mysql",
-      "source-json",
-      "source-csv",
-      "source-excel"
+      "user-guide/source-postgresql",
+      "user-guide/source-mysql",
+      "user-guide/source-json",
+      "user-guide/source-csv",
+			"user-guide/source-google-gcs",
+			"user-guide/source-google-bigquery"
     ],
     "Destinations": [
-      "destination-postgresql",
-      "destination-mysql",
-      "destination-json",
-      "destination-csv"
+      "user-guide/destination-postgresql",
+      "user-guide/destination-mysql",
+      "user-guide/destination-csv",
+      "user-guide/destination-google-gcs",
+      "user-guide/destination-google-bigquery"
     ],
     "Transforms": [
-      "sql",
-      "join",
-      "concat"
+      "user-guide/sql",
+      "user-guide/join",
+      "user-guide/concat"
     ],
     "Visualizations": [
-      "visualization-barchart",
-      "visualization-linechart",
-      "visualization-bignumber"
+      "user-guide/visualization-barchart",
+      "user-guide/visualization-linechart",
+      "user-guide/visualization-bignumber"
     ],
-    "For Developers": [
-      "use-existing-project",
-      "cli-commands",
-      "project structure"
-    ]
-  }
+		"Execution Engines": [
+			"user-guide/engine-overview",
+			"user-guide/engine-flink",
+			"user-guide/engine-spark",
+			"user-guide/engine-dataflow"
+		],
+		"Variable": [
+			"user-guide/variable-overview"
+		]
+  },
+
+	"Developers": {
+		"Overview": [
+			"developer-guide/overview"
+		]	
+	}
 }
-
-

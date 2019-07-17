@@ -5,111 +5,160 @@
     "previous": "Previous",
     "tagline": "Build analytics in minutes",
     "docs": {
-      "cli-commands": {
+      "developer-guide/overview": {
+        "title": "Overview"
+      },
+      "downloads/overview": {
+        "title": "Ananas Analytics Desktop Downloads",
+        "sidebar_label": "Overview"
+      },
+      "downloads/v0.8.0": {
+        "title": "Ananas Desktop v0.8.0"
+      },
+      "user-guide/cli-commands": {
         "title": "CLI commands"
       },
-      "concat": {
+      "user-guide/concat": {
         "title": "Concatenating data (union)"
       },
-      "deployment": {
+      "user-guide/deployment": {
         "title": "Deployment"
       },
-      "destination-csv": {
-        "title": "CSV file"
+      "user-guide/destination-csv": {
+        "title": "Local CSV file"
       },
-      "destination-json": {
+      "user-guide/destination-google-bigquery": {
+        "title": "Google Cloud BigQuery"
+      },
+      "user-guide/destination-google-gcs": {
+        "title": "Google Cloud Storage"
+      },
+      "user-guide/destination-json": {
         "title": "JSON file"
       },
-      "destination-mysql": {
+      "user-guide/destination-mysql": {
         "title": "MySQL"
       },
-      "destination-postgresql": {
+      "user-guide/destination-postgresql": {
         "title": "PostgreSQL"
       },
-      "documentation-intro": {
+      "user-guide/documentation-intro": {
         "title": "About the Documentation",
         "sidebar_label": "About Docs"
       },
-      "exploring": {
+      "user-guide/engine-dataflow": {
+        "title": "Google Dataflow"
+      },
+      "user-guide/engine-flink": {
+        "title": "Apache Flink",
+        "sidebar_label": "Apache Flink (beta)"
+      },
+      "user-guide/engine-overview": {
+        "title": "Execution Engine Overview"
+      },
+      "user-guide/engine-spark": {
+        "title": "Apache Spark"
+      },
+      "user-guide/exploring": {
         "title": "Exploring your source data"
       },
-      "getting-started": {
+      "user-guide/getting-started": {
         "title": "Building your first data flow"
       },
-      "install": {
+      "user-guide/install": {
         "title": "Installation"
       },
-      "join-2-excel": {
+      "user-guide/join-2-excel": {
         "title": "Join large Excel spreadsheets"
       },
-      "join": {
+      "user-guide/join": {
         "title": "Combining data (join)"
       },
-      "monitoring": {
+      "user-guide/monitoring": {
         "title": "Monitoring"
       },
-      "overview": {
+      "user-guide/overview": {
         "title": "Overview"
       },
-      "projects": {
+      "user-guide/projects": {
         "title": "Create a project"
       },
-      "reference-intro": {
+      "user-guide/reference-intro": {
         "title": "About the Reference",
         "sidebar_label": "About Reference"
       },
-      "running": {
+      "user-guide/running": {
         "title": "Running"
       },
-      "source-csv": {
-        "title": "CSV file"
+      "user-guide/source-csv": {
+        "title": "Local CSV file"
       },
-      "source-excel": {
+      "user-guide/source-excel": {
         "title": "Excel sheet"
       },
-      "source-json": {
-        "title": "JSON file"
+      "user-guide/source-google-bigquery": {
+        "title": "Google Cloud BigQuery"
       },
-      "source-mysql": {
+      "user-guide/source-google-gcs": {
+        "title": "Google Cloud Storage"
+      },
+      "user-guide/source-json": {
+        "title": "JSON Log file"
+      },
+      "user-guide/source-mysql": {
         "title": "MySQL"
       },
-      "source-postgresql": {
+      "user-guide/source-postgresql": {
         "title": "PostgreSQL"
       },
-      "sql": {
+      "user-guide/sql": {
         "title": "SQL"
       },
-      "steps": {
+      "user-guide/steps": {
         "title": "Step"
       },
-      "testing": {
+      "user-guide/testing": {
         "title": "Testing"
       },
-      "use-existing-project": {
+      "user-guide/use-existing-project": {
         "title": "Use existing project"
       },
-      "visualization-barchart": {
+      "user-guide/variable-overview": {
+        "title": "Variable Overview",
+        "sidebar_label": "Overview"
+      },
+      "user-guide/visualization-barchart": {
         "title": "Bar Chart"
       },
-      "visualization-bignumber": {
+      "user-guide/visualization-bignumber": {
         "title": "Big Number"
       },
-      "visualization-linechart": {
+      "user-guide/visualization-linechart": {
         "title": "Line Chart"
       },
-      "visualizing": {
+      "user-guide/visualizing": {
         "title": "Visualizing"
+      },
+      "user-guide/where-to-find": {
+        "title": "Where to find X?"
       }
     },
-    "links": {},
+    "links": {
+      "Download": "Download",
+      "User Guide": "User Guide",
+      "Developer Guide": "Developer Guide",
+      "Dev Blog": "Dev Blog"
+    },
     "categories": {
+      "Downloads": "Downloads",
       "Overview": "Overview",
       "Getting Started": "Getting Started",
       "Sources": "Sources",
       "Destinations": "Destinations",
       "Transforms": "Transforms",
       "Visualizations": "Visualizations",
-      "For Developers": "For Developers"
+      "Execution Engines": "Execution Engines",
+      "Variable": "Variable"
     }
   },
   "pages-strings": {

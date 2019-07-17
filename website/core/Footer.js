@@ -31,24 +31,25 @@ class Footer extends React.Component {
                 src={this.props.config.baseUrl + this.props.config.footerIcon}
                 alt={this.props.config.title}
                 width="66"
-                height="58"
+                height="82"
               />
             )}
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('doc1.html', this.props.language)}>
-              Getting Started (or other categories)
+            <a href={this.docUrl('user-guide/overview')}>
+              Getting Started
             </a>
-            <a href={this.docUrl('doc2.html', this.props.language)}>
-              Guides (or other categories)
+            <a href={this.docUrl('user-guide/getting-started')}>
+              User Guides
             </a>
-            <a href={this.docUrl('doc3.html', this.props.language)}>
-              API Reference (or other categories)
+            <a href={this.docUrl('developer-guide/overview')}>
+              Developer Guides
             </a>
           </div>
           <div>
-            <h5>Community</h5>
+            <h5>Contact</h5>
+            {/*
             <a href={this.pageUrl('users.html', this.props.language)}>
               User Showcase
             </a>
@@ -58,18 +59,26 @@ class Footer extends React.Component {
               rel="noreferrer noopener">
               Stack Overflow
             </a>
-            <a href="https://discordapp.com/">Project Chat</a>
+            */}
+
+            <a href="mailto:contact@ananasanalytics.com">
+              Email
+            </a>
+            <a href="https://join.slack.com/t/ananas-analytics/shared_invite/enQtNTY2ODAxMDE5NzgxLTM1NGZhNzc3ZWY3MDg3MjQ1NTgxNGExYTgyOTNiNTRhMTA2N2RkNDFjOTNhYjEwODY4YWQ3NmZmYjM1NTY2ZWY"
+              target="_blank"
+              rel="noreferrer noopener">
+              Slack Channel</a>
             <a
-              href="https://twitter.com/"
+              href="https://twitter.com/bhoustudio"
               target="_blank"
               rel="noreferrer noopener">
               Twitter
             </a>
           </div>
           <div>
-            <h5>More</h5>
-            <a href={`${this.props.config.baseUrl}blog`}>Blog</a>
-            <a href="https://github.com/">GitHub</a>
+            <h5>Social</h5>
+            <a href={`${this.props.config.baseUrl}blog`}>Development Blog</a>
+            <a href="https://github.com/ananas-analytics/ananas-desktop">GitHub</a>
             <a
               className="github-button"
               href={this.props.config.repoUrl}
@@ -83,7 +92,7 @@ class Footer extends React.Component {
           </div>
         </section>
 
-        <a
+        {/*<a
           href="https://opensource.facebook.com/"
           target="_blank"
           rel="noreferrer noopener"
@@ -94,7 +103,8 @@ class Footer extends React.Component {
             width="170"
             height="45"
           />
-        </a>
+        </a>*/}
+
         <section className="copyright">{this.props.config.copyright}</section>
       </footer>
     );

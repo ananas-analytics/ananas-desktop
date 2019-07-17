@@ -21,7 +21,7 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'Ananas Desktop', // Title for your website.
+  title: 'Ananas Analytics Desktop', // Title for your website.
   tagline: 'Build analytics in minutes',
   url: 'https://ananas-analytics.github.io', // Your website URL
   baseUrl: '/ananas-desktop/', // Base URL for your project */
@@ -38,6 +38,10 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
+    { doc: 'downloads/overview', label: 'Download' },
+    { doc: 'user-guide/overview', label: 'User Guide' },
+    { doc: 'developer-guide/overview', label: 'Developer Guide' },
+    { blog: true, label: 'Dev Blog' },
     /*
     {doc: 'overview', label: 'Overview'},
     {doc: 'doc1', label: 'Docs'},
@@ -107,7 +111,7 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-  //   repoUrl: 'https://github.com/facebook/test-site',
+  repoUrl: 'https://github.com/ananas-analytics/ananas-desktop',
 };
 
 module.exports = siteConfig;
