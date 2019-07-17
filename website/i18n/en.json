@@ -141,6 +141,143 @@
       },
       "user-guide/where-to-find": {
         "title": "Where to find X?"
+      },
+      "version-0.8.0/developer-guide/version-0.8.0-overview": {
+        "title": "Overview"
+      },
+      "version-0.8.0/downloads/version-0.8.0-overview": {
+        "title": "Ananas Analytics Desktop Downloads",
+        "sidebar_label": "Overview"
+      },
+      "version-0.8.0/downloads/version-0.8.0-v0.8.0": {
+        "title": "Ananas Desktop v0.8.0"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-cli-commands": {
+        "title": "CLI commands"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-concat": {
+        "title": "Concatenating data (union)"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-deployment": {
+        "title": "Deployment"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-destination-csv": {
+        "title": "Local CSV file"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-destination-google-bigquery": {
+        "title": "Google Cloud BigQuery"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-destination-google-gcs": {
+        "title": "Google Cloud Storage"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-destination-json": {
+        "title": "JSON file"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-destination-mysql": {
+        "title": "MySQL"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-destination-postgresql": {
+        "title": "PostgreSQL"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-documentation-intro": {
+        "title": "About the Documentation",
+        "sidebar_label": "About Docs"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-engine-dataflow": {
+        "title": "Google Dataflow"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-engine-flink": {
+        "title": "Apache Flink",
+        "sidebar_label": "Apache Flink (beta)"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-engine-overview": {
+        "title": "Execution Engine Overview"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-engine-spark": {
+        "title": "Apache Spark"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-exploring": {
+        "title": "Exploring your source data"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-getting-started": {
+        "title": "Building your first data flow"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-install": {
+        "title": "Installation"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-join-2-excel": {
+        "title": "Join large Excel spreadsheets"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-join": {
+        "title": "Combining data (join)"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-monitoring": {
+        "title": "Monitoring"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-overview": {
+        "title": "Overview"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-projects": {
+        "title": "Create a project"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-reference-intro": {
+        "title": "About the Reference",
+        "sidebar_label": "About Reference"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-running": {
+        "title": "Running"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-source-csv": {
+        "title": "Local CSV file"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-source-excel": {
+        "title": "Excel sheet"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-source-google-bigquery": {
+        "title": "Google Cloud BigQuery"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-source-google-gcs": {
+        "title": "Google Cloud Storage"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-source-json": {
+        "title": "JSON Log file"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-source-mysql": {
+        "title": "MySQL"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-source-postgresql": {
+        "title": "PostgreSQL"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-sql": {
+        "title": "SQL"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-steps": {
+        "title": "Step"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-testing": {
+        "title": "Testing"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-use-existing-project": {
+        "title": "Use existing project"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-variable-overview": {
+        "title": "Variable Overview",
+        "sidebar_label": "Overview"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-visualization-barchart": {
+        "title": "Bar Chart"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-visualization-bignumber": {
+        "title": "Big Number"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-visualization-linechart": {
+        "title": "Line Chart"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-visualizing": {
+        "title": "Visualizing"
+      },
+      "version-0.8.0/user-guide/version-0.8.0-where-to-find": {
+        "title": "Where to find X?"
       }
     },
     "links": {
