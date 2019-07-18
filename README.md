@@ -23,7 +23,7 @@ Visit [Ananas Analytics](https://ananasanalytics.com/) to learn more.
 
 ### Documentation
 
-If you want to read about using Ananas Desktop, read our [User guide](http://doc.ananasanalytics.com/docs/overview).
+If you want to read about using Ananas Desktop, read our [User guide](https://ananasanalytics.com/docs/user-guide/overview).
 
 If you are a contributor you can get started with the [Runner Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/master/runner/README.md)
 and [UI Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/master/ui/README.md)
@@ -32,7 +32,7 @@ and [UI Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/m
 
 Prerequisites:  *Java 8 ( or a more recent version)*
     
-Download the latest [Ananas release](https://ananasanalytics.com/release).
+Download the latest [Ananas release](https://ananasanalytics.com/docs/downloads/overview).
 
 ### License
 
