@@ -3,11 +3,11 @@ id: where-to-find
 title: Where to find X?
 ---
 
-In this page, you can find all Ananas Analytics Desktop generated folders / files.
+In this page, you can find all *Ananas Analytics Desktop* generated folders and files.
 
 ## Where to find Ananas Workspace ?
 
-All your projects created from Ananas Analytics Desktop and settings could be found in **Ananas Workspace**: 
+All your projects created from *Ananas Analytics Desktop* and settings could be found in **Ananas Workspace**: 
 
 
 ### MacOS

@@ -3,9 +3,9 @@ id: getting-started
 title: Building your first data flow
 ---
 
-> Before starting build analytics, please [**Install**](install.md) the latest Ananas Analytics Desktop first
+> Before querying data, make sure you have [**installed**](install.md) the latest *Ananas Analytics Desktop* first
 
-In this tutorial we will build our first data flow with Ananas Analtyics Desktop, to analyze the 2019 FIFA football players dataset, which can be downloaded from [fifa2019.csv](https://github.com/ananas-analytics/ananas-examples/raw/master/FifaPlayer2019/fifa2019.csv)
+In this tutorial we will build our first data flow with *Ananas Analtyics Desktop*, to analyze the 2019 FIFA football players dataset, which can be downloaded from [fifa2019.csv](https://github.com/ananas-analytics/ananas-examples/raw/master/FifaPlayer2019/fifa2019.csv)
 
 ## Create a project
 
@@ -21,13 +21,13 @@ Now you've created your first project. You can start working on your project ana
 
 ## Connect & configure data source
 
-Any analysis begins with a data source. For our get started project, we can drop & drop `Local CSV Source` from the right side tool box to your analysis board.
+Any analysis begins with a data source. For our *get started* project, we can drag & drop `Local CSV Source` from the right side tool box to your analysis board.
 
 ![connect to data source](assets/get_started_connect_data_source.png)
 
 Click the newly created `Local CSV Source` step, and click the `settings` action (first action displays under the step) to start configure the data source.
 
-Drop & drop the downloaded [fifa2019.csv](https://github.com/ananas-analytics/ananas-examples/raw/master/FifaPlayer2019/fifa2019.csv) file to the `File Path` settings. Click `Explore` to view the data source.
+Drag & drop the downloaded [fifa2019.csv](https://github.com/ananas-analytics/ananas-examples/raw/master/FifaPlayer2019/fifa2019.csv) file to the `File Path` settings. Click `Explore` to view the data source.
 
 In Ananas Analytics, we encourage the `fail-fast testing` best practise for each step. The `Explore` button provides not only the capability to explore the data source, but also two additional important functionalities:
 
@@ -60,7 +60,7 @@ The above simple SQL counts the top 10 nationalities.
 
 Before we move to next step, we need to test the current settings by clicking the `Test` button. In a few seconds, it will display the test result and the auto-detected output schema. 
 
-> The test result is not the final query result. Under the hood, Ananas Analytics take a few sample data from your dataset and runs the step to test the current settings. What's more, it auto-detects the output data schema. The `fail-fast testing` makes it possible to test big data set (for example, Terabytes data) in seconds.
+> The test result is not the final query result. Under the hood, *Ananas Analytics* takes a few sample data from your dataset and then runs the step to test the current settings. What's more, it auto-detects the output data schema. The `fail-fast testing` makes it possible to test big data set (for example, Terabytes data) in seconds.
 
 ![sql transform](assets/get_started_sql_transform.png)
 
@@ -80,4 +80,4 @@ Once you passes the test, click the `RUN` button to submit a job to execute the 
 
 Once the job is `DONE`, you can click the `Explore` button (or the `eye` icon from the job in job history) to view the final result in the bar chart editor.
 
-Congratulations! You just made your first analysis with Ananas Analytics Desktop.
+Congratulations! You just made your first analysis with *Ananas Analytics Desktop*.
