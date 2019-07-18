@@ -7,7 +7,7 @@ title: Running
 
 ## Running a data flow
 
-When you have [tested](testing.md) the steps of your data flow, you can click the `run` button to initiate a run at any time. You must click the button of the last step of your data flow. During a run, all of your sources will fetch new data and then send it through your steps. At the end of the run, your destinations will export the data.
+When you have [tested](testing.md) the steps of your data flow, you can click on the `run` button to initiate a run at any time. You must click the button of the last step of your data flow. During a run, all of your sources will fetch fresh data and then send it through your steps. Eventually, your destinations will export the data.
 
 Any job execution state is posted in **real time** in the Job History table in the left sidebar.
 

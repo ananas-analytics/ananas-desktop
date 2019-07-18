@@ -32,4 +32,6 @@ title: Line Chart
 
 - SQL
 
-  The SQL query to filter the result for visualization. Note: SQL query will not be used to calculate the processed data. It only filters the data for display.
+  The SQL query to filter the result for visualization. 
+  
+  Note: SQL query will not be used to calculate the processed data. It only filters the data for display.

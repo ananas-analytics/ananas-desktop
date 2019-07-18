@@ -3,7 +3,7 @@ id: install
 title: Installation
 ---
 
-Ananas Analytics Desktop works on MacOS, Windows (64bit), and Linux (64bit). 
+*Ananas Analytics Desktop* works on MacOS, Windows (64bit), and Linux (64bit). 
 
 1. [Download](../downloads/overview) Ananas Analytics executable 
 
