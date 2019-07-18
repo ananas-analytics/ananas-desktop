@@ -5,8 +5,31 @@
     "previous": "Previous",
     "tagline": "Build analytics in minutes",
     "docs": {
+      "developer-guide/cli-overview": {
+        "title": "Ananas Command Line Overview",
+        "sidebar_label": "CLI"
+      },
       "developer-guide/overview": {
         "title": "Overview"
+      },
+      "developer-guide/project-ananas": {
+        "title": "ananas.yml",
+        "sidebar_label": "project/ananas.yml"
+      },
+      "developer-guide/project-engine": {
+        "title": "engine.yml",
+        "sidebar_label": "workspace/engine.yml"
+      },
+      "developer-guide/project-overview": {
+        "title": "Ananas Project Structure"
+      },
+      "developer-guide/project-profile": {
+        "title": "profile.yml",
+        "sidebar_label": "project/profile.yml"
+      },
+      "developer-guide/project-workspace": {
+        "title": "workspace.yml",
+        "sidebar_label": "workspace/workspace.yml"
       },
       "downloads/overview": {
         "title": "Ananas Analytics Desktop Downloads",
@@ -142,8 +165,31 @@
       "user-guide/where-to-find": {
         "title": "Where to find X?"
       },
+      "version-0.8.0/developer-guide/version-0.8.0-cli-overview": {
+        "title": "Ananas Command Line Overview",
+        "sidebar_label": "CLI"
+      },
       "version-0.8.0/developer-guide/version-0.8.0-overview": {
         "title": "Overview"
+      },
+      "version-0.8.0/developer-guide/version-0.8.0-project-ananas": {
+        "title": "ananas.yml",
+        "sidebar_label": "project/ananas.yml"
+      },
+      "version-0.8.0/developer-guide/version-0.8.0-project-engine": {
+        "title": "engine.yml",
+        "sidebar_label": "workspace/engine.yml"
+      },
+      "version-0.8.0/developer-guide/version-0.8.0-project-overview": {
+        "title": "Ananas Project Structure"
+      },
+      "version-0.8.0/developer-guide/version-0.8.0-project-profile": {
+        "title": "profile.yml",
+        "sidebar_label": "project/profile.yml"
+      },
+      "version-0.8.0/developer-guide/version-0.8.0-project-workspace": {
+        "title": "workspace.yml",
+        "sidebar_label": "workspace/workspace.yml"
       },
       "version-0.8.0/downloads/version-0.8.0-overview": {
         "title": "Ananas Analytics Desktop Downloads",
@@ -295,7 +341,9 @@
       "Transforms": "Transforms",
       "Visualizations": "Visualizations",
       "Execution Engines": "Execution Engines",
-      "Variable": "Variable"
+      "Variable": "Variable",
+      "Ananas Project": "Ananas Project",
+      "Command Line Tool": "Command Line Tool"
     }
   },
   "pages-strings": {

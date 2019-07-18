@@ -59,6 +59,16 @@
 	"Developers": {
 		"Overview": [
 			"developer-guide/overview"
-		]	
+		],
+		"Ananas Project": [
+			"developer-guide/project-overview",	
+			"developer-guide/project-ananas",	
+			"developer-guide/project-profile",	
+			"developer-guide/project-workspace",	
+			"developer-guide/project-engine"
+		],
+		"Command Line Tool": [
+			"developer-guide/cli-overview"
+		]
 	}
 }

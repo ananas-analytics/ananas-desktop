@@ -58,6 +58,16 @@
   "version-0.8.0-Developers": {
     "Overview": [
       "version-0.8.0-developer-guide/overview"
+    ],
+    "Ananas Project": [
+      "version-0.8.0-developer-guide/project-overview",
+      "version-0.8.0-developer-guide/project-ananas",
+      "version-0.8.0-developer-guide/project-profile",
+      "version-0.8.0-developer-guide/project-workspace",
+      "version-0.8.0-developer-guide/project-engine"
+    ],
+    "Command Line Tool": [
+      "version-0.8.0-developer-guide/cli-overview"
     ]
   }
 }
