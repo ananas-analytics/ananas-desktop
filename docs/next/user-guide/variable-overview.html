@@ -57,7 +57,7 @@
               }
             });
         </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Variable Overview</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="overview"></a><a href="#overview" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
-<p>Ananas Analytics Desktop provides a variable system to help you parameterize your analysis.</p>
+<p><em>Ananas Analytics Desktop</em> provides a variable system to help you parameterize your analysis.</p>
 <p>For example, in our <a href="getting-started">first data flow</a> guide, we analyzed the top 10 countries with most footplayers with a simple SQL transform:</p>
 <pre><code class="hljs css language-sql"><span class="hljs-keyword">SELECT</span> 
     <span class="hljs-keyword">count</span>(<span class="hljs-number">1</span>) <span class="hljs-keyword">AS</span> players,
@@ -68,11 +68,11 @@
 <span class="hljs-keyword">LIMIT</span> <span class="hljs-number">10</span>
 </code></pre>
 <p>What if we want to analyze top 20 countries?</p>
-<p>One solution would be modify the SQL from <code>LIMIT 10</code> to <code>LIMIT 20</code>, and rerun the analysis. But when you have complex data flow with multiple steps, finding the right step to modify turns to be a tricky task. And if you want to change such parameter multiple times per day, isn't it much easier to put all the parameters in a single place?</p>
-<p>Ananas Analytisc Desktop Variable tab helps you to create a new variables that you can use in your data analysis flow.</p>
+<p>One solution would be to modify the SQL from <code>LIMIT 10</code> to <code>LIMIT 20</code>, and rerun the analysis. But when you have complex data flow with multiple steps, finding the right step to modify turns out to be a tricky task. What if you want to change such parameter multiple times per day? isn't it much easier to put all the parameters in a single place?</p>
+<p><em>Ananas Analytisc Desktop</em> Variable tab helps you to create new variables that you can use in your data analysis flow.</p>
 <p><img src="/docs/assets/variable_tab.png" alt="variable tab"></p>
 <h2><a class="anchor" aria-hidden="true" id="add-a-new-variable"></a><a href="#add-a-new-variable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add a new variable</h2>
-<p>In variable tab (left sidebar), click <code>+</code> button leads you to new variable editor.</p>
+<p>In variable tab (left sidebar), click <code>+</code> button leads you to a new variable editor.</p>
 <p><img src="/docs/assets/variable_new.png" alt="new variable"></p>
 <p>By applying a unique variable name (please avoid white space in the variable), and choose the variable type.</p>
 <p>There are 4 types variables:</p>
@@ -96,7 +96,7 @@
 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> players <span class="hljs-keyword">DESC</span>
 <span class="hljs-keyword">LIMIT</span> ${nationality_num}
 </code></pre>
-<p>On the right sidebar -&gt; variable tab, you can review current available variables. Above <code>Test</code> and <code>RUN</code> button, there would be a variable fields ready for you to fill the parameter value.</p>
+<p>On the right sidebar -&gt; variable tab, you can review current available variables. Above <code>Test</code> and <code>RUN</code> button, there would be a variable field ready for you to fill the parameter value.</p>
 <p><img src="/docs/assets/variable_apply.png" alt="apply variable in step"></p>
 <p>Now you can use the destination and visualization steps as an ad-hoc query interface.</p>
 <p><img src="/docs/assets/variable_run.png" alt="ad hoc query with variable"></p>
