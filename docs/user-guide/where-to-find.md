@@ -35,7 +35,7 @@ ${Ananas Workspace}
 ├── engine.yml
 ```
 
-`workspace.yml` file
+`workspace.yml` file is where project metadata and workspace settings are defined
 
 `ananas.yml` file is where the data flow steps are defined. 
 
