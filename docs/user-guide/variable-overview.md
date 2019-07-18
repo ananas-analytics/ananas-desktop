@@ -6,7 +6,7 @@ sidebar_label: Overview
 
 ## Overview
 
-Ananas Analytics Desktop provides a variable system to help you parameterize your analysis.
+*Ananas Analytics Desktop* provides a variable system to help you parameterize your analysis.
 
 For example, in our [first data flow](getting-started) guide, we analyzed the top 10 countries with most footplayers with a simple SQL transform:
 
@@ -22,16 +22,16 @@ LIMIT 10
 
 What if we want to analyze top 20 countries? 
 
-One solution would be modify the SQL from `LIMIT 10` to `LIMIT 20`, and rerun the analysis. But when you have complex data flow with multiple steps, finding the right step to modify turns to be a tricky task. And if you want to change such parameter multiple times per day, isn't it much easier to put all the parameters in a single place?
+One solution would be to modify the SQL from `LIMIT 10` to `LIMIT 20`, and rerun the analysis. But when you have complex data flow with multiple steps, finding the right step to modify turns out to be a tricky task. What if you want to change such parameter multiple times per day? isn't it much easier to put all the parameters in a single place?
 
-Ananas Analytisc Desktop Variable tab helps you to create a new variables that you can use in your data analysis flow.
+*Ananas Analytisc Desktop* Variable tab helps you to create new variables that you can use in your data analysis flow.
 
 ![variable tab](assets/variable_tab.png)
 
 
 ## Add a new variable
 
-In variable tab (left sidebar), click `+` button leads you to new variable editor.
+In variable tab (left sidebar), click `+` button leads you to a new variable editor.
 
 ![new variable](assets/variable_new.png)
 
@@ -66,7 +66,7 @@ ORDER BY players DESC
 LIMIT ${nationality_num}
 ``` 
 
-On the right sidebar -> variable tab, you can review current available variables. Above `Test` and `RUN` button, there would be a variable fields ready for you to fill the parameter value.
+On the right sidebar -> variable tab, you can review current available variables. Above `Test` and `RUN` button, there would be a variable field ready for you to fill the parameter value.
 
 ![apply variable in step](assets/variable_apply.png)
 
