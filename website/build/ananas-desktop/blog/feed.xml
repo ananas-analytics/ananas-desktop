@@ -2,21 +2,21 @@
 <rss version="2.0">
     <channel>
         <title>Ananas Analytics Desktop Blog</title>
-        <link>https://ananas-analytics.github.io/ananas-desktop/blog</link>
+        <link>https://ananas-analytics.github.io/blog</link>
         <description>The best place to stay up-to-date with the latest Ananas Analytics Desktop news and events.</description>
         <lastBuildDate>Tue, 16 Jul 2019 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
             <title>Ananas Analytics Desktop Blog</title>
-            <url>https://ananas-analytics.github.io/ananas-desktop/img/logo-white.png</url>
-            <link>https://ananas-analytics.github.io/ananas-desktop/blog</link>
+            <url>https://ananas-analytics.github.io/img/logo-white.png</url>
+            <link>https://ananas-analytics.github.io/blog</link>
         </image>
         <copyright>Copyright © 2019 Ananas Analytics</copyright>
         <item>
             <title><![CDATA[Release Version 0.8.0]]></title>
-            <link>https://ananas-analytics.github.io/ananas-desktop/blog/2019/07/16/new-version-0.8.0.html</link>
-            <guid>https://ananas-analytics.github.io/ananas-desktop/blog/2019/07/16/new-version-0.8.0.html</guid>
+            <link>https://ananas-analytics.github.io/blog/2019/07/16/new-version-0.8.0.html</link>
+            <guid>https://ananas-analytics.github.io/blog/2019/07/16/new-version-0.8.0.html</guid>
             <pubDate>Tue, 16 Jul 2019 06:00:00 GMT</pubDate>
             <description><![CDATA[<p>We are proud to announce the first release of Ananas Desktop - a hackable data integration/analysis tool to enable non technical users to edit data processing jobs and visualise data on demand.</p>
 <p>In the very first version, we support following features:</p>

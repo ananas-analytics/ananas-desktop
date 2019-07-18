@@ -24,7 +24,8 @@ const siteConfig = {
   title: 'Ananas Analytics Desktop', // Title for your website.
   tagline: 'Build analytics in minutes',
   url: 'https://ananas-analytics.github.io', // Your website URL
-  baseUrl: '/ananas-desktop/', // Base URL for your project */
+  baseUrl: '/',
+  // baseUrl: '/ananas-desktop/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
@@ -80,6 +81,7 @@ const siteConfig = {
     ]
   },
   */
+  cname: 'ananasanalytics.com',
 
   customDocsPath: '/docs/',
 
