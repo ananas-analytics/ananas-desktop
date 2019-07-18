@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>ananas.yml · Ananas Analytics Desktop</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;&lt;code&gt;ananas.yml&lt;/code&gt; is the mandatory project file in &lt;a href=&quot;https://yaml.org/&quot;&gt;&lt;strong&gt;YAML&lt;/strong&gt;&lt;/a&gt; format, it contains following information:&lt;/p&gt;
+"/><meta name="docsearch:version" content="0.8.0"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="ananas.yml · Ananas Analytics Desktop"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ananas-analytics.github.io/"/><meta property="og:description" content="&lt;p&gt;&lt;code&gt;ananas.yml&lt;/code&gt; is the mandatory project file in &lt;a href=&quot;https://yaml.org/&quot;&gt;&lt;strong&gt;YAML&lt;/strong&gt;&lt;/a&gt; format, it contains following information:&lt;/p&gt;
+"/><meta property="og:image" content="https://ananas-analytics.github.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://ananas-analytics.github.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://ananas-analytics.github.io/blog/atom.xml" title="Ananas Analytics Desktop Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://ananas-analytics.github.io/blog/feed.xml" title="Ananas Analytics Desktop Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo-white.png" alt="Ananas Analytics Desktop"/><h2 class="headerTitleWithLogo">Ananas Analytics Desktop</h2></a><a href="/versions"><h3>0.8.0</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/downloads/overview" target="_self">Download</a></li><li class=""><a href="/docs/user-guide/overview" target="_self">User Guide</a></li><li class="siteNavGroupActive"><a href="/docs/developer-guide/overview" target="_self">Developer Guide</a></li><li class=""><a href="/blog/" target="_self">Dev Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Ananas Project</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Overview<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/developer-guide/overview">Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Ananas Project<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/developer-guide/project-overview">Ananas Project Structure</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/developer-guide/project-ananas">project/ananas.yml</a></li><li class="navListItem"><a class="navItem" href="/docs/developer-guide/project-profile">project/profile.yml</a></li><li class="navListItem"><a class="navItem" href="/docs/developer-guide/project-workspace">workspace/workspace.yml</a></li><li class="navListItem"><a class="navItem" href="/docs/developer-guide/project-engine">workspace/engine.yml</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Command Line Tool<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/developer-guide/cli-overview">CLI</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">ananas.yml</h1></header><article><div><span><p><code>ananas.yml</code> is the mandatory project file in <a href="https://yaml.org/"><strong>YAML</strong></a> format, it contains following information:</p>
+<ul>
+<li>steps, theirs settings, and optionally step output schemas</li>
+<li>connections among steps</li>
+<li>variable definitions</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="ananas-file-example"></a><a href="#ananas-file-example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ananas File Example</h2>
+<p>Here is an example <code>ananas.yml</code> file</p>
+<pre><code class="hljs css language-yml"><span class="hljs-comment"># unique id of the project</span>
+<span class="hljs-attr">id:</span> <span class="hljs-string">the-unique-project-id-of-example-project</span>
+<span class="hljs-comment"># project name</span>
+<span class="hljs-attr">name:</span> <span class="hljs-string">example</span> <span class="hljs-string">project</span>
+<span class="hljs-comment"># a map of steps in the project, with unique step id as the key</span>
+<span class="hljs-attr">steps:</span>
+<span class="hljs-attr">    student-score-csv-source:</span> <span class="hljs-comment"># step id, must be same as the id field</span>
+<span class="hljs-attr">        id:</span> <span class="hljs-string">student-score-csv-source</span> 
+<span class="hljs-attr">        name:</span> <span class="hljs-string">student</span> <span class="hljs-string">score</span>
+<span class="hljs-attr">        type:</span> <span class="hljs-string">connector</span> <span class="hljs-comment"># -----------------------------------(1)</span>
+<span class="hljs-attr">        metadataId:</span> <span class="hljs-string">org.ananas.source.file.csv</span> <span class="hljs-comment"># ------------(2)</span>
+<span class="hljs-attr">        description:</span> <span class="hljs-string">| +  # ---------------------------------(3)
+            # Student score source 
+            
+            The CSV file contains the students score
+</span><span class="hljs-attr">        config:</span> <span class="hljs-comment"># -------------------------------------------(4)</span>
+<span class="hljs-attr">            subtype:</span> <span class="hljs-string">file</span>
+<span class="hljs-attr">            format:</span> <span class="hljs-string">csv</span>
+<span class="hljs-attr">            header:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">            path:</span> <span class="hljs-string">${PROJECT_PATH}/score.csv</span> <span class="hljs-comment"># ---------------(5)</span>
+<span class="hljs-attr">            header:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">        dataframe:</span> <span class="hljs-comment"># ----------------------------------------(6)</span>
+<span class="hljs-attr">            schema:</span>
+<span class="hljs-attr">                fields:</span>
+<span class="hljs-attr">                    - name:</span> <span class="hljs-string">Id</span>
+<span class="hljs-attr">                      type:</span> <span class="hljs-string">VARCHAR</span>
+<span class="hljs-attr">                    - name:</span> <span class="hljs-string">Name</span>
+<span class="hljs-attr">                      type:</span> <span class="hljs-string">VARCHAR</span>
+<span class="hljs-attr">                    - name:</span> <span class="hljs-string">Score</span>
+<span class="hljs-attr">                      type:</span> <span class="hljs-string">INTEGER</span>
+<span class="hljs-attr">                    - name:</span> <span class="hljs-string">Grade</span>
+<span class="hljs-attr">                      type:</span> <span class="hljs-string">INTEGER</span>
+<span class="hljs-attr">                data:</span> <span class="hljs-string">[]</span> <span class="hljs-comment"># ----------------------------------(7)</span>
+
+<span class="hljs-attr">    not-pass:</span>
+<span class="hljs-attr">        id:</span> <span class="hljs-string">not-pass</span>
+<span class="hljs-attr">        name:</span> <span class="hljs-string">Student</span> <span class="hljs-string">not</span> <span class="hljs-string">pass</span> <span class="hljs-string">exam</span> <span class="hljs-string">by</span> <span class="hljs-string">grade</span>
+<span class="hljs-attr">        type:</span> <span class="hljs-string">transformer</span>
+<span class="hljs-attr">        metadataId:</span> <span class="hljs-string">org.ananas.transform.sql</span>
+<span class="hljs-attr">        description:</span> <span class="hljs-string">Student</span> <span class="hljs-string">not</span> <span class="hljs-string">pass</span> <span class="hljs-string">exam</span> <span class="hljs-string">by</span> <span class="hljs-string">grade</span>
+<span class="hljs-attr">        config:</span>
+<span class="hljs-attr">            subtype:</span> <span class="hljs-string">sql</span>
+<span class="hljs-attr">            sql:</span> <span class="hljs-string">|-</span>
+                <span class="hljs-string">SELECT</span> 
+                    <span class="hljs-string">count(1)</span> <span class="hljs-string">as</span> <span class="hljs-string">cnt,</span>
+                    <span class="hljs-string">grade</span>
+                <span class="hljs-string">FROM</span> <span class="hljs-string">PCOLLECTION</span>
+                <span class="hljs-string">WHERE</span> <span class="hljs-string">score</span> <span class="hljs-string">&lt;</span> <span class="hljs-string">${score_threshold}</span> <span class="hljs-comment"># -----------(8)</span>
+                <span class="hljs-string">GROUP</span> <span class="hljs-string">BY</span> <span class="hljs-string">grade</span>
+
+<span class="hljs-attr">    save-to-result-csv:</span>
+<span class="hljs-attr">        id:</span> <span class="hljs-string">save-to-result-csv</span>
+<span class="hljs-attr">        name:</span> <span class="hljs-string">Save</span> <span class="hljs-string">result</span> <span class="hljs-string">to</span> <span class="hljs-string">csv</span>
+<span class="hljs-attr">        type:</span> <span class="hljs-string">loader</span>
+<span class="hljs-attr">        metadataId:</span> <span class="hljs-string">org.ananas.destination.file.csv</span>
+<span class="hljs-attr">        description:</span> <span class="hljs-string">Save</span> <span class="hljs-string">average</span> <span class="hljs-string">score</span> <span class="hljs-string">by</span> <span class="hljs-string">grade</span> <span class="hljs-string">to</span> <span class="hljs-string">CSV</span>
+<span class="hljs-attr">        config:</span>
+<span class="hljs-attr">            subtype:</span> <span class="hljs-string">file</span>
+<span class="hljs-attr">            format:</span> <span class="hljs-string">csv</span>
+<span class="hljs-attr">            header:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">            path:</span> <span class="hljs-string">${PROJECT_PATH}/output/</span>
+<span class="hljs-attr">            prefix:</span> <span class="hljs-string">average-score-by-grade</span>
+
+<span class="hljs-attr">dag:</span>
+<span class="hljs-attr">    connections:</span> <span class="hljs-comment"># ------------------------------------------(9)</span>
+<span class="hljs-attr">        - source:</span> <span class="hljs-string">student-score-csv-source</span>
+<span class="hljs-attr">          target:</span> <span class="hljs-string">average-by-grade</span>
+<span class="hljs-attr">        - source:</span> <span class="hljs-string">average-by-grade</span>
+<span class="hljs-attr">          target:</span> <span class="hljs-string">save-to-result-csv</span>
+                
+<span class="hljs-attr">variables:</span> <span class="hljs-comment"># ------------------------------------------------(10) </span>
+<span class="hljs-attr">    - name:</span> <span class="hljs-string">score_threshold</span>
+<span class="hljs-attr">      description:</span> <span class="hljs-string">the</span> <span class="hljs-string">score</span> <span class="hljs-string">threshold</span> 
+<span class="hljs-attr">      scope:</span> <span class="hljs-string">project</span>
+<span class="hljs-attr">      type:</span> <span class="hljs-string">number</span>
+</code></pre>
+<p>Some more details in the example:</p>
+<h3><a class="anchor" aria-hidden="true" id="1-step-types"></a><a href="#1-step-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(1) step types</h3>
+<p>Each step must be one of the following 4 types:</p>
+<ul>
+<li>connector</li>
+<li>transformer</li>
+<li>loader</li>
+<li>viewer</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="2-step-metadata-id"></a><a href="#2-step-metadata-id" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(2) step metadata id</h3>
+<p>Each step must have one metadata to help the Ananas understand what kind of config is expected from this step.</p>
+<p>You can find the list of metadata from the <a href="https://github.com/ananas-analytics/ananas-desktop/tree/master/ui/resources/metadata">step metadata list</a></p>
+<h3><a class="anchor" aria-hidden="true" id="3-step-description"></a><a href="#3-step-description" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(3) step description</h3>
+<p>You can have an optional description text for step in Markdown.</p>
+<h3><a class="anchor" aria-hidden="true" id="4-step-config"></a><a href="#4-step-config" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(4) step config</h3>
+<p>Each step has a config map containing necessary information of the step. A more detailed config for each type of step will be added in developer guide soon.</p>
+<h3><a class="anchor" aria-hidden="true" id="5-variable-in-step-config"></a><a href="#5-variable-in-step-config" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(5) variable in step config</h3>
+<p>It is possible to use variable in any step config values. Here we are referencing the predefined <code>PROJECT_PATH</code> variable</p>
+<h3><a class="anchor" aria-hidden="true" id="6-step-dataframe-schema"></a><a href="#6-step-dataframe-schema" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(6) step dataframe (schema)</h3>
+<p>You can also attach an output dataframe with schema in the step. This will allow Ananas uses the specified schema instead auto-detecting one.</p>
+<blockquote>
+<p>You need to set connector <code>forceAutoDetectSchema</code> config to <code>false</code> to inform Ananas stop auto-detecting schema</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="7-step-dataframe-example-data"></a><a href="#7-step-dataframe-example-data" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(7) step dataframe example data</h3>
+<p>You can also attach some example dataframe data to the step. This will help others better understand how data looks like</p>
+<h3><a class="anchor" aria-hidden="true" id="8-reference-user-defined-variable"></a><a href="#8-reference-user-defined-variable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(8) reference user defined variable</h3>
+<p>Beside user defined variable, you can create and reference you own variable too</p>
+<h3><a class="anchor" aria-hidden="true" id="9-connect-steps-as-a-dag"></a><a href="#9-connect-steps-as-a-dag" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(9) connect steps as a DAG</h3>
+<p>DAG is defined as a list of connections with source and target point to step id.</p>
+<h3><a class="anchor" aria-hidden="true" id="10-user-defined-variables"></a><a href="#10-user-defined-variables" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>(10) user defined variables</h3>
+<p>You can define your own variables in <code>variables</code> section. Set variable <code>scope</code> to <code>project</code> makes the Ananas GUI user possible to modify the variable. If you do not want non-technical user to modify the variable definition from GUI, set it to <code>runtime</code>.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/developer-guide/project-overview"><span class="arrow-prev">← </span><span>Ananas Project Structure</span></a><a class="docs-next button" href="/docs/developer-guide/project-profile"><span>project/profile.yml</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#ananas-file-example">Ananas File Example</a><ul class="toc-headings"><li><a href="#1-step-types">(1) step types</a></li><li><a href="#2-step-metadata-id">(2) step metadata id</a></li><li><a href="#3-step-description">(3) step description</a></li><li><a href="#4-step-config">(4) step config</a></li><li><a href="#5-variable-in-step-config">(5) variable in step config</a></li><li><a href="#6-step-dataframe-schema">(6) step dataframe (schema)</a></li><li><a href="#7-step-dataframe-example-data">(7) step dataframe example data</a></li><li><a href="#8-reference-user-defined-variable">(8) reference user defined variable</a></li><li><a href="#9-connect-steps-as-a-dag">(9) connect steps as a DAG</a></li><li><a href="#10-user-defined-variables">(10) user defined variables</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="Ananas Analytics Desktop" width="66" height="82"/></a><div><h5>Docs</h5><a href="/docs/user-guide/overview">Getting Started</a><a href="/docs/user-guide/getting-started">User Guides</a><a href="/docs/developer-guide/overview">Developer Guides</a></div><div><h5>Contact</h5><a href="mailto:contact@ananasanalytics.com">Email</a><a href="https://join.slack.com/t/ananas-analytics/shared_invite/enQtNTY2ODAxMDE5NzgxLTM1NGZhNzc3ZWY3MDg3MjQ1NTgxNGExYTgyOTNiNTRhMTA2N2RkNDFjOTNhYjEwODY4YWQ3NmZmYjM1NTY2ZWY" target="_blank" rel="noreferrer noopener">Slack Channel</a><a href="https://twitter.com/bhoustudio" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>Social</h5><a href="/blog">Development Blog</a><a href="https://github.com/ananas-analytics/ananas-desktop">GitHub</a><a class="github-button" href="https://github.com/ananas-analytics/ananas-desktop" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Ananas Analytics</section></footer></div></body></html>
