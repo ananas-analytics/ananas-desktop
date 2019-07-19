@@ -17,6 +17,7 @@ jobs and visualise data on demand. It is designed to be deeply customizable and 
 * Support I/O sources/destination: MongoDB, MySQL, Postgresql, Files (JSON, Plain Text, CSV and Excel). More coming soon
 * Prepare data with a wide range of transformers: Union, Join, SQL, Javascript 
 * Visualize data with our customizable chart builder
+* Scalable - Build once, run on any volume of data
 
 
 Visit [Ananas Analytics](https://ananasanalytics.com/) to learn more.
@@ -26,7 +27,7 @@ Visit [Ananas Analytics](https://ananasanalytics.com/) to learn more.
 If you want to read about using Ananas Desktop, read our [User guide](https://ananasanalytics.com/docs/user-guide/overview).
 
 If you are a contributor you can get started with the [Runner Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/master/runner/README.md)
-and [UI Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/master/ui/README.md)
+and [Developer Guide](https://ananasanalytics.com/docs/developer-guide/overview)
 
 ### Installing
 
