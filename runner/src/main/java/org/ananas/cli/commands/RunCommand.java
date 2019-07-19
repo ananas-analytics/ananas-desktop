@@ -21,12 +21,11 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParentCommand;
 import spark.Spark;
 
-@Command(name="run", description="Run analytics task")
+@Command(name = "run", description = "Run analytics task")
 public class RunCommand implements Callable<Integer> {
-private static final Logger LOG = LoggerFactory.getLogger(RunCommand.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RunCommand.class);
 
-  @ParentCommand
-  private MainCommand parent;
+  @ParentCommand private MainCommand parent;
 
   @Option(
       names = {"-p", "--project"},
@@ -55,8 +54,7 @@ private static final Logger LOG = LoggerFactory.getLogger(RunCommand.class);
   @Option(
       names = {"-i", "--interval"},
       description = "State polling interval in seconds, default 5",
-      defaultValue = "5"
-  )
+      defaultValue = "5")
   private Integer interval;
 
   @Parameters(description = "Id of the target steps to run (only LOADER and VIEWER)")
@@ -68,7 +66,7 @@ private static final Logger LOG = LoggerFactory.getLogger(RunCommand.class);
 
     // first start a server
     System.out.printf("Server started at port %d\n", port);
-    RestApiRoutes.initRestApi(new String[] { port.toString() });
+    RestApiRoutes.initRestApi(new String[] {port.toString()});
 
     // build DagRequest
     try {
@@ -87,11 +85,10 @@ private static final Logger LOG = LoggerFactory.getLogger(RunCommand.class);
       Map<String, String> data = (Map<String, String>) apiResponse.data;
       String jobId = data.get("jobid");
 
-
       Runner runner = new BeamRunner();
       String state = null;
       String errMessage = null;
-      while(true) {
+      while (true) {
         Job job = runner.getJob(jobId);
         if (job == null) {
           System.err.printf("Can't find job %s", jobId);
@@ -129,7 +126,5 @@ private static final Logger LOG = LoggerFactory.getLogger(RunCommand.class);
       System.exit(1);
       return 1;
     }
-
   }
-
 }

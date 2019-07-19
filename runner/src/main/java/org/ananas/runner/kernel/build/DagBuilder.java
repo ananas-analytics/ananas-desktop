@@ -167,29 +167,44 @@ public class DagBuilder implements Builder {
             Iterator<Step> it = predecessors.iterator();
             StepRunner one = stepRunnerMap.get(it.next().id);
             StepRunner other = stepRunnerMap.get(it.next().id);
-            stepRunner = StepBuilder.concat(step, one, other);
+            stepRunner = StepBuilder.concat(step, Arrays.asList(one, other));
           } else if (step.config.get("subtype").equals("ml")) {
             stepRunner = mlStep(stepRunnerMap, contexts, step, predecessors);
           } else {
             throw new RuntimeException(
                 String.format(
-                    "Ooops something wrong. A join or ml step is required here because there are two predecessors.",
+                    "Ooops something wrong. A join or union step is required here because there are two predecessors.",
                     step.id));
           }
           break;
-        case 3:
-          if (step.config.get("subtype").equals("ml")) {
-            stepRunner = mlStep(stepRunnerMap, contexts, step, predecessors);
+          /*
+          case 3:
+            if (step.config.get("subtype").equals("ml")) {
+              stepRunner = mlStep(stepRunnerMap, contexts, step, predecessors);
+            } else {
+              throw new RuntimeException(
+                  String.format(
+                      "Ooops something wrong. An ML step is required here because there are 3 predecessors.",
+                      step.id));
+            }
+            break;
+             */
+        default:
+          if (step.config.get("subtype").equals("concat")) {
+            Iterator<Step> it = predecessors.iterator();
+            List<StepRunner> upstreamRunners = new ArrayList<>();
+            StepRunner runner = null;
+            while (it.hasNext()) {
+              runner = stepRunnerMap.get(it.next().id);
+              upstreamRunners.add(runner);
+            }
+            // StepRunner one = stepRunnerMap.get(it.next().id);
+            // StepRunner other = stepRunnerMap.get(it.next().id);
+            stepRunner = StepBuilder.concat(step, upstreamRunners);
           } else {
             throw new RuntimeException(
-                String.format(
-                    "Ooops something wrong. An ML step is required here because there are 3 predecessors.",
-                    step.id));
+                String.format("Step %s has more than 3 predecessors. Not supported. ", step.id));
           }
-          break;
-        default:
-          throw new RuntimeException(
-              String.format("Step %s has more than 3 predecessors. Not supported. ", step.id));
       }
       if (this.isTest && this.stepIds.contains(step.id)) {
         stepRunner.setReader();

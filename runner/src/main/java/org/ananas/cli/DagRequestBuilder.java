@@ -6,7 +6,6 @@ import com.google.common.collect.Sets;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +23,8 @@ public class DagRequestBuilder {
 
   private static final Logger LOG = LoggerFactory.getLogger(DagRequestBuilder.class);
 
-  public static DagRequest build(File project, File profile, Map<String, String> params, List<String> goals) {
+  public static DagRequest build(
+      File project, File profile, Map<String, String> params, List<String> goals) {
     // create dag request placeholder object
     DagRequest dagRequest = new DagRequest();
     dagRequest.dag = new Dag();
@@ -46,7 +46,8 @@ public class DagRequestBuilder {
     try {
       analyticsBoard = openYAML(ananas.getAbsolutePath(), AnalyticsBoard.class);
     } catch (Exception e) {
-      throw new RuntimeException("Failed to parse analytics board file: " + e.getLocalizedMessage(), e);
+      throw new RuntimeException(
+          "Failed to parse analytics board file: " + e.getLocalizedMessage(), e);
     }
 
     // parse profile
@@ -55,9 +56,10 @@ public class DagRequestBuilder {
       if (profile.exists()) {
         profileObj = openYAML(profile.getAbsolutePath(), Profile.class);
       } else {
-        LOG.error(String.format(
-            "Profile %s not found, fallback to default Local Flink Engine\n",
-            profile.getAbsolutePath()));
+        LOG.error(
+            String.format(
+                "Profile %s not found, fallback to default Local Flink Engine\n",
+                profile.getAbsolutePath()));
       }
     } catch (Exception e) {
       LOG.warn("Failed to parse profile file: " + e.getLocalizedMessage());
@@ -92,7 +94,6 @@ public class DagRequestBuilder {
     dagRequest.params.put(
         "PROJECT_PATH",
         new Variable("PROJECT_PATH", "string", "", "runtime", project.getAbsolutePath()));
-
 
     return dagRequest;
   }

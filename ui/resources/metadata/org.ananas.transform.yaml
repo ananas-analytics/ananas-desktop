@@ -39,7 +39,7 @@ org.ananas.transform.concat:
     config:
       subtype: concat
   options:
-    maxIncoming: 2
+    maxIncoming: 5
     maxOutgoing: -1
 
 org.ananas.transform.javascript:

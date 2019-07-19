@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.ananas.runner.kernel.ConcatStepRunner;
@@ -187,8 +188,8 @@ public class StepBuilder {
     return joinStepRunner;
   }
 
-  public static StepRunner concat(Step step, StepRunner one, StepRunner another) {
-    StepRunner concatStepRunner = new ConcatStepRunner(step, one, another);
+  public static StepRunner concat(Step step, List<StepRunner> upstreams) {
+    StepRunner concatStepRunner = new ConcatStepRunner(step, upstreams);
     concatStepRunner.build();
     return concatStepRunner;
   }
