@@ -30,8 +30,6 @@ If you are a contributor you can get started with the [Runner Documentation](htt
 and [Developer Guide](https://ananasanalytics.com/docs/developer-guide/overview)
 
 ### Installing
-
-Prerequisites:  *Java 8 ( or a more recent version)*
     
 Download the latest [Ananas release](https://ananasanalytics.com/docs/downloads/overview).
 
