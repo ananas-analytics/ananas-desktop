@@ -23,7 +23,7 @@ Otherwise you can run the the executable jar with
 java -jar ananas-cli.jar
 ``` 
 
-If you choose to run the command line with executatble jar, replace `ananas` with `java -jar ananas-cli.jar` in all the following examples.
+If you choose to run the command line with executable jar, replace `ananas` with `java -jar ananas-cli.jar` in all the following examples.
 
 > All commands exit 0 when succeed, 1 when fail
 

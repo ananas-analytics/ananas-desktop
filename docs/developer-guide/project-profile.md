@@ -34,7 +34,7 @@ params: # -----------------------------------------------------(5)
 
 ### (1) engine type
 
-Current we support 3 types of engines:
+Currently we support 3 types of engines:
 
 - Spark
 - Flink
@@ -52,7 +52,7 @@ Engine properties is a string to string map. Different engine has different prop
 
 ### (4) visualization database for execution engine
 
-Visualization is a special type of destination, to help Ananas find the job result to visualize. When running analysis job on a specific engine, you need to tell Ananas and Engine where to store these visualization data and make sure the engine platform has the right network settings and access permission to access it.
+Visualization is a special type of destination, to help Ananas find the job result to be visualized. When running analysis job on a specific engine, you need to tell Ananas Engine where to store these visualization data and make sure the engine platform has the right network settings and access permission to access it.
 
 Two types of databases are supported:
 
