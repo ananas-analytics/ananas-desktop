@@ -12,7 +12,7 @@ jobs and visualise data on demand. It is designed to be deeply customizable and 
 ###  Features
 * Drag and Drop Pipeline Editor
 * Low Code (Most of the analysis & processing can be done with SQL) 
-* Fail fast development process : TEST locally with sampled data before you run your pipeline on live.
+* Fail fast development process : TEST locally with sampled data in seconds before you run your pipeline on live.
 * Data pipelines can be easily executed on multiple execution environments **without code change** (Spark, Flink etc..)
 * Support I/O sources/destination: MongoDB, MySQL, Postgresql, Files (JSON, Plain Text, CSV and Excel). More coming soon
 * Prepare data with a wide range of transformers: Union, Join, SQL, Javascript 
