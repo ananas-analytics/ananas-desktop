@@ -9,11 +9,11 @@ Ananas Analytics Desktop is a hackable data tool that helps your team combining 
 
 > The lastest version of Ananas Analytics Desktop Edition is [**0.8.0**](../downloads/v0.8.0)
 
-While Ananas Analytics Desktop GUI Application provides a user friendly interface for non-technical users to build data analysis pipeline in a few clicks, `open source`, `open data project format`, and `command line tool chain` give engineers the possibility to make their daily data engineering jobs much easier, and the handy tool to collaborate with non-technical user seamlessly  
+While Ananas Analytics Desktop GUI Application provides a user friendly interface for non-technical users to build data analysis pipeline in a few clicks, `open source`, `open data project format`, and `command line tool chain` offer engineers the possibility to make their daily data engineering jobs much easier, and the handy tool to collaborate with non-technical user seamlessly  
 
-Ananas Analytics Desktop is also a **hackable** data tool, it provides a DSL to help engineers custom it for different business needs.
+Ananas Analytics Desktop is also a **hackable** data tool, it provides a DSL to help engineers customize it for different business needs.
 
-It is also possible to integrate Ananas Analytics Desktop into your current data workflow / data platforms, for example, [**Apache Airflow**](https://airflow.apache.org/), so that you can opt-in Ananas Analytics Desktop to your existing project without rewriting everything.
+It is also possible to integrate Ananas Analytics Desktop into your current data workflow / data platforms, for example, [**Apache Airflow**](https://airflow.apache.org/), so that you can seamlessly opt-in Ananas Analytics Desktop to your existing project without rewriting everything.
 
 ## Open Source 
 

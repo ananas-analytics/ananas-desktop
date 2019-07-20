@@ -6,7 +6,7 @@ sidebar_label: workspace/engine.yml
 
 `[Ananas Workspace]/engine.yml` file stores the engine settings that can be shared across projects.
 
-The format of engine.yml is an array of engine settings:
+The format of engine.yml consists in an array of engine settings:
 
 ```yaml
 - name: engine1
