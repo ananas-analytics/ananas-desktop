@@ -88,6 +88,8 @@ const siteConfig = {
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
   copyright: `Copyright © ${new Date().getFullYear()} Ananas Analytics`,
 
+  gaTrackingId: 'UA-130125250-1',
+
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
     theme: 'default',

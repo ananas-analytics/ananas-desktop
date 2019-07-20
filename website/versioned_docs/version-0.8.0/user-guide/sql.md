@@ -1,6 +1,7 @@
 ---
-id: sql
+id: version-0.8.0-sql
 title: SQL
+original_id: sql
 ---
 
 SQL Step is the core transform you can use to **filter**, **transform** and **aggregate** you data. 
