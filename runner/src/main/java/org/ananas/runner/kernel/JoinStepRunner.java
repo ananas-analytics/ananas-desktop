@@ -3,7 +3,6 @@ package org.ananas.runner.kernel;
 import com.google.common.base.Joiner;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
 import org.ananas.runner.kernel.schema.SchemaField;
@@ -88,7 +87,6 @@ public class JoinStepRunner extends AbstractStepRunner {
     Coder<Row> leftCoder = SchemaCoder.of(leftSchema);
     Coder<Row> rightCoder = SchemaCoder.of(rightSchema);
 
-
     PCollectionTuple collectionTuple =
         PCollectionTuple.of(new TupleTag<>("TableLeft"), leftStep.getOutput().setCoder(leftCoder))
             .and(new TupleTag<>("TableRight"), rightStep.getOutput().setCoder(rightCoder));
@@ -108,14 +106,17 @@ public class JoinStepRunner extends AbstractStepRunner {
 
   private Schema normalizeSchema(Schema schema) {
     Builder builder = new Schema.Builder();
-    schema.getFields().forEach(field -> {
-      if (field.getType().getLogicalType() != null) {
-        Field f = SchemaField.Of(field.getName(), field.getType()).toBeamField();
-        builder.addField(f.getName(), f.getType());
-      } else {
-        builder.addField(field.getName(), field.getType());
-      }
-    });
+    schema
+        .getFields()
+        .forEach(
+            field -> {
+              if (field.getType().getLogicalType() != null) {
+                Field f = SchemaField.Of(field.getName(), field.getType()).toBeamField();
+                builder.addField(f.getName(), f.getType());
+              } else {
+                builder.addField(field.getName(), field.getType());
+              }
+            });
     return builder.build();
   }
 

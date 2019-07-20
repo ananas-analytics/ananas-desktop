@@ -102,7 +102,7 @@ public class ShowCommand implements Callable<Integer> {
           "NAME",
           "TYPE",
           "DESCRIPTION"); // optional - if not used then there will be no header and horizontal
-                          // lines
+      // lines
       analyticsBoard.variables.forEach(
           v -> {
             st.addRow(
@@ -124,7 +124,8 @@ public class ShowCommand implements Callable<Integer> {
       didSomething = true;
       if (!analyticsBoard.steps.containsKey(stepId)) {
         System.err.printf("No step with id %s found in analytics board\n", stepId);
-        System.err.printf("Try \"ananas show -p '%s' --steps\" to get a step list.\n", project.getAbsolutePath());
+        System.err.printf(
+            "Try \"ananas show -p '%s' --steps\" to get a step list.\n", project.getAbsolutePath());
         return 1;
       }
 
@@ -158,7 +159,8 @@ public class ShowCommand implements Callable<Integer> {
       didSomething = true;
       if (!analyticsBoard.steps.containsKey(stepId)) {
         System.err.printf("No step with id %s found in analytics board\n", stepId);
-        System.err.printf("Try \"ananas show -p '%s' --steps\" to get a step list.\n", project.getAbsolutePath());
+        System.err.printf(
+            "Try \"ananas show -p '%s' --steps\" to get a step list.\n", project.getAbsolutePath());
         return 1;
       }
 

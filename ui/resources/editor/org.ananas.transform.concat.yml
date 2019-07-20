@@ -27,8 +27,6 @@ layout:
           flex: false
         children:
         - title
-        - left-table
-        - right-table
         - key: advanced-editor
           collapsible: true
           props:

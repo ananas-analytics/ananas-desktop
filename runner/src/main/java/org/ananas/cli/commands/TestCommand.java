@@ -1,27 +1,17 @@
 package org.ananas.cli.commands;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Sets;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 import org.ananas.cli.CommandLineTable;
 import org.ananas.cli.DagRequestBuilder;
-import org.ananas.cli.model.AnalyticsBoard;
-import org.ananas.cli.model.Profile;
 import org.ananas.runner.api.Services;
-import org.ananas.runner.kernel.model.Dag;
 import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.kernel.model.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -61,9 +51,8 @@ public class TestCommand implements Callable {
   private File output;
 
   @Option(
-    names = {"-t", "--detail"},
-    description = "Show test details"
-  )
+      names = {"-t", "--detail"},
+      description = "Show test details")
   private boolean showDetails;
 
   @Parameters(index = "0", description = "Id of the step to test")
@@ -76,20 +65,20 @@ public class TestCommand implements Callable {
     boolean printUsage = true;
 
     // create dag request placeholder object
-    DagRequest dagRequest = DagRequestBuilder.build(project, profile, params, Collections.singletonList(goal));
+    DagRequest dagRequest =
+        DagRequestBuilder.build(project, profile, params, Collections.singletonList(goal));
 
     if (showDetails) {
       System.out.println("PARAMETERS");
       CommandLineTable table = new CommandLineTable();
       table.setHeaders("NAME", "TYPE", "VALUE");
       table.setShowVerticalLines(true);
-      dagRequest.params.forEach((k, v) -> {
-        if (v != null) {
-          table.addRow(k,
-            v.type == null ? "null" : v.type,
-            v.value == null ? "null" : v.value);
-        }
-      });
+      dagRequest.params.forEach(
+          (k, v) -> {
+            if (v != null) {
+              table.addRow(k, v.type == null ? "null" : v.type, v.value == null ? "null" : v.value);
+            }
+          });
       table.print();
     }
 

@@ -12,14 +12,12 @@ import picocli.CommandLine.ParentCommand;
 public class StartCommand implements Callable<Integer> {
   private static final Logger LOG = LoggerFactory.getLogger(StartCommand.class);
 
-  @ParentCommand
-  private MainCommand parent;
+  @ParentCommand private MainCommand parent;
 
   @Option(
-    names = { "-p", "--port" },
-    description = "Server port, default 3003",
-    defaultValue = "3003"
-  )
+      names = {"-p", "--port"},
+      description = "Server port, default 3003",
+      defaultValue = "3003")
   private Integer port;
 
   @Override
@@ -27,7 +25,7 @@ public class StartCommand implements Callable<Integer> {
     parent.handleVerbose();
 
     System.out.printf("Server started at port %d", port);
-    RestApiRoutes.initRestApi(new String[] { port.toString() });
+    RestApiRoutes.initRestApi(new String[] {port.toString()});
     return 0;
   }
 }
