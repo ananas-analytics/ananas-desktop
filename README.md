@@ -22,7 +22,7 @@ jobs and visualise data on demand. It is designed to be deeply customizable and 
 
 Visit [Ananas Analytics](https://ananasanalytics.com/) to learn more.
 
-### Supported Execution Platform
+### Supported Execution Platforms
 
 - Local
 - [Spark](https://spark.apache.org/)
