@@ -70,6 +70,7 @@ class HomeSplash extends React.Component {
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
             <Button href={docUrl('user-guide/getting-started')} target='_blank'>Get Started</Button>
+            <Button href='https://github.com/ananas-analytics/ananas-desktop' target='_blank'>Github Repo</Button>
           </PromoSection>
         </div>
       </SplashContainer>
