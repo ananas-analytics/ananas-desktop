@@ -18,9 +18,18 @@ jobs and visualise data on demand. It is designed to be deeply customizable and 
 * Prepare data with a wide range of transformers: Union, Join, SQL, Javascript 
 * Visualize data with our customizable chart builder
 * Scalable - Build once, run on any volume of data
-
+* Variable - parameterize your queries
 
 Visit [Ananas Analytics](https://ananasanalytics.com/) to learn more.
+
+### Supported Execution Platform
+
+- Local
+- [Spark](https://spark.apache.org/)
+- [Flink](https://flink.apache.org/)
+- [Google Dataflow](https://cloud.google.com/dataflow/)
+
+More coming soon ...
 
 ### Documentation
 
