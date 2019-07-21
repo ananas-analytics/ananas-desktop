@@ -10,11 +10,11 @@ Ananas Desktop is a hackable data integration/analysis tool to enable non techni
 jobs and visualise data on demand. It is designed to be deeply customizable and approachable by different data team members (data scientist, data analyst, devops, data engineer etc.. ).
 
 <div>
-<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_dag_screen_shot.png" alt="ananas dag screenshot" width="250"/>
+<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_dag_screen_shot.png" alt="ananas dag screenshot" width="280"/>
 
-<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_visualization.png" alt="ananas visualization" width="250"/>
+<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_visualization.png" alt="ananas visualization" width="280"/>
 
-<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_engine.png" alt="ananas engine" width="250"/>
+<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_engine.png" alt="ananas engine" width="280"/>
 </div>
 
 ###  Features
