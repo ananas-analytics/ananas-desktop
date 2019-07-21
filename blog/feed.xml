@@ -4,7 +4,7 @@
         <title>Ananas Analytics Desktop Blog</title>
         <link>https://ananas-analytics.github.io/blog</link>
         <description>The best place to stay up-to-date with the latest Ananas Analytics Desktop news and events.</description>
-        <lastBuildDate>Tue, 16 Jul 2019 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 20 Jul 2019 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
@@ -13,6 +13,13 @@
             <link>https://ananas-analytics.github.io/blog</link>
         </image>
         <copyright>Copyright © 2019 Ananas Analytics</copyright>
+        <item>
+            <title><![CDATA[Release Version 0.8.1]]></title>
+            <link>https://ananas-analytics.github.io/blog/2019/07/20/new-version-0.8.1.html</link>
+            <guid>https://ananas-analytics.github.io/blog/2019/07/20/new-version-0.8.1.html</guid>
+            <pubDate>Sat, 20 Jul 2019 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>Version 0.8.1 is a bug fix release.</p> <ul> <li>Support concat (union) up-to 5 inputs on one single concat step</li> <li>fix Flink concat input types not match issue</li> <li>change default gcs source and destination download sample size to 0 (no limit)</li> <li>improve error message whe...</li></ul>]]></description>
+        </item>
         <item>
             <title><![CDATA[Release Version 0.8.0]]></title>
             <link>https://ananas-analytics.github.io/blog/2019/07/16/new-version-0.8.0.html</link>
