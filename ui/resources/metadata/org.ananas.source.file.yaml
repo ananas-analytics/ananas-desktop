@@ -61,7 +61,7 @@ org.ananas.source.file.gcs:
       bucket: bucket-name
       path: ""
       resampling: false
-      sampleSize: "5"
+      sampleSize: "0"
       forceAutoDetectSchema: false
   options:
     maxIncoming: 0

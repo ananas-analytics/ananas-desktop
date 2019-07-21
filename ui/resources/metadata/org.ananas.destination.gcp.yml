@@ -30,7 +30,7 @@ org.ananas.destination.gcp.gcs:
       bucket: bucket-name
       path: ""
       resampling: false
-      sampleSize: "5"
+      sampleSize: "0"
   options:
     maxIncoming: 1
     maxOutgoing: 0
