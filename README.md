@@ -35,7 +35,7 @@ More coming soon ...
 
 If you want to read about using Ananas Desktop, read our [User guide](https://ananasanalytics.com/docs/user-guide/overview).
 
-If you are a contributor you can get started with the [Runner Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/master/runner/README.md), [Wiki Page](https://github.com/ananas-analytics/ananas-desktop/wiki),
+If you are a contributor you can get started with the [Wiki Page](https://github.com/ananas-analytics/ananas-desktop/wiki), [Runner Documentation](https://github.com/ananas-analytics/ananas-desktop/blob/master/runner/README.md), 
 and [Developer Guide](https://ananasanalytics.com/docs/developer-guide/overview)
 
 ### Installing
