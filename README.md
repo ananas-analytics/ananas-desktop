@@ -48,7 +48,8 @@ and [Developer Guide](https://ananasanalytics.com/docs/developer-guide/overview)
 
 ### Installing
     
-Download the latest [Ananas release](https://ananasanalytics.com/docs/downloads/overview).
+1. Download the latest [Ananas release](https://ananasanalytics.com/docs/downloads/overview).
+2. Download the [Ananas Example](https://github.com/ananas-analytics/ananas-examples) to get started.
 
 ### License
 
