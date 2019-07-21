@@ -41,6 +41,9 @@
       "user-guide/cli-commands": {
         "title": "CLI commands"
       },
+      "user-guide/collaboration-overview": {
+        "title": "Overview"
+      },
       "user-guide/concat": {
         "title": "Concatenating data (union)"
       },
@@ -99,6 +102,9 @@
       },
       "user-guide/monitoring": {
         "title": "Monitoring"
+      },
+      "user-guide/operation-guide": {
+        "title": "Basic UI operations"
       },
       "user-guide/overview": {
         "title": "Overview"
@@ -342,6 +348,7 @@
       "Visualizations": "Visualizations",
       "Execution Engines": "Execution Engines",
       "Variable": "Variable",
+      "Collaboration": "Collaboration",
       "Ananas Project": "Ananas Project",
       "Command Line Tool": "Command Line Tool"
     }

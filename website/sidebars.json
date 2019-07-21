@@ -15,6 +15,7 @@
     "Getting Started": [
       "user-guide/install",
       "user-guide/getting-started",
+			"user-guide/operation-guide",
       "user-guide/exploring",
       "user-guide/testing",
       "user-guide/running",
@@ -53,6 +54,9 @@
 		],
 		"Variable": [
 			"user-guide/variable-overview"
+		],
+		"Collaboration": [
+			"user-guide/collaboration-overview"
 		]
   },
 
