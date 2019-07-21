@@ -1,7 +1,7 @@
 {
   "name": "AnanasAnalytics",
   "description": "Analytics Made Easy",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "main": "dist/app.js",
   "scripts": {
     "test": "jest",
