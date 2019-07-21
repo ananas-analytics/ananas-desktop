@@ -3,7 +3,7 @@ id: concat
 title: Concatenating data (union)
 ---
 
-Merging two datasets having same fields/columns
+Merging up to 5 datasets having same fields/columns. You can use multiple concat steps in case you have 5+ datasets to merge.
 
 ![Concatenating data (union)](assets/concat.png)
 

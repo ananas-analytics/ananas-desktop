@@ -43,7 +43,7 @@ ${Ananas Workspace}
 
 `engine.yml` is where to find the global execution engine settings.
 
-## Where to find Ananas logs?
+## Where to find Ananas UI logs?
 
 ### MacOS
 `~/Library/Logs/AnanasAnalytics/log.log`
@@ -55,5 +55,18 @@ ${Ananas Workspace}
 ### Linux
 
 `~/.config/AnanasAnalytics/log.log`
+
+## Where to find Ananas execution logs?
+
+### MacOS
+`~/ananas/log.log`
+
+### Windows
+
+`%USERPROFILE%\ananas\log.log`
+
+### Linux
+
+`~/ananas/log.log`
 
 
