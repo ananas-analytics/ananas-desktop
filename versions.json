@@ -1,5 +1,6 @@
 [
   { "version": "0.6.0", "downloadPage": "https://ananasanalytics.com/download", "rollout": 100 },
   { "version": "0.7.0", "downloadPage": "https://ananasanalytics.com/download", "rollout": 100 },
-  { "version": "0.8.0", "downloadPage": "https://ananasanalytics.com/download", "rollout": 100 }
+  { "version": "0.8.0", "downloadPage": "https://ananasanalytics.com/download", "rollout": 100 },
+  { "version": "0.8.0", "downloadPage": "https://ananasanalytics.com/docs/downloads/v0.8.1", "rollout": 0 }
 ]
