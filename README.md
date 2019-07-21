@@ -9,6 +9,12 @@ We originally developed this tool at [Ananas Analytics](http://ananasanalytics.c
 Ananas Desktop is a hackable data integration/analysis tool to enable non technical users to edit data processing 
 jobs and visualise data on demand. It is designed to be deeply customizable and approachable by different data team members (data scientist, data analyst, devops, data engineer etc.. ).
 
+<div>
+<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_dag_screen_shot.png" alt="ananas dag screenshot" width="300"/>
+
+<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_visualization.png" alt="ananas visualization" width="300"/>
+</div>
+
 ###  Features
 * Drag and Drop Pipeline Editor
 * Low Code (Most of the analysis & processing can be done with SQL) 
