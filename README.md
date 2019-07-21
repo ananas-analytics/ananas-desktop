@@ -15,6 +15,9 @@ jobs and visualise data on demand. It is designed to be deeply customizable and 
 <img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_visualization.png" alt="ananas visualization" width="300"/>
 </div>
 
+<img src="https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/assets/ananas_engine.png" alt="ananas engine" width="300"/>
+</div>
+
 ###  Features
 * Drag and Drop Pipeline Editor
 * Low Code (Most of the analysis & processing can be done with SQL) 
