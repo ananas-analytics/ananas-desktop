@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/ananas-analytics/ananas-desktop.svg?branch=master)](https://travis-ci.org/ananas-analytics/ananas-desktop)
 
-We originally developed this tool at [Ananas Analytics](http://ananasanalytics.com/).
-
 Ananas Desktop is a hackable data integration/analysis tool to enable non technical users to edit data processing 
 jobs and visualise data on demand. It is designed to be deeply customizable and approachable by different data team members (data scientist, data analyst, devops, data engineer etc.. ).
 
