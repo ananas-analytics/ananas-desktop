@@ -18,6 +18,13 @@ const uuidv4 = require('uuid/v4')
 function checkUpdate() {
   let version = pack.version || '0.0.1'
 
+  // FIXME: this is a quick fix for linux which can't get the package version.
+  // TODO: better way to handle the update on linux
+  if (version === '0.0.1') {
+    // remember to update this version when having new release
+    version = '0.8.1'
+  }
+
   let hash = 99
   if (uhash) {
     hash = uhash 
