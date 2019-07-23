@@ -40,6 +40,7 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     { doc: 'downloads/overview', label: 'Download' },
+    { href: 'https://github.com/ananas-analytics/ananas-examples', label: 'Examples' },
     { doc: 'user-guide/overview', label: 'User Guide' },
     { doc: 'developer-guide/overview', label: 'Developer Guide' },
     { blog: true, label: 'Dev Blog' },

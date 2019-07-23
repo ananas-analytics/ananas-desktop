@@ -38,6 +38,9 @@
       "downloads/v0.8.0": {
         "title": "Ananas Desktop v0.8.0"
       },
+      "downloads/v0.8.1": {
+        "title": "Ananas Desktop v0.8.1"
+      },
       "user-guide/cli-commands": {
         "title": "CLI commands"
       },
@@ -330,10 +333,60 @@
       },
       "version-0.8.0/user-guide/version-0.8.0-where-to-find": {
         "title": "Where to find X?"
+      },
+      "version-0.8.1/developer-guide/version-0.8.1-cli-overview": {
+        "title": "Ananas Command Line Overview",
+        "sidebar_label": "CLI"
+      },
+      "version-0.8.1/developer-guide/version-0.8.1-overview": {
+        "title": "Overview"
+      },
+      "version-0.8.1/developer-guide/version-0.8.1-project-engine": {
+        "title": "engine.yml",
+        "sidebar_label": "workspace/engine.yml"
+      },
+      "version-0.8.1/developer-guide/version-0.8.1-project-profile": {
+        "title": "profile.yml",
+        "sidebar_label": "project/profile.yml"
+      },
+      "version-0.8.1/downloads/version-0.8.1-overview": {
+        "title": "Ananas Analytics Desktop Downloads",
+        "sidebar_label": "Overview"
+      },
+      "version-0.8.1/downloads/version-0.8.1-v0.8.1": {
+        "title": "Ananas Desktop v0.8.1"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-collaboration-overview": {
+        "title": "Overview"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-concat": {
+        "title": "Concatenating data (union)"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-getting-started": {
+        "title": "Building your first data flow"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-operation-guide": {
+        "title": "Basic UI operations"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-overview": {
+        "title": "Overview"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-visualization-barchart": {
+        "title": "Bar Chart"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-visualization-bignumber": {
+        "title": "Big Number"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-visualization-linechart": {
+        "title": "Line Chart"
+      },
+      "version-0.8.1/user-guide/version-0.8.1-where-to-find": {
+        "title": "Where to find X?"
       }
     },
     "links": {
       "Download": "Download",
+      "Examples": "Examples",
       "User Guide": "User Guide",
       "Developer Guide": "Developer Guide",
       "Dev Blog": "Dev Blog"
