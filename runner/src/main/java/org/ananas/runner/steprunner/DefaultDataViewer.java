@@ -64,11 +64,6 @@ public class DefaultDataViewer extends DataViewerStepRunner {
 
     public Dataframe query(String sql, String jobId, String stepId) {
 
-      String tName = DataViewRepository.buildTableName(jobId, stepId);
-      String s = sql.replaceFirst("PCOLLECTION", tName);
-
-      Map<String, Object> config = new HashMap<>();
-
       // find the job
       Job job = JobRepositoryFactory.getJobRepostory().getJob(jobId);
 
@@ -76,6 +71,17 @@ public class DefaultDataViewer extends DataViewerStepRunner {
         throw new RuntimeException(
             "Can't find the last job for this step. Please make sure you have executed the step before explore");
       }
+
+      String tName = DataViewRepository.buildTableName(jobId, stepId);
+      String s;
+      String jdbcType = DataViewRepository.getJdbcType(job.engine);
+      if ("derby".equals(jdbcType)) {
+        s = sql.toUpperCase().replaceFirst("PCOLLECTION", tName);
+      } else {
+        s = sql.replaceFirst("PCOLLECTION", tName);
+      }
+
+      Map<String, Object> config = new HashMap<>();
 
       config.put("subtype", "jdbc");
       config.put(JdbcStepConfig.JDBC_SQL, s);
