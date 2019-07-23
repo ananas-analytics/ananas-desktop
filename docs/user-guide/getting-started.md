@@ -3,9 +3,12 @@ id: getting-started
 title: Building your first data flow
 ---
 
-> Before querying data, make sure you have [**installed**](install.md) the latest *Ananas Analytics Desktop* first
+> Before querying data, make sure you have [**installed**](install.md) the latest *Ananas Analytics Desktop* first. 
 
-In this tutorial we will build our first data flow with *Ananas Analtyics Desktop*, to analyze the 2019 FIFA football players dataset, which can be downloaded from [fifa2019.csv](https://github.com/ananas-analytics/ananas-examples/raw/master/FifaPlayer2019/fifa2019.csv)
+
+In this tutorial we will build our first data flow with *Ananas Analtyics Desktop*, to analyze the 2019 FIFA football players dataset, which can be downloaded from [fifa2019.csv](https://github.com/ananas-analytics/ananas-examples/blob/master/Fifa2019/fifa2019.csv)
+
+> You can download [**Ananas Desktop Examples**](https://github.com/ananas-analytics/ananas-examples), and import them to Ananas Desktop for quick start.
 
 ## Create a project
 

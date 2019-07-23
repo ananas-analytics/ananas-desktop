@@ -7,7 +7,7 @@ title: Overview
 
 Ananas Analytics Desktop is a hackable data tool that helps your team combining non-technical and technical users to collaborate and build data analytics faster.
 
-> The lastest version of Ananas Analytics Desktop Edition is [**0.8.0**](../downloads/v0.8.0)
+> The lastest version of Ananas Analytics Desktop Edition is [**0.8.1**](../downloads/v0.8.1)
 
 While Ananas Analytics Desktop GUI Application provides a user friendly interface for non-technical users to build data analysis pipeline in a few clicks, `open source`, `open data project format`, and `command line tool chain` offer engineers the possibility to make their daily data engineering jobs much easier, and the handy tool to collaborate with non-technical user seamlessly  
 
