@@ -211,7 +211,8 @@ public class TypeInferer {
     } catch (Exception e) {
     }
     try {
-      Timestamp.valueOf(value);
+      //Timestamp.valueOf(value);
+      DateTime.parse(value);
       return Schema.FieldType.DATETIME;
     } catch (Exception e) {
     }

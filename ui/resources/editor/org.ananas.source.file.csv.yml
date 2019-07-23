@@ -39,6 +39,7 @@ layout:
           - drop-file
           - path-input
         - header
+        - delimiter
         - key: advanced-editor
           collapsible: true
           props:
@@ -104,12 +105,33 @@ components:
     default: true
     props:
       label: include header?
+  delimiter:
+    bind: delimiter
+    type: SelectInput 
+    props:
+      label: Separator
+      default: ,
+      options:
+        - label: Comma (,)
+          value: ,
+        - label: Semicolon (;)
+          value: ;
+        - label: Vertical Bar (|)
+          value: "|"
+        - label: Tab
+          value: "\t"
   description:
     bind: __description__
     type: TextArea
     default: Describe this step here
     props:
       label: Description
+  force-auto-detect-schema:
+    bind: forceAutoDetectSchema
+    type: CheckBox
+    default: true
+    props:
+      label: Force schema auto detection
   update-btn:
     type: Button
     props:

@@ -49,8 +49,8 @@ public class JdbcPaginator extends AutoDetectedSchemaPaginator {
   public Iterable<Row> iterateRows(Integer page, Integer pageSize) {
     SelectQuery outputQuery = outputQuery(false);
 
-    if (!outputQuery.getSQL().toUpperCase().contains("LIMIT") &&
-      !outputQuery.getSQL().toUpperCase().contains("FETCH NEXT")) {
+    if (!outputQuery.getSQL().toUpperCase().contains("LIMIT")
+        && !outputQuery.getSQL().toUpperCase().contains("FETCH NEXT")) {
       outputQuery.addLimit(page * pageSize, pageSize);
     }
 

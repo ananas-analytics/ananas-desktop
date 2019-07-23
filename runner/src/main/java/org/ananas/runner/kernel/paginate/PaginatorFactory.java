@@ -8,6 +8,7 @@ import java.util.Map;
 import org.ananas.runner.kernel.common.VariableRender;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
+import org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode;
 import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
@@ -93,12 +94,16 @@ public class PaginatorFactory implements Paginator {
         }
       }
       return ctor.newInstance(this.id, this.type, this.config, schema);
-    } catch (InstantiationException
-        | NoSuchMethodException
-        | IllegalAccessException
-        | InvocationTargetException e) {
-      System.out.println(e.getMessage());
+    } catch (InstantiationException | NoSuchMethodException | IllegalAccessException e) {
       throw new AnanasException(ExceptionHandler.ErrorCode.GENERAL, e.getLocalizedMessage());
+    } catch (InvocationTargetException ex) {
+      Throwable targetException = ex.getTargetException();
+      if (targetException != null) {
+        throw new AnanasException(
+            ExceptionHandler.ErrorCode.GENERAL, targetException.getLocalizedMessage());
+      } else {
+        throw new AnanasException(ErrorCode.GENERAL);
+      }
     }
   }
 

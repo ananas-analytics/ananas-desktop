@@ -118,7 +118,7 @@ components:
   force-auto-detect-schema:
     bind: forceAutoDetectSchema
     type: CheckBox
-    default: false
+    default: true
     props:
       label: Force schema auto detection
   force-download-sample:

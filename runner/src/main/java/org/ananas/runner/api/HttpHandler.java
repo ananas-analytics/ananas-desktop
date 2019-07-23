@@ -52,11 +52,15 @@ class HttpHandler {
                 id, paginationBody.type, paginationBody.config, paginationBody.params);
          */
         Paginator paginator = PaginatorFactory.of(id, paginationBody);
-        Dataframe dataframe =
-            paginator.paginate(
-                page == null ? 0 : Integer.valueOf(page),
-                pageSize == null ? 1000 : Integer.valueOf(pageSize));
-        return JsonUtil.toJson(ApiResponseBuilder.Of().OK(dataframe).build());
+        try {
+          Dataframe dataframe =
+              paginator.paginate(
+                  page == null ? 0 : Integer.valueOf(page),
+                  pageSize == null ? 1000 : Integer.valueOf(pageSize));
+          return JsonUtil.toJson(ApiResponseBuilder.Of().OK(dataframe).build());
+        } catch (Exception e) {
+          return JsonUtil.toJson(ApiResponseBuilder.Of().KO(e).build());
+        }
       };
 
   // TEST

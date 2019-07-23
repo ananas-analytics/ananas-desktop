@@ -20,7 +20,7 @@ public class CSVStepConfig {
     this.delimiter =
         config.get("delimiter") == null
             ? CSVFormat.DEFAULT.getDelimiter()
-            : (char) config.get("delimiter");
+            : ((String) config.get("delimiter")).charAt(0);
     this.url = StepFileConfigToUrl.url(type, config, FileLoader.SupportedFormat.CSV);
     this.hasHeader = (Boolean) config.getOrDefault("header", false);
   }

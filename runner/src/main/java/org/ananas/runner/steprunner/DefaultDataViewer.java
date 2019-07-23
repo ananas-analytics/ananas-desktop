@@ -73,7 +73,8 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       Job job = JobRepositoryFactory.getJobRepostory().getJob(jobId);
 
       if (job == null) {
-        throw new RuntimeException("Can't find the last job for this step. Please make sure you have executed the step before explore");
+        throw new RuntimeException(
+            "Can't find the last job for this step. Please make sure you have executed the step before explore");
       }
 
       config.put("subtype", "jdbc");

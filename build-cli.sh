@@ -8,7 +8,7 @@ fi
 
 rm runner/build/libs/ananas-cli*.jar
 
-./gradlew :runner:shadowJar -Dorg.gradle.java.home=$1 -Dtarget=cli
+./gradlew :runner:shadowJar -Dorg.gradle.java.home=$1 -Dtarget=cli -Prelease=true
 
 cp runner/build/libs/ananas-cli*.jar ./cli
 

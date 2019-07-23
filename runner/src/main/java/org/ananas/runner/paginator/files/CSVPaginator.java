@@ -41,12 +41,24 @@ public class CSVPaginator extends AutoDetectedSchemaPaginator {
     try {
       Iterator<String> it = lines.iterator();
       Map<Integer, String> headerReversedMap = new HashMap<>();
+      Map<String, Integer> columnCount = new HashMap<>();
+
       if (csvStepConfig.hasHeader) {
         String header = it.next();
         CSVParser headerParser = CSVParser.parse(header, format);
         CSVRecord headerRecord = headerParser.iterator().next();
+        String columnName = null;
+        int duplicate = 0;
         for (int i = 0; i < headerRecord.size(); i++) {
-          headerReversedMap.put(i, headerRecord.get(i));
+          columnName = headerRecord.get(i);
+          if (!columnCount.containsKey(columnName)) {
+            columnCount.put(columnName, 1);
+          } else {
+            duplicate = columnCount.get(columnName);
+            columnCount.put(columnName, duplicate + 1);
+            columnName = columnName + (duplicate + 1);
+          }
+          headerReversedMap.put(i, columnName);
         }
       }
       inputschema = withoutHeader(it, this.format, headerReversedMap);

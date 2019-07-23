@@ -11,7 +11,8 @@ org.ananas.source.file.csv:
     config: 
       subtype: file
       format: csv
-      forceAutoDetectSchema: false
+      delimiter: ,
+      forceAutoDetectSchema: true
   options:
     maxIncoming: 0
     maxOutgoing: -1
@@ -42,7 +43,7 @@ org.ananas.source.file.json:
     config: 
       subtype: file
       format: json
-      forceAutoDetectSchema: false
+      forceAutoDetectSchema: true
   options:
     maxIncoming: 0
     maxOutgoing: -1
@@ -62,7 +63,7 @@ org.ananas.source.file.gcs:
       path: ""
       resampling: false
       sampleSize: "0"
-      forceAutoDetectSchema: false
+      forceAutoDetectSchema: true
   options:
     maxIncoming: 0
     maxOutgoing: -1

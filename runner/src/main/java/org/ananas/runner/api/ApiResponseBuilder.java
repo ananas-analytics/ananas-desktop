@@ -2,6 +2,7 @@ package org.ananas.runner.api;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -36,6 +37,12 @@ public class ApiResponseBuilder {
   }
 
   public ApiResponseBuilder KO(Exception e) {
+    if (e instanceof AnanasException) {
+      this.resp.put(CODE, ((AnanasException) e).error.getLeft().code);
+      this.resp.put(MESSAGE, ((AnanasException) e).error.getRight());
+      return this;
+    }
+
     MutablePair<ExceptionHandler.ErrorCode, String> error =
         ExceptionHandler.findRootCauseMessage(e);
     this.resp.put(CODE, error.getLeft().code);
