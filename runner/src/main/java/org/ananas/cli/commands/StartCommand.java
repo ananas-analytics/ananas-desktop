@@ -15,6 +15,12 @@ public class StartCommand implements Callable<Integer> {
   @ParentCommand private MainCommand parent;
 
   @Option(
+      names = {"-h", "--host"},
+      description = "Server host, default localhost",
+      defaultValue = "localhost")
+  private String host;
+
+  @Option(
       names = {"-p", "--port"},
       description = "Server port, default 3003",
       defaultValue = "3003")
@@ -24,8 +30,8 @@ public class StartCommand implements Callable<Integer> {
   public Integer call() throws Exception {
     parent.handleVerbose();
 
-    System.out.printf("Server started at port %d", port);
-    RestApiRoutes.initRestApi(new String[] {port.toString()});
+    System.out.printf("Server started at %s, port %d", host, port);
+    RestApiRoutes.initRestApi(new String[] {host, port.toString()});
     return 0;
   }
 }

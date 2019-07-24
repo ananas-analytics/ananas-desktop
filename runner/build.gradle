@@ -63,7 +63,7 @@ dependencies {
     compile 'com.google.cloud:google-cloud-storage:1.79.0'
     compile 'com.google.cloud:google-cloud-bigquery:1.79.0'
     compile 'com.thoughtworks.xstream:xstream:1.4.11'
-    compile 'com.sparkjava:spark-core:2.5'
+    compile 'com.sparkjava:spark-core:2.9.1'
     compile 'commons-io:commons-io:2.6'
     compile 'commons-cli:commons-cli:1.4'
     compile 'ch.qos.logback:logback-classic:1.1.7'
