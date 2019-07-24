@@ -1,0 +1,534 @@
+dag:
+  connections:
+    - source: 5d31c71a84b5674b6a220288
+      target: 5d31cb6684b5674b6a22028c
+    - source: 5d31cb6684b5674b6a22028c
+      target: 5d31cdb684b5674b6a220299
+    - source: 5d31c71a84b5674b6a220288
+      target: 5d31ce6b84b5674b6a22029d
+    - source: 5d31ce6b84b5674b6a22029d
+      target: 5d31ceea84b5674b6a2202a5
+    - source: 5d31c71a84b5674b6a220288
+      target: 5d31d09384b5674b6a2202b4
+    - source: 5d31d09384b5674b6a2202b4
+      target: 5d31d26784b5674b6a2202b8
+    - source: 5d31c71a84b5674b6a220288
+      target: 5d31d30184b5674b6a2202bd
+    - source: 5d31c71a84b5674b6a220288
+      target: 5d31d44684b5674b6a2202c0
+    - source: 5d31d30184b5674b6a2202bd
+      target: 5d31d45184b5674b6a2202c2
+    - source: 5d31d44684b5674b6a2202c0
+      target: 5d31d45184b5674b6a2202c2
+    - source: 5d31d45184b5674b6a2202c2
+      target: 5d31d57c84b5674b6a2202d6
+    - source: 5d31c71a84b5674b6a220288
+      target: 5d32089484b5674b6a2202df
+    - source: 5d32089484b5674b6a2202df
+      target: 5d32099f84b5674b6a2202e5
+id: 5d31c70384b5674b6a220286
+name: Fifa2019
+steps:
+  5d31c71a84b5674b6a220288:
+    config:
+      delimiter: ","
+      forceAutoDetectSchema: true
+      format: csv
+      header: true
+      path: ${PROJECT_PATH}/fifa2019.csv
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d31c71a84b5674b6a220288
+      schema:
+        fields:
+          - name: ﻿
+            type: INTEGER
+          - name: ID
+            type: INTEGER
+          - name: Name
+            type: VARCHAR
+          - name: Age
+            type: INTEGER
+          - name: Photo
+            type: VARCHAR
+          - name: Nationality
+            type: VARCHAR
+          - name: Flag
+            type: VARCHAR
+          - name: Overall
+            type: INTEGER
+          - name: Potential
+            type: INTEGER
+          - name: Club
+            type: VARCHAR
+          - name: Club Logo
+            type: VARCHAR
+          - name: Value
+            type: VARCHAR
+          - name: Wage
+            type: VARCHAR
+          - name: Special
+            type: INTEGER
+          - name: Preferred Foot
+            type: VARCHAR
+          - name: International Reputation
+            type: INTEGER
+          - name: Weak Foot
+            type: INTEGER
+          - name: Skill Moves
+            type: INTEGER
+          - name: Work Rate
+            type: VARCHAR
+          - name: Body Type
+            type: VARCHAR
+          - name: Real Face
+            type: VARCHAR
+          - name: Position
+            type: VARCHAR
+          - name: Jersey Number
+            type: INTEGER
+          - name: Joined
+            type: VARCHAR
+          - name: Loaned From
+            type: VARCHAR
+          - name: Contract Valid Until
+            type: VARCHAR
+          - name: Height
+            type: VARCHAR
+          - name: Weight
+            type: VARCHAR
+          - name: LS
+            type: VARCHAR
+          - name: ST
+            type: VARCHAR
+          - name: RS
+            type: VARCHAR
+          - name: LW
+            type: VARCHAR
+          - name: LF
+            type: VARCHAR
+          - name: CF
+            type: VARCHAR
+          - name: RF
+            type: VARCHAR
+          - name: RW
+            type: VARCHAR
+          - name: LAM
+            type: VARCHAR
+          - name: CAM
+            type: VARCHAR
+          - name: RAM
+            type: VARCHAR
+          - name: LM
+            type: VARCHAR
+          - name: LCM
+            type: VARCHAR
+          - name: CM
+            type: VARCHAR
+          - name: RCM
+            type: VARCHAR
+          - name: RM
+            type: VARCHAR
+          - name: LWB
+            type: VARCHAR
+          - name: LDM
+            type: VARCHAR
+          - name: CDM
+            type: VARCHAR
+          - name: RDM
+            type: VARCHAR
+          - name: RWB
+            type: VARCHAR
+          - name: LB
+            type: VARCHAR
+          - name: LCB
+            type: VARCHAR
+          - name: CB
+            type: VARCHAR
+          - name: RCB
+            type: VARCHAR
+          - name: RB
+            type: VARCHAR
+          - name: Crossing
+            type: INTEGER
+          - name: Finishing
+            type: INTEGER
+          - name: HeadingAccuracy
+            type: INTEGER
+          - name: ShortPassing
+            type: INTEGER
+          - name: Volleys
+            type: INTEGER
+          - name: Dribbling
+            type: INTEGER
+          - name: Curve
+            type: INTEGER
+          - name: FKAccuracy
+            type: INTEGER
+          - name: LongPassing
+            type: INTEGER
+          - name: BallControl
+            type: INTEGER
+          - name: Acceleration
+            type: INTEGER
+          - name: SprintSpeed
+            type: INTEGER
+          - name: Agility
+            type: INTEGER
+          - name: Reactions
+            type: INTEGER
+          - name: Balance
+            type: INTEGER
+          - name: ShotPower
+            type: INTEGER
+          - name: Jumping
+            type: INTEGER
+          - name: Stamina
+            type: INTEGER
+          - name: Strength
+            type: INTEGER
+          - name: LongShots
+            type: INTEGER
+          - name: Aggression
+            type: INTEGER
+          - name: Interceptions
+            type: INTEGER
+          - name: Positioning
+            type: INTEGER
+          - name: Vision
+            type: INTEGER
+          - name: Penalties
+            type: INTEGER
+          - name: Composure
+            type: INTEGER
+          - name: Marking
+            type: INTEGER
+          - name: StandingTackle
+            type: INTEGER
+          - name: SlidingTackle
+            type: INTEGER
+          - name: GKDiving
+            type: INTEGER
+          - name: GKHandling
+            type: INTEGER
+          - name: GKKicking
+            type: INTEGER
+          - name: GKPositioning
+            type: INTEGER
+          - name: GKReflexes
+            type: INTEGER
+          - name: Release Clause
+            type: VARCHAR
+    description: Fifa2019 player data
+    id: 5d31c71a84b5674b6a220288
+    metadataId: org.ananas.source.file.csv
+    name: Fifa2019 CSV
+    type: connector
+  5d31cb6684b5674b6a22028c:
+    config:
+      sql: |-
+        SELECT 
+        	Name,
+        	Overall
+        FROM PCOLLECTION
+        WHERE Overall > 85
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d31cb6684b5674b6a22028c
+      schema:
+        fields:
+          - name: Name
+            type: VARCHAR
+          - name: Overall
+            type: INTEGER
+    description: Top players with 85+ overall ratings
+    id: 5d31cb6684b5674b6a22028c
+    metadataId: org.ananas.transform.sql
+    name: Top players with 85+ overall ratings
+    type: transformer
+  5d31cdb684b5674b6a220299:
+    config:
+      format: csv
+      header: true
+      path: ${PROJECT_PATH}/output
+      prefix: overall_85plus-
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d31cdb684b5674b6a220299
+      schema:
+        fields:
+          - name: Name
+            type: VARCHAR
+          - name: Overall
+            type: INTEGER
+    description: Save your data as CSV file
+    id: 5d31cdb684b5674b6a220299
+    metadataId: org.ananas.destination.file.csv
+    name: Overall rating 85+ result in CSV
+    type: loader
+  5d31ce6b84b5674b6a22029d:
+    config:
+      sql: |-
+        SELECT 
+        	count(1) AS `count`,
+        	`Position`
+        FROM PCOLLECTION
+        GROUP BY `Position`
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d31ce6b84b5674b6a22029d
+      schema:
+        fields:
+          - name: count
+            type: BIGINT
+          - name: Position
+            type: VARCHAR
+    description: This SQL transform calculates the number of players by position
+    id: 5d31ce6b84b5674b6a22029d
+    metadataId: org.ananas.transform.sql
+    name: Players by position
+    type: transformer
+  5d31ceea84b5674b6a2202a5:
+    config:
+      dimension:
+        - Position
+      measures:
+        - count
+      sql: |
+        SELECT * FROM PCOLLECTION
+        ORDER BY `count` DESC
+        LIMIT 1000
+      subtype: bar chart
+      title: Players by position
+      xlabel: Position
+      ylabel: Players
+    dataframe:
+      data: []
+      id: 5d31ceea84b5674b6a2202a5
+      schema:
+        fields:
+          - name: COUNT
+            type: BIGINT
+          - name: POSITION
+            type: VARCHAR
+    description: Visualize your data as bar charts
+    id: 5d31ceea84b5674b6a2202a5
+    metadataId: org.ananas.visualization.barchart
+    name: Players by position chart
+    type: viewer
+  5d31d09384b5674b6a2202b4:
+    config:
+      sql: |-
+        SELECT 
+        	count(1) as `count`,
+          Nationality as Country
+        FROM PCOLLECTION
+        GROUP BY Nationality
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d31d09384b5674b6a2202b4
+      schema:
+        fields:
+          - name: count
+            type: BIGINT
+          - name: Country
+            type: VARCHAR
+    description: Transform your data with SQL
+    id: 5d31d09384b5674b6a2202b4
+    metadataId: org.ananas.transform.sql
+    name: Total number of players from each country
+    type: transformer
+  5d31d26784b5674b6a2202b8:
+    config:
+      dimension:
+        - Country
+      measures:
+        - count
+      sql: |-
+        SELECT * FROM PCOLLECTION
+        ORDER BY `count` DESC
+        LIMIT 10
+      subtype: bar chart
+      title: (TOP 10) Total number of players from each country
+      xlabel: Country
+      ylabel: Players
+    dataframe:
+      data: []
+      id: 5d31d26784b5674b6a2202b8
+      schema:
+        fields:
+          - name: COUNT
+            type: BIGINT
+          - name: COUNTRY
+            type: VARCHAR
+    description: Visualize your data as bar charts
+    id: 5d31d26784b5674b6a2202b8
+    metadataId: org.ananas.visualization.barchart
+    name: Players by country (top 10) bar chart
+    type: viewer
+  5d31d30184b5674b6a2202bd:
+    config:
+      sql: |-
+        SELECT 
+        	Name,
+          `Position`,
+          Nationality
+        FROM PCOLLECTION
+        WHERE `Position` = 'LS'
+        ORDER BY `Overall` DESC
+        LIMIT 1
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d31d30184b5674b6a2202bd
+      schema:
+        fields:
+          - name: Name
+            type: VARCHAR
+          - name: Position
+            type: VARCHAR
+          - name: Nationality
+            type: VARCHAR
+          - name: Overall
+            type: INTEGER
+    description: Transform your data with SQL
+    id: 5d31d30184b5674b6a2202bd
+    metadataId: org.ananas.transform.sql
+    name: Top 1 player for LS position
+    type: transformer
+  5d31d44684b5674b6a2202c0:
+    config:
+      sql: |-
+        SELECT 
+        	Name,
+          `Position`,
+          Nationality
+        FROM PCOLLECTION
+        WHERE `Position` = 'RS'
+        ORDER BY `Overall` DESC
+        LIMIT 1
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d31d44684b5674b6a2202c0
+      schema:
+        fields:
+          - name: Name
+            type: VARCHAR
+          - name: Position
+            type: VARCHAR
+          - name: Nationality
+            type: VARCHAR
+          - name: Overall
+            type: INTEGER
+    description: Transform your data with SQL
+    id: 5d31d44684b5674b6a2202c0
+    metadataId: org.ananas.transform.sql
+    name: Top 1 player for RS position
+    type: transformer
+  5d31d45184b5674b6a2202c2:
+    config:
+      leftstepid: 5d31d30184b5674b6a2202bd
+      rightstepid: 5d31d44684b5674b6a2202c0
+      subtype: concat
+    dataframe:
+      data: []
+      id: 5d31d45184b5674b6a2202c2
+      schema:
+        fields:
+          - name: Name
+            type: VARCHAR
+          - name: Position
+            type: VARCHAR
+          - name: Nationality
+            type: VARCHAR
+          - name: Overall
+            type: INTEGER
+    description: Concatenate two data
+    id: 5d31d45184b5674b6a2202c2
+    metadataId: org.ananas.transform.concat
+    name: Best attackers for 3-5-2 formation
+    type: transformer
+  5d31d57c84b5674b6a2202d6:
+    config:
+      format: csv
+      header: true
+      path: ${PROJECT_PATH}/output
+      prefix: attackers-3-5-2-
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d31d57c84b5674b6a2202d6
+      schema:
+        fields:
+          - name: Name
+            type: VARCHAR
+          - name: Position
+            type: VARCHAR
+          - name: Nationality
+            type: VARCHAR
+          - name: Overall
+            type: INTEGER
+    description: Save your data as CSV file
+    id: 5d31d57c84b5674b6a2202d6
+    metadataId: org.ananas.destination.file.csv
+    name: Best attackers for 3-5-2 formation CSV
+    type: loader
+  5d32089484b5674b6a2202df:
+    config:
+      sql: |-
+        SELECT  
+        	Name,
+          `${ability}`
+        FROM PCOLLECTION
+        ORDER BY `${ability}` DESC
+        LIMIT 5
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d32089484b5674b6a2202df
+      schema:
+        fields:
+          - name: Name
+            type: VARCHAR
+          - name: Positioning
+            type: INTEGER
+    description: You can use variable to parameterize your setp. By applying a different
+      value in `Data Criteria`. You can make ad-hoc query easily
+    id: 5d32089484b5674b6a2202df
+    metadataId: org.ananas.transform.sql
+    name: Top 5 players with specail ability
+    type: transformer
+  5d32099f84b5674b6a2202e5:
+    config:
+      format: csv
+      header: true
+      path: ${PROJECT_PATH}/output
+      prefix: ${ability}
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d32099f84b5674b6a2202e5
+      schema:
+        fields:
+          - name: Name
+            type: VARCHAR
+          - name: Positioning
+            type: INTEGER
+    description: Save your data as CSV file
+    id: 5d32099f84b5674b6a2202e5
+    metadataId: org.ananas.destination.file.csv
+    name: Top 5 player with X ability
+    type: loader
+triggers: []
+variables:
+  - name: ability
+    description: |
+      Player's ability, must be one of the number type column name. 
+    scope: project
+    type: string
