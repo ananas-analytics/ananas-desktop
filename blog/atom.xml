@@ -2,12 +2,24 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ananas-analytics.github.io/blog</id>
     <title>Ananas Analytics Desktop Blog</title>
-    <updated>2019-07-20T06:00:00Z</updated>
+    <updated>2019-07-24T06:00:00Z</updated>
     <generator>Feed for Node.js</generator>
     <link rel="alternate" href="https://ananas-analytics.github.io/blog"/>
     <subtitle>The best place to stay up-to-date with the latest Ananas Analytics Desktop news and events.</subtitle>
     <logo>https://ananas-analytics.github.io/img/logo-white.png</logo>
     <rights>Copyright © 2019 Ananas Analytics</rights>
+    <entry>
+        <title type="html"><![CDATA[Release Version 0.8.2]]></title>
+        <id>https://ananas-analytics.github.io/blog/2019/07/24/new-version-0.8.2.html</id>
+        <link href="https://ananas-analytics.github.io/blog/2019/07/24/new-version-0.8.2.html">
+        </link>
+        <updated>2019-07-24T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>Version 0.8.2 is a bug fix release.</p> <p>After publishing Ananas Desktop on Hacker News, we received a lots of constructive feedbacks, and valuable issue reports. Thanks a lot Hacker News for organizing such a great community.</p> <p>In version 0.8.2, we mainly ...</p>]]></summary>
+        <author>
+            <name>Bo HOU</name>
+            <uri>https://twitter.com/bhoustudio</uri>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Release Version 0.8.1]]></title>
         <id>https://ananas-analytics.github.io/blog/2019/07/20/new-version-0.8.1.html</id>
