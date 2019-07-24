@@ -385,6 +385,25 @@
       },
       "version-0.8.1/user-guide/version-0.8.1-where-to-find": {
         "title": "Where to find X?"
+      },
+      "version-0.8.2/developer-guide/version-0.8.2-overview": {
+        "title": "Overview"
+      },
+      "version-0.8.2/downloads/version-0.8.2-overview": {
+        "title": "Ananas Analytics Desktop Downloads",
+        "sidebar_label": "Overview"
+      },
+      "version-0.8.2/downloads/version-0.8.2-v0.8.2": {
+        "title": "Ananas Desktop v0.8.2"
+      },
+      "version-0.8.2/user-guide/version-0.8.2-getting-started": {
+        "title": "Building your first data flow"
+      },
+      "version-0.8.2/user-guide/version-0.8.2-overview": {
+        "title": "Overview"
+      },
+      "version-0.8.2/user-guide/version-0.8.2-source-csv": {
+        "title": "Local CSV file"
       }
     },
     "links": {

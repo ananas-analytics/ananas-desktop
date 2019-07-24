@@ -1,6 +1,7 @@
 ---
-id: overview
+id: version-0.8.2-overview
 title: Overview
+original_id: overview
 ---
 
 ## Overview

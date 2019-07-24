@@ -1,7 +1,8 @@
 ---
-id: overview 
+id: version-0.8.2-overview
 title: Ananas Analytics Desktop Downloads
 sidebar_label: Overview
+original_id: overview
 ---
 
 > The latest Ananas Desktop version is [**v0.8.2**](v0.8.2)

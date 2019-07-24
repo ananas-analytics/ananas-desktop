@@ -1,6 +1,7 @@
 ---
-id: getting-started
+id: version-0.8.2-getting-started
 title: Building your first data flow
+original_id: getting-started
 ---
 
 > Before querying data, make sure you have [**installed**](install.md) the latest *Ananas Analytics Desktop* first. 

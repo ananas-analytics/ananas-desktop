@@ -1,6 +1,7 @@
 ---
-id: source-csv
+id: version-0.8.2-source-csv
 title: Local CSV file
+original_id: source-csv
 ---
 
 Imports data from local CSV files
