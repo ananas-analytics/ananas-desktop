@@ -1,0 +1,57 @@
+dag:
+  connections:
+    - source: 5d389f1ce48a6d10cad466d3
+      target: 5d389ec8e48a6d10cad466cf
+id: 5d3895cd48138b177bb7091c
+name: sql_udf
+steps:
+  5d389ec8e48a6d10cad466cf:
+    config:
+      sql: |-
+        SELECT 
+        todate(`day`, 'dd MMMM yyyy', 'GMT+2') 
+        as day_formatted,
+        impressions
+        FROM PCOLLECTION
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d389ec8e48a6d10cad466cf
+      schema:
+        fields:
+          - name: day_formatted
+            type: TIMESTAMP
+          - name: impressions
+            type: INTEGER
+    description: Transform your data with SQL
+    id: 5d389ec8e48a6d10cad466cf
+    metadataId: org.ananas.transform.sql
+    name: SQL
+    type: transformer
+  5d389f1ce48a6d10cad466d3:
+    config:
+      forceAutoDetectSchema: false
+      format: csv
+      header: true
+      path: ${PROJECT_PATH}/adtech.csv
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d389f1ce48a6d10cad466d3
+      schema:
+        fields:
+          - name: deal_id
+            type: INTEGER
+          - name: impressions
+            type: INTEGER
+          - name: cpm
+            type: INTEGER
+          - name: day
+            type: VARCHAR
+    description: Connect data from a CSV file
+    id: 5d389f1ce48a6d10cad466d3
+    metadataId: org.ananas.source.file.csv
+    name: Local CSV Source
+    type: connector
+triggers: []
+variables: []
