@@ -13,7 +13,7 @@ public class RestApiRoutes {
     int timeOutMillis = 30000;
     threadPool(maxThreads, minThreads, timeOutMillis);
 
-    String address = "localhost";
+    String address = "127.0.0.1";
     int port = 3003;
     if (args.length != 0) {
       address = args[0];
