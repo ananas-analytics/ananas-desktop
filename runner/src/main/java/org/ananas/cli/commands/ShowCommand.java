@@ -64,6 +64,7 @@ public class ShowCommand implements Callable<Integer> {
       ananas = Paths.get(project.getAbsolutePath(), "ananas.yaml").toFile();
       if (!ananas.exists()) {
         System.err.println("Can't find ananas.yml file in our project");
+        System.exit(1);
         return 1;
       }
     }
@@ -72,6 +73,7 @@ public class ShowCommand implements Callable<Integer> {
     } catch (Exception e) {
       System.err.println("Failed to parse analytics board file: " + e.getLocalizedMessage());
       Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).forEach(LOG::error);
+      System.exit(1);
       return 1;
     }
 
@@ -118,6 +120,7 @@ public class ShowCommand implements Callable<Integer> {
     if (showDataframe) {
       if (stepId == null) {
         System.err.println("Please specify the step with --step option");
+        System.exit(1);
         return 1;
       }
 
@@ -126,6 +129,7 @@ public class ShowCommand implements Callable<Integer> {
         System.err.printf("No step with id %s found in analytics board\n", stepId);
         System.err.printf(
             "Try \"ananas show -p '%s' --steps\" to get a step list.\n", project.getAbsolutePath());
+        System.exit(1);
         return 1;
       }
 
@@ -134,6 +138,7 @@ public class ShowCommand implements Callable<Integer> {
 
       if (dataframe == null || dataframe.schema == null) {
         System.err.println("No dataframe found for this step");
+        System.exit(1);
         return 1;
       }
 
@@ -153,6 +158,7 @@ public class ShowCommand implements Callable<Integer> {
     if (showStepConfig) {
       if (stepId == null) {
         System.err.println("Please specify the step with --step option");
+        System.exit(1);
         return 1;
       }
 
@@ -161,6 +167,7 @@ public class ShowCommand implements Callable<Integer> {
         System.err.printf("No step with id %s found in analytics board\n", stepId);
         System.err.printf(
             "Try \"ananas show -p '%s' --steps\" to get a step list.\n", project.getAbsolutePath());
+        System.exit(1);
         return 1;
       }
 
@@ -180,6 +187,7 @@ public class ShowCommand implements Callable<Integer> {
       CommandLine.usage(this, System.out);
     }
 
+    System.exit(0);
     return 0;
   }
 }

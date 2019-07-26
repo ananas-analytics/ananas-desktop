@@ -8,8 +8,6 @@ public class Main {
   public static void main(String[] args) {
     ExtensionRegistry.init();
 
-    int code = CommandLine.call(new MainCommand(), args);
-
-    System.exit(code);
+    CommandLine.call(new MainCommand(), args);
   }
 }

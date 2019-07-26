@@ -18,7 +18,7 @@ public class RestApiRoutes {
     if (args.length != 0) {
       address = args[0];
       if (args.length >= 2) {
-        port = Integer.valueOf(args[0]);
+        port = Integer.valueOf(args[1]);
       }
     }
     ipAddress(address);

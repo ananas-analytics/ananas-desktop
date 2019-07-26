@@ -100,6 +100,7 @@ public class TestCommand implements Callable {
     } catch (Exception e) {
       System.err.println("Failed to test step");
       e.printStackTrace();
+      System.exit(1);
       return 1;
     }
 
@@ -107,9 +108,11 @@ public class TestCommand implements Callable {
 
     if (printUsage) {
       CommandLine.usage(this, System.out);
+      System.exit(1);
       return 1;
     }
 
+    System.exit(0);
     return 0;
   }
 

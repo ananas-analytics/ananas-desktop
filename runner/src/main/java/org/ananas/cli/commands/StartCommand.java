@@ -17,7 +17,7 @@ public class StartCommand implements Callable<Integer> {
   @Option(
       names = {"-h", "--host"},
       description = "Server host, default localhost",
-      defaultValue = "localhost")
+      defaultValue = "127.0.0.1")
   private String host;
 
   @Option(
