@@ -7,7 +7,7 @@ matrix:
         - oraclejdk8
       script:
         - ./gradlew :runner:test
-        - ./build-cli.sh && cd test_projects && ./run_test.sh
+        - ./gradlew :runner:shadowJar -Dtarget=cli -Prelease=true && cd test_projects && ./run_test.sh
 
     - language: node_js
       node_js:
