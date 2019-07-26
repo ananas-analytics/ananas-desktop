@@ -7,6 +7,7 @@ if [ "$?" -ne "0" ]; then
 fi
 '
 
+# Test exploring the csv source
 echo Explore data source
 RESULT=$(java -jar $(pwd)/../cli/*.jar explore -p $(pwd)/Fifa2019 5d31c71a84b5674b6a220288)
 if [ "$?" -ne "0" ]; then
@@ -17,6 +18,8 @@ if [ "$OUTPUT" != "true" ]; then
   exit 1
 fi
 
+
+# Test transformer
 echo Test transformer - "Top players with 85+ overall ratings"
 RESULT=$(java -jar $(pwd)/../cli/*.jar test -p $(pwd)/Fifa2019 5d31cb6684b5674b6a22028c)
 if [ "$?" -ne "0" ]; then
