@@ -13,10 +13,15 @@ public class RestApiRoutes {
     int timeOutMillis = 30000;
     threadPool(maxThreads, minThreads, timeOutMillis);
 
+    String address = "127.0.0.1";
     int port = 3003;
     if (args.length != 0) {
-      port = Integer.valueOf(args[0]);
+      address = args[0];
+      if (args.length >= 2) {
+        port = Integer.valueOf(args[0]);
+      }
     }
+    ipAddress(address);
     port(port);
 
     // CORS
