@@ -32,6 +32,6 @@ public class StartCommand implements Callable<Integer> {
 
     System.out.printf("Server started at %s, port %d", host, port);
     RestApiRoutes.initRestApi(new String[] {host, port.toString()});
-    return 0;
+    return -1; // return -1 to avoid exit immediately
   }
 }

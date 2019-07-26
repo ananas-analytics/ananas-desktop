@@ -73,7 +73,7 @@ dependencies {
     compile 'org.postgresql:postgresql:42.2.5'
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'org.quartz-scheduler:quartz:2.3.0'
-    compile 'info.picocli:picocli:3.9.6'
+    compile 'info.picocli:picocli:4.0.1'
 
     runtime 'org.apache.tika:tika-parsers:1.18'
     runtime 'org.slf4j:slf4j-jdk14:1.7.25'
