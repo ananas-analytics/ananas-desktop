@@ -113,6 +113,12 @@ function getRunnerPath() {
 }
 
 function startRunner(env) {
+  log.info('start runner')
+
+  if (runner !== null) {
+    stopRunner()
+  }
+
   const runnerPath = getRunnerPath()  
 
   log.info(`runner path: ${runnerPath}`)
@@ -136,8 +142,10 @@ function startRunner(env) {
 
 
 function stopRunner() {
+  log.info('stop runner', runner)
   if (runner !== null) {
-    runner.kill('SIGKILL')
+    process.kill(runner.pid)
+    runner = null
   }
 }
 
@@ -173,13 +181,12 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  let hrend = process.hrtime(hrstart)
+  trackEvent('usage', 'close-app', process.platform, hrend[0])
+
   if (process.platform !== 'darwin') {
     app.quit()
   }
-  stopRunner()
-
-  let hrend = process.hrtime(hrstart)
-  trackEvent('usage', 'close-app', '', hrend[0])
 })
 
 app.on('activate', () => {
@@ -189,5 +196,9 @@ app.on('activate', () => {
     hrstart = process.hrtime()
     createWindow()
   }
+})
+
+app.on('before-quit', () => {
+  stopRunner()
 })
 
