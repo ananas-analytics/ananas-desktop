@@ -63,7 +63,7 @@ public class ShowCommand implements Callable<Integer> {
     if (!ananas.exists()) {
       ananas = Paths.get(project.getAbsolutePath(), "ananas.yaml").toFile();
       if (!ananas.exists()) {
-        System.err.println("Can't find ananas.yml file in our project");
+        System.err.println("Can't find ananas.yml file in your project");
         return 1;
       }
     }

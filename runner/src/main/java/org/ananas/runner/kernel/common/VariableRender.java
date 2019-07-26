@@ -20,8 +20,9 @@ public class VariableRender {
     try {
       t = new Template("StepConfig", new StringReader(json), DagRequest.TEMPLATE_CFG);
     } catch (IOException e) {
-      e.printStackTrace();
-      return config;
+      // e.printStackTrace();
+      throw new RuntimeException(e);
+      // return config;
     }
 
     // build legacy
@@ -46,9 +47,7 @@ public class VariableRender {
       String transformedTemplate = out.toString();
       return JsonUtil.fromJson(transformedTemplate, Map.class);
     } catch (IOException | TemplateException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
-
-    return config;
   }
 }

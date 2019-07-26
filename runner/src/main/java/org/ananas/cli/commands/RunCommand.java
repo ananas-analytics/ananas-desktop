@@ -70,10 +70,6 @@ public class RunCommand implements Callable<Integer> {
   public Integer call() throws Exception {
     parent.handleVerbose();
 
-    // first start a server
-    System.out.printf("Server started at %s port %d\n", host, port);
-    RestApiRoutes.initRestApi(new String[] {host, port.toString()});
-
     // build DagRequest
     try {
       DagRequest dagRequest = DagRequestBuilder.build(project, profile, params, goals);
@@ -123,7 +119,6 @@ public class RunCommand implements Callable<Integer> {
         }
       }
 
-      Spark.stop();
       if (errMessage != null) {
         return 1;
       }
