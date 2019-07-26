@@ -139,5 +139,9 @@ test {
 [run].each { runTask ->
     configure(runTask) {
         systemProperties System.properties
+
+        if (project.hasProperty('args')) {
+            args project.args.split(' ')
+        }
     }
 }
