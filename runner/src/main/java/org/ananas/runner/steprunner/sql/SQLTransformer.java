@@ -7,6 +7,9 @@ import org.ananas.runner.steprunner.sql.udf.*;
 import org.apache.beam.repackaged.beam_sdks_java_extensions_sql.org.apache.calcite.linq4j.function.Parameter;
 import org.apache.beam.sdk.extensions.sql.BeamSqlUdf;
 import org.apache.beam.sdk.extensions.sql.SqlTransform;
+import org.apache.beam.sdk.extensions.sql.impl.transform.BeamBuiltinAggregations;
+import org.apache.beam.sdk.extensions.sql.impl.transform.agg.CovarianceFn;
+import org.apache.beam.sdk.schemas.Schema;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +37,7 @@ public class SQLTransformer extends TransformerStepRunner {
                     .registerUdf("zeroIfNull", new NullableIntegerFn())
                     .registerUdf("emptyIfNull", new NullableStringFn())
                     .registerUdf("hash", new HashFn())
-                    .registerUdf("todate", ToDateFn.class));
+                    .registerUdf("todate", ToDateFn.class)
+            );
   }
 }
