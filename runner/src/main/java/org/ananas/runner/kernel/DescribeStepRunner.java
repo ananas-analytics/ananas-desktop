@@ -5,9 +5,11 @@ import com.google.common.base.Preconditions;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
 import org.apache.beam.sdk.schemas.Schema;
+import org.spark_project.guava.collect.ImmutableMap;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -17,9 +19,18 @@ public class DescribeStepRunner extends TransformerStepRunner {
 
   private static final long serialVersionUID = 4839750924289849371L;
 
-  private static String[] aggregations = new String[] {"COUNT", "MIN", "MAX", "AVG", "VAR_POP", "VAR_SAMP"};
+  private static Map<String, LambdaExpression> aggregations = ImmutableMap.<String, LambdaExpression>builder()
+          .put("count",  str -> String.format("CAST(COUNT(%s) AS DOUBLE)",str))
+          .put("min",  str -> String.format("CAST(MIN(%s) AS DOUBLE)",str))
+          .put("max",  str -> String.format("CAST(MAX(%s) AS DOUBLE)",str))
+          .put("avg",  str -> String.format("CAST(AVG(%s) AS DOUBLE)",str))
+          .put("std",  str -> String.format("CAST(SQRT(VAR_POP(%s)) AS DOUBLE)",str)).build();
 
   ConcatStepRunner concatStepRunner;
+
+  public interface LambdaExpression {
+    String expression(String fieldName);
+  }
 
   public DescribeStepRunner(Step step, StepRunner previous) {
 
@@ -35,11 +46,11 @@ public class DescribeStepRunner extends TransformerStepRunner {
     if (!previousSchema.getFields().stream().filter(field -> field.getType().getTypeName().isNumericType()).findFirst().isPresent()) {
       throw new RuntimeException("Oops ! There is no numeric column.");
     }
-    for (String aggregation : aggregations) {
+    for (Map.Entry<String, LambdaExpression> aggregation : aggregations.entrySet()) {
         Step step = Step.of(UUID.randomUUID().toString(), null);
         step.config.put(
                   SQLTransformer.CONFIG_SQL, "SELECT "
-                + SQLProjection("PCOLLECTION", previousSchema, aggregation )
+                + SQLProjection("PCOLLECTION", previousSchema, aggregation.getKey(), aggregation.getValue() )
                 + " FROM PCOLLECTION ");
         StepRunner stepRunner = new SQLTransformer(step, previous);
         stepRunner.build();
@@ -59,16 +70,16 @@ public class DescribeStepRunner extends TransformerStepRunner {
     return concatStepRunner.getSchema();
   }
 
-  private String SQLProjection(String tableName, Schema schema, String aggregationFn) {
-    return String.format(" '%s' as aggregation ", aggregationFn) + "," + Joiner.on(" , ")
+
+  private String SQLProjection(String tableName, Schema schema, String aggregationFn, LambdaExpression exp) {
+    return String.format(" '%s' as aggregation ", aggregationFn) + ","
+    + Joiner.on(" , ")
         .join(
             schema.getFields().stream()
                     .filter( field -> field.getType().getTypeName().isNumericType() )
-                .map(c -> String.format("CAST(%s(%s.`%s`) AS %s) AS %s", aggregationFn, tableName, c.getName(), "DOUBLE", c.getName().replaceAll("[^a-zA-Z]+","")))
+                .map(c -> String.format("%s AS %s", exp.expression(String.format("%s.`%s`", tableName, c.getName())) , c.getName().replaceAll("[^a-zA-Z]+","")))
                 .iterator());
   }
-
-
 
 
 }
