@@ -5,11 +5,12 @@ for d in */ ; do
   echo TESTING "$d" ...
 	echo ---------------------------
 	"$d"test.sh
-	echo
 	if [ "$?" -ne "0" ]; then
+	  echo
 	  echo FAIL!
 	  exit 1
 	else
+	  echo
 	  echo PASS!
 	fi
 	echo
