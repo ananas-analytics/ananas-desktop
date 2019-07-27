@@ -46,6 +46,12 @@ public class RunCommand implements Callable<Integer> {
   private Map<String, String> params;
 
   @Option(
+    names = {"-h", "--host"},
+    description = "Server host, default localhost",
+    defaultValue = "127.0.0.1")
+  private String host;
+
+  @Option(
       names = {"--port"},
       description = "Ananas server port, default 3003",
       defaultValue = "3003")
@@ -64,10 +70,6 @@ public class RunCommand implements Callable<Integer> {
   public Integer call() throws Exception {
     parent.handleVerbose();
 
-    // first start a server
-    System.out.printf("Server started at port %d\n", port);
-    RestApiRoutes.initRestApi(new String[] {port.toString()});
-
     // build DagRequest
     try {
       DagRequest dagRequest = DagRequestBuilder.build(project, profile, params, goals);
@@ -78,7 +80,6 @@ public class RunCommand implements Callable<Integer> {
 
       if (apiResponse.code != 200) {
         System.err.println(apiResponse.message);
-        System.exit(1);
         return 1;
       }
 
@@ -114,16 +115,17 @@ public class RunCommand implements Callable<Integer> {
           Thread.sleep(interval * 1000);
         } catch (InterruptedException e) {
           e.printStackTrace();
+          throw e;
         }
       }
 
-      Spark.stop();
-      System.exit(0);
+      if (errMessage != null) {
+        return 1;
+      }
       return 0;
     } catch (Exception e) {
       LOG.error(e.getLocalizedMessage());
       e.printStackTrace();
-      System.exit(1);
       return 1;
     }
   }

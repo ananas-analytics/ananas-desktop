@@ -88,13 +88,18 @@ public class DagRequestBuilder {
         });
 
     // inject runtime variables
-    dagRequest.params.put(
-        "EXECUTE_TIME",
-        new Variable("EXECUTE_TIME", "date", "", "runtime", "" + System.currentTimeMillis()));
-    dagRequest.params.put(
-        "PROJECT_PATH",
-        new Variable("PROJECT_PATH", "string", "", "runtime", project.getAbsolutePath()));
+    injectRuntimeVariables(dagRequest.params, project.getAbsolutePath());
 
     return dagRequest;
+  }
+
+  public static void injectRuntimeVariables(Map<String, Variable> variables, String projectPath) {
+    variables.put(
+      "EXECUTE_TIME",
+      new Variable("EXECUTE_TIME", "date", "", "runtime", "" + System.currentTimeMillis()));
+    variables.put(
+      "PROJECT_PATH",
+      new Variable("PROJECT_PATH", "string", "", "runtime", projectPath));
+
   }
 }

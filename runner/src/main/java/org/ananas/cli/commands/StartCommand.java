@@ -17,7 +17,7 @@ public class StartCommand implements Callable<Integer> {
   @Option(
       names = {"-h", "--host"},
       description = "Server host, default localhost",
-      defaultValue = "localhost")
+      defaultValue = "127.0.0.1")
   private String host;
 
   @Option(
@@ -32,6 +32,6 @@ public class StartCommand implements Callable<Integer> {
 
     System.out.printf("Server started at %s, port %d", host, port);
     RestApiRoutes.initRestApi(new String[] {host, port.toString()});
-    return 0;
+    return -1; // return -1 to avoid exit immediately
   }
 }

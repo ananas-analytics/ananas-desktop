@@ -8,8 +8,10 @@ public class Main {
   public static void main(String[] args) {
     ExtensionRegistry.init();
 
-    int code = CommandLine.call(new MainCommand(), args);
+    int exitCode = new CommandLine(new MainCommand()).execute(args);
 
-    System.exit(code);
+    if (exitCode >= 0) { // when runnng start server sub command, return -1 to avoid exit immediately
+      System.exit(exitCode);
+    }
   }
 }

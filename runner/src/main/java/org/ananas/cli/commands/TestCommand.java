@@ -42,7 +42,7 @@ public class TestCommand implements Callable {
   @Option(
       names = {"-m", "--param"},
       description =
-          "Override the parameter defined in profile, the parameter must be defined in ananas board")
+          "Override the parameter defined in profile, the parameter must be defined in ananas file")
   private Map<String, String> params;
 
   @Option(
