@@ -23,4 +23,3 @@ derby.log
 /cli/*.jar
 /cli/ananas
 /cli/ananas_completion
-/test_projects/**/output
