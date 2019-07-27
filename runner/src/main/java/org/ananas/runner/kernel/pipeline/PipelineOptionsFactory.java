@@ -113,7 +113,7 @@ public class PipelineOptionsFactory {
       e.printStackTrace();
     }
 
-/*    String systemDefinedFiles = System.getProperty(FILES_TO_STAGE);
+    String systemDefinedFiles = System.getProperty(FILES_TO_STAGE);
     LOG.info("System defined filesToStage list: {}", systemDefinedFiles);
     if (systemDefinedFiles != null) {
       String[] files = systemDefinedFiles.split(";");
@@ -123,7 +123,7 @@ public class PipelineOptionsFactory {
     if (filesToStaging.size() == 0) {
       throw new RuntimeException(
           "Can't auto-resolve filesToStage options. If you are running on DEV mode, please set the 'filesToStage' system property");
-    }*/
+    }
 
     LOG.info("filesToStage: {}", String.join(";", filesToStaging));
     return filesToStaging;
