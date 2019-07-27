@@ -13,7 +13,7 @@ RESULT=$(java -jar $(pwd)/../cli/*.jar explore -p $(pwd)/Fifa2019 5d31c71a84b567
 if [ "$?" -ne "0" ]; then
   exit 1
 fi
-OUTPUT=$(echo "$RESULT" | jq '.data|.data|length == 0')
+OUTPUT=$(echo "$RESULT" | jq '.data|.data|length > 0')
 if [ "$OUTPUT" != "true" ]; then
   exit 1
 fi
