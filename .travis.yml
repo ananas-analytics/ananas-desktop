@@ -7,7 +7,6 @@ matrix:
         - oraclejdk8
       script:
         - ./gradlew :runner:test
-        - ./gradlew :runner:shadowJar -Dtarget=cli -Prelease=true && cp runner/build/libs/ananas-cli*.jar ./cli && cd test_projects && ./run_test.sh
 
     - language: node_js
       node_js:
