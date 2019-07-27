@@ -22,7 +22,7 @@ function checkUpdate() {
   // TODO: better way to handle the update on linux
   if (version === '0.0.1') {
     // remember to update this version when having new release
-    version = '0.8.3'
+    version = '0.9.0'
   }
 
   let hash = 99
