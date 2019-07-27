@@ -62,6 +62,7 @@ public class ExtensionRegistry {
         "org.ananas.source.jdbc.postgres", JdbcConnector.class, JdbcPaginator.class);
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
+    ExtensionRegistry.registerTransformer("org.ananas.transform.describe", DescribeStepRunner.class);
 
     ExtensionRegistry.registerLoader(
         "org.ananas.destination.file.csv", FileLoader.class, CSVPaginator.class);

@@ -14,6 +14,20 @@ org.ananas.transform.sql:
     maxIncoming: 1
     maxOutgoing: -1
 
+org.ananas.transform.describe:
+  id: org.ananas.transform.describe
+  name: Describe
+  description: Describe your data
+  type: Transform
+  icon: images/row.svg
+  step:
+    type: transformer
+    config:
+      subtype: describe 
+  options:
+    maxIncoming: 1
+    maxOutgoing: -1
+
 org.ananas.transform.join:
   id: org.ananas.transform.join
   name: JOIN
