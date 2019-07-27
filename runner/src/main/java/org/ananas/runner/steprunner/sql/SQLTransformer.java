@@ -3,12 +3,13 @@ package org.ananas.runner.steprunner.sql;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.TransformerStepRunner;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.steprunner.sql.udf.HashFn;
-import org.ananas.runner.steprunner.sql.udf.NullableBigDecimalFn;
-import org.ananas.runner.steprunner.sql.udf.NullableBooleanFn;
-import org.ananas.runner.steprunner.sql.udf.NullableIntegerFn;
-import org.ananas.runner.steprunner.sql.udf.NullableStringFn;
+import org.ananas.runner.steprunner.sql.udf.*;
+import org.apache.beam.repackaged.beam_sdks_java_extensions_sql.org.apache.calcite.linq4j.function.Parameter;
+import org.apache.beam.sdk.extensions.sql.BeamSqlUdf;
 import org.apache.beam.sdk.extensions.sql.SqlTransform;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class SQLTransformer extends TransformerStepRunner {
 
@@ -28,10 +29,6 @@ public class SQLTransformer extends TransformerStepRunner {
             .apply(
                 "sql transform",
                 SqlTransform.query(statement)
-                    .registerUdf("falseIfNull", new NullableBooleanFn())
-                    .registerUdf("zeroIfNull", new NullableBigDecimalFn())
-                    .registerUdf("zeroIfNull", new NullableIntegerFn())
-                    .registerUdf("emptyIfNull", new NullableStringFn())
-                    .registerUdf("hash", new HashFn()));
+                    .registerUdf("TO_DATE", ToDateFn.class));
   }
 }
