@@ -1,3 +1,5 @@
+const { shell } = require('electron')
+
 import React from 'react'
 
 import styled from 'styled-components'
@@ -5,7 +7,7 @@ import { Box } from 'grommet/components/Box'
 import { Stack } from 'grommet/components/Stack'
 import { Text } from 'grommet/components/Text'
 
-import { Edit, SettingsOption, Trash } from 'grommet-icons'
+import { Edit,FolderOpen, SettingsOption, Trash } from 'grommet-icons'
 
 export const Item = styled(Box)`
   &:hover {
@@ -24,7 +26,7 @@ export const Item = styled(Box)`
   -webkit-box-orient: vertical;
 `
 
-export default ({name, description, selected, onClick, onEdit, onConfig, onDelete}) => {
+export default ({id, name, path, description, selected, onClick, onEdit, onConfig, onDelete, getProjectPath}) => {
   return (
     <Item align='center' direction='column' justify='start'
       onClick={(e)=>{
@@ -53,6 +55,21 @@ export default ({name, description, selected, onClick, onEdit, onConfig, onDelet
           }} direction='row' justify='center' gap='medium' fill>
             <Box onClick={onEdit}><Edit /></Box>
             <Box onClick={onConfig}><SettingsOption /></Box>
+            <Box onClick={() => {
+              if (path) {
+                shell.openItem(path)
+                return
+              } 
+              
+              getProjectPath(id)
+                .then(p => {
+                  shell.openItem(p)
+                })
+                .catch(err => {
+                  // TODO: handle error here
+                  console.log(err.message)
+                })
+              }}><FolderOpen /></Box>
             <Box onClick={onDelete}><Trash /></Box>
           </Box>) : null
         }

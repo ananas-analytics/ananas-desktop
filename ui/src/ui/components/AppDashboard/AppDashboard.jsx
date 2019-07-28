@@ -169,13 +169,17 @@ export default class AppDashboard extends Component<Props, State> {
         rows.push([])
       }
       rows[rows.length-1].push(
-        <ProjectItem key={id} name={projects[id].name}
+        <ProjectItem key={id} 
+          id={id}
+          name={projects[id].name}
+          path={projects[id].path}
           description={projects[id].description.split('\n')[0]}
           selected={this.state.selected != null && this.state.selected.id === id}
           onClick={()=>this.setState({selected: projects[id]})}
           onConfig={()=>this.setState({editing: true})}
           onEdit={()=>this.props.onChangeCurrentProject(id)}
           onDelete={()=>this.handleDeleteProject(id)}
+          getProjectPath={id=>this.props.modelService.getProjectPath(id)}
         />
       )
       count++

@@ -168,6 +168,21 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
     })
   })
 
+  ipcMain.on('get-project-path', (event, id) => {
+    Workspace.Load(path.join(home, 'workspace.yml'))
+      .then(workspace => {
+        let metadata = workspace.projects.find(meta => meta.id == id)
+        if (metadata) {
+          event.sender.send('get-project-path-result', { code: 200, data: metadata.path })
+        } else {
+          event.sender.send('get-project-path-result', { code: 500, message: 'Can\'t find project folder' })
+        }
+      })
+      .catch(err => {
+        event.sender.send('get-project-path-result', { code: 500, message: err.message })
+      })
+  })
+
   ipcMain.on('save-project', (event, project) => {
     Workspace.Load(path.join(home, 'workspace.yml'))
       .then(workspace => {

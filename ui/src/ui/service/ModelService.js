@@ -51,5 +51,9 @@ export default class ModelService {
     return proxy.deleteProject(id)
   }
 
+  getProjectPath(id :ID) :Promise<string> {
+    return proxy.getProjectPath(id)
+  }
+
 }
 

@@ -52,6 +52,10 @@ class Proxy {
 		return ipc('import-project')
 	}
 
+  getProjectPath(id) {
+    return ipc('get-project-path', id)
+  }
+
   saveProject(project) {
     return ipc('save-project', project)
   }
