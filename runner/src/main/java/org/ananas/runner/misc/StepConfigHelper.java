@@ -3,6 +3,14 @@ package org.ananas.runner.misc;
 import java.util.Map;
 
 public class StepConfigHelper {
+
+  public static <T> T getGenericsConfig(Map<String, T> config, String name, T defaultValue) {
+    if (config.containsKey(name) && config.get(name) != null) {
+      return config.get(name);
+    }
+    return defaultValue;
+  }
+
   public static String getConfig(Map<String, Object> config, String name, String defaultValue) {
     if (config.containsKey(name) && config.get(name) != null) {
       Object v = config.get(name);

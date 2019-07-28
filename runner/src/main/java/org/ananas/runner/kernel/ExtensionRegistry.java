@@ -3,6 +3,8 @@ package org.ananas.runner.kernel;
 import org.ananas.runner.kernel.build.StepBuilder;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.legacy.steps.api.APIConnector;
+import org.ananas.runner.legacy.steps.api.APIPaginator;
 import org.ananas.runner.paginator.BigqueryPaginator;
 import org.ananas.runner.paginator.files.CSVPaginator;
 import org.ananas.runner.paginator.files.GCSPaginator;
@@ -60,6 +62,8 @@ public class ExtensionRegistry {
         "org.ananas.source.jdbc.mysql", JdbcConnector.class, JdbcPaginator.class);
     ExtensionRegistry.registerConnector(
         "org.ananas.source.jdbc.postgres", JdbcConnector.class, JdbcPaginator.class);
+    ExtensionRegistry.registerConnector(
+            "org.ananas.source.api.json", APIConnector.class, APIPaginator.class);
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
 

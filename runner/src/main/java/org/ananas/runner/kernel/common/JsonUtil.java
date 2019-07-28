@@ -10,19 +10,23 @@ import org.ananas.runner.api.ApiResponse;
 
 public class JsonUtil {
 
-  public static String toJson(Object object) {
+  public static String toJson(Object object, boolean indentOutput) {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JodaModule());
     objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     objectMapper.configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, true);
-    objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    objectMapper.configure(SerializationFeature.INDENT_OUTPUT, indentOutput);
     objectMapper.configure(
-        com.fasterxml.jackson.core.JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+            com.fasterxml.jackson.core.JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
     try {
-      return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+      return indentOutput ? objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object) : objectMapper.writeValueAsString(object);
     } catch (IOException e) {
       return e.getMessage();
     }
+  }
+
+  public static String toJson(Object object) {
+    return toJson(object, true);
   }
 
   public static <T> T fromJson(String in, Class<T> type) throws IOException {

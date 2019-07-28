@@ -19,7 +19,7 @@ public class TextConnector extends AbstractStepRunner implements StepRunner, Ser
   public TextConnector(
       String stepId, String url, Pipeline pipeline, boolean doSampling, boolean isTest) {
     super(StepType.Connector);
-    final Schema schema = Schema.builder().addField("text", Schema.FieldType.STRING).build();
+    final Schema schema = Schema.builder().addStringField("text").build();
     this.stepId = stepId;
     PCollection<String> p =
         pipeline.apply(isTest ? TruncatedTextIO.read().from(url) : TextIO.read().from(url));

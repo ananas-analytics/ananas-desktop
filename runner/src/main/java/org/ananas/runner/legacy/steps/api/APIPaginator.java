@@ -1,16 +1,16 @@
 package org.ananas.runner.legacy.steps.api;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
+import com.jayway.jsonpath.JsonPath;
 import org.ananas.runner.kernel.common.JsonStringBasedFlattenerReader;
+import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
-import org.ananas.runner.kernel.paginate.AbstractPaginator;
-import org.ananas.runner.kernel.paginate.Paginator;
+import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.schema.JsonAutodetect;
 import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
 import org.ananas.runner.misc.HttpClient;
@@ -19,70 +19,99 @@ import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
 import spark.utils.IOUtils;
 
-public class APIPaginator extends AbstractPaginator implements Paginator {
-  String id;
-  APIStepConfig config;
+public class APIPaginator extends AutoDetectedSchemaPaginator {
 
-  public APIPaginator(String id, APIStepConfig config) {
-    super(id, null);
-    this.id = id;
-    this.config = config;
+
+  private APIStepConfig APIConfig;
+  protected ErrorHandler errors;
+  protected String payload;
+
+  public APIPaginator(String id, String type, Map<String, Object> config, Schema schema) {
+    super(id, type, config, schema);
+    this.errors = new ErrorHandler();
+  }
+
+    @Override
+    public void parseConfig(Map<String, Object> config) {
+      this.APIConfig = new APIStepConfig(config);
+    }
+
+
+    @Override
+    public Schema autodetect() {
+      String json = "";
+      try {
+        json = handle();
+      } catch (Exception e) {
+        throw new AnanasException(
+                MutablePair.of(ExceptionHandler.ErrorCode.CONNECTION, e.getMessage()));
+      }
+      if (isJson()) {
+        Object result = JsonPath.parse(json).read( APIConfig.jsonPath);
+        this.payload = JsonUtil.toJson(result, false);
+        return JsonAutodetect.autodetectJson(this.payload, false);
+      } else {
+        this.payload = json;
+        return Schema.builder().addStringField("TEXT").build();
+      }
+    }
+
+
+  private boolean isJson() {
+    return "json".equals(APIConfig.format);
   }
 
   @Override
   public Iterable<Row> iterateRows(Integer page, Integer pageSize) {
-    MutablePair<Schema, Iterable<Row>> rows;
-    try {
-      rows = handle(this.config);
-    } catch (IOException e) {
-      throw new AnanasException(
-          MutablePair.of(ExceptionHandler.ErrorCode.CONNECTION, e.getMessage()));
+    if (isJson()) {
+      JsonStringBasedFlattenerReader jsonReader =
+              new JsonStringBasedFlattenerReader(SchemaBasedRowConverter.of(schema), new ErrorHandler());
+      return Arrays.asList(this.payload.split(this.APIConfig.delimiter)).stream().map(
+              line -> jsonReader.document2BeamRow(line)).collect(Collectors.toList());
+    } else {
+      return Arrays.asList(this.payload.split(this.APIConfig.delimiter)).stream().map(
+              line -> Row.withSchema(this.schema).addValues(line).build()).collect(Collectors.toList());
     }
-    this.schema = rows.getLeft();
-    return StreamSupport.stream(rows.getRight().spliterator(), false).collect(Collectors.toList());
   }
 
-  public static MutablePair<Schema, Iterable<Row>> handle(APIStepConfig config) throws IOException {
+  private String handle() throws IOException {
 
-    switch (config.method.toUpperCase()) {
+    Map<String, String> headers = new HashMap<>();
+
+    if (isJson()) {
+      headers.put("Content-Type", "application/json");
+    }
+    switch (APIConfig.method.toUpperCase()) {
       case "GET":
         return HttpClient.GET(
-            config.url,
-            config.headers,
+                APIConfig.url,
+                headers,
             conn -> {
-              String response = IOUtils.toString(conn.getInputStream());
-              return convert(response);
+              return IOUtils.toString(conn.getInputStream());
             });
       case "POST":
         return HttpClient.POST(
-            config.url,
-            config.headers,
-            config.body,
+                APIConfig.url,
+                headers,
+                APIConfig.body,
             conn -> {
-              String response = IOUtils.toString(conn.getInputStream());
-              return convert(response);
+              return IOUtils.toString(conn.getInputStream());
             });
       case "PUT":
         return HttpClient.PUT(
-            config.url,
-            config.headers,
-            config.body,
+                APIConfig.url,
+                headers,
+                APIConfig.body,
             conn -> {
-              String response = IOUtils.toString(conn.getInputStream());
-              return convert(response);
+              return IOUtils.toString(conn.getInputStream());
             });
       default:
-        throw new IllegalStateException("Unsupported HTTP method '" + config.method + "'");
+        throw new IllegalStateException("Unsupported HTTP method '" + APIConfig.method + "'");
     }
   }
 
-  public static MutablePair<Schema, Iterable<Row>> convert(String json) {
-    Schema schema = JsonAutodetect.autodetectJson(json, false);
 
-    JsonStringBasedFlattenerReader jsonReader =
-        new JsonStringBasedFlattenerReader(SchemaBasedRowConverter.of(schema), new ErrorHandler());
 
-    List<Row> rows = Arrays.asList(jsonReader.document2BeamRow(json));
-    return MutablePair.of(schema, rows);
-  }
+
+
 }

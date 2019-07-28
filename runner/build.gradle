@@ -39,6 +39,7 @@ repositories {
 dependencies {
     def withoutX = { exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core:2.9.5' }
 
+    compile 'com.jayway.jsonpath:json-path:2.4.0'
 	compile 'org.freemarker:freemarker:2.3.28'
     compile 'org.apache.beam:beam-sdks-java-io-tika:2.13.0'
     compile 'org.apache.beam:beam-sdks-java-io-kafka:2.13.0'

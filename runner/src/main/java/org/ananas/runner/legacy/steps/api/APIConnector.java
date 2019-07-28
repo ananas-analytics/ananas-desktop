@@ -7,7 +7,9 @@ import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
+import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
+import org.ananas.runner.kernel.paginate.Paginator;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.Create;
@@ -19,15 +21,16 @@ public class APIConnector extends AbstractStepRunner implements StepRunner, Seri
 
   private static final long serialVersionUID = 3622276763366208866L;
 
-  public APIConnector(String stepId, Pipeline pipeline, APIStepConfig config) {
+  public APIConnector(Pipeline pipeline, Step step, boolean doSampling, boolean isTest) {
     super(StepType.Connector);
     this.stepId = stepId;
     this.errors = new ErrorHandler();
 
     MutablePair<Schema, Iterable<Row>> r = null;
     try {
-      r = APIPaginator.handle(config);
-    } catch (IOException e) {
+      APIPaginator paginator = new APIPaginator(stepId, null, step.config, null);
+      r = paginator.paginateRows(0, Integer.MAX_VALUE);
+    } catch (Exception e) {
       throw new AnanasException(
           ExceptionHandler.ErrorCode.CONNECTION,
           "A technical error occurred when connecting to your API. Please verify your parameters");
