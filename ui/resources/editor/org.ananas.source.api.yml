@@ -1,5 +1,5 @@
 ---
-id: org.ananas.source.api.json
+id: org.ananas.source.api
 layout:
   key: root
   props:
@@ -38,6 +38,7 @@ layout:
           - jsonpath
           - body
           - format
+          - lineDelimiter
     - key: update-container
       props:
         boder:
@@ -82,7 +83,7 @@ components:
       label: API URL
   body:
     bind: body
-    type: TextInput
+    type: TextArea
     default: ''
     props:
       label: HTTP Body
@@ -97,6 +98,7 @@ components:
     type: SelectInput 
     props:
       label: Content-type
+      default: text
       options:
         - label: json
           value: json
@@ -114,6 +116,21 @@ components:
           value: post 
         - label: PUT
           value: put      
+  lineDelimiter:
+    bind: lineDelimiter
+    type: SelectInput
+    props:
+      label: Line Separator (for Text only)
+      default: \n
+      options:
+        - label: \n 
+          value: \n
+        - label: \r\n 
+          value: \r\n 
+        - label: | 
+          value: "|"
+        - label: Tab
+          value: "\t"
   description:
     bind: __description__
     type: TextArea

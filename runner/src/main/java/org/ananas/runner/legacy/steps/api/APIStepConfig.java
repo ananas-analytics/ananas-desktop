@@ -22,7 +22,7 @@ public class APIStepConfig {
     this.jsonPath = (String)config.getOrDefault(StepConfig.API_JSONPATH, "");
     this.method = (String) config.get(StepConfig.API_METHOD);
     this.format = (String) config.get(StepConfig.API_FORMAT);
-    this.delimiter = (String) config.getOrDefault(StepConfig.API_DELIM, '\n');
+    this.delimiter = (String) config.getOrDefault(StepConfig.API_DELIM, "\n");
     Preconditions.checkNotNull(this.url, StepConfig.API_URL);
     Preconditions.checkNotNull(this.method, StepConfig.API_METHOD);
   }

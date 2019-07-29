@@ -1,9 +1,9 @@
 ---
 # file type source
-org.ananas.source.api.json:
-  id: org.ananas.source.api.json
+org.ananas.source.api:
+  id: org.ananas.source.api
   name: API JSON Source
-  description: Connect data from an API in JSON format
+  description: Connect data from an API
   type: Source
   icon: images/csv.svg
   step: 

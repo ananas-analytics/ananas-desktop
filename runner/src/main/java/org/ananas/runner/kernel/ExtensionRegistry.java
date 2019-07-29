@@ -63,7 +63,7 @@ public class ExtensionRegistry {
     ExtensionRegistry.registerConnector(
         "org.ananas.source.jdbc.postgres", JdbcConnector.class, JdbcPaginator.class);
     ExtensionRegistry.registerConnector(
-            "org.ananas.source.api.json", APIConnector.class, APIPaginator.class);
+            "org.ananas.source.api", APIConnector.class, APIPaginator.class);
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
 

@@ -60,7 +60,7 @@ public class StepConfig {
   public static final String API_HEADERS = "headers";
   public static final String API_URL = "url";
   public static final String API_JSONPATH = "jsonpath";
-  public static final Object API_DELIM = "delimiter";
+  public static final Object API_DELIM = "lineDelimiter";
 
   // VALUES
   public static final String TYPE_TRANSFORMER = "transformer";
