@@ -127,8 +127,6 @@ components:
           value: \n
         - label: \r\n 
           value: \r\n 
-        - label: | 
-          value: "|"
         - label: Tab
           value: "\t"
   description:
