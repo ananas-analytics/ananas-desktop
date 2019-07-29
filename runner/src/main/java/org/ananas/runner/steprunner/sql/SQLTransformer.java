@@ -28,10 +28,6 @@ public class SQLTransformer extends TransformerStepRunner {
             .apply(
                 "sql transform",
                 SqlTransform.query(statement)
-                    .registerUdf("falseIfNull", new NullableBooleanFn())
-                    .registerUdf("zeroIfNull", new NullableBigDecimalFn())
-                    .registerUdf("zeroIfNull", new NullableIntegerFn())
-                    .registerUdf("emptyIfNull", new NullableStringFn())
-                    .registerUdf("hash", new HashFn()));
+                    .registerUdf("HASH", new HashFn()));
   }
 }
