@@ -1,4 +1,4 @@
-package org.ananas.runner.legacy.steps.api;
+package org.ananas.runner.steprunner.api;
 
 import java.util.HashMap;
 import java.util.Map;
