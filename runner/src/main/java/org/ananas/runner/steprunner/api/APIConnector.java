@@ -2,12 +2,15 @@ package org.ananas.runner.steprunner.api;
 
 import java.io.Serializable;
 import org.ananas.runner.kernel.AbstractStepRunner;
+import org.ananas.runner.kernel.ConnectorStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
+import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.kernel.paginate.PaginatorFactory;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.Create;
@@ -15,13 +18,15 @@ import org.apache.beam.sdk.values.PBegin;
 import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-public class APIConnector extends AbstractStepRunner implements StepRunner, Serializable {
+public class APIConnector extends ConnectorStepRunner {
 
   private static final long serialVersionUID = 3622276763366208866L;
 
   public APIConnector(Pipeline pipeline, Step step, boolean doSampling, boolean isTest) {
-    super(StepType.Connector);
-    this.stepId = stepId;
+    super(pipeline, step, doSampling, isTest);
+  }
+
+  public void build() {
     this.errors = new ErrorHandler();
 
     MutablePair<Schema, Iterable<Row>> r = null;
@@ -33,8 +38,15 @@ public class APIConnector extends AbstractStepRunner implements StepRunner, Seri
           ExceptionHandler.ErrorCode.CONNECTION,
           "A technical error occurred when connecting to your API. Please verify your parameters");
     }
+
+    Schema schema = step.getBeamSchema();
+    if (schema == null || step.forceAutoDetectSchema()) {
+      // find the paginator bind to it
+      schema = r.getLeft();
+    }
+
     Create.Values<org.apache.beam.sdk.values.Row> pCollections = Create.of(r.getRight());
     this.output = PBegin.in(pipeline).apply(pCollections);
-    this.output.setRowSchema(r.getLeft());
+    this.output.setRowSchema(schema);
   }
 }
