@@ -87,13 +87,30 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
   })
 
   ipcMain.on('load-projects', (event) => {
+    let wkp = null
     Workspace.Load(path.join(home, 'workspace.yml'))
       .then(workspace => {
+        wkp = workspace
         return workspace.loadProjects(metadata)
       })
       .then(projects => {
+        if (wkp != null && wkp.projects != null) {
+          let n = wkp.projects.length
+          wkp.projects = wkp.projects.filter(meta => {
+            if (projects.find(v => v.toPlainObject().id === meta.id)) {
+              return true
+            } else {
+              return false
+            }
+          })
+          if (wkp.projects.length !== n) {
+            wkp.save()
+          }
+        }
         log.debug('load projects', projects)
-        let plainProjects = projects.map(project => project.toPlainObject())
+        let plainProjects = projects
+          .filter(project => project.valid)
+          .map(project => project.toPlainObject())
         event.sender.send('load-projects-result', { code: 200, data: plainProjects })
       })
       .catch(err => {
@@ -149,6 +166,21 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
           event.sender.send('import-project-result', { code: 500, message: err.message })
         })
     })
+  })
+
+  ipcMain.on('get-project-path', (event, id) => {
+    Workspace.Load(path.join(home, 'workspace.yml'))
+      .then(workspace => {
+        let metadata = workspace.projects.find(meta => meta.id == id)
+        if (metadata) {
+          event.sender.send('get-project-path-result', { code: 200, data: metadata.path })
+        } else {
+          event.sender.send('get-project-path-result', { code: 500, message: 'Can\'t find project folder' })
+        }
+      })
+      .catch(err => {
+        event.sender.send('get-project-path-result', { code: 500, message: err.message })
+      })
   })
 
   ipcMain.on('save-project', (event, project) => {
