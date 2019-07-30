@@ -221,10 +221,11 @@ export default class BasicChartView extends PureComponent<Props, State> {
     dataframe.schema.fields.map((field, index) => {
       if (field.name.toUpperCase() === selectedDimension) {
         dimension = { name: field.name.toUpperCase(), type: field.type, index }
-      }
-      let measureIndex = configMeasures.indexOf(field.name.toUpperCase())
-      if (configMeasures && measureIndex >= 0) {
-        measures.push({ name: field.name.toUpperCase(), type: field.type, index: measureIndex })
+      } else {
+        let measureIndex = configMeasures.indexOf(field.name.toUpperCase())
+        if (configMeasures && measureIndex >= 0) {
+          measures.push({ name: field.name.toUpperCase(), type: field.type, index })
+        }
       }
     })
 
@@ -235,7 +236,6 @@ export default class BasicChartView extends PureComponent<Props, State> {
         data: [],
       }
     }
-
 
     let header = [dimension.name, ... measures.map(m => m.name)]
 
@@ -269,12 +269,16 @@ export default class BasicChartView extends PureComponent<Props, State> {
     }
 
     if (this.props.type === 'bar') {
+      let barChartType = 'ColumnChart'
+      if (config.horizontal) {
+        barChartType = 'BarChart'
+      }
       return (<Box margin={{bottom: 'large'}}  fill>
         <ReactResizeDetector handleWidth handleHeight>
           {(width, height) => <Chart 
             width={width}
             height={'100%'}
-            chartType='ColumnChart'
+            chartType={barChartType}
             loader={<div>Loading Chart</div>}
             data={data}
             options={{
@@ -288,6 +292,7 @@ export default class BasicChartView extends PureComponent<Props, State> {
               vAxis: {
                 title: config.ylabel || 'Y',
               },
+              isStacked: config.stack,
             }}
             rootProps={{ 'data-testid': '2' }}
           />}

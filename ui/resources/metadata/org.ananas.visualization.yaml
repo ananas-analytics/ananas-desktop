@@ -23,6 +23,8 @@ org.ananas.visualization.barchart:
     type: viewer
     config: 
       subtype: bar chart
+      stack: false
+      horizontal: false
   options: 
     maxIncoming: 1
     maxOutgoing: 0
