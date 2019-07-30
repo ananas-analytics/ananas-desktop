@@ -38,6 +38,8 @@ layout:
           - chart-title
           - x-axis-label
           - y-axis-label
+          - stack
+          - horizontal
         - key: advanced-editor
           collapsible: true
           props:
@@ -153,6 +155,18 @@ components:
     default: y
     props:
       label: Y Axis Label
+  stack:
+    bind: stack
+    type: CheckBox
+    default: false
+    props:
+      label: Stacked Bar Chart?
+  horizontal:
+    bind: horizontal
+    type: CheckBox
+    default: false
+    props:
+      label: Horizontal Bar Chart?
   description:
     bind: __description__
     type: TextArea
