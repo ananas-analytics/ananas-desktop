@@ -16,6 +16,7 @@ import TextArea from './TextArea'
 import TextInput from './TextInput'
 import SelectInput from './SelectInput'
 import SimpleDataExplorer from './SimpleDataExplorer'
+import StringMap from './StringMap'
 import PlaceHolder from './PlaceHolder'
 import VariablePicker from './VariablePicker'
 
@@ -36,6 +37,7 @@ export default {
   MultipleFieldsSelector,
   SelectInput,
   SimpleDataExplorer,
+  StringMap,
   TextArea,
   TextInput,
   PlaceHolder,
