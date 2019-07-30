@@ -1,0 +1,71 @@
+dag:
+  connections: []
+id: 5d31c70384b5674b6a220288
+name: bitcoin
+steps:
+  5d409da52c03930c36c3fdb9:
+    config:
+      body: ""
+      forceAutoDetectSchema: true
+      format: json
+      jsonpath: $
+      method: get
+      subtype: api
+      url: https://api.coindesk.com/v1/bpi/currentprice.json
+    dataframe:
+      data: []
+      id: 5d409da52c03930c36c3fdb9
+      schema:
+        fields:
+          - name: bpi.EUR.rate_float
+            type: DECIMAL
+          - name: bpi.USD.rate_float
+            type: DECIMAL
+          - name: bpi.GBP.rate
+            type: VARCHAR
+          - name: bpi.USD.code
+            type: VARCHAR
+          - name: bpi.GBP.symbol
+            type: VARCHAR
+          - name: bpi.EUR.code
+            type: VARCHAR
+          - name: time.updateduk
+            type: VARCHAR
+          - name: bpi.USD.rate
+            type: VARCHAR
+          - name: bpi.EUR.description
+            type: VARCHAR
+          - name: time.updated
+            type: VARCHAR
+          - name: time.updatedISO
+            type: VARCHAR
+          - name: chartName
+            type: VARCHAR
+          - name: bpi.GBP.rate_float
+            type: DECIMAL
+          - name: bpi.EUR.rate
+            type: VARCHAR
+          - name: bpi.GBP.description
+            type: VARCHAR
+          - name: bpi.USD.symbol
+            type: VARCHAR
+          - name: bpi.EUR.symbol
+            type: VARCHAR
+          - name: bpi.GBP.code
+            type: VARCHAR
+          - name: disclaimer
+            type: VARCHAR
+          - name: bpi.USD.description
+            type: VARCHAR
+    description: Connect data from an API
+    id: 5d409da52c03930c36c3fdb9
+    metadataId: org.ananas.source.api
+    name: BPI real-time data
+    type: connector
+triggers: []
+variables:
+  - name: ability
+    description: |
+      Player's ability, must be one of the number type column name. 
+    scope: project
+    type: string
