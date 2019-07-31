@@ -1,16 +1,10 @@
 package org.ananas.runner.steprunner.api;
 
-import java.io.Serializable;
-import org.ananas.runner.kernel.AbstractStepRunner;
 import org.ananas.runner.kernel.ConnectorStepRunner;
-import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.Create;
