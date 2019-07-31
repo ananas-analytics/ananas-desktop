@@ -100,7 +100,6 @@ public class APIPaginator extends AutoDetectedSchemaPaginator {
       APIConfig.headers.put("Content-Type", "application/json");
     }
 
-    System.out.println("headers" + APIConfig.headers.entrySet());
     switch (APIConfig.method.toUpperCase()) {
       case "GET":
         return HttpClient.GET(
