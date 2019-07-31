@@ -5,7 +5,7 @@ org.ananas.source.api:
   name: API JSON Source
   description: Connect data from an API
   type: Source
-  icon: images/csv.svg
+  icon: images/api.svg
   step: 
     type: connector
     config: 

@@ -95,23 +95,24 @@ public class APIPaginator extends AutoDetectedSchemaPaginator {
 
   private String handle() throws IOException {
 
-    Map<String, String> headers = new HashMap<>();
 
     if (isJson()) {
-      headers.put("Content-Type", "application/json");
+      APIConfig.headers.put("Content-Type", "application/json");
     }
+
+    System.out.println("headers" + APIConfig.headers.entrySet());
     switch (APIConfig.method.toUpperCase()) {
       case "GET":
         return HttpClient.GET(
                 APIConfig.url,
-                headers,
+                APIConfig.headers,
             conn -> {
               return IOUtils.toString(conn.getInputStream());
             });
       case "POST":
         return HttpClient.POST(
                 APIConfig.url,
-                headers,
+                APIConfig.headers,
                 APIConfig.body,
             conn -> {
               return IOUtils.toString(conn.getInputStream());
@@ -119,7 +120,7 @@ public class APIPaginator extends AutoDetectedSchemaPaginator {
       case "PUT":
         return HttpClient.PUT(
                 APIConfig.url,
-                headers,
+                APIConfig.headers,
                 APIConfig.body,
             conn -> {
               return IOUtils.toString(conn.getInputStream());
