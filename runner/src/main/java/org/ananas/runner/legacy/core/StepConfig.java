@@ -55,9 +55,12 @@ public class StepConfig {
 
   // API
   public static final String API_METHOD = "method";
+  public static final String API_FORMAT = "format";
   public static final String API_BODY = "body";
   public static final String API_HEADERS = "headers";
   public static final String API_URL = "url";
+  public static final String API_JSONPATH = "jsonpath";
+  public static final Object API_DELIM = "lineDelimiter";
 
   // VALUES
   public static final String TYPE_TRANSFORMER = "transformer";
@@ -86,4 +89,5 @@ public class StepConfig {
   public static final String TEST_ID = "testId";
   public static final String ML_K = "knn";
   public static final String ML_FT = "ft";
+
 }

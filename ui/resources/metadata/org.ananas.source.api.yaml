@@ -1,0 +1,16 @@
+---
+# file type source
+org.ananas.source.api:
+  id: org.ananas.source.api
+  name: API JSON Source
+  description: Connect data from an API
+  type: Source
+  icon: images/csv.svg
+  step: 
+    type: connector
+    config: 
+      subtype: api
+      forceAutoDetectSchema: true
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
