@@ -16,7 +16,7 @@ type Props = {
   context: NodeEditorContext,
   ee: EventEmitter3,
 
-  type: 'bar' | 'line',
+  type: 'bar' | 'line' | 'pie',
 
   value: PlainDataframe,
 
@@ -294,11 +294,11 @@ export default class BasicChartView extends PureComponent<Props, State> {
               },
               isStacked: config.stack,
             }}
-            rootProps={{ 'data-testid': '2' }}
+            rootProps={{ 'data-testid': '1' }}
           />}
         </ReactResizeDetector>
       </Box>)
-    } else {
+    } else if (this.props.type === 'line' ){
       return (<Box margin={{bottom: 'large'}}  fill>
         <ReactResizeDetector handleWidth handleHeight>
           {(width, height) => <Chart
@@ -323,6 +323,28 @@ export default class BasicChartView extends PureComponent<Props, State> {
           />}
         </ReactResizeDetector>
       </Box>)
+    } else if (this.props.type === 'pie') {
+      return (<Box margin={{bottom: 'large'}}  fill>
+        <ReactResizeDetector handleWidth handleHeight>
+          {(width, height) => <Chart
+            width={width}
+            height={'100%'}
+            chartType='PieChart'
+            loader={<div>Loading Chart</div>}
+            data={data}
+            options={{
+              title: config.title || '',
+              chart: {
+                title: config.title || '',
+              },
+              is3D: config.is3D,
+              pieHole: config.donut ? 0.4 : 0,
+            }}
+            rootProps={{ 'data-testid': '3' }}
+          />}
+        </ReactResizeDetector>
+      </Box>)
+
     }
     
   }
