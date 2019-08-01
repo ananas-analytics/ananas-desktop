@@ -289,7 +289,8 @@ function checkUpdateWrapper(notifyUpdated ?:boolean) {
         log.info(`a new version ${version.version} is ready to download: ${version.downloadPage}`)
         dialog.showMessageBox({
           title: 'Update',
-          message: `A new version ${version.version} is ready for you to download. See: ${version.downloadPage}`
+          message: `A new version ${version.version} is ready for you to download. See: ${version.downloadPage}`,
+          buttons: ['OK'],
         })
         shell.openExternal(version.downloadPage)
       } else {
@@ -297,7 +298,8 @@ function checkUpdateWrapper(notifyUpdated ?:boolean) {
         if (notifyUpdated) {
           dialog.showMessageBox({
             title: 'Update',
-            message: 'You are running the latest version.'
+            message: 'You are running the latest version.',
+            buttons: ['OK'],
           })
         }
       }
