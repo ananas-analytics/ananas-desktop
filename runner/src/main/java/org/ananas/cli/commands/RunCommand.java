@@ -92,7 +92,8 @@ public class RunCommand implements Callable<Integer> {
       while (true) {
         Job job = runner.getJob(jobId);
         if (job == null) {
-          System.err.printf("Can't find job %s", jobId);
+          // System.err.printf("Can't find job %s", jobId);
+          errMessage = "Can't find job " + jobId;
           break;
         } else {
           state = job.getResult().getLeft().toString();
@@ -100,14 +101,12 @@ public class RunCommand implements Callable<Integer> {
             errMessage = job.getResult().getRight().getLocalizedMessage();
           }
 
-          if (errMessage == null) {
-            System.out.printf("Job state %s\n", state);
-          } else {
-            System.out.printf("Job state %s, with error: %s\n", state, errMessage);
+          if (errMessage != null) {
             break;
           }
 
-          if (state != null && (state.equals("DONE") || state.equals("FAILED"))) {
+          if (state != null && (state.equalsIgnoreCase("DONE") ||
+            state.equalsIgnoreCase("FAILED"))) {
             break;
           }
         }
