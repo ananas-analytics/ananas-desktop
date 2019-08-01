@@ -344,7 +344,8 @@ export default class BasicChartView extends PureComponent<Props, State> {
           />}
         </ReactResizeDetector>
       </Box>)
-
+    } else {
+      return null
     }
     
   }
