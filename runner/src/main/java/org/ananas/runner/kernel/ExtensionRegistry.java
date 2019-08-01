@@ -79,6 +79,7 @@ public class ExtensionRegistry {
         "org.ananas.destination.gcp.bigquery", BigQueryLoader.class, BigqueryPaginator.class);
 
     ExtensionRegistry.registerViewer("org.ananas.visualization.barchart", DefaultDataViewer.class);
+    ExtensionRegistry.registerViewer("org.ananas.visualization.piechart", DefaultDataViewer.class);
     ExtensionRegistry.registerViewer("org.ananas.visualization.linechart", DefaultDataViewer.class);
     ExtensionRegistry.registerViewer("org.ananas.visualization.bignumber", DefaultDataViewer.class);
   }
