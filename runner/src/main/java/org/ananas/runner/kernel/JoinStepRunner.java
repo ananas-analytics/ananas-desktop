@@ -74,6 +74,11 @@ public class JoinStepRunner extends AbstractStepRunner {
       rightStep = one;
     }
     Map<String, String> columnsMap = (Map) step.config.get(JOIN_MAP);
+
+    if (columnsMap == null || columnsMap.size() == 0) {
+      throw new RuntimeException("Please specify the columns map for join (Join by columns). Don't forget to click the + button, and update.");
+    }
+
     String joinType =
         (String) step.config.getOrDefault(JOIN_TYPE, JoinStepRunner.JoinType.LEFT_JOIN.name);
     List<String> leftColumns = (List) step.config.get(JOIN_LEFT_COLUMNS);
