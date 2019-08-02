@@ -17,9 +17,11 @@ public class JsonUtil {
     objectMapper.configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, true);
     objectMapper.configure(SerializationFeature.INDENT_OUTPUT, indentOutput);
     objectMapper.configure(
-            com.fasterxml.jackson.core.JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+        com.fasterxml.jackson.core.JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
     try {
-      return indentOutput ? objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object) : objectMapper.writeValueAsString(object);
+      return indentOutput
+          ? objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object)
+          : objectMapper.writeValueAsString(object);
     } catch (IOException e) {
       return e.getMessage();
     }
