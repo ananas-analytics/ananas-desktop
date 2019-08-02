@@ -15,6 +15,7 @@ import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.cli.model.Profile;
 import org.ananas.runner.kernel.model.Dag;
 import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.runner.kernel.model.Engine;
 import org.ananas.runner.kernel.model.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,14 @@ public class DagRequestBuilder {
       Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).forEach(LOG::error);
     }
 
+    if (profileObj.engine == null) {
+      profileObj.engine = new Engine();
+      profileObj.engine.name = "Local Engine";
+      profileObj.engine.type = "flink";
+      profileObj.engine.properties = new HashMap<>();
+      profileObj.engine.properties.put("database_type", "derby");
+    }
+
     // construct dag request
     dagRequest.dag.connections = analyticsBoard.dag.connections;
     dagRequest.dag.steps = Sets.newHashSet(analyticsBoard.steps.values());
@@ -95,11 +104,9 @@ public class DagRequestBuilder {
 
   public static void injectRuntimeVariables(Map<String, Variable> variables, String projectPath) {
     variables.put(
-      "EXECUTE_TIME",
-      new Variable("EXECUTE_TIME", "date", "", "runtime", "" + System.currentTimeMillis()));
+        "EXECUTE_TIME",
+        new Variable("EXECUTE_TIME", "date", "", "runtime", "" + System.currentTimeMillis()));
     variables.put(
-      "PROJECT_PATH",
-      new Variable("PROJECT_PATH", "string", "", "runtime", projectPath));
-
+        "PROJECT_PATH", new Variable("PROJECT_PATH", "string", "", "runtime", projectPath));
   }
 }

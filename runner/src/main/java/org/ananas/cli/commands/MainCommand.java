@@ -18,6 +18,7 @@ import picocli.CommandLine.Option;
       ShowCommand.class,
       StartCommand.class,
       RunCommand.class,
+      ViewCommand.class,
       HelpCommand.class,
     })
 public class MainCommand implements Callable<Integer> {

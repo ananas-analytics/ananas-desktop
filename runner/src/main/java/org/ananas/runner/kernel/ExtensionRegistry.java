@@ -3,14 +3,14 @@ package org.ananas.runner.kernel;
 import org.ananas.runner.kernel.build.StepBuilder;
 import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.steprunner.api.APIConnector;
-import org.ananas.runner.steprunner.api.APIPaginator;
 import org.ananas.runner.paginator.BigqueryPaginator;
 import org.ananas.runner.paginator.files.CSVPaginator;
 import org.ananas.runner.paginator.files.GCSPaginator;
 import org.ananas.runner.paginator.files.JdbcPaginator;
 import org.ananas.runner.paginator.files.JsonPaginator;
 import org.ananas.runner.steprunner.DefaultDataViewer;
+import org.ananas.runner.steprunner.api.APIConnector;
+import org.ananas.runner.steprunner.api.APIPaginator;
 import org.ananas.runner.steprunner.files.FileLoader;
 import org.ananas.runner.steprunner.files.JsonConnector;
 import org.ananas.runner.steprunner.files.csv.CSVConnector;
@@ -63,7 +63,7 @@ public class ExtensionRegistry {
     ExtensionRegistry.registerConnector(
         "org.ananas.source.jdbc.postgres", JdbcConnector.class, JdbcPaginator.class);
     ExtensionRegistry.registerConnector(
-            "org.ananas.source.api", APIConnector.class, APIPaginator.class);
+        "org.ananas.source.api", APIConnector.class, APIPaginator.class);
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
 

@@ -78,6 +78,9 @@ task pack(type: Exec) {
 
 	environment "NODE_ENV", "${getAnanasEnv()}"
 
+    environment "CSC_LINK", "${getSystemProperty('CSC_LINK', '')}"
+    environment "CSC_KEY_PASSWORD", "${getSystemProperty('CSC_KEY_PASSWORD', '')}"
+
 	commandLine "./node_modules/.bin/electron-builder", "--${project.platform}"
 }
 

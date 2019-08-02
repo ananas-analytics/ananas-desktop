@@ -80,5 +80,4 @@ public class StepConfig {
   public static final String TEST_ID = "testId";
   public static final String ML_K = "knn";
   public static final String ML_FT = "ft";
-
 }

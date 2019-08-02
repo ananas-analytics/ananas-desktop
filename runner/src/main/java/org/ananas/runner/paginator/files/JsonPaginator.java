@@ -41,6 +41,4 @@ public class JsonPaginator extends AutoDetectedSchemaPaginator {
     return PageProcessor.readFile(
         this.url, page, pageSize, (e, i) -> this.reader.document2BeamRow(e));
   }
-
-
 }
