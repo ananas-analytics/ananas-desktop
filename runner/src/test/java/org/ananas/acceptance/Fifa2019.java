@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import org.ananas.acceptance.helper.AcceptanceForkJoinThreadFactory;
+import org.ananas.acceptance.helper.DataViewerHelper;
 import org.ananas.cli.Main;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -112,24 +113,45 @@ public class Fifa2019 {
   }
 
   @Test
-  public void testRun() {
+  public void testRunDataViewer() {
+    String stepId = "5d31d26784b5674b6a2202b8";
+
     exit.expectSystemExitWithStatus(0);
 
     exit.checkAssertionAfterwards(
         new Assertion() {
           public void checkAssertion() {
-            String output = systemOutRule.getLog();
+            String json = systemOutRule.getLog();
             // TODO: test stdout here
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
+
+            String jobId = JsonPath.read(json, "$.data.jobid");
+            Assert.assertNotNull(jobId);
+
+            // check data viewer job result
+            String result =
+                DataViewerHelper.getViewerJobDataWithDefaultDB(
+                    "SELECT * FROM PCOLLECTION", jobId, stepId);
+            int resultCode = JsonPath.read(result, "$.code");
+            Assert.assertEquals(200, resultCode);
+
+            List<Map<String, String>> fields = JsonPath.read(result, "$.data.schema.fields");
+            Assert.assertTrue(fields.size() > 0);
+
+            List<Object> data = JsonPath.read(result, "$.data.data");
+            Assert.assertTrue(data.size() > 0);
+
+            System.out.println(result);
           }
         });
 
-    // run command line with arguments
     ClassLoader classLoader = getClass().getClassLoader();
     URL project = classLoader.getResource("test_projects/Fifa2019");
 
     Main.main(
         new String[] {
-          "run", "-p", project.getPath(), "5d31cdb684b5674b6a220299",
+          "run", "-p", project.getPath(), stepId,
         });
   }
 }

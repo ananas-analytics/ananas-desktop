@@ -137,6 +137,8 @@ test {
         // events "PASSED", "STARTED", "FAILED", "SKIPPED"
         showStandardStreams = true
     }
+
+    systemProperties 'java.security.policy': file("$projectDir/src/test/resources/test.policy").absolutePath
 }
 
 [run].each { runTask ->
