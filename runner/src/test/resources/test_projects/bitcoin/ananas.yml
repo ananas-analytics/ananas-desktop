@@ -1,5 +1,9 @@
 dag:
-  connections: []
+  connections:
+    - source: 5d409da52c03930c36c3fdb9
+      target: 5d4557439c7a5441fdc67d3b
+    - source: 5d4557439c7a5441fdc67d3b
+      target: 5d4559249c7a5441fdc67d47
 id: 5d31c70384b5674b6a220288
 name: bitcoin
 steps:
@@ -10,6 +14,7 @@ steps:
       format: json
       headers: {}
       jsonpath: $
+      lineDelimiter: \n
       method: get
       subtype: api
       url: https://api.coindesk.com/v1/bpi/currentprice.json
@@ -63,10 +68,55 @@ steps:
     metadataId: org.ananas.source.api
     name: BPI real-time data
     type: connector
+  5d4557439c7a5441fdc67d3b:
+    config:
+      sql: |-
+        SELECT 
+        	`bpi.EUR.code` as `code`,
+          `bpi.EUR.rate_float` as `rate`,
+          `time.updatedISO` as `time`
+        FROM PCOLLECTION
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d4557439c7a5441fdc67d3b
+      schema:
+        fields:
+          - name: code
+            type: VARCHAR
+          - name: rate
+            type: DECIMAL
+          - name: time
+            type: VARCHAR
+    description: Transform your data with SQL
+    id: 5d4557439c7a5441fdc67d3b
+    metadataId: org.ananas.transform.sql
+    name: SQL
+    type: transformer
+  5d4559249c7a5441fdc67d47:
+    config:
+      color: "#417505"
+      fields:
+        - rate
+      size: 52px
+      sql: SELECT * FROM PCOLLECTION
+      subtype: big number
+      title: Euro Rate
+    dataframe:
+      data: []
+      id: 5d4559249c7a5441fdc67d47
+      schema:
+        fields:
+          - name: CODE
+            type: VARCHAR
+          - name: RATE
+            type: DECIMAL
+          - name: TIME
+            type: VARCHAR
+    description: Visualize a single number
+    id: 5d4559249c7a5441fdc67d47
+    metadataId: org.ananas.visualization.bignumber
+    name: Big Number
+    type: viewer
 triggers: []
-variables:
-  - name: ability
-    description: |
-      Player's ability, must be one of the number type column name. 
-    scope: project
-    type: string
+variables: []
