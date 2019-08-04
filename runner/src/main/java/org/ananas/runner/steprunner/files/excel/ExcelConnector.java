@@ -41,7 +41,7 @@ public class ExcelConnector extends ConnectorStepRunner {
     }
 
     Create.Values<org.apache.beam.sdk.values.Row> pCollections;
-    if (r.getRight().iterator().hasNext()) {
+    if (!r.getRight().iterator().hasNext()) {
       pCollections = Create.empty(schema);
     } else {
       pCollections = Create.of(r.getRight());
