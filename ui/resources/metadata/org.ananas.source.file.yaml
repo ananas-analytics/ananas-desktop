@@ -68,3 +68,21 @@ org.ananas.source.file.gcs:
     maxIncoming: 0
     maxOutgoing: -1
 
+
+org.ananas.source.file.excel:
+  id: org.ananas.source.file.excel
+  name: Excel
+  description: Read Excel file 
+  type: Source
+  icon: images/excel.svg
+  step:
+    type: connector
+    config:
+      subtype: file
+      format: excel
+      forceAutoDetectSchema: true
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
+
+

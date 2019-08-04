@@ -525,6 +525,22 @@ steps:
     metadataId: org.ananas.destination.file.csv
     name: Top 5 player with X ability
     type: loader
+  5d4621fc3cac3c7b79a63694:
+    config:
+      forceAutoDetectSchema: true
+      format: excel
+      path: ${PROJECT_PATH}/fifaranking2019.xlsx
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d4621fc3cac3c7b79a63694
+      schema:
+        fields: []
+    description: Read Excel file
+    id: 5d4621fc3cac3c7b79a63694
+    metadataId: org.ananas.source.file.excel
+    name: Excel FIFA Ranking
+    type: connector
 triggers: []
 variables:
   - name: ability

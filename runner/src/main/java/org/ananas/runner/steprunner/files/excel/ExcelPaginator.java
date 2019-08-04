@@ -1,13 +1,13 @@
-package org.ananas.runner.legacy.steps.files;
+package org.ananas.runner.steprunner.files.excel;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
-import org.ananas.runner.kernel.paginate.AbstractPaginator;
-import org.ananas.runner.kernel.paginate.Paginator;
+import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -15,16 +15,33 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.utils.StringUtils;
 
-public class ExcelPaginator extends AbstractPaginator implements Paginator {
+public class ExcelPaginator extends AutoDetectedSchemaPaginator {
 
-  ExcelStepConfig excelConfig;
+  private static final Logger LOG = LoggerFactory.getLogger(ExcelPaginator.class);
 
-  public ExcelPaginator(String id, ExcelStepConfig excelConfig) {
-    super(id, null);
-    this.excelConfig = excelConfig;
+  protected ExcelStepConfig excelConfig;
+  protected ErrorHandler errors;
+
+  public ExcelPaginator(String id, String type, Map<String, Object> config, Schema schema) {
+    super(id, type, config, schema);
+    this.errors = new ErrorHandler();
   }
+
+  @Override
+  public void parseConfig(Map<String, Object> config) {
+    this.excelConfig = new ExcelStepConfig(config);
+  }
+
+
+  @Override
+  public Schema autodetect() {
+    return null;//saving some IO here. Excel Schema is built while iterating rows.
+  }
+
 
   @Override
   public Iterable<Row> iterateRows(Integer page, Integer pageSize) {
@@ -55,7 +72,7 @@ public class ExcelPaginator extends AbstractPaginator implements Paginator {
     try {
       workbook = WorkbookFactory.create(new File(config.path));
       // Retrieving the number of sheets in the Workbook
-      System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
+      LOG.info("Workbook has " + workbook.getNumberOfSheets() + " sheets");
 
       Sheet sheet = workbook.getSheetAt(0);
 
@@ -66,15 +83,22 @@ public class ExcelPaginator extends AbstractPaginator implements Paginator {
         }
       }
 
+      LOG.info("Sheetname selected :" + sheet.getSheetName());
+
       int realFirstRow = sheet.getFirstRowNum();
 
-      System.out.println("\n\nIterating over Rows and Columns with lambda\n");
-      System.out.println("\n\nFirst row " + sheet.getFirstRowNum());
-      System.out.println("\n\nLast row " + sheet.getLastRowNum());
+      LOG.info("\n\nIterating over Rows and Columns with lambda\n");
+      LOG.info("\n\nFirst row " + realFirstRow);
+      LOG.info("\n\nLast row " + sheet.getLastRowNum());
       Schema.Builder schemaBuilder = Schema.builder();
       for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
+        LOG.info("searching header in row " + i);
         Iterator<Cell> header = sheet.getRow(i).iterator();
-        Iterator<Cell> firstRow = sheet.getRow(Math.min(i + 1, sheet.getLastRowNum())).iterator();
+        org.apache.poi.ss.usermodel.Row a = sheet.getRow(Math.min(i + 1, sheet.getLastRowNum()));
+        if (a != null) {
+          break;
+        }
+        Iterator<Cell> firstRow = a.iterator();
         schemaBuilder = Schema.builder();
         Map<String, Schema.FieldType> fields = new HashMap<>();
         boolean isHeader = true;
@@ -84,40 +108,51 @@ public class ExcelPaginator extends AbstractPaginator implements Paginator {
             throw new RuntimeException(
                 "No data exist after header line "
                     + i
-                    + "Expected a cell value for each header cells");
+                    + ". Expected a cell value for each header cells");
           }
+
           Cell firstRowCell = firstRow.next();
           MutablePair<Schema.FieldType, Object> firstRowCol = toRowField(firstRowCell);
           MutablePair<Schema.FieldType, Object> headerCol = toRowField(cellHeader);
-          if (fields.get(headerCol.getRight()) != null
-              || headerCol.getLeft() != Schema.FieldType.STRING) {
-            isHeader = false;
+
+          if (cellHeader == null || "".equals(cellHeader.toString()) || headerCol.getRight() == null || headerCol.getLeft() != Schema.FieldType.STRING) {
+            //LOG.info("header cell {}, cell value {} not text . Skipping line. ", i, cellHeader.toString());
+            if (fields.isEmpty()) {
+              isHeader = false;
+              schemaBuilder = Schema.builder();
+              fields.clear();
+            }
             break;
           }
+          LOG.info("header cell {}, cell value {} is text", i, cellHeader.toString());
           fields.put((String) headerCol.getRight(), headerCol.getLeft());
           schemaBuilder.addNullableField((String) headerCol.getRight(), firstRowCol.getLeft());
         }
         if (isHeader) {
+          LOG.info("header line found at " + i);
           realFirstRow = Math.min(i + 1, sheet.getLastRowNum());
           break;
         }
+        LOG.info("no header line found at " + i);
       }
       schema = schemaBuilder.build();
 
+      LOG.info("Limit " + limit);
+      LOG.info("Offset " + offset);
       int firstRow = Math.min(sheet.getLastRowNum(), realFirstRow + offset);
       int lastRow = Math.min(sheet.getLastRowNum(), firstRow + limit);
-
-      System.out.println("\n\nLimit " + limit);
-      System.out.println("\n\nOffset " + offset);
-      System.out.println("\n\nFirst row " + firstRow);
-      System.out.println("\n\nLast row " + lastRow);
+      LOG.info("First row " + firstRow);
+      LOG.info("Last row " + lastRow);
 
       for (int j = firstRow; j <= lastRow && sheet.getRow(j) != null; j++) {
         org.apache.beam.sdk.values.Row.Builder r =
             org.apache.beam.sdk.values.Row.withSchema(schema);
         Iterator<Cell> row = sheet.getRow(j).iterator();
-        while (row.hasNext()) {
+        int rowCellIndex = 0;
+        while (row.hasNext() && rowCellIndex < schema.getFields().size()) {
+          rowCellIndex++;
           Cell c = row.next();
+          LOG.info("row {}, cell value {} ", j, c.toString());
           r.addValue(toRowField(c).getRight());
         }
         rows.add(lambdaFunction.rowTo(r.build()));
@@ -131,13 +166,14 @@ public class ExcelPaginator extends AbstractPaginator implements Paginator {
           MutablePair.of(ExceptionHandler.ErrorCode.GENERAL, "Oops. Invalid format? "));
     } catch (Exception e) {
       errorHandler.addError(ExceptionHandler.ErrorCode.GENERAL, e.getMessage());
-
     } finally {
       try {
         workbook.close();
       } catch (Exception e) {
       }
     }
+    LOG.info("excel - "+ schema.toString());
+    LOG.info("excel - number of rows : " + rows.size());
     return MutablePair.of(schema, rows);
   }
 
