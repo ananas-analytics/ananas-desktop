@@ -227,7 +227,7 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
           return MutablePair.of(Schema.FieldType.DOUBLE, cell.getNumericCellValue());
         }
       case FORMULA:
-        return MutablePair.of(Schema.FieldType.STRING, cell.getCellFormula());
+        return MutablePair.of(Schema.FieldType.DOUBLE, cell.getNumericCellValue());
       case ERROR:
         return MutablePair.of(Schema.FieldType.STRING, "");
       case BLANK:
