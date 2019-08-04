@@ -163,12 +163,12 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
       schema = schemaBuilder.build();
 
       LOG.debug("Col0 " + headerIndex);
-      LOG.debug("Limit " + limit);
-      LOG.debug("Offset " + offset);
+      LOG.info("Limit " + limit);
+      LOG.info("Offset " + offset);
       int firstRow = Math.min(sheet.getLastRowNum(), realFirstRow + offset);
-      int lastRow = Math.min(sheet.getLastRowNum(), firstRow + limit);
-      LOG.debug("First row " + firstRow);
-      LOG.debug("Last row " + lastRow);
+      int lastRow = Math.min(sheet.getLastRowNum(), Math.abs(firstRow + limit));
+      LOG.info("First row " + firstRow);
+      LOG.info("Last row " + lastRow);
 
       for (int j = firstRow; j <= lastRow && sheet.getRow(j) != null; j++) {
         org.apache.beam.sdk.values.Row.Builder r =

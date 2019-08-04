@@ -26,6 +26,10 @@ dag:
       target: 5d32089484b5674b6a2202df
     - source: 5d32089484b5674b6a2202df
       target: 5d32099f84b5674b6a2202e5
+    - source: 5d4621fc3cac3c7b79a63694
+      target: 5d469e3e518ac74593066c66
+    - source: 5d469e3e518ac74593066c66
+      target: 5d46a60c518ac74593066c80
 id: 5d31c70384b5674b6a220286
 name: Fifa2019
 steps:
@@ -549,6 +553,49 @@ steps:
     metadataId: org.ananas.source.file.excel
     name: Excel FIFA Ranking
     type: connector
+  5d469e3e518ac74593066c66:
+    config:
+      sql: |-
+        SELECT PCOLLECTION.`Rank`, Country 
+        FROM PCOLLECTION 
+        ORDER BY PCOLLECTION.`Rank`
+        LIMIT 15
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d469e3e518ac74593066c66
+      schema:
+        fields:
+          - name: Rank
+            type: DOUBLE
+          - name: Country
+            type: VARCHAR
+    description: Transform your data with SQL
+    id: 5d469e3e518ac74593066c66
+    metadataId: org.ananas.transform.sql
+    name: Project country rank SQL
+    type: transformer
+  5d46a60c518ac74593066c80:
+    config:
+      format: csv
+      header: true
+      path: ""
+      prefix: ${PROJECT_PATH}/excel-sql
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d46a60c518ac74593066c80
+      schema:
+        fields:
+          - name: Rank
+            type: DOUBLE
+          - name: Country
+            type: VARCHAR
+    description: Save your data as CSV file
+    id: 5d46a60c518ac74593066c80
+    metadataId: org.ananas.destination.file.csv
+    name: CSV Destination
+    type: loader
 triggers: []
 variables:
   - name: ability

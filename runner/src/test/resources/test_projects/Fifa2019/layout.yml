@@ -52,5 +52,13 @@
   y: 775
 - id: 5d4621fc3cac3c7b79a63694
   metadataId: org.ananas.source.file.excel
-  x: 575
-  y: 75
+  x: 525
+  y: 100
+- id: 5d469e3e518ac74593066c66
+  metadataId: org.ananas.transform.sql
+  x: 650
+  y: 100
+- id: 5d46a60c518ac74593066c80
+  metadataId: org.ananas.destination.file.csv
+  x: 775
+  y: 100
