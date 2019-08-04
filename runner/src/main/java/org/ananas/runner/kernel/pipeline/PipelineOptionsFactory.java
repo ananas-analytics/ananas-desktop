@@ -120,10 +120,10 @@ public class PipelineOptionsFactory {
       filesToStaging.addAll(Arrays.asList(files));
     }
 
-    /*if (filesToStaging.size() == 0) {
+    if (filesToStaging.size() == 0) {
       throw new RuntimeException(
           "Can't auto-resolve filesToStage options. If you are running on DEV mode, please set the 'filesToStage' system property");
-    }*/
+    }
 
     LOG.info("filesToStage: {}", String.join(";", filesToStaging));
     return filesToStaging;

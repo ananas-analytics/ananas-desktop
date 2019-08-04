@@ -551,15 +551,15 @@ steps:
     description: Read Excel file
     id: 5d4621fc3cac3c7b79a63694
     metadataId: org.ananas.source.file.excel
-    name: Excel FIFA Ranking
+    name: FIFA Ranking 2019
     type: connector
   5d469e3e518ac74593066c66:
     config:
       sql: |-
-        SELECT PCOLLECTION.`Rank`, Country 
+        SELECT `Rank`, Country 
         FROM PCOLLECTION 
-        ORDER BY PCOLLECTION.`Rank`
-        LIMIT 15
+        ORDER BY `Rank`
+        LIMIT 5
       subtype: sql
     dataframe:
       data: []
@@ -573,7 +573,7 @@ steps:
     description: Transform your data with SQL
     id: 5d469e3e518ac74593066c66
     metadataId: org.ananas.transform.sql
-    name: Project country rank SQL
+    name: Top 5 Ranking SQL
     type: transformer
   5d46a60c518ac74593066c80:
     config:
@@ -594,7 +594,7 @@ steps:
     description: Save your data as CSV file
     id: 5d46a60c518ac74593066c80
     metadataId: org.ananas.destination.file.csv
-    name: CSV Destination
+    name: Top 5 Ranking CSV destination
     type: loader
 triggers: []
 variables:
