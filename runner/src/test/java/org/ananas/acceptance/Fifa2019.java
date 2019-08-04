@@ -179,4 +179,29 @@ public class Fifa2019 {
           "explore", "-p", project.getPath(), "5d4621fc3cac3c7b79a63694", "-n", "0", "--size", "5"
         });
   }
+
+  @Test
+  public void testExcelRun() {
+    exit.expectSystemExitWithStatus(0);
+
+    exit.checkAssertionAfterwards(
+        new Assertion() {
+          public void checkAssertion() {
+            String json = systemOutRule.getLog();
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
+
+            String jobId = JsonPath.read(json, "$.data.jobid");
+            Assert.assertNotNull(jobId);
+          }
+        });
+
+    ClassLoader classLoader = getClass().getClassLoader();
+    URL project = classLoader.getResource("test_projects/Fifa2019");
+
+    Main.main(
+        new String[] {
+          "run", "-p", project.getPath(), "5d46a60c518ac74593066c80",
+        });
+  }
 }
