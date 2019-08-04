@@ -6,7 +6,6 @@ import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
 import org.ananas.runner.kernel.model.Step;
 import org.apache.beam.sdk.Pipeline;
-import org.apache.beam.sdk.coders.RowCoder;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.values.PBegin;
@@ -48,7 +47,5 @@ public class ExcelConnector extends ConnectorStepRunner {
     }
     this.output = PBegin.in(pipeline).apply(pCollections);
     this.output.setRowSchema(schema);
-
-
   }
 }

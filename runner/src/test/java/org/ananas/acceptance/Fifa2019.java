@@ -185,25 +185,23 @@ public class Fifa2019 {
     exit.expectSystemExitWithStatus(0);
 
     exit.checkAssertionAfterwards(
-            new Assertion() {
-              public void checkAssertion() {
-                String json = systemOutRule.getLog();
-                int code = JsonPath.read(json, "$.code");
-                Assert.assertEquals(200, code);
+        new Assertion() {
+          public void checkAssertion() {
+            String json = systemOutRule.getLog();
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
 
-                String jobId = JsonPath.read(json, "$.data.jobid");
-                Assert.assertNotNull(jobId);
-              }
-            });
+            String jobId = JsonPath.read(json, "$.data.jobid");
+            Assert.assertNotNull(jobId);
+          }
+        });
 
     ClassLoader classLoader = getClass().getClassLoader();
     URL project = classLoader.getResource("test_projects/Fifa2019");
 
     Main.main(
-            new String[] {
-                    "run", "-p", project.getPath(), "5d46a60c518ac74593066c80",
-                    });
+        new String[] {
+          "run", "-p", project.getPath(), "5d46a60c518ac74593066c80",
+        });
   }
-
-
 }
