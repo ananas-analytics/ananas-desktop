@@ -29,8 +29,8 @@ public class ExcelConnector extends ConnectorStepRunner {
       r = paginator.paginateRows(0, Integer.MAX_VALUE);
     } catch (Exception e) {
       throw new AnanasException(
-              ExceptionHandler.ErrorCode.CONNECTION,
-              "A technical error occurred when connecting to your API. Please verify your parameters");
+          ExceptionHandler.ErrorCode.CONNECTION,
+          "A technical error occurred when connecting to your API. Please verify your parameters");
     }
 
     Schema schema = step.getBeamSchema();
@@ -43,5 +43,4 @@ public class ExcelConnector extends ConnectorStepRunner {
     this.output = PBegin.in(pipeline).apply(pCollections);
     this.output.setRowSchema(schema);
   }
-
 }

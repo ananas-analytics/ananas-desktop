@@ -67,7 +67,7 @@ public class ExtensionRegistry {
     ExtensionRegistry.registerConnector(
         "org.ananas.source.api", APIConnector.class, APIPaginator.class);
     ExtensionRegistry.registerConnector(
-            "org.ananas.source.file.excel", ExcelConnector.class, ExcelPaginator.class);
+        "org.ananas.source.file.excel", ExcelConnector.class, ExcelPaginator.class);
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
 

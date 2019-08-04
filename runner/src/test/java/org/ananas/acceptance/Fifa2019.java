@@ -155,29 +155,28 @@ public class Fifa2019 {
         });
   }
 
-
   @Test
   public void exploreExcelDataSource() {
     exit.expectSystemExitWithStatus(0);
 
     exit.checkAssertionAfterwards(
-            new Assertion() {
-              public void checkAssertion() {
-                String json = systemOutRule.getLog();
-                int code = JsonPath.read(json, "$.code");
-                Assert.assertEquals(200, code);
+        new Assertion() {
+          public void checkAssertion() {
+            String json = systemOutRule.getLog();
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
 
-                List<Map<String, String>> fields = JsonPath.read(json, "$.data.schema.fields");
-                Assert.assertTrue(fields.size() > 0);
-              }
-            });
+            List<Map<String, String>> fields = JsonPath.read(json, "$.data.schema.fields");
+            Assert.assertTrue(fields.size() > 0);
+          }
+        });
 
     ClassLoader classLoader = getClass().getClassLoader();
     URL project = classLoader.getResource("test_projects/Fifa2019");
 
     Main.main(
-            new String[] {
-                    "explore", "-p", project.getPath(), "5d4621fc3cac3c7b79a63694", "-n", "0", "--size", "5"
-            });
+        new String[] {
+          "explore", "-p", project.getPath(), "5d4621fc3cac3c7b79a63694", "-n", "0", "--size", "5"
+        });
   }
 }

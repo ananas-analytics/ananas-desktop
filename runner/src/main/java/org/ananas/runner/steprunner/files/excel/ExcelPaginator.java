@@ -3,7 +3,6 @@ package org.ananas.runner.steprunner.files.excel;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
 import org.ananas.runner.kernel.errors.AnanasException;
 import org.ananas.runner.kernel.errors.ErrorHandler;
 import org.ananas.runner.kernel.errors.ExceptionHandler;
@@ -23,7 +22,6 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
 
   private static final Logger LOG = LoggerFactory.getLogger(ExcelPaginator.class);
 
-
   protected static int MAX_EMPTY_LEFTMOST_COLUMNS = 100;
 
   protected ExcelStepConfig excelConfig;
@@ -39,12 +37,10 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
     this.excelConfig = new ExcelStepConfig(config);
   }
 
-
   @Override
   public Schema autodetect() {
-    return null;//saving some IO here. Excel Schema is built while iterating rows.
+    return null; // saving some IO here. Excel Schema is built while iterating rows.
   }
-
 
   @Override
   public Iterable<Row> iterateRows(Integer page, Integer pageSize) {
@@ -101,7 +97,6 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
         org.apache.poi.ss.usermodel.Row a = sheet.getRow(Math.min(i + 1, sheet.getLastRowNum()));
         if (a != null) {
 
-
           Iterator<Cell> firstRow = a.iterator();
           schemaBuilder = Schema.builder();
           Map<String, Schema.FieldType> fields = new HashMap<>();
@@ -110,34 +105,52 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
             Cell cellHeader = header.next();
             if (!firstRow.hasNext()) {
               throw new RuntimeException(
-                      "No data exist after header line "
-                              + i
-                              + ". Expected a cell value for each header cells");
+                  "No data exist after header line "
+                      + i
+                      + ". Expected a cell value for each header cells");
             }
 
             Cell firstRowCell = firstRow.next();
             MutablePair<Schema.FieldType, Object> firstRowCol = toRowField(firstRowCell);
             MutablePair<Schema.FieldType, Object> headerCol = toRowField(cellHeader);
 
-            boolean isCellEmpty = (cellHeader == null || "".equals(cellHeader.toString()) || headerCol.getRight() == null ||
-                    headerCol.getLeft() != Schema.FieldType.STRING);
+            boolean isCellEmpty =
+                (cellHeader == null
+                    || "".equals(cellHeader.toString())
+                    || headerCol.getRight() == null
+                    || headerCol.getLeft() != Schema.FieldType.STRING);
             if (isCellEmpty) {
               if (!fields.isEmpty()) {
-                LOG.debug("header cell {}, row {}, cell value {} end of row", headerIndex, i, cellHeader.toString());
+                LOG.debug(
+                    "header cell {}, row {}, cell value {} end of row",
+                    headerIndex,
+                    i,
+                    cellHeader.toString());
                 break;
               }
               headerIndex++;
-              LOG.debug("header cell {}, row {}, cell value {} not text", headerIndex, i, cellHeader.toString());
+              LOG.debug(
+                  "header cell {}, row {}, cell value {} not text",
+                  headerIndex,
+                  i,
+                  cellHeader.toString());
             } else {
-              LOG.debug("header cell {}, col {}, cell value {} is text", headerIndex, i, cellHeader.toString());
+              LOG.debug(
+                  "header cell {}, col {}, cell value {} is text",
+                  headerIndex,
+                  i,
+                  cellHeader.toString());
               fields.put((String) headerCol.getRight(), headerCol.getLeft());
               schemaBuilder.addNullableField((String) headerCol.getRight(), firstRowCol.getLeft());
             }
             if (headerIndex > MAX_EMPTY_LEFTMOST_COLUMNS && fields.isEmpty()) {
-              LOG.debug("header cell {}, row {}, cell value {} skipped lined", headerIndex, i, cellHeader.toString());
+              LOG.debug(
+                  "header cell {}, row {}, cell value {} skipped lined",
+                  headerIndex,
+                  i,
+                  cellHeader.toString());
               break;
             }
-
           }
           if (!fields.isEmpty()) {
             LOG.info("header line found at " + i);
@@ -188,7 +201,7 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
       } catch (Exception e) {
       }
     }
-    LOG.info("excel - "+ schema.toString());
+    LOG.info("excel - " + schema.toString());
     LOG.info("excel - number of rows : " + rows.size());
     return MutablePair.of(schema, rows);
   }
