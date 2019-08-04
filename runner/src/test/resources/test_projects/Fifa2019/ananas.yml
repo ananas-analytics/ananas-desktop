@@ -539,7 +539,7 @@ steps:
           - name: Rank
             type: DOUBLE
           - name: Points
-            type: VARCHAR
+            type: DOUBLE
           - name: Team
             type: DOUBLE
           - name: Country

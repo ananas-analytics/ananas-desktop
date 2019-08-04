@@ -23,6 +23,9 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
 
   private static final Logger LOG = LoggerFactory.getLogger(ExcelPaginator.class);
 
+
+  protected static int MAX_EMPTY_LEFTMOST_COLUMNS = 100;
+
   protected ExcelStepConfig excelConfig;
   protected ErrorHandler errors;
 
@@ -91,6 +94,7 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
       LOG.info("\n\nFirst row " + realFirstRow);
       LOG.info("\n\nLast row " + sheet.getLastRowNum());
       Schema.Builder schemaBuilder = Schema.builder();
+      int headerIndex = 0;
       for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
         LOG.info("searching header in row " + i);
         Iterator<Cell> header = sheet.getRow(i).iterator();
@@ -101,7 +105,7 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
           Iterator<Cell> firstRow = a.iterator();
           schemaBuilder = Schema.builder();
           Map<String, Schema.FieldType> fields = new HashMap<>();
-          boolean isHeader = true;
+          headerIndex = 0;
           while (header.hasNext()) {
             Cell cellHeader = header.next();
             if (!firstRow.hasNext()) {
@@ -115,47 +119,57 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
             MutablePair<Schema.FieldType, Object> firstRowCol = toRowField(firstRowCell);
             MutablePair<Schema.FieldType, Object> headerCol = toRowField(cellHeader);
 
-            if (cellHeader == null || "".equals(cellHeader.toString()) || headerCol.getRight() == null ||
-                    headerCol.getLeft() != Schema.FieldType.STRING) {
-              //LOG.info("header cell {}, cell value {} not text . Skipping line. ", i, cellHeader.toString());
-              if (fields.isEmpty()) {
-                isHeader = false;
-                schemaBuilder = Schema.builder();
-                fields.clear();
+            boolean isCellEmpty = (cellHeader == null || "".equals(cellHeader.toString()) || headerCol.getRight() == null ||
+                    headerCol.getLeft() != Schema.FieldType.STRING);
+            if (isCellEmpty) {
+              if (!fields.isEmpty()) {
+                LOG.debug("header cell {}, row {}, cell value {} end of row", headerIndex, i, cellHeader.toString());
+                break;
               }
+              headerIndex++;
+              LOG.debug("header cell {}, row {}, cell value {} not text", headerIndex, i, cellHeader.toString());
+            } else {
+              LOG.debug("header cell {}, col {}, cell value {} is text", headerIndex, i, cellHeader.toString());
+              fields.put((String) headerCol.getRight(), headerCol.getLeft());
+              schemaBuilder.addNullableField((String) headerCol.getRight(), firstRowCol.getLeft());
+            }
+            if (headerIndex > MAX_EMPTY_LEFTMOST_COLUMNS && fields.isEmpty()) {
+              LOG.debug("header cell {}, row {}, cell value {} skipped lined", headerIndex, i, cellHeader.toString());
               break;
             }
-            LOG.info("header cell {}, cell value {} is text", i, cellHeader.toString());
-            fields.put((String) headerCol.getRight(), headerCol.getLeft());
-            schemaBuilder.addNullableField((String) headerCol.getRight(), firstRowCol.getLeft());
+
           }
-          if (isHeader) {
+          if (!fields.isEmpty()) {
             LOG.info("header line found at " + i);
             realFirstRow = Math.min(i + 1, sheet.getLastRowNum());
             break;
           }
-          LOG.info("no header line found at " + i);
+          LOG.debug("no header line found at " + i);
         }
       }
       schema = schemaBuilder.build();
 
-      LOG.info("Limit " + limit);
-      LOG.info("Offset " + offset);
+      LOG.debug("Col0 " + headerIndex);
+      LOG.debug("Limit " + limit);
+      LOG.debug("Offset " + offset);
       int firstRow = Math.min(sheet.getLastRowNum(), realFirstRow + offset);
       int lastRow = Math.min(sheet.getLastRowNum(), firstRow + limit);
-      LOG.info("First row " + firstRow);
-      LOG.info("Last row " + lastRow);
+      LOG.debug("First row " + firstRow);
+      LOG.debug("Last row " + lastRow);
 
       for (int j = firstRow; j <= lastRow && sheet.getRow(j) != null; j++) {
         org.apache.beam.sdk.values.Row.Builder r =
             org.apache.beam.sdk.values.Row.withSchema(schema);
         Iterator<Cell> row = sheet.getRow(j).iterator();
         int rowCellIndex = 0;
+        int k = 0;
         while (row.hasNext() && rowCellIndex < schema.getFields().size()) {
-          rowCellIndex++;
           Cell c = row.next();
-          LOG.info("row {}, cell value {} ", j, c.toString());
-          r.addValue(toRowField(c).getRight());
+          if (k++ >= headerIndex) {
+            rowCellIndex++;
+            LOG.debug("row {}, cell value {} ", j, c.toString());
+            r.addValue(toRowField(c).getRight());
+          }
         }
         rows.add(lambdaFunction.rowTo(r.build()));
       }
