@@ -14,6 +14,8 @@ import org.ananas.runner.steprunner.api.APIPaginator;
 import org.ananas.runner.steprunner.files.FileLoader;
 import org.ananas.runner.steprunner.files.JsonConnector;
 import org.ananas.runner.steprunner.files.csv.CSVConnector;
+import org.ananas.runner.steprunner.files.excel.ExcelConnector;
+import org.ananas.runner.steprunner.files.excel.ExcelPaginator;
 import org.ananas.runner.steprunner.gcs.BigQueryConnector;
 import org.ananas.runner.steprunner.gcs.BigQueryLoader;
 import org.ananas.runner.steprunner.gcs.GCSConnector;
@@ -64,6 +66,8 @@ public class ExtensionRegistry {
         "org.ananas.source.jdbc.postgres", JdbcConnector.class, JdbcPaginator.class);
     ExtensionRegistry.registerConnector(
         "org.ananas.source.api", APIConnector.class, APIPaginator.class);
+    ExtensionRegistry.registerConnector(
+        "org.ananas.source.file.excel", ExcelConnector.class, ExcelPaginator.class);
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
 

@@ -50,9 +50,6 @@ public class StepConfig {
   public static final String JOIN_LEFT_COLUMNS = "leftcolumns";
   public static final String JOIN_RIGHT_COLUMNS = "rightcolumns";
 
-  // EXCEL_SHEET_NAME
-  public static final String EXCEL_SHEET_NAME = "sheetname";
-
   // VALUES
   public static final String TYPE_TRANSFORMER = "transformer";
   public static final String TYPE_LOADER = "loader";
