@@ -21,17 +21,8 @@ plugins {
 
 repositories {
     mavenLocal()
-    maven {
-        url = 'https://repository.apache.org/content/repositories/snapshots/'
-    }
-
-    maven {
-        url = 'https://oss.sonatype.org/content/groups/public/'
-    }
-
-    maven {
-        url = 'http://repo.maven.apache.org/maven2'
-    }
+    mavenCentral()
+    jcenter()
 }
 
 
