@@ -535,7 +535,15 @@ steps:
       data: []
       id: 5d4621fc3cac3c7b79a63694
       schema:
-        fields: []
+        fields:
+          - name: Rank
+            type: DOUBLE
+          - name: Points
+            type: VARCHAR
+          - name: Team
+            type: DOUBLE
+          - name: Country
+            type: VARCHAR
     description: Read Excel file
     id: 5d4621fc3cac3c7b79a63694
     metadataId: org.ananas.source.file.excel

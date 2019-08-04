@@ -96,44 +96,46 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
         Iterator<Cell> header = sheet.getRow(i).iterator();
         org.apache.poi.ss.usermodel.Row a = sheet.getRow(Math.min(i + 1, sheet.getLastRowNum()));
         if (a != null) {
-          break;
-        }
-        Iterator<Cell> firstRow = a.iterator();
-        schemaBuilder = Schema.builder();
-        Map<String, Schema.FieldType> fields = new HashMap<>();
-        boolean isHeader = true;
-        while (header.hasNext()) {
-          Cell cellHeader = header.next();
-          if (!firstRow.hasNext()) {
-            throw new RuntimeException(
-                "No data exist after header line "
-                    + i
-                    + ". Expected a cell value for each header cells");
-          }
 
-          Cell firstRowCell = firstRow.next();
-          MutablePair<Schema.FieldType, Object> firstRowCol = toRowField(firstRowCell);
-          MutablePair<Schema.FieldType, Object> headerCol = toRowField(cellHeader);
 
-          if (cellHeader == null || "".equals(cellHeader.toString()) || headerCol.getRight() == null || headerCol.getLeft() != Schema.FieldType.STRING) {
-            //LOG.info("header cell {}, cell value {} not text . Skipping line. ", i, cellHeader.toString());
-            if (fields.isEmpty()) {
-              isHeader = false;
-              schemaBuilder = Schema.builder();
-              fields.clear();
+          Iterator<Cell> firstRow = a.iterator();
+          schemaBuilder = Schema.builder();
+          Map<String, Schema.FieldType> fields = new HashMap<>();
+          boolean isHeader = true;
+          while (header.hasNext()) {
+            Cell cellHeader = header.next();
+            if (!firstRow.hasNext()) {
+              throw new RuntimeException(
+                      "No data exist after header line "
+                              + i
+                              + ". Expected a cell value for each header cells");
             }
+
+            Cell firstRowCell = firstRow.next();
+            MutablePair<Schema.FieldType, Object> firstRowCol = toRowField(firstRowCell);
+            MutablePair<Schema.FieldType, Object> headerCol = toRowField(cellHeader);
+
+            if (cellHeader == null || "".equals(cellHeader.toString()) || headerCol.getRight() == null ||
+                    headerCol.getLeft() != Schema.FieldType.STRING) {
+              //LOG.info("header cell {}, cell value {} not text . Skipping line. ", i, cellHeader.toString());
+              if (fields.isEmpty()) {
+                isHeader = false;
+                schemaBuilder = Schema.builder();
+                fields.clear();
+              }
+              break;
+            }
+            LOG.info("header cell {}, cell value {} is text", i, cellHeader.toString());
+            fields.put((String) headerCol.getRight(), headerCol.getLeft());
+            schemaBuilder.addNullableField((String) headerCol.getRight(), firstRowCol.getLeft());
+          }
+          if (isHeader) {
+            LOG.info("header line found at " + i);
+            realFirstRow = Math.min(i + 1, sheet.getLastRowNum());
             break;
           }
-          LOG.info("header cell {}, cell value {} is text", i, cellHeader.toString());
-          fields.put((String) headerCol.getRight(), headerCol.getLeft());
-          schemaBuilder.addNullableField((String) headerCol.getRight(), firstRowCol.getLeft());
+          LOG.info("no header line found at " + i);
         }
-        if (isHeader) {
-          LOG.info("header line found at " + i);
-          realFirstRow = Math.min(i + 1, sheet.getLastRowNum());
-          break;
-        }
-        LOG.info("no header line found at " + i);
       }
       schema = schemaBuilder.build();
 
