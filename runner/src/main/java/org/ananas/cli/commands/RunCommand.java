@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import org.ananas.cli.DagRequestBuilder;
 import org.ananas.runner.api.ApiResponse;
-import org.ananas.runner.api.RestApiRoutes;
 import org.ananas.runner.api.Services;
 import org.ananas.runner.kernel.common.JsonUtil;
 import org.ananas.runner.kernel.job.BeamRunner;
@@ -19,7 +18,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParentCommand;
-import spark.Spark;
 
 @Command(name = "run", description = "Run analytics task")
 public class RunCommand implements Callable<Integer> {
@@ -46,9 +44,9 @@ public class RunCommand implements Callable<Integer> {
   private Map<String, String> params;
 
   @Option(
-    names = {"-h", "--host"},
-    description = "Server host, default localhost",
-    defaultValue = "127.0.0.1")
+      names = {"-h", "--host"},
+      description = "Server host, default localhost",
+      defaultValue = "127.0.0.1")
   private String host;
 
   @Option(
@@ -92,7 +90,8 @@ public class RunCommand implements Callable<Integer> {
       while (true) {
         Job job = runner.getJob(jobId);
         if (job == null) {
-          System.err.printf("Can't find job %s", jobId);
+          // System.err.printf("Can't find job %s", jobId);
+          errMessage = "Can't find job " + jobId;
           break;
         } else {
           state = job.getResult().getLeft().toString();
@@ -100,14 +99,12 @@ public class RunCommand implements Callable<Integer> {
             errMessage = job.getResult().getRight().getLocalizedMessage();
           }
 
-          if (errMessage == null) {
-            System.out.printf("Job state %s\n", state);
-          } else {
-            System.out.printf("Job state %s, with error: %s\n", state, errMessage);
+          if (errMessage != null) {
             break;
           }
 
-          if (state != null && (state.equals("DONE") || state.equals("FAILED"))) {
+          if (state != null
+              && (state.equalsIgnoreCase("DONE") || state.equalsIgnoreCase("FAILED"))) {
             break;
           }
         }

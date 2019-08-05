@@ -1,0 +1,18 @@
+---
+# file type source
+org.ananas.source.api:
+  id: org.ananas.source.api
+  name: Web API Source
+  description: Connect data from Web API
+  type: Source
+  icon: images/api.svg
+  step: 
+    type: connector
+    config: 
+      subtype: api
+      method: get
+      format: text
+      forceAutoDetectSchema: true
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1

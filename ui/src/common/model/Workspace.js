@@ -49,7 +49,7 @@ class Workspace {
 
 	removeProject(projectId: string) {
 		this.projects = this.projects.filter(project => project.id !== projectId)
-	}
+  }
 
 	toString() {
 		return YAML.stringify({

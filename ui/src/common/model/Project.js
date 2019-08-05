@@ -16,10 +16,12 @@ import type { PlainProject, PlainNodeMetadata } from './flowtypes'
 class Project { 
   path: string
   project: PlainProject
+  valid: boolean
 
   constructor(projectPath: string, project: PlainProject) {
     this.path = projectPath
     this.project = project
+    this.valid = true
   }
 
   save() :Promise<any> { 
@@ -162,6 +164,14 @@ class Project {
       variables: [],
       settings: {},
       triggers: [],
+    }
+
+    // TODO: check file existance in an async way 
+    if (!fs.existsSync(path.join(projectPath, 'ananas.yml'))) {
+      let projectObject = new Project(projectPath, projectData)
+      // mark this project as not valid, so that the workspace can ignore it
+      projectObject.valid = false
+      return Promise.resolve(projectObject)
     }
 
     let layout = []

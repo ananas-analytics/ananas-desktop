@@ -1,0 +1,182 @@
+---
+id: org.ananas.source.api
+layout:
+  key: root
+  props:
+    direction: row
+    fill: true
+  children:
+  - key: left-bar
+    props:
+      direction: column
+      elevation: small
+      fill: vertical
+      width: 400px
+      style:
+        minWidth: 300px
+    children:
+    - key: scrollable-editor
+      props:
+        flex: true
+        overflow:
+          vertical: auto
+        pad: small
+      children:
+      - key: inner-scrollable-editor
+        props:
+          flex: false
+        children:
+        - title
+        - method
+        - url
+        - format
+        - headers
+        - body
+        - key: advanced-editor
+          collapsible: true
+          props:
+            label: Advanced
+          children:
+          - description
+          - jsonpath
+          - lineDelimiter
+    - key: update-container
+      props:
+        boder:
+          side: top
+          size: xsmall
+          color: light-4
+        direction: column
+        height: 50px
+        justify: center
+        pad:
+          horizontal: medium
+          vertical: xsmall
+      children:
+      - update-btn
+  - key: main
+    props:
+      direction: column
+      flex: true
+      fill: true
+      pad:
+        top: small
+        left: small
+        right: small
+      overflow:
+        vertical: auto
+    children:
+    - variable-editor
+    - table-title
+    - explorer-view
+components:
+  title:
+    bind: __name__
+    type: TextInput
+    default: My API Source
+    props:
+      label: Title
+  url:
+    bind: url
+    type: TextInput
+    default: http://localhost:8080/<path>?param1=value1
+    props:
+      label: API URL
+  headers:
+    bind: headers
+    type: StringMap
+    props: 
+      label: Headers   
+  body:
+    bind: body
+    conditions:
+      method: [ 'post', 'put' ]
+    type: TextArea
+    default: ''
+    props:
+      label: HTTP Body
+  jsonpath:
+    bind: jsonpath
+    conditions:
+      format: [ 'json' ]
+    type: TextInput
+    default: '$'
+    props:
+      label: Use Json path to filter data
+  format:
+    bind: format
+    type: SelectInput 
+    default: text
+    props:
+      label: Data format
+      options:
+        - label: JSON
+          value: json
+        - label: TEXT
+          value: text
+  method:
+    bind: method
+    type: SelectInput 
+    default: get
+    props:
+      label: HTTP method
+      options:
+        - label: GET
+          value: get
+        - label: POST
+          value: post 
+        - label: PUT
+          value: put      
+  lineDelimiter:
+    bind: lineDelimiter
+    conditions:
+      format: [ 'text' ]
+    type: SelectInput
+    default: \n
+    props:
+      label: Line Separator (for TEXT content type only)
+      options:
+        - label: \n 
+          value: \n
+        - label: \r\n 
+          value: \r\n 
+        - label: Tab
+          value: "\t"
+  description:
+    bind: __description__
+    type: TextArea
+    default: Describe this step here
+    props:
+      label: Description
+  update-btn:
+    type: Button
+    props:
+      label: Update
+      event: SUBMIT_CONFIG
+  variable-editor:
+    type: VariablePicker
+    box:
+      flex: false
+      margin:
+        bottom: medium
+        top: small
+    props:
+      exploreButton: true
+      testButton: false
+      runButton: false
+  table-title:
+    type: Heading
+    box:
+      flex: false
+    props:
+      text: Result
+      level: 4
+  explorer-view:
+    bind: __dataframe__
+    type: DataTable
+    box:
+      flex: true
+      fill: true
+    props:
+      pageSize: 25
+

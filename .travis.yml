@@ -6,7 +6,8 @@ matrix:
       jdk:
         - oraclejdk8
       script:
-        - ./gradlew :runner:test
+        - ./gradlew :runner:verGJF
+        - travis_wait ./gradlew :runner:test
 
     - language: node_js
       node_js:

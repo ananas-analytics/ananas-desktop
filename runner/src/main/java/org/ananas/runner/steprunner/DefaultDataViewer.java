@@ -72,9 +72,13 @@ public class DefaultDataViewer extends DataViewerStepRunner {
             "Can't find the last job for this step. Please make sure you have executed the step before explore");
       }
 
+      return query(sql, jobId, stepId, job.engine);
+    }
+
+    public Dataframe query(String sql, String jobId, String stepId, Engine engine) {
       String tName = DataViewRepository.buildTableName(jobId, stepId);
       String s;
-      String jdbcType = DataViewRepository.getJdbcType(job.engine);
+      String jdbcType = DataViewRepository.getJdbcType(engine);
       if ("derby".equals(jdbcType)) {
         s = sql.toUpperCase().replaceFirst("PCOLLECTION", tName);
       } else {
@@ -87,10 +91,10 @@ public class DefaultDataViewer extends DataViewerStepRunner {
       config.put(JdbcStepConfig.JDBC_SQL, s);
       config.put(JdbcStepConfig.JDBC_OVERWRITE, true);
       config.put(JdbcStepConfig.JDBC_TABLENAME, DataViewRepository.buildTableName(jobId, stepId));
-      config.put(JdbcStepConfig.JDBC_TYPE, DataViewRepository.getJdbcType(job.engine));
-      config.put(JdbcStepConfig.JDBC_URL, DataViewRepository.getJdbcURL(job.engine));
-      config.put(JdbcStepConfig.JDBC_USER, DataViewRepository.getJdbcUser(job.engine));
-      config.put(JdbcStepConfig.JDBC_PASSWORD, DataViewRepository.getJdbcPassword(job.engine));
+      config.put(JdbcStepConfig.JDBC_TYPE, DataViewRepository.getJdbcType(engine));
+      config.put(JdbcStepConfig.JDBC_URL, DataViewRepository.getJdbcURL(engine));
+      config.put(JdbcStepConfig.JDBC_USER, DataViewRepository.getJdbcUser(engine));
+      config.put(JdbcStepConfig.JDBC_PASSWORD, DataViewRepository.getJdbcPassword(engine));
 
       // Paginator paginator =
       //    SourcePaginator.of(tName, StepType.Connector.name(), config, new HashMap<>());

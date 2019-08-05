@@ -10,7 +10,8 @@ public class Main {
 
     int exitCode = new CommandLine(new MainCommand()).execute(args);
 
-    if (exitCode >= 0) { // when runnng start server sub command, return -1 to avoid exit immediately
+    if (exitCode
+        >= 0) { // when runnng start server sub command, return -1 to avoid exit immediately
       System.exit(exitCode);
     }
   }

@@ -23,9 +23,29 @@ org.ananas.visualization.barchart:
     type: viewer
     config: 
       subtype: bar chart
+      stack: false
+      horizontal: false
   options: 
     maxIncoming: 1
     maxOutgoing: 0
+
+org.ananas.visualization.piechart:
+  id: org.ananas.visualization.piechart
+  name: Pie Chart
+  description: Visualize your data as pie charts
+  icon: images/pie-chart.svg
+  type: Visualization
+  step: 
+    type: viewer
+    config: 
+      subtype: pie chart
+      is3D: false,
+      donut: false,
+  options: 
+    maxIncoming: 1
+    maxOutgoing: 0
+
+
 
 org.ananas.visualization.bignumber:
   id: org.ananas.visualization.bignumber

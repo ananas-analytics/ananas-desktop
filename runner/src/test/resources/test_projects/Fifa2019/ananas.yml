@@ -26,6 +26,10 @@ dag:
       target: 5d32089484b5674b6a2202df
     - source: 5d32089484b5674b6a2202df
       target: 5d32099f84b5674b6a2202e5
+    - source: 5d4621fc3cac3c7b79a63694
+      target: 5d469e3e518ac74593066c66
+    - source: 5d469e3e518ac74593066c66
+      target: 5d46a60c518ac74593066c80
 id: 5d31c70384b5674b6a220286
 name: Fifa2019
 steps:
@@ -524,6 +528,67 @@ steps:
     id: 5d32099f84b5674b6a2202e5
     metadataId: org.ananas.destination.file.csv
     name: Top 5 player with X ability
+    type: loader
+  5d4621fc3cac3c7b79a63694:
+    config:
+      forceAutoDetectSchema: true
+      format: excel
+      path: ${PROJECT_PATH}/fifaranking2019.xlsx
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d4621fc3cac3c7b79a63694
+      schema:
+        fields:
+          - name: Title 1
+            type: DOUBLE
+    description: Read Excel file
+    id: 5d4621fc3cac3c7b79a63694
+    metadataId: org.ananas.source.file.excel
+    name: FIFA Ranking 2019
+    type: connector
+  5d469e3e518ac74593066c66:
+    config:
+      sql: |-
+        SELECT `Rank`, Country 
+        FROM PCOLLECTION 
+        ORDER BY `Rank`
+        LIMIT 5
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d469e3e518ac74593066c66
+      schema:
+        fields:
+          - name: Rank
+            type: DOUBLE
+          - name: Country
+            type: VARCHAR
+    description: Transform your data with SQL
+    id: 5d469e3e518ac74593066c66
+    metadataId: org.ananas.transform.sql
+    name: Top 5 Ranking SQL
+    type: transformer
+  5d46a60c518ac74593066c80:
+    config:
+      format: csv
+      header: true
+      path: ""
+      prefix: ${PROJECT_PATH}/excel-sql
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d46a60c518ac74593066c80
+      schema:
+        fields:
+          - name: Rank
+            type: DOUBLE
+          - name: Country
+            type: VARCHAR
+    description: Save your data as CSV file
+    id: 5d46a60c518ac74593066c80
+    metadataId: org.ananas.destination.file.csv
+    name: Top 5 Ranking CSV destination
     type: loader
 triggers: []
 variables:
