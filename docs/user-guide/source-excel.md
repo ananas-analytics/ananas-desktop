@@ -1,6 +1,6 @@
 ---
 id: source-excel
-title: Excel sheet
+title: [NEW] Excel sheet
 ---
 
 Imports data from an Excel sheet
@@ -19,13 +19,12 @@ Read and import data from an Excel sheet.
 
 * Sheet name 
   
-  the sheet name (empty if first data sheet is retrieved)
+  the sheet name (first data sheet is retrieved if empty)
 
 ## Tips 
 
 * Ananas auto-detects the columns in your Excel sheet.
 * One table per Excel sheet
-* Your desktop memory is the limit.
 
 
 

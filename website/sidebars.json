@@ -2,6 +2,7 @@
 	"Downloads": {
 		"Downloads": [
 			"downloads/overview",
+			"downloads/v0.9.0",
 			"downloads/v0.8.2",
 			"downloads/v0.8.1",
 			"downloads/v0.8.0"
@@ -28,6 +29,7 @@
       "user-guide/source-mysql",
       "user-guide/source-json",
       "user-guide/source-csv",
+      "user-guide/source-excel",
 			"user-guide/source-google-gcs",
 			"user-guide/source-google-bigquery"
     ],
@@ -46,6 +48,7 @@
     "Visualizations": [
       "user-guide/visualization-barchart",
       "user-guide/visualization-linechart",
+      "user-guide/visualization-piechart",
       "user-guide/visualization-bignumber"
     ],
 		"Execution Engines": [

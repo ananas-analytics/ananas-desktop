@@ -44,6 +44,9 @@
       "downloads/v0.8.2": {
         "title": "Ananas Desktop v0.8.2"
       },
+      "downloads/v0.9.0": {
+        "title": "Ananas Desktop v0.9.0"
+      },
       "user-guide/cli-commands": {
         "title": "CLI commands"
       },
@@ -129,7 +132,7 @@
         "title": "Local CSV file"
       },
       "user-guide/source-excel": {
-        "title": "Excel sheet"
+        "title": "[NEW] Excel sheet"
       },
       "user-guide/source-google-bigquery": {
         "title": "Google Cloud BigQuery"
@@ -170,6 +173,10 @@
       },
       "user-guide/visualization-linechart": {
         "title": "Line Chart"
+      },
+      "user-guide/visualization-piechart": {
+        "title": "Pie Chart",
+        "sidebar_label": "[NEW] Pie Chart"
       },
       "user-guide/visualizing": {
         "title": "Visualizing"

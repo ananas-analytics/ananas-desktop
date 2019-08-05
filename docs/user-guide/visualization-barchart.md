@@ -28,6 +28,14 @@ title: Bar Chart
 
   The Label of Y Axis
 
+- Stacked Bar Chart? (*0.9.0+*)
+
+	Display the bars in a stack way
+
+- Horizontal Bar Chart? (*0.9.0+*)
+
+	Display the bars in a horizontal way
+
 # Advanced Settings
 
 - SQL
