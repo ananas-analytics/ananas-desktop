@@ -126,6 +126,10 @@ googleJavaFormat {
   toolVersion = '1.7'
 }
 
+compileJava {
+    dependsOn 'googleJavaFormat'
+}
+
 test {
     //we want display the following test events
     testLogging {

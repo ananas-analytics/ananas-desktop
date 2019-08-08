@@ -1,6 +1,7 @@
 package org.ananas.acceptance;
 
 import com.jayway.jsonpath.JsonPath;
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,14 @@ public class Fifa2019 {
   public void testExcelRun() {
     exit.expectSystemExitWithStatus(0);
 
+    ClassLoader classLoader = getClass().getClassLoader();
+    URL project = classLoader.getResource("test_projects/Fifa2019");
+
+    File output = new File(project.getPath() + "/excel-sql-00000-of-00001.csv");
+    if (output.exists()) {
+      output.delete();
+    }
+    Assert.assertTrue(!output.exists());
     exit.checkAssertionAfterwards(
         new Assertion() {
           public void checkAssertion() {
@@ -193,11 +202,12 @@ public class Fifa2019 {
 
             String jobId = JsonPath.read(json, "$.data.jobid");
             Assert.assertNotNull(jobId);
+
+            Assert.assertTrue(output.exists());
+
+            // TODO: test output csv content here
           }
         });
-
-    ClassLoader classLoader = getClass().getClassLoader();
-    URL project = classLoader.getResource("test_projects/Fifa2019");
 
     Main.main(
         new String[] {
