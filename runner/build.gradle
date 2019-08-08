@@ -89,6 +89,7 @@ dependencies {
 
 group = 'org.ananas'
 sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 publishing {
     publications {
@@ -108,6 +109,9 @@ shadowJar {
 	zip64 true
 	archiveName "${getSystemProperty('target', 'runner') == 'cli' ? project.cliJarName : project.runnerJarName}.jar"
 
+    exclude 'META-INFO/LICENSE'
+    exclude 'META-INFO/License'
+ 
 	mergeServiceFiles {
 		include 'reference.conf'
 	}

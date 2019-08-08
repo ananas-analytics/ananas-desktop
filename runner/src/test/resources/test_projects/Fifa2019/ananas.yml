@@ -351,12 +351,14 @@ steps:
     config:
       dimension:
         - Country
+      horizontal: true
       measures:
         - count
       sql: |-
         SELECT * FROM PCOLLECTION
         ORDER BY `count` DESC
         LIMIT 10
+      stack: false
       subtype: bar chart
       title: (TOP 10) Total number of players from each country
       xlabel: Country
@@ -522,7 +524,7 @@ steps:
         fields:
           - name: Name
             type: VARCHAR
-          - name: Positioning
+          - name: Balance
             type: INTEGER
     description: Save your data as CSV file
     id: 5d32099f84b5674b6a2202e5
@@ -540,8 +542,14 @@ steps:
       id: 5d4621fc3cac3c7b79a63694
       schema:
         fields:
-          - name: Title 1
+          - name: Rank
             type: DOUBLE
+          - name: Points
+            type: DOUBLE
+          - name: Team
+            type: DOUBLE
+          - name: Country
+            type: VARCHAR
     description: Read Excel file
     id: 5d4621fc3cac3c7b79a63694
     metadataId: org.ananas.source.file.excel
@@ -573,8 +581,8 @@ steps:
     config:
       format: csv
       header: true
-      path: ""
-      prefix: ${PROJECT_PATH}/excel-sql
+      path: ${PROJECT_PATH}
+      prefix: excel-sql
       subtype: file
     dataframe:
       data: []

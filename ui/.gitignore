@@ -7,3 +7,4 @@ dist
 bin
 /tags
 /resources/runner
+.env
