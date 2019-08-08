@@ -1,6 +1,5 @@
 package org.ananas.runner.steprunner.files.excel;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
@@ -71,7 +70,8 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
     Workbook workbook = null;
     try {
       // use file input stream here to avoid writing to the excel file when close
-      // see: https://stackoverflow.com/questions/49073251/why-does-apache-pois-workbook-close-method-write-content-to-input-file
+      // see:
+      // https://stackoverflow.com/questions/49073251/why-does-apache-pois-workbook-close-method-write-content-to-input-file
       workbook = WorkbookFactory.create(new FileInputStream(config.path));
       // Retrieving the number of sheets in the Workbook
       LOG.info("Workbook has " + workbook.getNumberOfSheets() + " sheets");

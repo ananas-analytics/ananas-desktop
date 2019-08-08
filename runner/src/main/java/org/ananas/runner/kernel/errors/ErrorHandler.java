@@ -3,7 +3,6 @@ package org.ananas.runner.kernel.errors;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +49,6 @@ public class ErrorHandler implements Serializable {
 
   @Override
   public String toString() {
-    return "Encounter " + count.get() +
-      " errors, lastErrorMessage=" + lastErrorMessage.get();
+    return "Encounter " + count.get() + " errors, lastErrorMessage=" + lastErrorMessage.get();
   }
 }
