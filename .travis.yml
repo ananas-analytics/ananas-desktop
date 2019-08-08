@@ -5,6 +5,7 @@ matrix:
       install: true
       jdk:
         - oraclejdk8
+        - openjdk11
       script:
         - ./gradlew :runner:verGJF
         - travis_wait ./gradlew :runner:test
