@@ -9,13 +9,14 @@ import org.apache.beam.sdk.schemas.Schema;
 
 public enum PostgresqlDataTypes implements JDBCDataType, DDL {
   BIGINT("bigint", Schema.FieldType.INT64.withNullable(true), true),
+  OID("oid", Schema.FieldType.BYTES.withNullable(true), true),
   BIGSERIAL("bigserial", Schema.FieldType.INT64.withNullable(true), true),
   BIT("bit", Schema.FieldType.STRING, false),
   BITVAR("bit varying", Schema.FieldType.STRING, false),
   BOOLEAN("boolean", Schema.FieldType.BOOLEAN.withNullable(true), true),
   BOOL("bool", Schema.FieldType.BOOLEAN, false),
   BYTE("byte", Schema.FieldType.BYTE, false),
-  BYTES("bytes", Schema.FieldType.BYTE.withNullable(true), true),
+  BYTES("bytes", Schema.FieldType.BYTES.withNullable(true), true),
   CHAR("char", Schema.FieldType.STRING, false),
   BPCHAR("bpchar", Schema.FieldType.STRING, false),
   CHARVAR("character varying", Schema.FieldType.STRING.withNullable(true), true),

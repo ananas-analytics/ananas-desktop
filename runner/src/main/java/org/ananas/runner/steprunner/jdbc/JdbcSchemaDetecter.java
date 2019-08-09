@@ -14,6 +14,7 @@ import org.jooq.RecordType;
 import org.jooq.impl.DefaultRecordMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.utils.IOUtils;
 
 public class JdbcSchemaDetecter implements Serializable {
 
@@ -80,11 +81,14 @@ public class JdbcSchemaDetecter implements Serializable {
         Timestamp ts = resultSet.getTimestamp(idx + 1);
         return new DateTime(ts).toInstant();
       }
+      if (type.getTypeName().equals(Schema.FieldType.STRING.getTypeName()) || type.getTypeName().equals(Schema.FieldType.BYTES.getTypeName()) || type.getTypeName().equals(Schema.FieldType.BYTE.getTypeName())) {
+        return resultSet.getString(idx + 1);
+      }
       Class clazz = TypeInferer.getClass(type);
       return resultSet.getObject(idx + 1, clazz);
     } catch (Exception e) {
       LOG.warn(
-          "FETCH AUTOCAST WARNING : " + "idx= " + idx + " type: " + type + "  \n" + e.getMessage());
+          "FETCH AUTOCAST WARNING : idx= {} type: {}  \n {}", idx, type, e.getMessage());
     }
     return null;
   }
