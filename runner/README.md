@@ -26,16 +26,15 @@ processing jobs, and job contexts. It was originally started at [Ananas Analytic
 ## Running 
 
 1. Build the fat jar
-```gradle clean build fatjar```
+```../build-cli.sh```
 
 2. Run 
-```java -jar build/libs/ananas-all-0.1.jar 8888``` 
-where first program argument is the port ( 3003 by default)
+```java -jar build/libs/ananas-cli-xxx.jar start --host [host] --port 8888``` 
 
 or 
 
 1. Using gradle run task
-```gradle :runner:run```
+```gradle :runner:run -DfilesToStage=mock.jar```
 
 ## Documentation
 
@@ -48,7 +47,7 @@ or
 
 ## Coming soon
 
-* New I/O Connector : Redis, Kafka, Pubsub, BigQuery
+* New I/O Connector : Redis, Kafka, Pubsub
 * New transformer step *javascript*
  
 ## Contribute
