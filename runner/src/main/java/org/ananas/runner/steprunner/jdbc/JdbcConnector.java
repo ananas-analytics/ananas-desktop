@@ -18,8 +18,12 @@ import org.apache.beam.sdk.values.Row;
 import org.jooq.Query;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JdbcConnector extends ConnectorStepRunner {
+
+  private static final Logger LOG = LoggerFactory.getLogger(JdbcConnector.class);
 
   private JdbcStepConfig config;
 
@@ -66,6 +70,7 @@ public class JdbcConnector extends ConnectorStepRunner {
             .mapToObj(idx -> JdbcSchemaDetecter.autoCast(r, idx, schema))
             .collect(toRow(schema));
       } catch (Exception e) {
+        LOG.warn("error {}", e.toString());
         handler.addError(e);
         return null;
       }
