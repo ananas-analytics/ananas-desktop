@@ -14,7 +14,6 @@ import org.jooq.RecordType;
 import org.jooq.impl.DefaultRecordMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.utils.IOUtils;
 
 public class JdbcSchemaDetecter implements Serializable {
 
@@ -56,7 +55,11 @@ public class JdbcSchemaDetecter implements Serializable {
           metadata.getColumnTypeName(i) != null
               ? metadata.getColumnTypeName(i).toLowerCase()
               : "text";
-      LOG.debug("extracting schema column '{}' with type name '{}' to Beam Type '{}'", name, typeName, driver.getDefaultDataTypeLiteral(typeName));
+      LOG.debug(
+          "extracting schema column '{}' with type name '{}' to Beam Type '{}'",
+          name,
+          typeName,
+          driver.getDefaultDataTypeLiteral(typeName));
       builder.addNullableField(
           name,
           driver.getDefaultDataTypeLiteral(typeName) == null
@@ -96,8 +99,7 @@ public class JdbcSchemaDetecter implements Serializable {
           return resultSet.getObject(idx + 1, clazz);
       }
     } catch (Exception e) {
-      LOG.warn(
-          "FETCH AUTOCAST WARNING : idx= {} type: {}  \n {}", idx, type, e.getMessage());
+      LOG.warn("FETCH AUTOCAST WARNING : idx= {} type: {}  \n {}", idx, type, e.getMessage());
     }
     return null;
   }

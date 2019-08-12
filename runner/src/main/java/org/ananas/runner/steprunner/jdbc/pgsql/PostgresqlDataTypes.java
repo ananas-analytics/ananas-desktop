@@ -15,14 +15,18 @@ public enum PostgresqlDataTypes implements JDBCDataType, DDL {
   BIT("bit", Schema.FieldType.STRING, false),
   BITVAR("bit varying", Schema.FieldType.STRING, false),
   BOOLEAN("boolean", Schema.FieldType.BOOLEAN.withNullable(true), true),
-  ARRAY_BOOLEAN("boolean[]", Schema.FieldType.array(Schema.FieldType.BOOLEAN).withNullable(true), true),
+  ARRAY_BOOLEAN(
+      "boolean[]", Schema.FieldType.array(Schema.FieldType.BOOLEAN).withNullable(true), true),
   BOOL("bool", Schema.FieldType.BOOLEAN, false),
   BYTE("byte", Schema.FieldType.BYTE, false),
   BYTES("bytes", Schema.FieldType.BYTES.withNullable(true), true),
   CHAR("char", Schema.FieldType.STRING, false),
   BPCHAR("bpchar", Schema.FieldType.STRING, false),
   CHARVAR("character varying", Schema.FieldType.STRING.withNullable(true), true),
-  CHARVAR_ARRAY("character varying[]", Schema.FieldType.array(Schema.FieldType.STRING).withNullable(true), true),
+  CHARVAR_ARRAY(
+      "character varying[]",
+      Schema.FieldType.array(Schema.FieldType.STRING).withNullable(true),
+      true),
   CHARACTER("character", Schema.FieldType.STRING, false),
   DATE_metadata(
       "date", Schema.FieldType.DATETIME.withMetadata("subtype", "DATE").withNullable(true), true),
@@ -41,9 +45,9 @@ public enum PostgresqlDataTypes implements JDBCDataType, DDL {
       Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ").withNullable(true),
       true),
   TIME_WITH_TIME_ZONE_metadata(
-          "time with time zone",
-          Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ").withNullable(true),
-          true),
+      "time with time zone",
+      Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ").withNullable(true),
+      true),
   TIMESTAMPZ_metadata(
       "timestamptz", Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"), false),
   DECIMAL("decimal", Schema.FieldType.DECIMAL, false),
