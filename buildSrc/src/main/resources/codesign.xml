@@ -1,0 +1,124 @@
+<project>
+    <target name="hello">
+        <echo>Hello, from Ant</echo>
+    </target>
+
+    <target name="codesign-dir">
+        <property name="entitlement.file" location="../../../../ui/build/entitlements.mac.plist" />
+        <!--
+            input property: codesign.dir
+        -->  
+        <path id="findFile">
+            <fileset dir="${codesign.dir}">
+                <include name="**/*"/>
+                <exclude name="**/ASSEMBLY*"/>
+                <exclude name="**/LICENSE"/>
+                <exclude name="**/THIRD_PARTY_README"/>
+                <exclude name="**/*.pf"/>
+                <exclude name="**/*.data"/>
+                <exclude name="**/*.bfc"/>
+                <exclude name="**/*.template"/>
+                <exclude name="**/*.properties"/>
+                <!-- for electron -->
+                <exclude name="**/*.h"/>
+                <exclude name="**/*.pak"/>
+                <exclude name="**/*.yml"/>
+                <exclude name="**/*.yaml"/>
+                <exclude name="**/_CodeSignature/**/*"/>
+                <exclude name="**/Versions/Current/**/*"/>
+                <exclude name="**/*.cstemp"/>
+                <exclude name="**/*.plist"/>
+                <!--
+                <include name="**/*.jnilib"/>
+                <include name="**/*.dylib"/>
+                <include name="**/bin/*"/>
+                <exclude name="**/*.txt"/>
+                -->
+            </fileset>
+        </path>
+        <echo message="files to sign: ${toString:findFile}"/>
+
+        <!--use xargs to loop over and codesign all files-->
+        <echo message="Signing with ${apple.packager.signid}"/>
+        <echo
+            message="echo &quot;${toString:findFile}&quot; |tr ':' '\n' |sed 's/.*/&quot;&amp;&quot;/' |xargs codesign -s &quot;${apple.packager.signid}&quot; -v -f --entitlements &quot;${entitlement.file}&quot; --options runtime"/>
+        <exec executable="bash" failonerror="true">
+            <arg value="-c"/>
+            <arg
+                value="echo &quot;${toString:findFile}&quot; |tr ':' '\n' |sed 's/.*/&quot;&amp;&quot;/' |xargs codesign -s &quot;${apple.packager.signid}&quot; -v -f --entitlements &quot;${entitlement.file}&quot; --options runtime"/>
+        </exec>
+    </target>
+
+    <target name="codesign-libs">
+        <property file="codesign.properties"/>
+
+        <property name="absolute.bin.dir" location="${bin.dir}"/>
+        <property name="absolute.runner.dir" location="${runner.dir}"/>
+        <property name="entitlement.file" location="../../../../ui/build/entitlements.mac.plist" />
+
+        <echo message="absolute.bin.dir: ${absolute.bin.dir}"/>
+        <echo message="entitlement.file: ${entitlement.file}"/>
+
+        <echo message="lib.dir: ${lib.dir}"/>
+        <echo message="signing.jarname:${signing.jarname}"/>
+        <echo message="out.dir: ${out.dir}"/>
+
+        <path id="findJar">
+            <fileset dir="${lib.dir}">
+                <include name="${signing.jarname}"/>
+            </fileset>
+        </path>
+        <echo message="jar file to sign: ${toString:findJar}"/>
+
+        <mkdir dir="${out.dir}/jar-signing"/>
+
+        <unzip src="${toString:findJar}" dest="${out.dir}/jar-signing"/>
+        <path id="findFile">
+            <fileset dir="${out.dir}/jar-signing">
+                <include name="**/*.jnilib"/>
+                <include name="**/*.dylib"/>
+            </fileset>
+        </path>
+        <echo message="findFile: ${toString:findFile}"/>
+
+        <delete verbose="true">
+            <fileset dir="${out.dir}/jar-signing">
+                <include name="**/${signing.delete}" if="signing.delete"/>
+            </fileset>
+        </delete>
+
+        <!--use xargs to loop over and codesign all files-->
+        <echo message="Signing ${toString:findJar} using ${apple.packager.signid}"/>
+        <echo
+            message="echo &quot;${toString:findFile}&quot; |tr ':' '\n' |xargs codesign -s &quot;${apple.packager.signid}&quot; -v -f --entitlements &quot;${entitlement.file}&quot; --options runtime"/>
+        <exec executable="bash" failonerror="true">
+            <arg value="-c"/>
+            <arg
+                value="echo &quot;${toString:findFile}&quot; |tr ':' '\n' |xargs codesign -s &quot;${apple.packager.signid}&quot; -v -f --entitlements &quot;${entitlement.file}&quot; --options runtime"/>
+        </exec>
+
+        <echo message="delete original jar"/>
+        <delete>
+            <fileset dir="${lib.dir}" includes="**/runner*.jar"/>
+        </delete>
+
+        <pathconvert property="find.jar.rel">
+            <path refid="findJar"/>
+            <globmapper from="${basedir}/*" to="*" handledirsep="true"/>
+        </pathconvert>
+        <echo message="zip to ${lib.dir}/${signed.jar}"/>
+        <zip destfile="${lib.dir}/${signed.jar}" basedir="${out.dir}/jar-signing" excludes="dont*.*"/>
+
+        <!--cleanup temp folder-->
+        <delete dir="${out.dir}/jar-signing"/>
+
+        <!-- code sign the runner with new jar -->
+        <echo message="code signing ananas runner app: ${absolute.bin.dir}/ananas" />
+        <exec executable="bash" failonerror="true">
+            <arg value="-c"/>
+            <arg
+                value="echo &quot;${absolute.bin.dir}/ananas&quot; |tr ':' '\n' |xargs codesign -s &quot;${apple.packager.signid}&quot; -v -f --entitlements &quot;${entitlement.file}&quot; --options runtime" />
+        </exec>
+
+    </target>
+</project>

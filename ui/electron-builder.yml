@@ -20,11 +20,9 @@ mac:
   gatekeeperAssess: false
   entitlements: build/entitlements.mac.plist
   entitlementsInherit: build/entitlements.mac.plist
-  binaries:
-    - resources/runner/Contents/MacOS/ananas 
   target:
     - dmg
-afterSign: build/scripts/notarize.js
+# afterSign: build/scripts/notarize.js
 
 linux:
   category: Office

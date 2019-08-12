@@ -1,3 +1,5 @@
+ant.importBuild 'buildSrc/src/main/resources/codesign.xml'
+
 def String getSystemProperty(String propertyName, String defaultValue)
 {
 	return System.properties.getProperty(propertyName, defaultValue)
@@ -59,14 +61,17 @@ task packRunner(type: Exec) {
 		"--jdk", "$project.JDK_HOME",
 		"--executable", "ananas",
 		"--classpath", "runner/build/libs/${project.runnerJarName}.jar",
+		// "--removelibs", "runner/build/libs/${project.runnerJarName}.jar",
+        // "--minimizejre", "soft",
 		"--mainclass", "org.ananas.runner.api.Main",
 		"--vmargs", "Xmx4G",
+        "--bundle", "com.ananas.desktop",
 		"--output", "ui/resources/runner"
 }
 
-task pack(type: Exec) {
+task packMac(type: Exec) {
 	dependsOn ':ui:build'
-	dependsOn packRunner
+	// dependsOn packRunner
 
 	inputs.property 'NODE_ENV', getAnanasEnv()
 
@@ -78,9 +83,10 @@ task pack(type: Exec) {
 
 	environment "NODE_ENV", "${getAnanasEnv()}"
 
-    environment "CSC_LINK", "${getSystemProperty('CSC_LINK', '')}"
-    environment "CSC_KEY_PASSWORD", "${getSystemProperty('CSC_KEY_PASSWORD', '')}"
+    // environment "CSC_LINK", "${getSystemProperty('CSC_LINK', '')}"
+    // environment "CSC_KEY_PASSWORD", "${getSystemProperty('CSC_KEY_PASSWORD', '')}"
+    environment "CSC_IDENTITY_AUTO_DISCOVERY", "false"
 
-	commandLine "./node_modules/.bin/electron-builder", "--${project.platform}"
+	commandLine "./node_modules/.bin/electron-builder", "--mac"
 }
 
