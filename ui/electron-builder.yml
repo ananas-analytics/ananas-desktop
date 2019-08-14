@@ -1,0 +1,30 @@
+appId: com.ananas.desktop
+productName: Ananas Analytics Desktop Edition
+copyright: Copyright © 2019 Ananas Analytics https://ananasanalytics.com
+directories:
+  output: ../bin
+files:
+  - dist/app.js
+  - dist/bundle.js
+  - build/*
+  - build/icons/*
+  - public/*
+  - public/images/*
+extraResources:
+  - resources/**/*
+
+mac:
+  category: public.app-category.business
+  icon: build/icons.icns
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  target:
+    - dmg
+# afterSign: build/scripts/notarize.js
+
+linux:
+  category: Office
+win:
+  target: portable

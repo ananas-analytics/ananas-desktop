@@ -25,8 +25,6 @@ repositories {
     jcenter()
 }
 
-
-
 dependencies {
     def withoutX = { exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core:2.9.5' }
 
@@ -45,8 +43,8 @@ dependencies {
     compile 'org.apache.maven:maven-model:3.3.9'
     compile 'org.apache.poi:poi:3.17'
     compile 'org.apache.poi:poi-ooxml:3.17'
-    compile 'org.apache.spark:spark-core_2.11:2.4.3'
-    compile 'org.apache.spark:spark-streaming_2.11:2.4.3'
+    // compile 'org.apache.spark:spark-core_2.11:2.4.3'
+    // compile 'org.apache.spark:spark-streaming_2.11:2.4.3'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5', withoutX
     compile 'com.github.haifengl:smile-core:1.5.2'
@@ -76,7 +74,6 @@ dependencies {
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'junit:junit:4.12'
     testCompile 'com.github.stefanbirkner:system-rules:1.19.0'
-    testCompile 'com.jayway.jsonpath:json-path:2.4.0'
 
     compileOnly 'org.projectlombok:lombok:1.16.2'
     compileOnly 'com.google.auto.value:auto-value:1.2'
@@ -89,6 +86,7 @@ dependencies {
 
 group = 'org.ananas'
 sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 publishing {
     publications {
@@ -108,6 +106,9 @@ shadowJar {
 	zip64 true
 	archiveName "${getSystemProperty('target', 'runner') == 'cli' ? project.cliJarName : project.runnerJarName}.jar"
 
+    exclude 'META-INF/LICENSE'
+    exclude 'LICENSE'
+ 
 	mergeServiceFiles {
 		include 'reference.conf'
 	}
@@ -120,6 +121,10 @@ shadowJar {
 
 googleJavaFormat {
   toolVersion = '1.7'
+}
+
+compileJava {
+    dependsOn 'googleJavaFormat'
 }
 
 test {

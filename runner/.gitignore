@@ -11,4 +11,5 @@ cscope.files
 cscope.in.out
 cscope.out
 cscope.po.out
-
+/src/test/resources/test_projects/**/output
+**/.temp-beam-*

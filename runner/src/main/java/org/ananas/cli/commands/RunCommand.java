@@ -71,7 +71,8 @@ public class RunCommand implements Callable<Integer> {
     // build DagRequest
     try {
       DagRequest dagRequest = DagRequestBuilder.build(project, profile, params, goals);
-      Object result = Services.runDag(null, null, JsonUtil.toJson(dagRequest));
+      DagRequest resolvedDagRequest = dagRequest.resolveVariables();
+      Object result = Services.runDag(null, null, JsonUtil.toJson(resolvedDagRequest));
       System.out.println(result);
 
       ApiResponse apiResponse = JsonUtil.fromJson(result.toString(), ApiResponse.class);

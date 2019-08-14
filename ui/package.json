@@ -18,34 +18,6 @@
     "dist-linux": "export NODE_ENV=production && yarn run webpack-prod && yarn run webpack-main-prod && electron-builder --linux"
   },
   "author": "Bo HOU <daily.bhou@gmail.com>",
-  "build": {
-    "appId": "com.ananasanalytics.desktop",
-    "productName": "Ananas Analytics Desktop Edition",
-    "copyright": "Copyright © 2019 Ananas Analytics https://ananasanalytics.com",
-    "directories": {
-      "output": "../bin"
-    },
-    "files": [
-      "dist/app.js",
-      "dist/bundle.js",
-      "build/*",
-      "build/icons/*",
-      "public/*",
-      "public/images/*"
-    ],
-    "extraResources": [
-      "resources/**/*"
-    ],
-    "mac": {
-      "category": "public.app-category.business"
-    },
-    "linux": {
-      "category": "Office"
-    },
-    "win": {
-      "target": "portable"
-    }
-  },
   "devDependencies": {
     "@babel/cli": "7.2.3",
     "@babel/core": "7.2.2",
@@ -61,8 +33,10 @@
     "babel-loader": "8.0.5",
     "css-loader": "2.1.0",
     "del": "^4.1.1",
+    "dotenv": "^8.0.0",
     "electron": "^4.0.2",
-    "electron-builder": "^20.38.5",
+    "electron-builder": "^21.2.0",
+    "electron-notarize": "^0.1.1",
     "eslint": "^5.12.1",
     "eslint-plugin-flowtype": "^3.2.1",
     "eslint-plugin-react": "^7.12.4",

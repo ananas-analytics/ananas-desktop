@@ -47,4 +47,9 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
+# Indentation override for all xml
+[*.xml]
+indent_style = space
+indent_size = 4
+
 

@@ -4,6 +4,7 @@
 # Ignore Gradle build output directory
 /build
 /buildSrc/build
+.gradletasknamecache
 
 # IDE
 .idea
@@ -14,6 +15,7 @@
 /*.iml
 derby.log
 *.key
+.env
 
 # ctags
 /tags
