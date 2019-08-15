@@ -4,6 +4,7 @@ matrix:
       dist: trusty
       install: true
       jdk:
+        - openjdk8
         - openjdk11
       script:
         - ./gradlew :runner:verGJF
