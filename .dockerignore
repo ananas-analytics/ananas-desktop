@@ -1,0 +1,10 @@
+**/.git
+**/.idea
+**/bin/*
+**/tmp
+**/ui/resources/runner
+**/node_modules
+**/assets
+
+
+.env

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  test:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: [ 'sh', '-c', './gradlew test' ]
+    volumes:
+      - ./:/ananas-desktop
+  mysql:
+    image: mysql:latest
+    volumes:
+      - ./test/mysql:/docker-entrypoint-initdb.d/:ro

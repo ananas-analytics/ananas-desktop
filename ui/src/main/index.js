@@ -44,7 +44,7 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
   ipcMain.on('get-variable-dict', (event, projectId) => {
     localDB.getProjectVariableDict(projectId)
       .then(dict => {
-        log.info(dict)
+        log.debug(dict)
         event.sender.send('get-variable-dict-result', { code: 200, data: dict })
       })
       .catch(err => {

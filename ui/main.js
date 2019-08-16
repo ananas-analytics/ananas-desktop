@@ -168,7 +168,7 @@ app.on('ready', () => {
     })
     .then(workspace => {
       settings = workspace.settings || {} 
-      log.info(`workspace settings ${JSON.stringify(settings, null, 4)}`)
+      log.debug(`workspace settings ${JSON.stringify(settings, null, 4)}`)
       createWindow()
     })
     // TODO: check updates
