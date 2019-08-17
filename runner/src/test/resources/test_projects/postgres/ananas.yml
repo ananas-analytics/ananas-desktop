@@ -1,0 +1,315 @@
+dag:
+  connections:
+    - source: 5d58320a89823537bb919b5b
+      target: 5d583c8842ad63660c333609
+    - source: 5d58323489823537bb919b5c
+      target: 5d583c8842ad63660c333609
+    - source: 5d58319089823537bb919b59
+      target: 5d583cd442ad63660c33360c
+    - source: 5d583c8842ad63660c333609
+      target: 5d583cd442ad63660c33360c
+    - source: 5d583cd442ad63660c33360c
+      target: 5d583d2642ad63660c333610
+    - source: 5d583d2642ad63660c333610
+      target: 5d583dfc42ad63660c333614
+    - source: 5d583dfc42ad63660c333614
+      target: 5d58405642ad63660c333620
+id: 5d58317589823537bb919b57
+name: PostgreSQL test
+steps:
+  5d58319089823537bb919b59:
+    config:
+      database: postgres
+      forceAutoDetectSchema: false
+      password: ${PASSWORD}
+      sql: SELECT * FROM customers
+      subtype: jdbc
+      tablename: customers
+      url: postgresql://${HOST}:5432/postgres
+      user: ${USER}
+    dataframe:
+      data: []
+      id: 5d58319089823537bb919b59
+      schema:
+        fields:
+          - name: customer_id
+            type: VARCHAR
+          - name: company_name
+            type: VARCHAR
+          - name: contact_name
+            type: VARCHAR
+          - name: contact_title
+            type: VARCHAR
+          - name: address
+            type: VARCHAR
+          - name: city
+            type: VARCHAR
+          - name: region
+            type: VARCHAR
+          - name: postal_code
+            type: VARCHAR
+          - name: country
+            type: VARCHAR
+          - name: phone
+            type: VARCHAR
+          - name: fax
+            type: VARCHAR
+    description: Connect data from postgreSQL database
+    id: 5d58319089823537bb919b59
+    metadataId: org.ananas.source.jdbc.postgres
+    name: Customers
+    type: connector
+  5d58320a89823537bb919b5b:
+    config:
+      database: postgres
+      forceAutoDetectSchema: false
+      password: ${PASSWORD}
+      sql: SELECT * FROM orders
+      subtype: jdbc
+      tablename: orders
+      url: postgresql://${HOST}:5432/postgres
+      user: ${USER}
+    dataframe:
+      data: []
+      id: 5d58320a89823537bb919b5b
+      schema:
+        fields:
+          - name: order_id
+            type: INTEGER
+          - name: customer_id
+            type: VARCHAR
+          - name: employee_id
+            type: INTEGER
+          - name: order_date
+            type: TIMESTAMP
+          - name: required_date
+            type: TIMESTAMP
+          - name: shipped_date
+            type: TIMESTAMP
+          - name: ship_via
+            type: INTEGER
+          - name: freight
+            type: VARCHAR
+          - name: ship_name
+            type: VARCHAR
+          - name: ship_address
+            type: VARCHAR
+          - name: ship_city
+            type: VARCHAR
+          - name: ship_region
+            type: VARCHAR
+          - name: ship_postal_code
+            type: VARCHAR
+          - name: ship_country
+            type: VARCHAR
+    description: Connect data from postgreSQL database
+    id: 5d58320a89823537bb919b5b
+    metadataId: org.ananas.source.jdbc.postgres
+    name: Order
+    type: connector
+  5d58323489823537bb919b5c:
+    config:
+      database: postgres
+      forceAutoDetectSchema: false
+      password: ${PASSWORD}
+      sql: SELECT * FROM order_details
+      subtype: jdbc
+      tablename: order_details
+      url: postgresql://${HOST}:5432/postgres
+      user: ${USER}
+    dataframe:
+      data: []
+      id: 5d58323489823537bb919b5c
+      schema:
+        fields:
+          - name: order_id
+            type: INTEGER
+          - name: product_id
+            type: INTEGER
+          - name: unit_price
+            type: VARCHAR
+          - name: quantity
+            type: INTEGER
+          - name: discount
+            type: VARCHAR
+    description: Connect data from postgreSQL database
+    id: 5d58323489823537bb919b5c
+    metadataId: org.ananas.source.jdbc.postgres
+    name: Order Details
+    type: connector
+  5d583c8842ad63660c333609:
+    config:
+      joinedcolumnmap:
+        order_id: order_id
+      leftcolumns:
+        - order_id
+        - customer_id
+      leftstepid: 5d58320a89823537bb919b5b
+      rightcolumns:
+        - unit_price
+        - quantity
+        - discount
+      rightstepid: 5d58323489823537bb919b5c
+      subtype: join
+    dataframe:
+      data: []
+      id: 5d583c8842ad63660c333609
+      schema:
+        fields:
+          - name: order_id
+            type: INTEGER
+          - name: customer_id
+            type: VARCHAR
+          - name: unit_price
+            type: VARCHAR
+          - name: quantity
+            type: INTEGER
+          - name: discount
+            type: VARCHAR
+    description: Join two data
+    id: 5d583c8842ad63660c333609
+    metadataId: org.ananas.transform.join
+    name: JOIN order details with order
+    type: transformer
+  5d583cd442ad63660c33360c:
+    config:
+      joinedcolumnmap:
+        customer_id: customer_id
+      leftcolumns:
+        - order_id
+        - customer_id
+        - unit_price
+        - quantity
+        - discount
+      leftstepid: 5d583c8842ad63660c333609
+      rightcolumns:
+        - contact_name
+      rightstepid: 5d58319089823537bb919b59
+      subtype: join
+    dataframe:
+      data: []
+      id: 5d583cd442ad63660c33360c
+      schema:
+        fields:
+          - name: order_id
+            type: INTEGER
+          - name: customer_id
+            type: VARCHAR
+          - name: unit_price
+            type: VARCHAR
+          - name: quantity
+            type: INTEGER
+          - name: discount
+            type: VARCHAR
+          - name: contact_name
+            type: VARCHAR
+    description: Join two data
+    id: 5d583cd442ad63660c33360c
+    metadataId: org.ananas.transform.join
+    name: JOIN customer name
+    type: transformer
+  5d583d2642ad63660c333610:
+    config:
+      sql: |-
+        SELECT 
+        	customer_id,
+        	contact_name,
+          quantity,
+          CAST(unit_price AS DOUBLE) as unit_price,
+          CAST(discount AS DOUBLE) as discount
+        FROM PCOLLECTION
+        WHERE unit_price is not NULL
+        and discount is not NULL
+        and quantity is not NULL
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d583d2642ad63660c333610
+      schema:
+        fields:
+          - name: customer_id
+            type: VARCHAR
+          - name: contact_name
+            type: VARCHAR
+          - name: quantity
+            type: INTEGER
+          - name: unit_price
+            type: DOUBLE
+          - name: discount
+            type: DOUBLE
+    description: Transform your data with SQL
+    id: 5d583d2642ad63660c333610
+    metadataId: org.ananas.transform.sql
+    name: CAST price to number
+    type: transformer
+  5d583dfc42ad63660c333614:
+    config:
+      sql: |-
+        SELECT 
+        	customer_id,
+          contact_name,
+          SUM(discount * quantity * unit_price) AS subtotal
+        FROM PCOLLECTION
+        GROUP BY customer_id, contact_name
+        ORDER BY subtotal DESC
+        LIMIT 10
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d583dfc42ad63660c333614
+      schema:
+        fields:
+          - name: customer_id
+            type: VARCHAR
+          - name: contact_name
+            type: VARCHAR
+          - name: subtotal
+            type: DOUBLE
+    description: Transform your data with SQL
+    id: 5d583dfc42ad63660c333614
+    metadataId: org.ananas.transform.sql
+    name: Top 10 Customer Subtotal
+    type: transformer
+  5d58405642ad63660c333620:
+    config:
+      dimension:
+        - contact_name
+      horizontal: false
+      measures:
+        - subtotal
+      sql: SELECT * FROM PCOLLECTION
+      stack: false
+      subtype: bar chart
+      title: Top 10 customers
+      xlabel: Customer
+      ylabel: Subtotal
+    dataframe:
+      data: []
+      id: 5d58405642ad63660c333620
+      schema:
+        fields:
+          - name: CUSTOMER_ID
+            type: VARCHAR
+          - name: CONTACT_NAME
+            type: VARCHAR
+          - name: SUBTOTAL
+            type: DOUBLE
+    description: Visualize your data as bar charts
+    id: 5d58405642ad63660c333620
+    metadataId: org.ananas.visualization.barchart
+    name: Bar Chart - top 10 customers
+    type: viewer
+triggers: []
+variables:
+  - name: USER
+    description: ""
+    scope: project
+    type: string
+  - name: PASSWORD
+    description: ""
+    scope: project
+    type: credential
+  - name: HOST
+    description: ""
+    scope: project
+    type: string
