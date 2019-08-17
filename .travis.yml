@@ -14,7 +14,7 @@ matrix:
         - docker
       before_install:
         - docker-compose build
-        - docker-compose run --rm test -Dananas.test.properties=test.docker.properties
+        - docker-compose run --rm test
 
     - language: node_js
       node_js:
