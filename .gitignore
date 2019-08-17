@@ -25,3 +25,7 @@ derby.log
 /cli/*.jar
 /cli/ananas
 /cli/ananas_completion
+
+# ignore local file
+test.local.properties
+

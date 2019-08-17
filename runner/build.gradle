@@ -134,6 +134,7 @@ test {
         showStandardStreams = true
     }
 
+    systemProperties System.properties
     systemProperties 'java.security.policy': file("$projectDir/src/test/resources/test.policy").absolutePath
 }
 

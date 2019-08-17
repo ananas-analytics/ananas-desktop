@@ -1,13 +1,18 @@
 version: '3'
 services:
   test:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    command: [ 'sh', '-c', './gradlew test' ]
-    volumes:
-      - ./:/ananas-desktop
+    build: .
+    env_file:
+      - ./test/test.env
+    command: [ 'sh', '-c', '/wait && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties',  ]
+    depends_on:
+      - mysql
+    environment:
+      WAIT_HOSTS: mysql:3306
   mysql:
-    image: mysql:latest
+    image: mysql:5.7
+    env_file:
+      - ./test/test.env
     volumes:
       - ./test/mysql:/docker-entrypoint-initdb.d/:ro
+
