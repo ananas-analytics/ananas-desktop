@@ -5,29 +5,14 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import org.ananas.acceptance.helper.AcceptanceForkJoinThreadFactory;
+import org.ananas.acceptance.helper.AcceptanceTestBase;
 import org.ananas.acceptance.helper.DataViewerHelper;
 import org.ananas.cli.Main;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.*;
 
-public class Fifa2019 {
-  @Rule public final ExpectedSystemExit exit = ExpectedSystemExit.none();
-
-  @Rule public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
-
-  @Rule
-  public final ProvideSystemProperty filesToStage =
-      new ProvideSystemProperty("filesToStage", "mock.jar");
-
-  @Rule
-  public final ProvideSystemProperty threadFactory =
-      new ProvideSystemProperty(
-          "java.util.concurrent.ForkJoinPool.common.threadFactory",
-          AcceptanceForkJoinThreadFactory.class.getName());
-
+public class Fifa2019 extends AcceptanceTestBase {
   @Test
   public void exploreDataSource() {
     exit.expectSystemExitWithStatus(0);
