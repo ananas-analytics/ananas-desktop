@@ -8,7 +8,13 @@ matrix:
         - openjdk11
       script:
         - ./gradlew :runner:verGJF
-        - travis_wait ./gradlew :runner:test
+        # test is done in docker
+        # - travis_wait ./gradlew :runner:test
+      services:
+        - docker
+      before_install:
+        - docker-compose build
+        - docker-compose run --rm test -Dananas.test.properties=test.docker.properties
 
     - language: node_js
       node_js:
@@ -17,4 +23,4 @@ matrix:
         - cd ui
       script:
         - yarn install && yarn test
-      
+
