@@ -5,68 +5,77 @@ import java.util.Map;
 import java.util.Objects;
 import org.ananas.runner.steprunner.jdbc.DDL;
 import org.ananas.runner.steprunner.jdbc.JDBCDataType;
-import org.apache.beam.sdk.schemas.Schema;
+import org.apache.beam.sdk.schemas.Schema.FieldType;
 
 public enum MySQLDataTypes implements JDBCDataType, DDL {
-  BIGINT("bigint", Schema.FieldType.INT64.withNullable(true), true),
-  BIGSERIAL("bigserial", Schema.FieldType.INT64.withNullable(true), true),
-  BIT("bit", Schema.FieldType.STRING, false),
-  BINARY("binary", Schema.FieldType.BYTE, false),
+  BIGINT("bigint", FieldType.INT64, true),
+  BIGSERIAL("bigserial", FieldType.INT64, false),
+  LONG("long", FieldType.INT64, false),
+  SERIAL("serial", FieldType.INT64, false),
+  SERIAL8("serial8", FieldType.INT64, false),
 
-  BITVAR("bit varying", Schema.FieldType.STRING, false),
-  BOOLEAN("boolean", Schema.FieldType.BOOLEAN.withNullable(true), true),
-  BOOL("bool", Schema.FieldType.BOOLEAN, false),
-  BYTE("byte", Schema.FieldType.BYTE, false),
-  BYTES("bytes", Schema.FieldType.BYTE.withNullable(true), true),
-  CHAR("char", Schema.FieldType.STRING, false),
-  BPCHAR("bpchar", Schema.FieldType.STRING, false),
-  CHARVAR("character varying", Schema.FieldType.STRING, false),
-  CHARACTER("character", Schema.FieldType.STRING, false),
-  DATE_metadata(
-      "date", Schema.FieldType.DATETIME.withMetadata("subtype", "DATE").withNullable(true), true),
-  TIME_metadata(
-      "time", Schema.FieldType.DATETIME.withMetadata("subtype", "TIME").withNullable(true), true),
-  TIMESTAMP_metadata(
-      "timestamp",
-      Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true),
-      true),
+  SMALLINT("smallint", FieldType.INT16, true),
+
+  INTEGER("integer", FieldType.INT32, true),
+  INT("int", FieldType.INT32, false),
+  INT8("int8", FieldType.INT32, false),
+  INT2("int2", FieldType.INT32, false),
+  INT4("int4", FieldType.INT32, false),
+  MEDIUMINT("mediumint", FieldType.INT32, false),
+  TINYINT("tinyint", FieldType.INT32, false),
+
+  DECIMAL("decimal", FieldType.DECIMAL, true),
+  NUMERIC("numeric", FieldType.DECIMAL, false),
+  FIXED("fixed", FieldType.DECIMAL, false),
+  DEC("dec", FieldType.DECIMAL, false),
+
+  FLOAT("float", FieldType.FLOAT, true),
+  REAL("real", FieldType.FLOAT, false),
+  SMALLFLOAT("smallfloat", FieldType.FLOAT, false),
+
+  DOUBLE("double", FieldType.DOUBLE, true),
+  DOUBLE_PRECISION("double precision", FieldType.DOUBLE, true),
+
+  BOOLEAN("boolean", FieldType.BOOLEAN, true),
+  BOOL("bool", FieldType.BOOLEAN, false),
+
+  BYTES("bytes", FieldType.BYTE, true),
+  BINARY("binary", FieldType.BYTE, false),
+  BYTE("byte", FieldType.BYTE, false),
+
+  TEXT("text", FieldType.STRING, true),
+  LONGTEXT("longtext", FieldType.STRING, false),
+  TINYTEXT("tinytext", FieldType.STRING, false),
+  STRING("string", FieldType.STRING, false),
+  BIT("bit", FieldType.STRING, false),
+  BITVAR("bit varying", FieldType.STRING, false),
+  CHAR("char", FieldType.STRING, false),
+  BPCHAR("bpchar", FieldType.STRING, false),
+  CHARVAR("character varying", FieldType.STRING, false),
+  CHARACTER("character", FieldType.STRING, false),
+  VARCHAR("varchar", FieldType.STRING, false),
+  LVARVARCHAR("lvarchar", FieldType.STRING, false),
+  NVARCHAR("nvarchar", FieldType.STRING, false),
+  OBJECT("object", FieldType.STRING, false),
+  JSON("json", FieldType.STRING, false),
+  XML("xml", FieldType.STRING, false),
+
+  DATE_metadata("date", FieldType.DATETIME.withMetadata("subtype", "DATE"), true),
+  TIME_metadata("time", FieldType.DATETIME.withMetadata("subtype", "TIME"), true),
+  TIMESTAMP_metadata("timestamp", FieldType.DATETIME.withMetadata("subtype", "TS"), true),
   TIMESTAMP_WITHOUT_TS_metadata(
-      "timestamp without time zone",
-      Schema.FieldType.DATETIME.withMetadata("subtype", "TS").withNullable(true),
-      true),
+      "timestamp without time zone", FieldType.DATETIME.withMetadata("subtype", "TS"), true),
   TIMESTAMP_WITH_TIME_ZONE_metadata(
       "timestamp with time zone",
-      Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ").withNullable(true),
+      FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"),
       true),
   TIMESTAMPZ_metadata(
-      "timestamptz", Schema.FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"), false),
-  DECIMAL("decimal", Schema.FieldType.DECIMAL, false),
-  REAL("real", Schema.FieldType.FLOAT, false),
-  NUMERIC("numeric", Schema.FieldType.DECIMAL.withNullable(true), true),
-  DOUBLE_PRECISION("double precision", Schema.FieldType.DOUBLE.withNullable(true), true),
-  INT("int", Schema.FieldType.INT32.withNullable(true), true),
-  INTEGER("integer", Schema.FieldType.INT32.withNullable(true), true),
-  INT8("int8", Schema.FieldType.INT64, false),
-  INT2("int2", Schema.FieldType.INT32, false),
-  INT4("int4", Schema.FieldType.INT32, false),
-  JSON("json", Schema.FieldType.STRING, false),
-  LONG("long", Schema.FieldType.INT64.withNullable(true), true),
-  LVARVARCHAR("lvarchar", Schema.FieldType.STRING, false),
-  NVARCHAR("nvarchar", Schema.FieldType.STRING, false),
-  OBJECT("object", Schema.FieldType.STRING, false),
-  SERIAL("serial", Schema.FieldType.INT64, false),
-  SERIAL8("serial8", Schema.FieldType.INT64, false),
-  SMALLFLOAT("smallfloat", Schema.FieldType.FLOAT, false),
-  SMALLINT("smallint", Schema.FieldType.INT32, false),
-  STRING("string", Schema.FieldType.STRING, false),
-  TEXT("text", Schema.FieldType.STRING.withNullable(true), true),
-  TIMESTAMP("timestamp", Schema.FieldType.DATETIME.withNullable(true), true),
-  TIME("time", Schema.FieldType.DATETIME.withNullable(true), true),
-  VARCHAR("varchar", Schema.FieldType.STRING, false),
-  DATE("date", Schema.FieldType.DATETIME.withNullable(true), true),
-  XML("xml", Schema.FieldType.STRING, false);
+      "timestamptz", FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"), false),
+  TIMESTAMP("timestamp", FieldType.DATETIME, true),
+  TIME("time", FieldType.DATETIME, true),
+  DATE("date", FieldType.DATETIME, true);
 
-  private static final Map<String, Schema.FieldType> dataTypes;
+  private static final Map<String, FieldType> dataTypes;
 
   static {
     dataTypes = new HashMap<>();
@@ -76,10 +85,10 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   }
 
   private String datatypeLiteral;
-  private Schema.FieldType fieldType;
+  private FieldType fieldType;
   private boolean isDefault;
 
-  MySQLDataTypes(String datatypeLiteral, Schema.FieldType fieldType, boolean isDefault) {
+  MySQLDataTypes(String datatypeLiteral, FieldType fieldType, boolean isDefault) {
     this.datatypeLiteral = datatypeLiteral;
     this.fieldType = fieldType;
     this.isDefault = isDefault;
@@ -89,7 +98,7 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
     return this.datatypeLiteral;
   }
 
-  public Schema.FieldType getFieldType() {
+  public FieldType getFieldType() {
     return this.fieldType;
   }
 
@@ -98,7 +107,7 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   }
 
   @Override
-  public JDBCDataType getDefaultDataType(Schema.FieldType type) {
+  public JDBCDataType getDefaultDataType(FieldType type) {
     for (JDBCDataType t : MySQLDataTypes.values()) {
       if ((Objects.deepEquals(t.getFieldType().withNullable(false), type)
               || Objects.deepEquals(t.getFieldType().withNullable(true), type))
@@ -109,7 +118,7 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
     return null;
   }
 
-  public Schema.FieldType getDefaultDataTypeLiteral(String datatypeLiteral) {
+  public FieldType getDefaultDataTypeLiteral(String datatypeLiteral) {
     return dataTypes.get(datatypeLiteral);
   }
 
