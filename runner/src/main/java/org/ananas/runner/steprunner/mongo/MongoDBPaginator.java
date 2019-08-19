@@ -1,4 +1,4 @@
-package org.ananas.runner.legacy.steps.db;
+package org.ananas.runner.steprunner.mongo;
 
 import com.github.wnameless.json.flattener.FlattenMode;
 import com.mongodb.MongoClient;
@@ -7,32 +7,38 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import java.util.Iterator;
+import java.util.Map;
 import org.ananas.runner.kernel.common.BsonDocumentFlattenerReader;
 import org.ananas.runner.kernel.errors.ErrorHandler;
-import org.ananas.runner.kernel.paginate.AbstractPaginator;
-import org.ananas.runner.kernel.paginate.Paginator;
+import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.kernel.schema.JsonAutodetect;
 import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
 import org.ananas.runner.legacy.steps.commons.json.BsonDocumentAsTextReader;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class MongoDBPaginator extends AbstractPaginator implements Paginator {
+public class MongoDBPaginator extends AutoDetectedSchemaPaginator {
+
+  private static final Logger LOG = LoggerFactory.getLogger(MongoDBPaginator.class);
 
   MongoStepConfig config;
 
-  public MongoDBPaginator(String id, MongoStepConfig config) {
-    super(id, null);
-    this.config = config;
-    this.schema =
-        config.isText
-            ? Schema.builder().addField("text", Schema.FieldType.STRING).build()
-            : this.autodetect();
+  public MongoDBPaginator(String id, String type, Map<String, Object> config, Schema schema) {
+    super(id, type, config, schema);
+  }
+
+  @Override
+  public void parseConfig(Map<String, Object> config) {
+    this.config = new MongoStepConfig(config);
   }
 
   @Override
   public Iterable<Row> iterateRows(Integer page, Integer pageSize) {
+    LOG.info("iterate rows page {} pagesize {}", page, pageSize);
+    LOG.info("schema {}", this.schema);
     FindIterable<Document> it = find().skip(pageSize * page).limit(pageSize);
     if (this.config.isText) {
       BsonDocumentAsTextReader reader = new BsonDocumentAsTextReader(this.schema);
@@ -44,7 +50,12 @@ public class MongoDBPaginator extends AbstractPaginator implements Paginator {
     return it.map(e -> reader.document2BeamRow(e));
   }
 
+  @Override
   public Schema autodetect() {
+    LOG.info("autodetect schema");
+    if (config.isText) {
+      return Schema.builder().addNullableField("text", Schema.FieldType.STRING).build();
+    }
     FindIterable<Document> l = find();
     Iterator<Document> it = l.limit(DEFAULT_LIMIT).iterator();
     return JsonAutodetect.autodetectBson(it, FlattenMode.KEEP_ARRAYS, false, DEFAULT_LIMIT);

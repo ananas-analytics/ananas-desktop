@@ -1,4 +1,4 @@
-package org.ananas.runner.legacy.steps.db;
+package org.ananas.runner.steprunner.mongo;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

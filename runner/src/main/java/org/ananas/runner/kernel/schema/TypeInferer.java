@@ -92,7 +92,8 @@ public class TypeInferer {
         if (!one.getCollectionElementType().getTypeName().isStringType()
             && !other.getCollectionElementType().getTypeName().isStringType()) {
           return Schema.FieldType.array(
-              mergeType(one.getCollectionElementType(), other.getCollectionElementType()));
+                  mergeType(one.getCollectionElementType(), other.getCollectionElementType()))
+              .withNullable(true);
         } else if (!one.getCollectionElementType().getTypeName().isStringType()) {
           return one;
         } else {
@@ -130,47 +131,47 @@ public class TypeInferer {
         || value.getClass().isAssignableFrom(JsonifyArrayList.class)) {
       List l = (List) value;
       if (l.isEmpty()) {
-        return Schema.FieldType.array(Schema.FieldType.STRING);
+        return Schema.FieldType.array(Schema.FieldType.STRING).withNullable(true);
       }
-      return Schema.FieldType.array(inferType(l.get(0), false));
+      return Schema.FieldType.array(inferType(l.get(0), false)).withNullable(true);
     }
     if (value.getClass().isArray()) {
       Object[] l = (Object[]) value;
       if (l.length == 0) {
-        return Schema.FieldType.array(Schema.FieldType.STRING);
+        return Schema.FieldType.array(Schema.FieldType.STRING).withNullable(true);
       }
-      return Schema.FieldType.array(inferType(l[0], false));
+      return Schema.FieldType.array(inferType(l[0], false)).withNullable(true);
     }
     if (value.getClass().isAssignableFrom(Integer.class)) {
-      return Schema.FieldType.INT32;
+      return Schema.FieldType.INT32.withNullable(true);
     }
     if (value.getClass().isAssignableFrom(Long.class)) {
-      return Schema.FieldType.INT64;
+      return Schema.FieldType.INT64.withNullable(true);
     }
     if (value.getClass().isAssignableFrom(Double.class)) {
-      return Schema.FieldType.DOUBLE;
+      return Schema.FieldType.DOUBLE.withNullable(true);
     }
     if (value.getClass().isAssignableFrom(Float.class)) {
-      return Schema.FieldType.FLOAT;
+      return Schema.FieldType.FLOAT.withNullable(true);
     }
     if (value.getClass().isAssignableFrom(BigDecimal.class)) {
-      return Schema.FieldType.DECIMAL;
+      return Schema.FieldType.DECIMAL.withNullable(true);
     }
     if (value.getClass().isAssignableFrom(Boolean.class)) {
-      return Schema.FieldType.BOOLEAN;
+      return Schema.FieldType.BOOLEAN.withNullable(true);
     }
     if (value.getClass().isAssignableFrom(Byte.class)) {
-      return Schema.FieldType.BYTE;
+      return Schema.FieldType.BYTE.withNullable(true);
     }
     if (value.getClass().isAssignableFrom(Timestamp.class)
         || value.getClass().isAssignableFrom(Date.class)
         || value.getClass().isAssignableFrom(Instant.class)) {
-      return Schema.FieldType.DATETIME;
+      return Schema.FieldType.DATETIME.withNullable(true);
     }
     if (parseString) {
       return inferTypeFromString(value.toString()); // we try to infer type from a string value
     }
-    return Schema.FieldType.STRING;
+    return Schema.FieldType.STRING.withNullable(true);
   }
 
   // Attempts to interpret the string <tt>value</tt> as a representation
