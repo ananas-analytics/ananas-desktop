@@ -14,14 +14,6 @@ public class StepConfig {
   public static final String FORMAT = "format";
   public static final String PREFIX = "prefix";
 
-  // Mongo
-  public static final String MONGO_HOST = "host";
-  public static final String MONGO_PORT = "port";
-  public static final String DATABASE = "database";
-  public static final String MONGO_FILTERS = "filters";
-  public static final String COLLECTION = "collection";
-  public static final String IS_TEXT = "text";
-
   // JDBC
   public static final String JDBC_OVERWRITE = "overwrite";
   public static final String JDBC_TYPE = "database";

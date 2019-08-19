@@ -22,6 +22,9 @@ import org.ananas.runner.steprunner.gcs.GCSConnector;
 import org.ananas.runner.steprunner.gcs.GCSLoader;
 import org.ananas.runner.steprunner.jdbc.JdbcConnector;
 import org.ananas.runner.steprunner.jdbc.JdbcLoader;
+import org.ananas.runner.steprunner.mongo.MongoDBConnector;
+import org.ananas.runner.steprunner.mongo.MongoDBLoader;
+import org.ananas.runner.steprunner.mongo.MongoDBPaginator;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
 
 public class ExtensionRegistry {
@@ -68,6 +71,8 @@ public class ExtensionRegistry {
         "org.ananas.source.api", APIConnector.class, APIPaginator.class);
     ExtensionRegistry.registerConnector(
         "org.ananas.source.file.excel", ExcelConnector.class, ExcelPaginator.class);
+    ExtensionRegistry.registerConnector(
+        "org.ananas.source.nosql.mongodb", MongoDBConnector.class, MongoDBPaginator.class);
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
 
@@ -81,6 +86,8 @@ public class ExtensionRegistry {
         "org.ananas.destination.gcp.gcs", GCSLoader.class, GCSPaginator.class);
     ExtensionRegistry.registerLoader(
         "org.ananas.destination.gcp.bigquery", BigQueryLoader.class, BigqueryPaginator.class);
+    ExtensionRegistry.registerLoader(
+        "org.ananas.destination.nosql.mongodb", MongoDBLoader.class, MongoDBPaginator.class);
 
     ExtensionRegistry.registerViewer("org.ananas.visualization.barchart", DefaultDataViewer.class);
     ExtensionRegistry.registerViewer("org.ananas.visualization.piechart", DefaultDataViewer.class);
