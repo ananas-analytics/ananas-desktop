@@ -100,4 +100,46 @@ public class PostgreSQLSource extends AcceptanceTestBase {
           "PASSWORD=" + props.getProperty("postgres.password"),
         });
   }
+
+  @Test
+  public void testDatatypes_Explore() {
+    exit.expectSystemExitWithStatus(0);
+
+    URL project = TestHelper.getResource("test_projects/postgres");
+
+    exit.checkAssertionAfterwards(
+        new Assertion() {
+          public void checkAssertion() {
+            String json = systemOutRule.getLog();
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
+
+            List<Map<String, String>> fields = JsonPath.read(json, "$.data.schema.fields");
+            Assert.assertTrue(fields.size() > 0);
+
+            List<String> data = JsonPath.read(json, "$.data.data[0]");
+
+            Assert.assertEquals(
+                "<book><title>Manual</title><chapter>...</chapter></book>", data.get(0));
+          }
+        });
+
+    Main.main(
+        new String[] {
+          "explore",
+          "-p",
+          project.getPath(),
+          "5d5b7d795ebce4675573dca3",
+          "-n",
+          "0",
+          "--size",
+          "5",
+          "-m",
+          "HOST=" + props.getProperty("postgres.host"),
+          "-m",
+          "USER=" + props.getProperty("postgres.user"),
+          "-m",
+          "PASSWORD=" + props.getProperty("postgres.password"),
+        });
+  }
 }

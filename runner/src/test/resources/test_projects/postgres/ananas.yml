@@ -14,6 +14,8 @@ dag:
       target: 5d583dfc42ad63660c333614
     - source: 5d583dfc42ad63660c333614
       target: 5d58405642ad63660c333620
+    - source: 5d5b7d795ebce4675573dca3
+      target: 5d5b84fcf9d90a35bfc979e0
 id: 5d58317589823537bb919b57
 name: PostgreSQL test
 steps:
@@ -288,17 +290,59 @@ steps:
       id: 5d58405642ad63660c333620
       schema:
         fields:
-          - name: CUSTOMER_ID
+          - name: customer_id
             type: VARCHAR
-          - name: CONTACT_NAME
+          - name: contact_name
             type: VARCHAR
-          - name: SUBTOTAL
+          - name: subtotal
             type: DOUBLE
     description: Visualize your data as bar charts
     id: 5d58405642ad63660c333620
     metadataId: org.ananas.visualization.barchart
     name: Bar Chart - top 10 customers
     type: viewer
+  5d5b7d795ebce4675573dca3:
+    config:
+      database: postgres
+      forceAutoDetectSchema: false
+      password: ${PASSWORD}
+      sql: SELECT * FROM datatype_test
+      subtype: jdbc
+      tablename: datatype_test
+      url: postgresql://${HOST}:5432/postgres
+      user: ${USER}
+    dataframe:
+      data: []
+      id: 5d5b7d795ebce4675573dca3
+      schema:
+        fields:
+          - name: xml_type
+            type: VARCHAR
+          - name: description
+            type: VARCHAR
+    description: Connect data from postgreSQL database
+    id: 5d5b7d795ebce4675573dca3
+    metadataId: org.ananas.source.jdbc.postgres
+    name: PostgreSQL Source
+    type: connector
+  5d5b84fcf9d90a35bfc979e0:
+    config:
+      sql: SELECT * FROM PCOLLECTION
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d5b84fcf9d90a35bfc979e0
+      schema:
+        fields:
+          - name: xml_type
+            type: VARCHAR
+          - name: description
+            type: VARCHAR
+    description: Transform your data with SQL
+    id: 5d5b84fcf9d90a35bfc979e0
+    metadataId: org.ananas.transform.sql
+    name: SQL
+    type: transformer
 triggers: []
 variables:
   - name: USER

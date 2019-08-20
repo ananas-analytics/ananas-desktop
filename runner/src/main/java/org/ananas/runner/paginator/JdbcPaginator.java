@@ -1,4 +1,4 @@
-package org.ananas.runner.paginator.files;
+package org.ananas.runner.paginator;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
