@@ -30,6 +30,8 @@ dag:
       target: 5d469e3e518ac74593066c66
     - source: 5d469e3e518ac74593066c66
       target: 5d46a60c518ac74593066c80
+    - source: 5d5b76b55ebce4675573dc9e
+      target: 5d5b76e75ebce4675573dca0
 id: 5d31c70384b5674b6a220286
 name: Fifa2019
 steps:
@@ -600,6 +602,66 @@ steps:
     metadataId: org.ananas.destination.file.csv
     name: Top 5 Ranking CSV destination
     type: loader
+  5d5b76b55ebce4675573dc9e:
+    config:
+      delimiter: ","
+      forceAutoDetectSchema: true
+      format: csv
+      header: true
+      path: ${PROJECT_PATH}/unicode.csv
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d5b76b55ebce4675573dc9e
+      schema:
+        fields:
+          - name: column
+            type: VARCHAR
+          - name: 数据列
+            type: VARCHAR
+          - name: 數據列
+            type: VARCHAR
+          - name: столбцы данных
+            type: VARCHAR
+          - name: colonnes de données
+            type: VARCHAR
+          - name: データ列
+            type: VARCHAR
+          - name: 데이터 열
+            type: VARCHAR
+    description: Connect data from a CSV file
+    id: 5d5b76b55ebce4675573dc9e
+    metadataId: org.ananas.source.file.csv
+    name: Unicode Test Source
+    type: connector
+  5d5b76e75ebce4675573dca0:
+    config:
+      sql: SELECT * FROM PCOLLECTION
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d5b76e75ebce4675573dca0
+      schema:
+        fields:
+          - name: column
+            type: VARCHAR
+          - name: 数据列
+            type: VARCHAR
+          - name: 數據列
+            type: VARCHAR
+          - name: столбцы данных
+            type: VARCHAR
+          - name: colonnes de données
+            type: VARCHAR
+          - name: データ列
+            type: VARCHAR
+          - name: 데이터 열
+            type: VARCHAR
+    description: Transform your data with SQL
+    id: 5d5b76e75ebce4675573dca0
+    metadataId: org.ananas.transform.sql
+    name: SQL
+    type: transformer
 triggers: []
 variables:
   - name: ability

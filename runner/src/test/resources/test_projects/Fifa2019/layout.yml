@@ -62,3 +62,11 @@
   metadataId: org.ananas.destination.file.csv
   x: 775
   y: 100
+- id: 5d5b76b55ebce4675573dc9e
+  metadataId: org.ananas.source.file.csv
+  x: 525
+  y: 325
+- id: 5d5b76e75ebce4675573dca0
+  metadataId: org.ananas.transform.sql
+  x: 650
+  y: 325
