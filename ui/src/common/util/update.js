@@ -7,6 +7,7 @@ const axios = require('axios')
 const { uhash } = require('./analytics') 
 const uuidv4 = require('uuid/v4')
 
+const log = require('../log')
 
 // checkUpdate
 // { 
@@ -31,6 +32,7 @@ function checkUpdate() {
   }
   hash = hash % 100
 
+  log.info(`detect current version ${version}`)
   // get version list 
   return axios.get(`https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/versions.json?n=${uuidv4()}`, {
       headers: {
@@ -43,7 +45,7 @@ function checkUpdate() {
 
       for (let i = 0; i < versions.length; i++) {
         if (vcmp(versions[i].version, version) > 0) {
-          console.log(versions[i].rollout, hash)
+          log.info(`new version ${versions[i].version}, ${versions[i].rollout}, ${hash}`)
           if (versions[i].rollout > hash) {
             return versions[i]
           }
