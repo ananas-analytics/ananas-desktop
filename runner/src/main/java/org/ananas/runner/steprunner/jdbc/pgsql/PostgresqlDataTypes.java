@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import org.ananas.runner.steprunner.jdbc.DDL;
 import org.ananas.runner.steprunner.jdbc.JDBCDataType;
+import org.apache.beam.sdk.extensions.sql.impl.utils.CalciteUtils;
 import org.apache.beam.sdk.schemas.Schema.FieldType;
 
 public enum PostgresqlDataTypes implements JDBCDataType, DDL {
@@ -37,6 +38,7 @@ public enum PostgresqlDataTypes implements JDBCDataType, DDL {
   XID("xid", FieldType.STRING, false),
   BIT("bit", FieldType.STRING, false),
   BITVAR("bit varying", FieldType.STRING, false),
+  UUID("uuid", FieldType.STRING, false),
   CHAR("char", FieldType.STRING, false),
   BPCHAR("bpchar", FieldType.STRING, false),
   CHARACTER("character", FieldType.STRING, false),
@@ -48,23 +50,16 @@ public enum PostgresqlDataTypes implements JDBCDataType, DDL {
   LVARVARCHAR("lvarchar", FieldType.STRING, false),
   NVARCHAR("nvarchar", FieldType.STRING, false),
   OBJECT("object", FieldType.STRING, false),
+  MONEY("money", FieldType.STRING, false),
 
   // FieldType.BOOLEAN mapping
   BOOLEAN("boolean", FieldType.BOOLEAN, true),
   BOOL("bool", FieldType.BOOLEAN, false),
 
-  // FieldType.Array
-  // TODO: add other array types
-  ARRAY_BOOLEAN("boolean[]", FieldType.array(FieldType.BOOLEAN), true),
-  // TODO: this doesn't look right
   // see: https://www.postgresql.org/docs/10/datatype.html
-  CHARVAR_ARRAY("character varying[]", FieldType.array(FieldType.STRING), true),
-  CHAR_ARRAY("character[]", FieldType.array(FieldType.STRING), false),
-  CHAR_ARRAY_ALIAS("char[]", FieldType.array(FieldType.STRING), false),
-  CHARVAR_ARRAY_ALIAS("varchar[]", FieldType.array(FieldType.STRING), false),
 
   // FieldType.BYTE
-  BYTE("byte", FieldType.BYTE, false),
+  BYTE("byte", FieldType.BYTE, true),
 
   // FieldType.BYTES
   BYTES("bytes", FieldType.BYTES, true),
@@ -74,31 +69,25 @@ public enum PostgresqlDataTypes implements JDBCDataType, DDL {
   NUMERIC("numeric", FieldType.DECIMAL, false),
 
   // FieldType.FLOAT
-  REAL("real", FieldType.FLOAT, true),
+  REAL4("float4", FieldType.FLOAT, true),
   SMALLFLOAT("smallfloat", FieldType.FLOAT, false),
+  REAL("real", FieldType.FLOAT, false),
 
   // FieldType.DOUBLE
   DOUBLE_PRECISION("double precision", FieldType.DOUBLE, true),
   FLOAT8("float8", FieldType.DOUBLE, false),
 
   // FieldType.DATETIME
-  // TODO: refactor these datetime mappings
-  DATE_metadata("date", FieldType.DATETIME.withMetadata("subtype", "DATE"), true),
-  TIME_metadata("time", FieldType.DATETIME.withMetadata("subtype", "TIME"), true),
-  TIMESTAMP_metadata("timestamp", FieldType.DATETIME.withMetadata("subtype", "TS"), true),
-  TIMESTAMP_WITHOUT_TS_metadata(
-      "timestamp without time zone", FieldType.DATETIME.withMetadata("subtype", "TS"), true),
-  TIMESTAMP_WITH_TIME_ZONE_metadata(
-      "timestamp with time zone",
-      FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"),
-      true),
-  TIME_WITH_TIME_ZONE_metadata(
-      "time with time zone", FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"), true),
-  TIMESTAMPZ_metadata(
-      "timestamptz", FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"), false),
-  TIMESTAMP("timestamp", FieldType.DATETIME.withMetadata("subtype", "TS"), true),
-  DATE("date", FieldType.DATETIME, true),
-  TIME("time", FieldType.DATETIME, true);
+  DATE_metadata("date", CalciteUtils.DATE, true),
+  TIME_metadata("time", CalciteUtils.TIME, true),
+  TIMESTAMP_metadata("timestamp", CalciteUtils.TIMESTAMP, true),
+  TIMESTAMP_WITHOUT_TS_metadata("timestamp without time zone", CalciteUtils.TIMESTAMP, false),
+  TIMESTAMP_WITH_TS_metadata("timestamp with time zone", CalciteUtils.TIMESTAMP, false),
+  TIMEZ_metadata("timetz", CalciteUtils.TIME, false),
+  INTERVAL_metadata("interval", FieldType.STRING, false),
+  TIME_WITH_TIME_ZONE_metadata("time with time zone", CalciteUtils.TIME, false),
+  TIME_WITHOUT_TIME_ZONE_metadata("time without time zone", CalciteUtils.TIME, false),
+  TIMESTAMPZ_metadata("timestamptz", CalciteUtils.TIMESTAMP, false);
 
   private static final Map<String, FieldType> dataTypes;
 

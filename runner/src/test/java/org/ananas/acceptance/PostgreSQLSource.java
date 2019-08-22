@@ -14,7 +14,7 @@ import org.junit.contrib.java.lang.system.Assertion;
 
 public class PostgreSQLSource extends AcceptanceTestBase {
   @Test
-  public void exploreMySQLSource() {
+  public void explorePostgresSource() {
     exit.expectSystemExitWithStatus(0);
 
     URL project = TestHelper.getResource("test_projects/postgres");
@@ -120,7 +120,17 @@ public class PostgreSQLSource extends AcceptanceTestBase {
             List<String> data = JsonPath.read(json, "$.data.data[0]");
 
             Assert.assertEquals(
-                "<book><title>Manual</title><chapter>...</chapter></book>", data.get(0));
+                "pgsql xml",
+                "<book><title>Manual</title><chapter>...</chapter></book>",
+                data.get(0));
+
+            Assert.assertEquals(35, data.size());
+
+            for (int i = 0; i < data.size(); i++) {
+              // System.out.println(i + " XXX " + String.valueOf(data.get(i)));
+              Assert.assertNotNull(data.get(i));
+              Assert.assertFalse(String.valueOf(data.get(i)).isEmpty());
+            }
           }
         });
 
