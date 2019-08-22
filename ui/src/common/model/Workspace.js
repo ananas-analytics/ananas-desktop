@@ -118,14 +118,16 @@ class Workspace {
 			.then(data => {
 				let workspace = YAML.parse(data.toString())
 				Workspace.INSTANCE = new Workspace(file, workspace)
+        log.info('successfully load workspace instance')
         return Workspace.INSTANCE
 			})	
 			.catch(err => {
 				log.warn(err.message)	
+				log.warn('initiate workspace')
 				return Promise.resolve(new Workspace(file))
 			})
 			.then(workspace => {
-				log.warn('return default workspace')
+        log.info('workspace loaded')
 				return workspace
 			})
 	}
