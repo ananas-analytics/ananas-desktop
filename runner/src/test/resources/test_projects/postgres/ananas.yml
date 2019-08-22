@@ -15,7 +15,7 @@ dag:
     - source: 5d583dfc42ad63660c333614
       target: 5d58405642ad63660c333620
     - source: 5d5b7d795ebce4675573dca3
-      target: 5d5b84fcf9d90a35bfc979e0
+      target: 5d5d855e7afbc567a3eca6d9
 id: 5d58317589823537bb919b57
 name: PostgreSQL test
 steps:
@@ -304,9 +304,12 @@ steps:
   5d5b7d795ebce4675573dca3:
     config:
       database: postgres
-      forceAutoDetectSchema: false
+      forceAutoDetectSchema: true
       password: ${PASSWORD}
-      sql: SELECT * FROM datatype_test
+      sql: |-
+        SELECT *
+
+        FROM datatype_test
       subtype: jdbc
       tablename: datatype_test
       url: postgresql://${HOST}:5432/postgres
@@ -320,26 +323,158 @@ steps:
             type: VARCHAR
           - name: description
             type: VARCHAR
+          - name: price
+            type: VARCHAR
+          - name: ba
+            type: VARCHAR
+          - name: num3a
+            type: DECIMAL
+          - name: serial_type
+            type: BIGINT
+          - name: bigserial
+            type: BIGINT
+          - name: smallserial
+            type: INTEGER
+          - name: real_type
+            type: FLOAT
+          - name: double_type
+            type: DOUBLE
+          - name: smallint_type
+            type: INTEGER
+          - name: integer_type
+            type: INTEGER
+          - name: bigint_type
+            type: INTEGER
+          - name: decimal_type
+            type: DECIMAL
+          - name: numeric_type
+            type: DECIMAL
+          - name: character_varying_type
+            type: VARCHAR
+          - name: varchar_type
+            type: VARCHAR
+          - name: character_type
+            type: VARCHAR
+          - name: char_type
+            type: VARCHAR
+          - name: text_type
+            type: VARCHAR
+          - name: timestamp_type
+            type: TIMESTAMP
+          - name: timestamp_with_timezone_type
+            type: TIMESTAMP
+          - name: date_type
+            type: DATE
+          - name: time_without_time_zone_type
+            type: TIME
+          - name: time_type
+            type: TIME
+          - name: time_with_time_zone_type
+            type: TIME
+          - name: interval_type
+            type: VARCHAR
+          - name: boolean_type
+            type: BOOLEAN
+          - name: bit_type
+            type: VARCHAR
+          - name: inet_type
+            type: VARCHAR
+          - name: uuid_type
+            type: VARCHAR
+          - name: json_type
+            type: VARCHAR
+          - name: int_array_type
+            type: VARCHAR
+          - name: oid_type
+            type: VARCHAR
+          - name: range_type
+            type: VARCHAR
     description: Connect data from postgreSQL database
     id: 5d5b7d795ebce4675573dca3
     metadataId: org.ananas.source.jdbc.postgres
     name: PostgreSQL Source
     type: connector
-  5d5b84fcf9d90a35bfc979e0:
+  5d5d855e7afbc567a3eca6d9:
     config:
       sql: SELECT * FROM PCOLLECTION
       subtype: sql
     dataframe:
       data: []
-      id: 5d5b84fcf9d90a35bfc979e0
+      id: 5d5d855e7afbc567a3eca6d9
       schema:
         fields:
           - name: xml_type
             type: VARCHAR
           - name: description
             type: VARCHAR
+          - name: price
+            type: VARCHAR
+          - name: ba
+            type: VARCHAR
+          - name: num3a
+            type: DECIMAL
+          - name: serial_type
+            type: BIGINT
+          - name: bigserial
+            type: BIGINT
+          - name: smallserial
+            type: INTEGER
+          - name: real_type
+            type: FLOAT
+          - name: double_type
+            type: DOUBLE
+          - name: smallint_type
+            type: INTEGER
+          - name: integer_type
+            type: INTEGER
+          - name: bigint_type
+            type: INTEGER
+          - name: decimal_type
+            type: DECIMAL
+          - name: numeric_type
+            type: DECIMAL
+          - name: character_varying_type
+            type: VARCHAR
+          - name: varchar_type
+            type: VARCHAR
+          - name: character_type
+            type: VARCHAR
+          - name: char_type
+            type: VARCHAR
+          - name: text_type
+            type: VARCHAR
+          - name: timestamp_type
+            type: TIMESTAMP
+          - name: timestamp_with_timezone_type
+            type: TIMESTAMP
+          - name: date_type
+            type: DATE
+          - name: time_without_time_zone_type
+            type: TIME
+          - name: time_type
+            type: TIME
+          - name: time_with_time_zone_type
+            type: TIME
+          - name: interval_type
+            type: VARCHAR
+          - name: boolean_type
+            type: BOOLEAN
+          - name: bit_type
+            type: VARCHAR
+          - name: inet_type
+            type: VARCHAR
+          - name: uuid_type
+            type: VARCHAR
+          - name: json_type
+            type: VARCHAR
+          - name: int_array_type
+            type: VARCHAR
+          - name: oid_type
+            type: VARCHAR
+          - name: range_type
+            type: VARCHAR
     description: Transform your data with SQL
-    id: 5d5b84fcf9d90a35bfc979e0
+    id: 5d5d855e7afbc567a3eca6d9
     metadataId: org.ananas.transform.sql
     name: SQL
     type: transformer

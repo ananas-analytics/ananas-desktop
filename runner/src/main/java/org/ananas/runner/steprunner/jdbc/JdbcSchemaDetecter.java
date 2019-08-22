@@ -69,23 +69,33 @@ public class JdbcSchemaDetecter implements Serializable {
     return builder.build();
   }
 
+  public static Object autoCastDate(ResultSet resultSet, int idx, Schema.FieldType type)
+      throws SQLException {
+    String metadata = type.getMetadataString("subtype");
+    if (metadata.equals("TIME")) {
+      return new DateTime(resultSet.getTime(idx + 1));
+    }
+    if (metadata.equals("DATE")) {
+      Date ts = resultSet.getDate(idx + 1, UTC);
+      return new DateTime(ts);
+    }
+    if (metadata.equals("TS")) {
+      Timestamp ts = resultSet.getTimestamp(idx + 1);
+      return new DateTime(ts);
+    }
+    Timestamp ts = resultSet.getTimestamp(idx + 1);
+    return new DateTime(ts).toInstant();
+  }
+
   public static Object autoCast(ResultSet resultSet, int idx, Schema schema) {
     Schema.FieldType type = schema.getField(idx).getType();
     LOG.debug("Field Type {}", type);
     try {
       switch (type.getTypeName()) {
+        case LOGICAL_TYPE:
+          return autoCastDate(resultSet, idx, type);
         case DATETIME:
-          String metadata = String.valueOf(type.getMetadata("subtype"));
-          if (metadata.equals("TIME")) {
-            Time ts = resultSet.getTime(idx + 1, UTC);
-            return new DateTime(ts);
-          }
-          if (metadata.equals("DATE") || metadata.equals("TS")) {
-            Timestamp ts = resultSet.getTimestamp(idx + 1, UTC);
-            return new DateTime(ts);
-          }
-          Timestamp ts = resultSet.getTimestamp(idx + 1);
-          return new DateTime(ts).toInstant();
+          return autoCastDate(resultSet, idx, type);
         case ARRAY:
           return resultSet.getArray(idx + 1);
         case STRING:
@@ -94,6 +104,20 @@ public class JdbcSchemaDetecter implements Serializable {
           return resultSet.getBytes(idx + 1);
         case BYTE:
           return resultSet.getByte(idx + 1);
+        case INT16:
+          return resultSet.getInt(idx + 1);
+        case INT32:
+          return resultSet.getInt(idx + 1);
+        case INT64:
+          return resultSet.getLong(idx + 1);
+        case DOUBLE:
+          return resultSet.getDouble(idx + 1);
+        case BOOLEAN:
+          return resultSet.getBoolean(idx + 1);
+        case DECIMAL:
+          return resultSet.getBigDecimal(idx + 1);
+        case FLOAT:
+          return resultSet.getFloat(idx + 1);
         default:
           Class clazz = TypeInferer.getClass(type);
           return resultSet.getObject(idx + 1, clazz);

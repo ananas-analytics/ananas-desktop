@@ -9,8 +9,6 @@ import org.ananas.runner.kernel.schema.SchemaField;
 import org.apache.beam.sdk.coders.Coder;
 import org.apache.beam.sdk.extensions.sql.SqlTransform;
 import org.apache.beam.sdk.schemas.Schema;
-import org.apache.beam.sdk.schemas.Schema.Builder;
-import org.apache.beam.sdk.schemas.Schema.Field;
 import org.apache.beam.sdk.schemas.SchemaCoder;
 import org.apache.beam.sdk.values.PCollectionTuple;
 import org.apache.beam.sdk.values.Row;
@@ -87,8 +85,8 @@ public class JoinStepRunner extends AbstractStepRunner {
 
     JoinType join = JoinType.safeValueOf(joinType);
 
-    Schema leftSchema = normalizeSchema(leftStep.getSchema());
-    Schema rightSchema = normalizeSchema(rightStep.getSchema());
+    Schema leftSchema = SchemaField.normalizeSchema(leftStep.getSchema());
+    Schema rightSchema = SchemaField.normalizeSchema(rightStep.getSchema());
 
     Coder<Row> leftCoder = SchemaCoder.of(leftSchema);
     Coder<Row> rightCoder = SchemaCoder.of(rightSchema);
@@ -108,22 +106,6 @@ public class JoinStepRunner extends AbstractStepRunner {
                     + join.sqlExpression
                     + " TableRight ON "
                     + SQLJoin(columnsMap)));
-  }
-
-  private Schema normalizeSchema(Schema schema) {
-    Builder builder = new Schema.Builder();
-    schema
-        .getFields()
-        .forEach(
-            field -> {
-              if (field.getType().getLogicalType() != null) {
-                Field f = SchemaField.Of(field.getName(), field.getType()).toBeamField();
-                builder.addField(f.getName(), f.getType());
-              } else {
-                builder.addField(field.getName(), field.getType());
-              }
-            });
-    return builder.build();
   }
 
   private String SQLProjection(String tableName, List<String> columns) {

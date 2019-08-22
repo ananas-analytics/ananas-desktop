@@ -14,7 +14,7 @@ import org.junit.contrib.java.lang.system.Assertion;
 
 public class PostgreSQLSource extends AcceptanceTestBase {
   @Test
-  public void exploreMySQLSource() {
+  public void explorePostgresSource() {
     exit.expectSystemExitWithStatus(0);
 
     URL project = TestHelper.getResource("test_projects/postgres");
@@ -120,7 +120,17 @@ public class PostgreSQLSource extends AcceptanceTestBase {
             List<String> data = JsonPath.read(json, "$.data.data[0]");
 
             Assert.assertEquals(
-                "<book><title>Manual</title><chapter>...</chapter></book>", data.get(0));
+                "pgsql xml",
+                "<book><title>Manual</title><chapter>...</chapter></book>",
+                data.get(0));
+
+            Assert.assertEquals(35, data.size());
+
+            for (int i = 0; i < data.size(); i++) {
+              // System.out.println(i + " XXX " + String.valueOf(data.get(i)));
+              Assert.assertNotNull(data.get(i));
+              Assert.assertFalse(String.valueOf(data.get(i)).isEmpty());
+            }
           }
         });
 
@@ -134,6 +144,45 @@ public class PostgreSQLSource extends AcceptanceTestBase {
           "0",
           "--size",
           "5",
+          "-m",
+          "HOST=" + props.getProperty("postgres.host"),
+          "-m",
+          "USER=" + props.getProperty("postgres.user"),
+          "-m",
+          "PASSWORD=" + props.getProperty("postgres.password"),
+        });
+  }
+
+  @Test
+  public void testTransformer() {
+    exit.expectSystemExitWithStatus(0);
+
+    exit.checkAssertionAfterwards(
+        new Assertion() {
+          public void checkAssertion() {
+            String json = systemOutRule.getLog();
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
+
+            List<Map<String, String>> fields =
+                JsonPath.read(json, "$.data.5d5b7d795ebce4675573dca3.schema.fields");
+            Assert.assertTrue(fields.size() > 0);
+
+            List<Object> data = JsonPath.read(json, "$.data.5d5b7d795ebce4675573dca3.data");
+            Assert.assertTrue(data.size() > 0);
+          }
+        });
+
+    // run command line with arguments
+    ClassLoader classLoader = getClass().getClassLoader();
+    URL project = classLoader.getResource("test_projects/postgres");
+
+    Main.main(
+        new String[] {
+          "test",
+          "-p",
+          project.getPath(),
+          "5d5b7d795ebce4675573dca3",
           "-m",
           "HOST=" + props.getProperty("postgres.host"),
           "-m",
