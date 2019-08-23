@@ -55,7 +55,7 @@ public class JdbcSchemaDetecter implements Serializable {
           metadata.getColumnTypeName(i) != null
               ? metadata.getColumnTypeName(i).toLowerCase()
               : "text";
-      LOG.debug(
+      LOG.info(
           "extracting schema column '{}' with type name '{}' to Beam Type '{}'",
           name,
           typeName,

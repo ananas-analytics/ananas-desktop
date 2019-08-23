@@ -100,4 +100,89 @@ public class MySQLSource extends AcceptanceTestBase {
           "HOST=" + props.getProperty("mysql.host"),
         });
   }
+
+  @Test
+  public void exploreMySQLSourceWithAllDataTypes() {
+    exit.expectSystemExitWithStatus(0);
+
+    URL project = TestHelper.getResource("test_projects/mysql");
+
+    exit.checkAssertionAfterwards(
+        new Assertion() {
+          public void checkAssertion() {
+            String json = systemOutRule.getLog();
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
+
+            List<Map<String, String>> fields = JsonPath.read(json, "$.data.schema.fields");
+            Assert.assertTrue(fields.size() > 0);
+
+            List<String> data = JsonPath.read(json, "$.data.data[0]");
+
+            for (int i = 0; i < data.size(); i++) {
+              Assert.assertNotNull(data.get(i));
+              Assert.assertFalse(String.valueOf(data.get(i)).isEmpty());
+            }
+          }
+        });
+
+    Main.main(
+        new String[] {
+          "explore",
+          "-p",
+          project.getPath(),
+          "5d604d29e0f3ec32026d1102",
+          "-n",
+          "0",
+          "--size",
+          "5",
+          "-m",
+          "USER=" + props.getProperty("mysql.user"),
+          "-m",
+          "PASSWORD=" + props.getProperty("mysql.password"),
+          "-m",
+          "DB=classicmodels",
+          "-m",
+          "HOST=" + props.getProperty("mysql.host"),
+        });
+  }
+
+  @Test
+  public void testMySQLWithAllDataTypesTransformer() {
+    exit.expectSystemExitWithStatus(0);
+
+    exit.checkAssertionAfterwards(
+        new Assertion() {
+          public void checkAssertion() {
+            String json = systemOutRule.getLog();
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
+
+            List<Map<String, String>> fields =
+                JsonPath.read(json, "$.data.5d605f876a47e74f5e5b9f54.schema.fields");
+            Assert.assertTrue(fields.size() > 0);
+
+            List<Object> data = JsonPath.read(json, "$.data.5d605f876a47e74f5e5b9f54.data");
+            Assert.assertTrue(data.size() > 0);
+          }
+        });
+
+    // run command line with arguments
+    ClassLoader classLoader = getClass().getClassLoader();
+    URL project = classLoader.getResource("test_projects/mysql");
+
+    Main.main(
+        new String[] {
+          "test",
+          "-p",
+          project.getPath(),
+          "5d605f876a47e74f5e5b9f54",
+          "-m",
+          "HOST=" + props.getProperty("mysql.host"),
+          "-m",
+          "USER=" + props.getProperty("mysql.user"),
+          "-m",
+          "PASSWORD=" + props.getProperty("mysql.password"),
+        });
+  }
 }

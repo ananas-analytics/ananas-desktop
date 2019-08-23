@@ -18,6 +18,8 @@ dag:
       target: 5d56ce9ad4dbe821c135ebb0
     - source: 5d56ce9ad4dbe821c135ebb0
       target: 5d56cf60d4dbe821c135ebb9
+    - source: 5d604d29e0f3ec32026d1102
+      target: 5d605f876a47e74f5e5b9f54
 id: 5d56c8eed4dbe821c135eb92
 name: MySQL Test
 steps:
@@ -311,8 +313,166 @@ steps:
     metadataId: org.ananas.visualization.barchart
     name: Bar chart - top 10 customer
     type: viewer
+  5d604d29e0f3ec32026d1102:
+    config:
+      database: mysql
+      forceAutoDetectSchema: true
+      password: ${PASSWORD}
+      sql: SELECT * FROM tableWithAllTypes
+      subtype: jdbc
+      tablename: tableWithAllTypes
+      url: mysql://${HOST}:3306/classicmodels
+      user: ${USER}
+    dataframe:
+      data: []
+      id: 5d604d29e0f3ec32026d1102
+      schema:
+        fields:
+          - name: column_serial
+            type: BIGINT
+          - name: column_boolean
+            type: INTEGER
+          - name: column_byte
+            type: INTEGER
+          - name: column_short
+            type: INTEGER
+          - name: column_medium
+            type: INTEGER
+          - name: column_integer
+            type: INTEGER
+          - name: column_int
+            type: INTEGER
+          - name: column_long
+            type: BIGINT
+          - name: column_float
+            type: FLOAT
+          - name: column_double
+            type: DOUBLE
+          - name: column_double_p
+            type: DOUBLE
+          - name: column_bigdecimal
+            type: DECIMAL
+          - name: column_string
+            type: VARCHAR
+          - name: column_date_time
+            type: DATE
+          - name: column_date
+            type: DATE
+          - name: column_time
+            type: TIME
+          - name: column_year
+            type: VARCHAR
+          - name: column_timestamp
+            type: TIMESTAMP
+          - name: column_char
+            type: VARCHAR
+          - name: column_varchar
+            type: VARCHAR
+          - name: column_binary
+            type: VARCHAR
+          - name: column_varbinary
+            type: VARCHAR
+          - name: column_asciistream1
+            type: VARCHAR
+          - name: column_asciistream2
+            type: VARCHAR
+          - name: column_asciistream3
+            type: VARCHAR
+          - name: column_asciistream4
+            type: VARCHAR
+          - name: column_blob1
+            type: VARCHAR
+          - name: column_blob2
+            type: VARCHAR
+          - name: column_blob3
+            type: VARCHAR
+          - name: column_blob4
+            type: VARCHAR
+    description: Connect data from MySQL database
+    id: 5d604d29e0f3ec32026d1102
+    metadataId: org.ananas.source.jdbc.mysql
+    name: MySQL Table with all data types
+    type: connector
+  5d605f876a47e74f5e5b9f54:
+    config:
+      sql: SELECT * FROM PCOLLECTION
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d605f876a47e74f5e5b9f54
+      schema:
+        fields:
+          - name: column_serial
+            type: BIGINT
+          - name: column_boolean
+            type: INTEGER
+          - name: column_byte
+            type: INTEGER
+          - name: column_short
+            type: INTEGER
+          - name: column_medium
+            type: INTEGER
+          - name: column_integer
+            type: INTEGER
+          - name: column_int
+            type: INTEGER
+          - name: column_long
+            type: BIGINT
+          - name: column_float
+            type: FLOAT
+          - name: column_double
+            type: DOUBLE
+          - name: column_double_p
+            type: DOUBLE
+          - name: column_bigdecimal
+            type: DECIMAL
+          - name: column_string
+            type: VARCHAR
+          - name: column_date_time
+            type: DATE
+          - name: column_date
+            type: DATE
+          - name: column_time
+            type: TIME
+          - name: column_year
+            type: VARCHAR
+          - name: column_timestamp
+            type: TIMESTAMP
+          - name: column_char
+            type: VARCHAR
+          - name: column_varchar
+            type: VARCHAR
+          - name: column_binary
+            type: VARCHAR
+          - name: column_varbinary
+            type: VARCHAR
+          - name: column_asciistream1
+            type: VARCHAR
+          - name: column_asciistream2
+            type: VARCHAR
+          - name: column_asciistream3
+            type: VARCHAR
+          - name: column_asciistream4
+            type: VARCHAR
+          - name: column_blob1
+            type: VARCHAR
+          - name: column_blob2
+            type: VARCHAR
+          - name: column_blob3
+            type: VARCHAR
+          - name: column_blob4
+            type: VARCHAR
+    description: Transform your MySQL data with SQL
+    id: 5d605f876a47e74f5e5b9f54
+    metadataId: org.ananas.transform.sql
+    name: SQL
+    type: transformer
 triggers: []
 variables:
+  - name: USER
+    description: ""
+    scope: project
+    type: string
   - name: PASSWORD
     description: ""
     scope: project
