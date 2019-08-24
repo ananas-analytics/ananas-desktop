@@ -1,0 +1,15 @@
+engine:
+  description: ""
+  name: Spark Local
+  properties:
+    app_name: "test app on spark"
+    database_password: ${MYSQL_PASSWORD}
+    database_type: mysql
+    database_url: mysql://${MYSQL_HOST}:3306/${MYSQL_DB}
+    database_user: root
+    enableMetricSinks: "true"
+    sparkMaster: spark://${SPARK_MASTER_HOST}:7077
+    streaming: "false"
+    tempLocation: /tmp/
+  scope: workspace
+  type: Spark

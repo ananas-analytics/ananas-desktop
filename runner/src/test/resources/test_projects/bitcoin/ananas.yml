@@ -119,4 +119,20 @@ steps:
     name: Big Number
     type: viewer
 triggers: []
-variables: []
+variables:
+  - name: MYSQL_HOST
+    description: ""
+    scope: project
+    type: string
+  - name: MYSQL_PASSWORD
+    description: ""
+    scope: project
+    type: string
+  - name: MYSQL_DB
+    description: ""
+    scope: project
+    type: string
+  - name: SPARK_MASTER_HOST
+    description: ""
+    scope: project
+    type: string
