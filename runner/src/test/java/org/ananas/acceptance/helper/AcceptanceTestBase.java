@@ -14,7 +14,7 @@ public class AcceptanceTestBase {
 
   @Rule
   public final ProvideSystemProperty filesToStage =
-      new ProvideSystemProperty("filesToStage", "mock.jar");
+      new ProvideSystemProperty("filesToStage", TestHelper.getCLIPath());
 
   @Rule
   public final ProvideSystemProperty threadFactory =

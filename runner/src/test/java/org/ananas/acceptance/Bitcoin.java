@@ -1,11 +1,16 @@
 package org.ananas.acceptance;
 
 import com.jayway.jsonpath.JsonPath;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.ananas.acceptance.helper.AcceptanceTestBase;
+import org.ananas.acceptance.helper.DataViewerHelper;
 import org.ananas.cli.Main;
+import org.ananas.runner.kernel.model.Engine;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.Assertion;
@@ -93,6 +98,79 @@ public class Bitcoin extends AcceptanceTestBase {
     Main.main(
         new String[] {
           "run", "-p", project.getPath(), "5d4559249c7a5441fdc67d47",
+        });
+  }
+
+  @Test
+  public void testRunDataViewerOnSpark() throws IOException, URISyntaxException {
+    String stepId = "5d4559249c7a5441fdc67d47";
+
+    exit.expectSystemExitWithStatus(0);
+
+    exit.checkAssertionAfterwards(
+        new Assertion() {
+          public void checkAssertion() {
+            String json = systemOutRule.getLog();
+            // TODO: test stdout here
+            int code = JsonPath.read(json, "$.code");
+            Assert.assertEquals(200, code);
+
+            String jobId = JsonPath.read(json, "$.data.jobid");
+            Assert.assertNotNull(jobId);
+
+            Engine engine = new Engine();
+            engine.name = "test spark engine";
+            engine.type = "Spark";
+            engine.properties = new HashMap<>();
+            engine.properties.put("app_name", "test app on spark");
+            engine.properties.put("database_type", "mysql");
+            engine.properties.put(
+                "database_url",
+                "mysql://" + props.getProperty("mysql.host") + ":3306/classicmodels");
+            engine.properties.put("database_user", "root");
+            engine.properties.put("database_password", props.getProperty("mysql.password"));
+            engine.properties.put(
+                "sparkMaster", "spark://" + props.getProperty("spark.master") + ":7707");
+            engine.properties.put("enableMetricSinks", "true");
+            engine.properties.put("streaming", "false");
+            engine.properties.put("tempLocation", "/tmp/");
+
+            // check data viewer job result
+            String result =
+                DataViewerHelper.getViewerJobDataWithEngine(
+                    "SELECT * FROM PCOLLECTION", jobId, stepId, engine);
+            int resultCode = JsonPath.read(result, "$.code");
+            Assert.assertEquals(200, resultCode);
+
+            List<Map<String, String>> fields = JsonPath.read(result, "$.data.schema.fields");
+            Assert.assertTrue(fields.size() > 0);
+
+            List<Object> data = JsonPath.read(result, "$.data.data");
+            Assert.assertTrue(data.size() > 0);
+
+            System.out.println(result);
+          }
+        });
+
+    ClassLoader classLoader = getClass().getClassLoader();
+    URL project = classLoader.getResource("test_projects/bitcoin");
+
+    Main.main(
+        new String[] {
+          "run",
+          "-p",
+          project.getPath(),
+          stepId,
+          "-e",
+          project.getPath() + "/spark_profile.yml",
+          "-m",
+          "MYSQL_HOST=" + props.getProperty("mysql.host"),
+          "-m",
+          "MYSQL_PASSWORD=" + props.getProperty("mysql.password"),
+          "-m",
+          "MYSQL_DB=classicmodels",
+          "-m",
+          "SPARK_MASTER_HOST=" + props.getProperty("spark.master"),
         });
   }
 }

@@ -29,4 +29,13 @@ public class DataViewerHelper {
 
     return output;
   }
+
+  public static String getViewerJobDataWithEngine(
+      String sql, String jobId, String stepId, Engine engine) {
+    DefaultDataViewer.DataViewRepository repository = new DefaultDataViewer.DataViewRepository();
+    String output =
+        JsonUtil.toJson(
+            ApiResponseBuilder.Of().OK(repository.query(sql, jobId, stepId, engine)).build());
+    return output;
+  }
 }

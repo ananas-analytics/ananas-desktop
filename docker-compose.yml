@@ -4,12 +4,14 @@ services:
     build: .
     env_file:
       - ./test/test.env
-    command: [ 'sh', '-c', '/wait && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties',  ]
+    command: [ 'sh', '-c', '/wait && ./build-cli.sh && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties',  ]
     depends_on:
       - mysql
       - postgres
+      - spark-master
+      - spark-worker-1
     environment:
-      WAIT_HOSTS: mysql:3306, postgres:5432
+      WAIT_HOSTS: mysql:3306, postgres:5432, spark-master:8080, spark-worker-1:8081
   mysql:
     image: mysql:5.7
     env_file:
@@ -23,4 +25,26 @@ services:
     volumes:
       - ./test/postgres:/docker-entrypoint-initdb.d/:ro
 
-
+  spark-master:
+    build:
+      context: ./test/spark
+      dockerfile: spark-master.Dockerfile
+    container_name: spark-master
+    hostname: spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - "SPARK_LOCAL_IP=spark-master"
+  spark-worker-1:
+    build:
+      context: ./test/spark
+      dockerfile: spark-wroker.Dockerfile
+    container_name: spark-worker-1
+    hostname: spark-worker-1
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    environment:
+      - "SPARK_LOCAL_IP=spark-worker-1"
