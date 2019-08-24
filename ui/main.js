@@ -119,7 +119,7 @@ function startRunner(env) {
   log.info('start runner')
 
   if (runner !== null) {
-    stopRunner()
+    return
   }
 
   const runnerPath = getRunnerPath()  
@@ -148,7 +148,9 @@ function stopRunner() {
   log.info('stop runner')
   log.debug('runner', runner)
   if (runner !== null) {
-    process.kill(runner.pid)
+    //process.kill(runner.pid)
+    //runner.stdin.pause()
+    runner.kill()
     runner = null
   }
 }
