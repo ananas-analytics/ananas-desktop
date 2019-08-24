@@ -18,8 +18,12 @@ import org.apache.beam.sdk.values.Row;
 import org.jooq.Query;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JdbcConnector extends ConnectorStepRunner {
+
+  private static final Logger LOG = LoggerFactory.getLogger(JdbcConnector.class);
 
   private JdbcStepConfig config;
 
@@ -30,13 +34,13 @@ public class JdbcConnector extends ConnectorStepRunner {
   public void build() {
     config = new JdbcStepConfig(this.step.config);
 
-    Schema schema = step.getBeamSchema();
-    if (schema == null || step.forceAutoDetectSchema()) {
+    Schema stepSchema = step.getBeamSchema();
+    if (stepSchema == null || step.forceAutoDetectSchema()) {
       AutoDetectedSchemaPaginator paginator =
-          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, stepSchema)
               .buildPaginator();
       // find the paginator bind to it
-      schema = paginator.getSchema();
+      stepSchema = paginator.getSchema();
     }
     String sql = outputQuery(isTest).toString();
 
@@ -51,12 +55,12 @@ public class JdbcConnector extends ConnectorStepRunner {
                         .withUsername(config.username)
                         .withPassword(config.password))
                 .withQuery(sql)
-                .withCoder(SchemaCoder.of(schema))
-                .withRowMapper(rowMapper(schema, this.errors)));
+                .withCoder(SchemaCoder.of(stepSchema))
+                .withRowMapper(rowMapper(stepSchema, this.errors)));
 
     this.output = Sampler.sample(p, 1000, (doSampling || isTest));
 
-    this.output.setRowSchema(schema);
+    this.output.setRowSchema(stepSchema);
   }
 
   public static JdbcIO.RowMapper<Row> rowMapper(Schema schema, ErrorHandler handler) {
@@ -66,6 +70,7 @@ public class JdbcConnector extends ConnectorStepRunner {
             .mapToObj(idx -> JdbcSchemaDetecter.autoCast(r, idx, schema))
             .collect(toRow(schema));
       } catch (Exception e) {
+        LOG.warn("error {}", e.toString());
         handler.addError(e);
         return null;
       }

@@ -1,4 +1,4 @@
-package org.ananas.runner.paginator.files;
+package org.ananas.runner.paginator;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -92,6 +92,7 @@ public class JdbcPaginator extends AutoDetectedSchemaPaginator {
                   results.add(r);
                 }
               } catch (Exception e) {
+                LOG.warn("jdbc row mapping error", e.toString());
                 errors.addError(e);
               }
             }

@@ -79,13 +79,16 @@ function createWindow () {
   // #endif
   
   let hrend = process.hrtime(hrstart)
-  log.info('start time: ', Math.ceil(hrend[1]/1000000))
+  log.info('start time:', Math.ceil(hrend[1]/1000000))
   
   trackEvent('usage', 'open-app', `${version}`, Math.ceil(hrend[1] / 1000000))
 
-  setTimeout(() => {
-    checkUpdateWrapper() 
-  }, 10000)
+  log.info('checkUpdateOnStart:', !settings.disableCheckUpdateOnStart)
+  if (!settings.disableCheckUpdateOnStart) {
+    setTimeout(() => {
+      checkUpdateWrapper() 
+    }, 10000)
+  }
 }
 
 function getRunnerPath() {
@@ -122,7 +125,7 @@ function startRunner(env) {
   const runnerPath = getRunnerPath()  
 
   log.info(`runner path: ${runnerPath}`)
-  log.info(`runner environment: ${env}`)
+  log.info(`runner environment: ${JSON.stringify(env)}`)
 
   runner = spawn(runnerPath, [], {
     env,
@@ -142,7 +145,8 @@ function startRunner(env) {
 
 
 function stopRunner() {
-  log.info('stop runner', runner)
+  log.info('stop runner')
+  log.debug('runner', runner)
   if (runner !== null) {
     process.kill(runner.pid)
     runner = null
@@ -168,7 +172,7 @@ app.on('ready', () => {
     })
     .then(workspace => {
       settings = workspace.settings || {} 
-      log.info(`workspace settings ${JSON.stringify(settings, null, 4)}`)
+      log.debug(`workspace settings ${JSON.stringify(settings, null, 4)}`)
       createWindow()
     })
     // TODO: check updates

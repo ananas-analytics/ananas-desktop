@@ -8,9 +8,11 @@ let uid = machineIdSync({original: true})
 
 log.info('user id:', uid)
 
+// #if process.env.NODE_ENV === 'production'
 let visitor = ua('UA-143770934-1', uid, {strictCidFormat: false})
 
 function trackEvent(category :string, action :string, label :string, value :number) {
+  log.info(`${category} ${action} ${label} ${value}`)
   visitor
     .event({
       ec: category,
@@ -37,3 +39,14 @@ module.exports = {
   uhash: strHash(uid),
   trackEvent 
 }
+// #endif
+
+// #if process.env.NODE_ENV !== 'production'
+module.exports = {
+  uid: 'dev-user',
+  uhash: 0,
+  trackEvent: (... args: any) => {
+    log.info('dev mode, tracker mock:', JSON.stringify(args))
+  },
+}
+// #endif

@@ -110,9 +110,14 @@ public class Job {
 
   public static Job JobStateResultFilter(Job job) {
     Job j = new Job();
+    String state = job.state;
+    if (job.pipelineResult != null) {
+      state = job.pipelineResult.getState().name();
+    }
+
     j.id = job.id;
     j.projectId = job.projectId;
-    j.state = job.state;
+    j.state = state;
     j.message = job.message;
     j.scheduleId = job.scheduleId;
     j.updateAt = job.updateAt;

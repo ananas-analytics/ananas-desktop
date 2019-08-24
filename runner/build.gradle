@@ -43,8 +43,8 @@ dependencies {
     compile 'org.apache.maven:maven-model:3.3.9'
     compile 'org.apache.poi:poi:3.17'
     compile 'org.apache.poi:poi-ooxml:3.17'
-    // compile 'org.apache.spark:spark-core_2.11:2.4.3'
-    // compile 'org.apache.spark:spark-streaming_2.11:2.4.3'
+    compile 'org.apache.spark:spark-core_2.11:2.4.3'
+    compile 'org.apache.spark:spark-streaming_2.11:2.4.3'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5', withoutX
     compile 'com.github.haifengl:smile-core:1.5.2'
@@ -134,6 +134,7 @@ test {
         showStandardStreams = true
     }
 
+    systemProperties System.properties
     systemProperties 'java.security.policy': file("$projectDir/src/test/resources/test.policy").absolutePath
 }
 

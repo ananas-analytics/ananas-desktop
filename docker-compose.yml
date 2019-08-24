@@ -1,0 +1,26 @@
+version: '3'
+services:
+  test:
+    build: .
+    env_file:
+      - ./test/test.env
+    command: [ 'sh', '-c', '/wait && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties',  ]
+    depends_on:
+      - mysql
+      - postgres
+    environment:
+      WAIT_HOSTS: mysql:3306, postgres:5432
+  mysql:
+    image: mysql:5.7
+    env_file:
+      - ./test/test.env
+    volumes:
+      - ./test/mysql:/docker-entrypoint-initdb.d/:ro
+  postgres:
+    image: postgres:10.10
+    env_file:
+      - ./test/test.env
+    volumes:
+      - ./test/postgres:/docker-entrypoint-initdb.d/:ro
+
+

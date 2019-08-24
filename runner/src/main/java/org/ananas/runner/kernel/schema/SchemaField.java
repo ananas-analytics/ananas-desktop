@@ -20,6 +20,30 @@ public class SchemaField implements Serializable {
   public String mode; // NULLABLE (default), REPEATED (for beam schema ARRAY type)
   public List<SchemaField> fields; // only available for RECORD type
 
+  public static FieldType normalizeFieldType(
+      org.apache.beam.sdk.schemas.Schema.FieldType fieldType) {
+
+    if (fieldType.getTypeName().isLogicalType()) {
+      org.apache.beam.sdk.schemas.Schema.Field f = SchemaField.Of("none", fieldType).toBeamField();
+      return f.getType();
+    } else {
+      return fieldType;
+    }
+  }
+
+  public static org.apache.beam.sdk.schemas.Schema normalizeSchema(
+      org.apache.beam.sdk.schemas.Schema schema) {
+    org.apache.beam.sdk.schemas.Schema.Builder builder =
+        new org.apache.beam.sdk.schemas.Schema.Builder();
+    schema
+        .getFields()
+        .forEach(
+            field -> {
+              builder.addField(field.getName(), normalizeFieldType(field.getType()));
+            });
+    return builder.build();
+  }
+
   /**
    * @param fieldName the name of the field
    * @param type, the type of the field. Supports all beam field types
@@ -38,15 +62,15 @@ public class SchemaField implements Serializable {
       if (type.getCollectionElementType().getTypeName().isCompositeType()) {
         o.type = "RECORD";
       } else {
-        o.type = convert(type.getCollectionElementType());
+        o.type = fromBeamField(type.getCollectionElementType());
       }
     } else {
-      o.type = convert(type);
+      o.type = fromBeamField(type);
     }
     return o;
   }
 
-  public static String convert(org.apache.beam.sdk.schemas.Schema.FieldType type) {
+  public static String fromBeamField(org.apache.beam.sdk.schemas.Schema.FieldType type) {
     // convert beam field type to SQL type
     // NOTE: need to convert it back in toBeamField() method
     if (type.getTypeName().name().equals(FieldType.DATETIME.getTypeName().name())) {
@@ -70,6 +94,18 @@ public class SchemaField implements Serializable {
 
   public org.apache.beam.sdk.schemas.Schema.Field toBeamField() {
     String beamType = type;
+
+    if ("DATE".equals(type)) {
+      return org.apache.beam.sdk.schemas.Schema.Field.of(name, CalciteUtils.DATE);
+    }
+
+    if ("TIME".equals(type)) {
+      return org.apache.beam.sdk.schemas.Schema.Field.of(name, CalciteUtils.TIME);
+    }
+
+    if ("TS".equals(type)) {
+      return org.apache.beam.sdk.schemas.Schema.Field.of(name, CalciteUtils.TIMESTAMP);
+    }
 
     try {
       // convert SQL type to beam type

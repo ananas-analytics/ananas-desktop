@@ -29,7 +29,6 @@ public class JdbcSchemaDetecter implements Serializable {
   public static Schema autodetect(
       JDBCDriver driver, String url, String username, String password, String sql) {
     // see https://github.com/pgjdbc/pgjdbc
-    LOG.debug("Schema autodetect SQL {}", sql);
     return JDBCStatement.Execute(
         driver,
         url,
@@ -46,6 +45,7 @@ public class JdbcSchemaDetecter implements Serializable {
   }
 
   public static Schema extractSchema(JDBCDriver driver, ResultSet rs) throws SQLException {
+    LOG.debug("extracting schema");
     Schema.Builder builder = Schema.builder();
     ResultSetMetaData metadata = rs.getMetaData();
 
@@ -55,6 +55,11 @@ public class JdbcSchemaDetecter implements Serializable {
           metadata.getColumnTypeName(i) != null
               ? metadata.getColumnTypeName(i).toLowerCase()
               : "text";
+      LOG.debug(
+          "extracting schema column '{}' with type name '{}' to Beam Type '{}'",
+          name,
+          typeName,
+          driver.getDefaultDataTypeLiteral(typeName));
       builder.addNullableField(
           name,
           driver.getDefaultDataTypeLiteral(typeName) == null
@@ -64,27 +69,61 @@ public class JdbcSchemaDetecter implements Serializable {
     return builder.build();
   }
 
+  public static Object autoCastDate(ResultSet resultSet, int idx, Schema.FieldType type)
+      throws SQLException {
+    String metadata = type.getMetadataString("subtype");
+    if (metadata.equals("TIME")) {
+      return new DateTime(resultSet.getTime(idx + 1));
+    }
+    if (metadata.equals("DATE")) {
+      Date ts = resultSet.getDate(idx + 1, UTC);
+      return new DateTime(ts);
+    }
+    if (metadata.equals("TS")) {
+      Timestamp ts = resultSet.getTimestamp(idx + 1);
+      return new DateTime(ts);
+    }
+    Timestamp ts = resultSet.getTimestamp(idx + 1);
+    return new DateTime(ts).toInstant();
+  }
+
   public static Object autoCast(ResultSet resultSet, int idx, Schema schema) {
     Schema.FieldType type = schema.getField(idx).getType();
+    LOG.debug("Field Type {}", type);
     try {
-      if (type.getTypeName().equals(Schema.FieldType.DATETIME.getTypeName())) {
-        String metadata = String.valueOf(type.getMetadata("subtype"));
-        if (metadata.equals("TIME")) {
-          Time ts = resultSet.getTime(idx + 1, UTC);
-          return new DateTime(ts);
-        }
-        if (metadata.equals("DATE") || metadata.equals("TS")) {
-          Timestamp ts = resultSet.getTimestamp(idx + 1, UTC);
-          return new DateTime(ts);
-        }
-        Timestamp ts = resultSet.getTimestamp(idx + 1);
-        return new DateTime(ts).toInstant();
+      switch (type.getTypeName()) {
+        case LOGICAL_TYPE:
+          return autoCastDate(resultSet, idx, type);
+        case DATETIME:
+          return autoCastDate(resultSet, idx, type);
+        case ARRAY:
+          return resultSet.getArray(idx + 1);
+        case STRING:
+          return resultSet.getString(idx + 1);
+        case BYTES:
+          return resultSet.getBytes(idx + 1);
+        case BYTE:
+          return resultSet.getByte(idx + 1);
+        case INT16:
+          return resultSet.getInt(idx + 1);
+        case INT32:
+          return resultSet.getInt(idx + 1);
+        case INT64:
+          return resultSet.getLong(idx + 1);
+        case DOUBLE:
+          return resultSet.getDouble(idx + 1);
+        case BOOLEAN:
+          return resultSet.getBoolean(idx + 1);
+        case DECIMAL:
+          return resultSet.getBigDecimal(idx + 1);
+        case FLOAT:
+          return resultSet.getFloat(idx + 1);
+        default:
+          Class clazz = TypeInferer.getClass(type);
+          return resultSet.getObject(idx + 1, clazz);
       }
-      Class clazz = TypeInferer.getClass(type);
-      return resultSet.getObject(idx + 1, clazz);
     } catch (Exception e) {
-      LOG.warn(
-          "FETCH AUTOCAST WARNING : " + "idx= " + idx + " type: " + type + "  \n" + e.getMessage());
+      LOG.warn("FETCH AUTOCAST WARNING : idx= {} type: {}  \n {}", idx, type, e.getMessage());
     }
     return null;
   }

@@ -64,8 +64,15 @@ export class Job {
       })
       .then(res=>{
         if (res.data.code !== 200) {
+          this.endStatusPolling()
           throw new Error(res.data.message)
         }
+
+        if (typeof res.data.data === 'object' && res.data.data.message) {
+          this.endStatusPolling()
+          throw new Error(res.data.data.message)
+        }
+        
         this.setStatus(res.data.data.state, res.data.data.message)
           
         if (this.state === 'DONE' || this.state === 'ERROR' || this.state === 'FAILED') {

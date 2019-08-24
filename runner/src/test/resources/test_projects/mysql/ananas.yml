@@ -1,0 +1,327 @@
+dag:
+  connections:
+    - source: 5d56c902d4dbe821c135eb94
+      target: 5d56cba7d4dbe821c135eb9a
+    - source: 5d56cc4ed4dbe821c135eb9c
+      target: 5d56cc87d4dbe821c135eb9e
+    - source: 5d56cb6ad4dbe821c135eb98
+      target: 5d56ccd5d4dbe821c135eba1
+    - source: 5d56cc87d4dbe821c135eb9e
+      target: 5d56ccd5d4dbe821c135eba1
+    - source: 5d56ccd5d4dbe821c135eba1
+      target: 5d56cd7fd4dbe821c135eba6
+    - source: 5d56cd7fd4dbe821c135eba6
+      target: 5d56cba7d4dbe821c135eb9a
+    - source: 5d56cba7d4dbe821c135eb9a
+      target: 5d56cf17d4dbe821c135ebb5
+    - source: 5d56cf17d4dbe821c135ebb5
+      target: 5d56ce9ad4dbe821c135ebb0
+    - source: 5d56ce9ad4dbe821c135ebb0
+      target: 5d56cf60d4dbe821c135ebb9
+id: 5d56c8eed4dbe821c135eb92
+name: MySQL Test
+steps:
+  5d56c902d4dbe821c135eb94:
+    config:
+      database: mysql
+      forceAutoDetectSchema: false
+      password: ${PASSWORD}
+      sql: SELECT * FROM customers
+      subtype: jdbc
+      tablename: customers
+      url: mysql://${HOST}:3306/${DB}
+      user: root
+    dataframe:
+      data: []
+      id: 5d56c902d4dbe821c135eb94
+      schema:
+        fields:
+          - name: customerNumber
+            type: INTEGER
+          - name: customerName
+            type: VARCHAR
+          - name: contactLastName
+            type: VARCHAR
+          - name: contactFirstName
+            type: VARCHAR
+          - name: phone
+            type: VARCHAR
+          - name: addressLine1
+            type: VARCHAR
+          - name: addressLine2
+            type: VARCHAR
+          - name: city
+            type: VARCHAR
+          - name: state
+            type: VARCHAR
+          - name: postalCode
+            type: VARCHAR
+          - name: country
+            type: VARCHAR
+          - name: salesRepEmployeeNumber
+            type: INTEGER
+          - name: creditLimit
+            type: DECIMAL
+    description: Connect data from MySQL database
+    id: 5d56c902d4dbe821c135eb94
+    metadataId: org.ananas.source.jdbc.mysql
+    name: Customers
+    type: connector
+  5d56cb6ad4dbe821c135eb98:
+    config:
+      database: mysql
+      forceAutoDetectSchema: false
+      password: ${PASSWORD}
+      sql: SELECT * FROM orders
+      subtype: jdbc
+      tablename: orders
+      url: mysql://${HOST}:3306/${DB}
+      user: root
+    dataframe:
+      data: []
+      id: 5d56cb6ad4dbe821c135eb98
+      schema:
+        fields:
+          - name: orderNumber
+            type: INTEGER
+          - name: orderDate
+            type: TIMESTAMP
+          - name: requiredDate
+            type: TIMESTAMP
+          - name: shippedDate
+            type: TIMESTAMP
+          - name: status
+            type: VARCHAR
+          - name: comments
+            type: VARCHAR
+          - name: customerNumber
+            type: INTEGER
+    description: Connect data from MySQL database
+    id: 5d56cb6ad4dbe821c135eb98
+    metadataId: org.ananas.source.jdbc.mysql
+    name: Orders
+    type: connector
+  5d56cba7d4dbe821c135eb9a:
+    config:
+      joinedcolumnmap:
+        customerNumber: customerNumber
+      leftcolumns:
+        - customerNumber
+        - total
+      leftstepid: 5d56cd7fd4dbe821c135eba6
+      rightcolumns:
+        - customerName
+      rightstepid: 5d56c902d4dbe821c135eb94
+      subtype: join
+    dataframe:
+      data: []
+      id: 5d56cba7d4dbe821c135eb9a
+      schema:
+        fields:
+          - name: customerNumber
+            type: INTEGER
+          - name: total
+            type: DECIMAL
+          - name: customerName
+            type: VARCHAR
+    description: Join two data
+    id: 5d56cba7d4dbe821c135eb9a
+    metadataId: org.ananas.transform.join
+    name: JOIN - add customer name
+    type: transformer
+  5d56cc4ed4dbe821c135eb9c:
+    config:
+      database: mysql
+      forceAutoDetectSchema: false
+      password: ${PASSWORD}
+      sql: SELECT * FROM orderdetails
+      subtype: jdbc
+      tablename: orderdetails
+      url: mysql://${HOST}:3306/${DB}
+      user: root
+    dataframe:
+      data: []
+      id: 5d56cc4ed4dbe821c135eb9c
+      schema:
+        fields:
+          - name: orderNumber
+            type: INTEGER
+          - name: productCode
+            type: VARCHAR
+          - name: quantityOrdered
+            type: INTEGER
+          - name: priceEach
+            type: DECIMAL
+          - name: orderLineNumber
+            type: INTEGER
+    description: Connect data from MySQL database
+    id: 5d56cc4ed4dbe821c135eb9c
+    metadataId: org.ananas.source.jdbc.mysql
+    name: Order Details
+    type: connector
+  5d56cc87d4dbe821c135eb9e:
+    config:
+      sql: |-
+        SELECT 
+        	orderNumber,
+          priceEach * quantityOrdered AS total
+        FROM PCOLLECTION
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d56cc87d4dbe821c135eb9e
+      schema:
+        fields:
+          - name: orderNumber
+            type: INTEGER
+          - name: total
+            type: DECIMAL
+    description: Transform your data with SQL
+    id: 5d56cc87d4dbe821c135eb9e
+    metadataId: org.ananas.transform.sql
+    name: Order subtotal
+    type: transformer
+  5d56ccd5d4dbe821c135eba1:
+    config:
+      joinedcolumnmap:
+        orderNumber: orderNumber
+      leftcolumns:
+        - orderNumber
+        - customerNumber
+      leftstepid: 5d56cb6ad4dbe821c135eb98
+      rightcolumns:
+        - total
+      rightstepid: 5d56cc87d4dbe821c135eb9e
+      subtype: join
+    dataframe:
+      data: []
+      id: 5d56ccd5d4dbe821c135eba1
+      schema:
+        fields:
+          - name: orderNumber
+            type: INTEGER
+          - name: customerNumber
+            type: INTEGER
+          - name: total
+            type: DECIMAL
+    description: Join two data
+    id: 5d56ccd5d4dbe821c135eba1
+    metadataId: org.ananas.transform.join
+    name: Joined Order
+    type: transformer
+  5d56cd7fd4dbe821c135eba6:
+    config:
+      sql: |-
+        SELECT 
+        	customerNumber,
+          sum(total) as total
+        FROM PCOLLECTION
+        GROUP BY customerNumber
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d56cd7fd4dbe821c135eba6
+      schema:
+        fields:
+          - name: customerNumber
+            type: INTEGER
+          - name: total
+            type: DECIMAL
+    description: Transform your data with SQL
+    id: 5d56cd7fd4dbe821c135eba6
+    metadataId: org.ananas.transform.sql
+    name: Group by customer name
+    type: transformer
+  5d56ce9ad4dbe821c135ebb0:
+    config:
+      sql: |-
+        SELECT * FROM PCOLLECTION
+        WHERE total is not null
+        AND customerName <> 'null'
+        ORDER BY total DESC
+        LIMIT 10
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d56ce9ad4dbe821c135ebb0
+      schema:
+        fields:
+          - name: customerName
+            type: VARCHAR
+          - name: customerNumber
+            type: INTEGER
+          - name: total
+            type: INTEGER
+    description: Transform your data with SQL
+    id: 5d56ce9ad4dbe821c135ebb0
+    metadataId: org.ananas.transform.sql
+    name: Top 10 customer
+    type: transformer
+  5d56cf17d4dbe821c135ebb5:
+    config:
+      sql: |-
+        SELECT 
+        	customerName,
+          customerNumber,
+          CAST(total AS INTEGER) AS total
+        FROM PCOLLECTION
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d56cf17d4dbe821c135ebb5
+      schema:
+        fields:
+          - name: customerName
+            type: VARCHAR
+          - name: customerNumber
+            type: INTEGER
+          - name: total
+            type: INTEGER
+    description: Transform your data with SQL
+    id: 5d56cf17d4dbe821c135ebb5
+    metadataId: org.ananas.transform.sql
+    name: SQL
+    type: transformer
+  5d56cf60d4dbe821c135ebb9:
+    config:
+      dimension:
+        - customerName
+      horizontal: false
+      measures:
+        - total
+      sql: SELECT * FROM PCOLLECTION
+      stack: false
+      subtype: bar chart
+      title: Top 10 customer
+      xlabel: Customer
+      ylabel: Spends
+    dataframe:
+      data: []
+      id: 5d56cf60d4dbe821c135ebb9
+      schema:
+        fields:
+          - name: CUSTOMERNAME
+            type: VARCHAR
+          - name: CUSTOMERNUMBER
+            type: INTEGER
+          - name: TOTAL
+            type: INTEGER
+    description: Visualize your data as bar charts
+    id: 5d56cf60d4dbe821c135ebb9
+    metadataId: org.ananas.visualization.barchart
+    name: Bar chart - top 10 customer
+    type: viewer
+triggers: []
+variables:
+  - name: PASSWORD
+    description: ""
+    scope: project
+    type: credential
+  - name: DB
+    description: ""
+    scope: project
+    type: string
+  - name: HOST
+    description: ""
+    scope: project
+    type: string

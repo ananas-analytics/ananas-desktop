@@ -12,4 +12,12 @@ cscope.in.out
 cscope.out
 cscope.po.out
 /src/test/resources/test_projects/**/output
+/src/test/resources/test_projects/**/layout.yml
+/src/test/resources/test_projects/**/settings.yml
+/src/test/resources/test_projects/**/triggers.yml
+/src/test/resources/test_projects/**/README.md
+
 **/.temp-beam-*
+
+test.local.properties
+
