@@ -169,7 +169,10 @@ public class ExcelPaginator extends AutoDetectedSchemaPaginator {
       LOG.info("Limit " + limit);
       LOG.info("Offset " + offset);
       int firstRow = Math.min(sheet.getLastRowNum(), realFirstRow + offset);
-      int lastRow = Math.min(sheet.getLastRowNum(), Math.abs(firstRow + limit));
+      int lastRow =
+          Math.min(
+              sheet.getLastRowNum(),
+              Math.abs(limit == Integer.MAX_VALUE ? limit : firstRow + limit));
       LOG.info("First row " + firstRow);
       LOG.info("Last row " + lastRow);
 

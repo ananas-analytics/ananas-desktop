@@ -83,7 +83,7 @@ task pack(type: Exec) {
 
 	environment "NODE_ENV", "${getAnanasEnv()}"
 
-    environment "CSC_IDENTITY_AUTO_DISCOVERY", "${System.properties.getProperty('CODE_SIGN', 'false')}"
+    // environment "CSC_IDENTITY_AUTO_DISCOVERY", "${System.properties.getProperty('CODE_SIGN', 'false')}"
 
 	commandLine "./node_modules/.bin/electron-builder", "--mac"
 }
