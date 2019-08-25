@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Release Version 0.9.0 · Ananas Analytics Desktop</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="From Ananas Desktop 0.9.0, you can use the new **Web API data source** to integrate web API into your current data analysis flow."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Release Version 0.9.0 · Ananas Analytics Desktop"/><meta property="og:type" content="website"/><meta property="og:url" content="https://ananas-analytics.github.io/blog/2019/08/25/new-version-0.9.0"/><meta property="og:description" content="From Ananas Desktop 0.9.0, you can use the new **Web API data source** to integrate web API into your current data analysis flow."/><meta property="og:image" content="https://ananas-analytics.github.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://ananas-analytics.github.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://ananas-analytics.github.io/blog/atom.xml" title="Ananas Analytics Desktop Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://ananas-analytics.github.io/blog/feed.xml" title="Ananas Analytics Desktop Blog RSS Feed"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-130125250-1', 'auto');
+              ga('send', 'pageview');
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo-white.png" alt="Ananas Analytics Desktop"/><h2 class="headerTitleWithLogo">Ananas Analytics Desktop</h2></a><a href="/versions"><h3>0.9.0</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/downloads/overview" target="_self">Download</a></li><li class=""><a href="https://github.com/ananas-analytics/ananas-examples" target="_self">Examples</a></li><li class=""><a href="/docs/user-guide/overview" target="_self">User Guide</a></li><li class=""><a href="/docs/developer-guide/overview" target="_self">Developer Guide</a></li><li class="siteNavGroupActive"><a href="/blog/" target="_self">Dev Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Recent Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Recent Posts</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/blog/2019/08/25/new-version-0.9.0">Release Version 0.9.0</a></li><li class="navListItem"><a class="navItem" href="/blog/2019/07/24/new-version-0.8.2">Release Version 0.8.2</a></li><li class="navListItem"><a class="navItem" href="/blog/2019/07/20/new-version-0.8.1">Release Version 0.8.1</a></li><li class="navListItem"><a class="navItem" href="/blog/2019/07/16/new-version-0.8.0">Release Version 0.8.0</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer postContainer blogContainer"><div class="wrapper"><div class="lonePost"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/blog/2019/08/25/new-version-0.9.0">Release Version 0.9.0</a></h1><p class="post-meta">August 25, 2019</p><div class="authorBlock"><p class="post-authorName"><a href="https://twitter.com/bhoustudio" target="_blank" rel="noreferrer noopener">Bo HOU</a></p><div class="authorPhoto"><a href="https://twitter.com/bhoustudio" target="_blank" rel="noreferrer noopener"><img src="https://graph.facebook.com/1640873970/picture/?height=200&amp;width=200" alt="Bo HOU"/></a></div></div></header><div><span><p><img src="/blog/assets/integrate_webapi.png" alt="test"></p>
+<p>From Ananas Desktop 0.9.0, you can use the new <strong>Web API data source</strong> to integrate web API into your current data analysis flow.</p>
+<p><strong>Web API data source</strong> automatically transforms returned JSON data into a data table, so that you can transform it using SQL as any other data sources.</p>
+<!--truncate-->
+<p>For example, the following exchange rate API returns a JSON string:</p>
+<pre><code class="hljs css language-json">GET https://api.exchangeratesapi.io/latest HTTP/1.1
+
+{
+  "base": "EUR",
+  "date": "2018-04-08",
+    "rates": {
+    "CAD": 1.565,
+    "CHF": 1.1798,
+    "GBP": 0.87295,
+    "SEK": 10.2983,
+    "EUR": 1.092,
+    "USD": 1.2234,
+    ...
+  
+    }
+
+}
+</code></pre>
+<p><strong>Ananas Desktop</strong> <code>Web API data source</code> turns it into the following table:</p>
+<table>
+<thead>
+<tr><th>base</th><th>date</th><th>rates.CAD</th><th>rates.GBP</th><th>...</th></tr>
+</thead>
+<tbody>
+<tr><td>EUR</td><td>2018-04-08</td><td>1.565</td><td>1.1798</td><td>...</td></tr>
+</tbody>
+</table>
+<p>You can also filter the json object with <a href="https://goessner.net/articles/JsonPath/">JSON Path</a>. More details please see our user guide.</p>
+<p>Another exiting feature we support from 0.9.0 is the <code>Excel</code> data source. You can now forget about the <code>VLOOKUP</code> function in excel and use SQL to join excel tables. It also opens the door for you to integrate excel data with other data sources, for example, a <code>PostgreSQL</code> database. There are plenty of possibilities out there waiting for you to explore.</p>
+<p>On visualization side, 0.9.0 brings <code>Pie chart</code> into the visualization collection. And we enhanced the <code>Bar chart</code> with additional settings. You can now use the same bar chart step to visualize your data in a stacked way or side by side way, vertically or horizontally</p>
+<p>Several new command line interfaces are introduced in 0.9.0 to help engineers integrate Ananas into their current data workflow.</p>
+<p>There are several other improvements included in 0.9.0 too. Here is the release note:</p>
+<h2><a class="anchor" aria-hidden="true" id="release-note"></a><a href="#release-note" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Release Note</h2>
+<h3><a class="anchor" aria-hidden="true" id="new-features"></a><a href="#new-features" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>New Features</h3>
+<ul>
+<li>add new workspace setting <code>disableCheckUpdateOnStart</code> to disable the update check when start the app</li>
+<li>add Web API source. Now it is possible to explore, and analyze data from Web API</li>
+<li>add Excel data source.</li>
+<li>add SQL function <code>TO_DATE</code> to convert string type data to date type</li>
+<li>add <code>Pie chart</code> visualization step.</li>
+<li>improve <code>Bar chart</code> visualization step. Support stacked bar chart, horizontal bar chart and vertical bar chart</li>
+<li>add <code>Find project in file explorer</code> option in project selection view to locate project folder</li>
+<li>add new <code>StringMap</code> component for step editor. It allows editor to edit string-string type map</li>
+<li>add new CLI <code>explore</code> command to explore data source</li>
+<li>add new CLI <code>view</code> command to get visualization step result</li>
+<li>add new parameter <code>host</code> to <code>start</code> command to specify the server host</li>
+<li>add new example <code>Temperature Forcast</code>. See <a href="https://github.com/ananas-analytics/ananas-examples">ananas-examples</a></li>
+<li>add new example <code>MySQL</code>. See <a href="https://github.com/ananas-analytics/ananas-examples">ananas-examples</a></li>
+<li>add new example <code>PostgreSQL</code>. See <a href="https://github.com/ananas-analytics/ananas-examples">ananas-examples</a></li>
+<li>add new example <code>Excel</code>. See <a href="https://github.com/ananas-analytics/ananas-examples">ananas-examples</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="bug-fixes-improvements"></a><a href="#bug-fixes-improvements" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Bug fixes / Improvements</h3>
+<ul>
+<li>Fix the issue that CLI exits with code 0 when meeting error in some cases</li>
+<li>Fix the issue that CLI <code>start</code> command listens to <code>0.0.0.0:3003</code> by default. Now it listen to <code>127.0.0.1:3003</code> by default</li>
+<li>Fix derby access issue when <code>run</code> a visualization step from CLI</li>
+<li>Upgrade sparkjava dependency to version <code>2.9.1</code></li>
+<li>Fix a issue that keep loading the project that is deleted from disk</li>
+<li>Fix Linux &amp; Window new version update dialog has no acknowledge button issue</li>
+<li>Fix <code>ananas</code> process not being killed when close app on MacOS issue</li>
+<li>Improve postgres schema auto detection</li>
+<li>Improve several error messages</li>
+<li>Improve tests</li>
+</ul>
+</span></div></div><div class="blogSocialSection"></div></div><div class="blog-recent"><a class="button" href="/blog">Recent Posts</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#release-note">Release Note</a><ul class="toc-headings"><li><a href="#new-features">New Features</a></li><li><a href="#bug-fixes-improvements">Bug fixes / Improvements</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="Ananas Analytics Desktop" width="66" height="82"/></a><div><h5>Docs</h5><a href="/docs/user-guide/overview">Getting Started</a><a href="/docs/user-guide/getting-started">User Guides</a><a href="/docs/developer-guide/overview">Developer Guides</a></div><div><h5>Contact</h5><a href="mailto:contact@ananasanalytics.com">Email</a><a href="https://join.slack.com/t/ananas-analytics/shared_invite/enQtNTY2ODAxMDE5NzgxLTM1NGZhNzc3ZWY3MDg3MjQ1NTgxNGExYTgyOTNiNTRhMTA2N2RkNDFjOTNhYjEwODY4YWQ3NmZmYjM1NTY2ZWY" target="_blank" rel="noreferrer noopener">Slack Channel</a><a href="https://twitter.com/bhoustudio" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>Social</h5><a href="/blog">Development Blog</a><a href="https://github.com/ananas-analytics/ananas-desktop">GitHub</a><a class="github-button" href="https://github.com/ananas-analytics/ananas-desktop" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Ananas Analytics</section></footer></div></body></html>

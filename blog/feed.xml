@@ -4,7 +4,7 @@
         <title>Ananas Analytics Desktop Blog</title>
         <link>https://ananas-analytics.github.io/blog</link>
         <description>The best place to stay up-to-date with the latest Ananas Analytics Desktop news and events.</description>
-        <lastBuildDate>Wed, 24 Jul 2019 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 25 Aug 2019 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
@@ -14,11 +14,24 @@
         </image>
         <copyright>Copyright © 2019 Ananas Analytics</copyright>
         <item>
+            <title><![CDATA[Release Version 0.9.0]]></title>
+            <link>https://ananas-analytics.github.io/blog/2019/08/25/new-version-0.9.0.html</link>
+            <guid>https://ananas-analytics.github.io/blog/2019/08/25/new-version-0.9.0.html</guid>
+            <pubDate>Sun, 25 Aug 2019 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p><img src="/blog/assets/integrate_webapi.png" alt="test"></p>
+<p>From Ananas Desktop 0.9.0, you can use the new <strong>Web API data source</strong> to integrate web API into your current data analysis flow.</p>
+<p><strong>Web API data source</strong> automatically transforms returned JSON data into a data table, so that you can transform it using SQL as any other data sources.</p>
+]]></description>
+        </item>
+        <item>
             <title><![CDATA[Release Version 0.8.2]]></title>
             <link>https://ananas-analytics.github.io/blog/2019/07/24/new-version-0.8.2.html</link>
             <guid>https://ananas-analytics.github.io/blog/2019/07/24/new-version-0.8.2.html</guid>
             <pubDate>Wed, 24 Jul 2019 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>Version 0.8.2 is a bug fix release.</p> <p>After publishing Ananas Desktop on Hacker News, we received a lots of constructive feedbacks, and valuable issue reports. Thanks a lot Hacker News for organizing such a great community.</p> <p>In version 0.8.2, we mainly ...</p>]]></description>
+            <description><![CDATA[<p>Version 0.8.2 is a bug fix release.</p>
+<p>After publishing Ananas Desktop on Hacker News, we received a lots of constructive feedbacks, and valuable issue reports. Thanks a lot Hacker News for organizing such a great community.</p>
+<p>In version 0.8.2, we mainly focus on Local CSV source related issues and feedbacks. More features will come in next feature releases soon.</p>
+]]></description>
         </item>
         <item>
             <title><![CDATA[Release Version 0.8.1]]></title>
