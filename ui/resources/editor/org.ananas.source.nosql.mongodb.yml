@@ -39,6 +39,7 @@ layout:
           - description
           - isjson
           - filters
+          - force-auto-detect-schema
     - key: update-container
       props:
         boder:
@@ -116,7 +117,13 @@ components:
     type: TextInput
     default: '' 
     props:
-      label: Collection name 
+      label: Collection name
+  force-auto-detect-schema:
+    bind: forceAutoDetectSchema
+    type: CheckBox
+    default: true
+    props:
+      label: Force schema auto detection
   update-btn:
     type: Button
     props:

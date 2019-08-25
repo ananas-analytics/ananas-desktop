@@ -1,0 +1,75 @@
+dag:
+  connections:
+    - source: 5d627ed8429d9752a3f43e8b
+      target: 5d62811a429d9752a3f43e8f
+id: 5d627e23429d9752a3f43e85
+name: mongo_test
+steps:
+  5d627ed8429d9752a3f43e8b:
+    config:
+      collection: inventory
+      database: inventory
+      filters: "{}"
+      forceAutoDetectSchema: true
+      host: ${HOST}
+      isjson: true
+      port: "27017"
+      subtype: mongo
+    dataframe:
+      data: []
+      id: 5d627ed8429d9752a3f43e8b
+      schema:
+        fields:
+          - name: item
+            type: VARCHAR
+          - name: _id.$oid
+            type: VARCHAR
+          - name: size.h
+            type: DECIMAL
+          - name: qty
+            type: DECIMAL
+          - name: size.w
+            type: DECIMAL
+          - name: size.uom
+            type: VARCHAR
+          - name: status
+            type: VARCHAR
+    description: Connect data from NoSQL database - mongoDB
+    id: 5d627ed8429d9752a3f43e8b
+    metadataId: org.ananas.source.nosql.mongodb
+    name: MongoDB Source
+    type: connector
+  5d62811a429d9752a3f43e8f:
+    config:
+      sql: SELECT * FROM PCOLLECTION
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5d62811a429d9752a3f43e8f
+      schema:
+        fields:
+          - name: password
+            type: VARCHAR
+          - name: _id.$oid
+            type: VARCHAR
+          - name: name
+            type: VARCHAR
+          - fields: []
+            mode: REPEATED
+            name: tokens
+            type: VARCHAR
+          - name: subscriptionId
+            type: VARCHAR
+          - name: email
+            type: VARCHAR
+    description: Transform your data with SQL
+    id: 5d62811a429d9752a3f43e8f
+    metadataId: org.ananas.transform.sql
+    name: SQL
+    type: transformer
+triggers: []
+variables:
+  - name: HOST
+    description: ""
+    scope: project
+    type: string
