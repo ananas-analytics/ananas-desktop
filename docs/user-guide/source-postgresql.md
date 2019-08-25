@@ -3,6 +3,8 @@ id: source-postgresql
 title: PostgreSQL
 ---
 
+![postgres source](assets/postgresql_source.png)
+
 Imports data from PostgreSQL
 
 ## What it does 

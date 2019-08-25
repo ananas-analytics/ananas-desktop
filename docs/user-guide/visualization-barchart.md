@@ -1,9 +1,9 @@
 ---
 id: visualization-barchart
-title: Bar Chart
+title: [UPDATE] Bar Chart
 ---
 
-![ananas analytic bar chart](assets/visualization.png)
+![ananas analytic bar chart](assets/barchart_visualization.png)
 
 
 # Settings
@@ -27,6 +27,14 @@ title: Bar Chart
 - Y Axis Label
 
   The Label of Y Axis
+
+- Stacked Bar Chart? (*0.9.0+*)
+
+	Display the bars in a stack way
+
+- Horizontal Bar Chart? (*0.9.0+*)
+
+	Display the bars in a horizontal way
 
 # Advanced Settings
 

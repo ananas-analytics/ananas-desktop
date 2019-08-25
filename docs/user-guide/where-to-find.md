@@ -43,6 +43,10 @@ ${Ananas Workspace}
 
 `engine.yml` is where to find the global execution engine settings.
 
+>	You can locate your project on your file system directly from `Project Selection Page` > `Click Project` > `Locate Project Icon`
+
+![locate project](assets/locate_project.png)
+
 ## Where to find Ananas UI logs?
 
 ### MacOS

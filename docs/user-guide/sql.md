@@ -3,7 +3,7 @@ id: sql
 title: SQL
 ---
 
-SQL Step is the core transform you can use to **filter**, **transform** and **aggregate** you data. 
+SQL Step is the core transform you can use to **filter**, **transform** and **aggregate** your data. 
 
 ## What it does
 

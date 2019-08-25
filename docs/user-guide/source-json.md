@@ -1,6 +1,6 @@
 ---
 id: source-json
-title: JSON Log file
+title: Local JSON Log file
 ---
 
 Imports data from JSON Log files. Each line in the file is a json string

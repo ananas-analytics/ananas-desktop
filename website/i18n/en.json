@@ -44,6 +44,9 @@
       "downloads/v0.8.2": {
         "title": "Ananas Desktop v0.8.2"
       },
+      "downloads/v0.9.0": {
+        "title": "Ananas Desktop v0.9.0"
+      },
       "user-guide/cli-commands": {
         "title": "CLI commands"
       },
@@ -129,7 +132,7 @@
         "title": "Local CSV file"
       },
       "user-guide/source-excel": {
-        "title": "Excel sheet"
+        "title": "[NEW] Excel sheet"
       },
       "user-guide/source-google-bigquery": {
         "title": "Google Cloud BigQuery"
@@ -138,13 +141,16 @@
         "title": "Google Cloud Storage"
       },
       "user-guide/source-json": {
-        "title": "JSON Log file"
+        "title": "Local JSON Log file"
       },
       "user-guide/source-mysql": {
         "title": "MySQL"
       },
       "user-guide/source-postgresql": {
         "title": "PostgreSQL"
+      },
+      "user-guide/source-webapi": {
+        "title": "[NEW] Web API Source"
       },
       "user-guide/sql": {
         "title": "SQL"
@@ -163,13 +169,17 @@
         "sidebar_label": "Overview"
       },
       "user-guide/visualization-barchart": {
-        "title": "Bar Chart"
+        "title": "[UPDATE] Bar Chart"
       },
       "user-guide/visualization-bignumber": {
         "title": "Big Number"
       },
       "user-guide/visualization-linechart": {
         "title": "Line Chart"
+      },
+      "user-guide/visualization-piechart": {
+        "title": "Pie Chart",
+        "sidebar_label": "[NEW] Pie Chart"
       },
       "user-guide/visualizing": {
         "title": "Visualizing"

@@ -4,7 +4,7 @@ title: Ananas Analytics Desktop Downloads
 sidebar_label: Overview
 ---
 
-> The latest Ananas Desktop version is [**v0.8.2**](v0.8.2)
+> The latest Ananas Desktop version is [**v0.9.0**](v0.9.0)
 
 Ananas Desktop supports the following platform:
 

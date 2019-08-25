@@ -53,10 +53,25 @@ The following command shows the config of the step id `5ce6bc0f17968182c59c0a61`
 ```bash
 ananas show -p /Users/ananas/examples/FifaPlayer2019 --step=5ce6bc0f17968182c59c0a61 --config
 ```
+## Explore data source 
+
+```
+Usage: ananas explore [-n=<n>] -p=<project> [-s=<size>] [-m=<String=String>]...
+                      <stepId>
+Explore source and destination
+      <stepId>              Id of the step to explore, must be source or
+                              destination
+  -m, --param=<String=String>
+                            Parameter values, the parameter must be defined in
+                              ananas file
+  -n=<n>                    The page number
+  -p, --project=<project>   Ananas analytics project path
+  -s, --size=<size>         The page size
+```
 
 ## Test step
 
-```bash
+```
 Usage: ananas test [-t] [-e=<profile>] [-o=<output>] -p=<project>
                    [-m=<String=String>]... <goal>
 Test the settings of one step
@@ -83,7 +98,7 @@ ananas test -p /Users/ananas/examples/FifaPlayer2019 5ce6bc0f17968182c59c0a61 -m
 
 Only destination and visualization are runnable.
 
-```bash
+```
 Usage: ananas run [--port=<port>] [-e=<profile>] [-i=<interval>] -p=<project>
                   [-m=<String=String>]... [<goals>...]
 Run analytics task
@@ -116,4 +131,16 @@ The following command run the step `5ce6bc0f17968182c59c0a61` with `France` as t
 ananas run -p /Users/ananas/examples/FifaPlayer2019 -e /Users/ananas/examples/FifaPlayer2019/profile_spark_dev.yml 5ce6bc0f17968182c59c0a61 -mNATIONALITY=France
 ```
 
+## View visualization step result
 
+```
+Usage: ananas view [-e=<profile>] -p=<project> [-q=<sql>] <jobId> <goal>
+Explore data view result
+      <jobId>               The job id
+      <goal>                Id of the target step (VIEWER)
+  -e, --profile=<profile>   Profile yaml file, includes execution engine, and
+                              parameters (optional). By default, local Flink
+                              engine, no parameter
+  -p, --project=<project>   Ananas analytics project path
+  -q, --query=<sql>         SQL query of the result
+```

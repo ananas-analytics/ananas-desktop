@@ -18,6 +18,33 @@ settings:
     GOOGLE_APPLICATION_CREDENTIALS: /Users/ananas/dev_credentials_file.json
 ```
 
-`env` settings keep a set of environment variables. Only these environment variables are accessible to Ananas Analytics Desktop.
+## Projects
 
-> A useful scenario of `env` is to setup Google Cloud credential: when running analysis job on Google Dataflow, you need to setup an environment variable GOOGLE_APPLICATION_CREDENTIALS, with the google cloud credential file.
+`projects` section contains a list of projects imported in the workspace.  
+
+## Settings
+
+### Supported Settings
+- env
+
+	`env` settings keep a set of environment variables. Only these environment variables are accessible to Ananas Analytics Desktop.
+
+	> A useful scenario of `env` is to setup Google Cloud credential: when running analysis job on Google Dataflow, you need to setup an environment variable GOOGLE_APPLICATION_CREDENTIALS, with the google cloud credential file.
+
+	Example:
+
+	```yml
+	settings:
+		env:
+			GOOGLE_APPLICATION_CREDENTIALS: /Users/ananas/dev_credentials_file.json
+			ANOTHER_ENV_VAR: VAR_VALUE 
+	```
+
+- disableCheckUpdateOnStart (From 0.9.0+)
+
+	boolean type, default false. Whether disable the update check when start Ananas Desktop.
+
+	```yml
+	settings:
+		disableCheckUpdateOnStart: true
+	```
