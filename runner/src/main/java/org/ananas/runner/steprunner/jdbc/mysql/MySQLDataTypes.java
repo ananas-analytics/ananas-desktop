@@ -24,6 +24,7 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   MEDIUMINT("mediumint", FieldType.INT32, false),
   TINYINT("tinyint", FieldType.INT32, false),
   SMALLINT("smallint", FieldType.INT32, false),
+  BIT("bit", FieldType.INT32, false),
 
   DECIMAL("decimal", FieldType.DECIMAL, true),
   NUMERIC("numeric", FieldType.DECIMAL, false),
@@ -53,7 +54,6 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   LONGTEXT("longtext", FieldType.STRING, false),
   TINYTEXT("tinytext", FieldType.STRING, false),
   STRING("string", FieldType.STRING, false),
-  BIT("bit", FieldType.INT32, false),
   BITVAR("bit varying", FieldType.STRING, false),
   CHAR("char", FieldType.STRING, false),
   BPCHAR("bpchar", FieldType.STRING, false),
