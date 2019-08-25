@@ -3,6 +3,8 @@ id: source-excel
 title: [NEW] Excel sheet
 ---
 
+![excel source](assets/source_excel.png)
+
 Imports data from an Excel sheet
 
 ## What it does 

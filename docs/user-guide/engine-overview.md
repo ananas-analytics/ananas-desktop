@@ -11,7 +11,7 @@ Empowered by [Apach Beam](https://beam.apache.org/), Ananas embraces the industr
 
 Ananas Analytics Desktop embeds a local Flink execution engine, which makes it possible to run your analysis job on your own computer directly. The local Flink execution engine is very powerful, we have been using it analyzing Gigabytes data, which is not possible to analyze with traditional desktop analysis tools like Excel.
 
-However, in big data era, the great changes are, your data volume is an order of magnitude larger than Gigabytes (Terabytes), or your computer's commputation power is not large enough. Which means you 'll wait hours to get the result. 
+However, in big data era, the great chances are, your data volume is an order of magnitude larger than Gigabytes (Terabytes), or your computer's commputation power is not large enough. Which means you 'll wait hours to get the result. 
 
 Ananas Desktop comes to the rescue. It is now possible to run your analysis job on a data engine cluster. It could be a on premise infrastructure prepared by your devops team, or a SaaS cloud offering like Google Cloud. 
 

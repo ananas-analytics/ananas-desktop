@@ -25,13 +25,14 @@
       "user-guide/visualizing"
     ],
     "Sources": [
-      "user-guide/source-postgresql",
-      "user-guide/source-mysql",
-      "user-guide/source-json",
-      "user-guide/source-csv",
       "user-guide/source-excel",
+      "user-guide/source-webapi",
+			"user-guide/source-google-bigquery",
 			"user-guide/source-google-gcs",
-			"user-guide/source-google-bigquery"
+      "user-guide/source-csv",
+      "user-guide/source-json",
+      "user-guide/source-mysql",
+      "user-guide/source-postgresql"
     ],
     "Destinations": [
       "user-guide/destination-postgresql",
@@ -46,10 +47,10 @@
       "user-guide/concat"
     ],
     "Visualizations": [
-      "user-guide/visualization-barchart",
-      "user-guide/visualization-linechart",
       "user-guide/visualization-piechart",
-      "user-guide/visualization-bignumber"
+      "user-guide/visualization-barchart",
+      "user-guide/visualization-bignumber",
+      "user-guide/visualization-linechart"
     ],
 		"Execution Engines": [
 			"user-guide/engine-overview",

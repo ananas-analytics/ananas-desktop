@@ -3,6 +3,8 @@ id: source-csv
 title: Local CSV file
 ---
 
+![csv source](assets/csv_source.png)
+
 Imports data from local CSV files
 
 ## What it does 

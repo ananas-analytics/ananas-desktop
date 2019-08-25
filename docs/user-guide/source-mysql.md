@@ -3,6 +3,8 @@ id: source-mysql
 title: MySQL
 ---
 
+![mysql source](assets/mysql_source.png)
+
 Imports data from MySQL
 
 ## What it does 

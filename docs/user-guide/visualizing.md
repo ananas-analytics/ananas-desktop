@@ -36,5 +36,5 @@ Congratulations you've got a chart in minutes.
 
 ## Advanced settings
 
-Beware that sometimes it's useful to order your X and Y axis by sorting them in the Query. Any updates can be done directly in the Query. For example use the SQL `ORDER BY` and click `run` button to display X in order. 
+Beware that sometimes it's useful to order your X and Y axis by sorting them in the Query. Any updates can be done directly in the Query. For example use the SQL `ORDER BY` and click `explore` button to display X in order. 
 

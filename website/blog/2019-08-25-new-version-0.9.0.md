@@ -1,27 +1,57 @@
 ---
-id: v0.9.0
-title: Ananas Desktop v0.9.0
+title: Release Version 0.9.0
+author: Bo HOU
+authorURL: https://twitter.com/bhoustudio
+authorFBID: 1640873970
 ---
 
-New features see [Release Note](../downloads/v0.9.0#release-note)
+![test](assets/integrate_webapi.png)
 
-## Download
+From Ananas Desktop 0.9.0, you can use the new **Web API data source** to integrate web API into your current data analysis flow.
 
-### Ananas Desktop
+**Web API data source** automatically transforms returned JSON data into a data table, so that you can transform it using SQL as any other data sources.
 
-[Download Ananas Desktop for MacOS](https://github.com/ananas-analytics/ananas-desktop/releases/download/v0.9.0/Ananas.Analytics.Desktop.Edition-0.9.0.macos.dmg)
+<!--truncate-->
 
-[Download Ananas Desktop for Linux 64bit](https://github.com/ananas-analytics/ananas-desktop/releases/download/v0.9.0/Ananas.Analytics.Desktop.Edition.0.9.0.linux.AppImage)
+For example, the following exchange rate API returns a JSON string:
 
-[Download Ananas Desktop for Windows 64bit](https://github.com/ananas-analytics/ananas-desktop/releases/download/v0.9.0/Ananas.Analytics.Desktop.Edition.0.9.0.win.zip)
 
-### Ananas Command Line
+```json
+GET https://api.exchangeratesapi.io/latest HTTP/1.1
 
-[Download Ananas CLI](https://github.com/ananas-analytics/ananas-desktop/releases/download/v0.9.0/Ananas.Analytics.Desktop.Edition-CLI-0.9.0.zip)
+{
+  "base": "EUR",
+  "date": "2018-04-08",
+	"rates": {
+    "CAD": 1.565,
+    "CHF": 1.1798,
+    "GBP": 0.87295,
+    "SEK": 10.2983,
+    "EUR": 1.092,
+    "USD": 1.2234,
+    ...
+  
+	}
 
-## Installation
+}
+```
 
-See [Get Started Guide](../user-guide/getting-started)
+**Ananas Desktop** `Web API data source` turns it into the following table:
+
+| base | date | rates.CAD | rates.GBP | ... |
+|---|---|---|---|---|
+| EUR  | 2018-04-08  | 1.565  | 1.1798 | ...  |
+
+You can also filter the json object with [JSON Path](https://goessner.net/articles/JsonPath/). More details please see our user guide.
+
+Another exiting feature we support from 0.9.0 is the `Excel` data source. You can now forget about the `VLOOKUP` function in excel and use SQL to join excel tables. It also opens the door for you to integrate excel data with other data sources, for example, a `PostgreSQL` database. There are plenty of possibilities out there waiting for you to explore. 
+
+On visualization side, 0.9.0 brings `Pie chart` into the visualization collection. And we enhanced the `Bar chart` with additional settings. You can now use the same bar chart step to visualize your data in a stacked way or side by side way, vertically or horizontally
+
+Several new command line interfaces are introduced in 0.9.0 to help engineers integrate Ananas into their current data workflow.  
+
+There are several other improvements included in 0.9.0 too. Here is the release note:
+
 
 ## Release Note 
 

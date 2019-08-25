@@ -11,6 +11,8 @@ After publishing Ananas Desktop on Hacker News, we received a lots of constructi
 
 In version 0.8.2, we mainly focus on Local CSV source related issues and feedbacks. More features will come in next feature releases soon.
 
+<!--truncate-->
+
 ## Release Note of 0.8.2
 
 - improve data explore error message, instead of showing null

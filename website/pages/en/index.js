@@ -108,7 +108,7 @@ class Index extends React.Component {
             title: 'Built for Non-technical User',
           },
           {
-            content: 'Make it possible to query, transform and analysis with standard SQL for not only tranditional relational database but also other data sources, for example, file.',
+            content: 'Make it possible to query, transform and analyze with standard SQL for not only tranditional relational database but also other data sources, for example, file.',
             image: `${baseUrl}img/landing/sql.svg`,
             imageAlign: 'top',
             title: 'Powered by SQL',
