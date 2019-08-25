@@ -25,7 +25,7 @@ sidebar_label: [NEW] Pie Chart
 
 - Display in 3D?
 
-	Display in 3D
+	Display in 3D or 2D
 
 - Display in donut? 
 
