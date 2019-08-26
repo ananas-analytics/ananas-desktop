@@ -85,7 +85,7 @@ task pack(type: Exec) {
 
     // environment "CSC_IDENTITY_AUTO_DISCOVERY", "${System.properties.getProperty('CODE_SIGN', 'false')}"
 
-	commandLine "./node_modules/.bin/electron-builder", "--mac"
+	commandLine "./node_modules/.bin/electron-builder", "--${project.platform}"
 }
 
 task packMac(type: Exec) {
