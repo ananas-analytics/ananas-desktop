@@ -12,7 +12,7 @@ import java.util.List;
 import org.ananas.runner.kernel.LoaderStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.legacy.steps.commons.json.AsJsons;
+import org.ananas.runner.misc.AsJsons;
 import org.apache.beam.sdk.io.FileIO;
 import org.apache.beam.sdk.values.Row;
 

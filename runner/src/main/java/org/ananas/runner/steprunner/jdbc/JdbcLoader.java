@@ -8,7 +8,7 @@ import org.ananas.runner.kernel.LoaderStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.common.DataReader;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.legacy.steps.commons.NullDataReader;
+import org.ananas.runner.misc.NullDataReader;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.Schema.Field;

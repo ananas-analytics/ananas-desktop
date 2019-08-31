@@ -2,7 +2,7 @@ package org.ananas.runner.api;
 
 import static spark.Spark.*;
 
-import org.ananas.runner.legacy.hooks.BackgroundApiService;
+import org.ananas.runner.misc.BackgroundApiService;
 
 /** REST API Routes */
 public class RestApiRoutes {

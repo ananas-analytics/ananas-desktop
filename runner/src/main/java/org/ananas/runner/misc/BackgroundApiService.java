@@ -1,4 +1,4 @@
-package org.ananas.runner.legacy.hooks;
+package org.ananas.runner.misc;
 
 import java.io.IOException;
 import java.util.Set;

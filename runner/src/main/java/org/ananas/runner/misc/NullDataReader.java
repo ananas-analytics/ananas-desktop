@@ -1,4 +1,4 @@
-package org.ananas.runner.legacy.steps.commons;
+package org.ananas.runner.misc;
 
 import java.io.Serializable;
 import java.util.List;

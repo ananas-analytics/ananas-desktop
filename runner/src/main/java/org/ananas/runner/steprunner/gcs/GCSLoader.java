@@ -3,7 +3,7 @@ package org.ananas.runner.steprunner.gcs;
 import org.ananas.runner.kernel.LoaderStepRunner;
 import org.ananas.runner.kernel.StepRunner;
 import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.legacy.steps.commons.json.AsJsons;
+import org.ananas.runner.misc.AsJsons;
 import org.ananas.runner.misc.StepConfigHelper;
 import org.ananas.runner.steprunner.files.FileLoader.CSVFileSink;
 import org.ananas.runner.steprunner.files.FileLoader.TextFileSink;

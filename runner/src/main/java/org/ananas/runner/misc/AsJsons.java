@@ -1,4 +1,4 @@
-package org.ananas.runner.legacy.steps.commons.json;
+package org.ananas.runner.misc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
