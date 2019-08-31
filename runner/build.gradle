@@ -55,8 +55,8 @@ dependencies {
 
     // beam runner
     compile 'org.apache.beam:beam-runners-spark:2.13.0'
-    compile 'org.apache.beam:beam-runners-google-cloud-dataflow-java:2.13.0'
     compile 'org.apache.beam:beam-runners-flink_2.11:2.13.0'
+    compile 'org.apache.beam:beam-runners-google-cloud-dataflow-java:2.13.0'
 
     // engines
     // engine - spark

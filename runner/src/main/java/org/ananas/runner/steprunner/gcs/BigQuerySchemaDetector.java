@@ -1,4 +1,4 @@
-package org.ananas.runner.paginator.files;
+package org.ananas.runner.steprunner.gcs;
 
 import com.google.api.services.bigquery.model.TableFieldSchema;
 import com.google.api.services.bigquery.model.TableSchema;
@@ -8,7 +8,6 @@ import com.google.cloud.bigquery.TableResult;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.ananas.runner.steprunner.gcs.BigQueryHelper;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.Schema.Builder;
 import org.apache.beam.sdk.schemas.Schema.FieldType;

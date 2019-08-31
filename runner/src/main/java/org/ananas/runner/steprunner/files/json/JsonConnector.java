@@ -1,4 +1,4 @@
-package org.ananas.runner.steprunner.files;
+package org.ananas.runner.steprunner.files.json;
 
 import org.ananas.runner.core.ConnectorStepRunner;
 import org.ananas.runner.core.common.JsonStringBasedFlattenerReader;

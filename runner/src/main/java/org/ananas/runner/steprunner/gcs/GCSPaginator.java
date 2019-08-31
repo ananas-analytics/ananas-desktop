@@ -1,4 +1,4 @@
-package org.ananas.runner.paginator.files;
+package org.ananas.runner.steprunner.gcs;
 
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteStreams;
@@ -19,6 +19,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.GZIPInputStream;
 import org.ananas.runner.core.model.StepType;
 import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.steprunner.files.csv.CSVPaginator;
+import org.ananas.runner.steprunner.files.json.JsonPaginator;
 import org.ananas.runner.steprunner.files.utils.HomeManager;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
 import org.apache.beam.repackaged.beam_sdks_java_extensions_sql.com.google.common.collect.Lists;

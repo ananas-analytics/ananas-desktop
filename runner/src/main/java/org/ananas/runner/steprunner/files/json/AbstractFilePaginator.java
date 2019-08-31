@@ -1,4 +1,4 @@
-package org.ananas.runner.paginator.files;
+package org.ananas.runner.steprunner.files.json;
 
 import org.ananas.runner.core.errors.ErrorHandler;
 import org.ananas.runner.core.paginate.AbstractPaginator;

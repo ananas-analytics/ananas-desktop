@@ -1,4 +1,4 @@
-package org.ananas.runner.paginator;
+package org.ananas.runner.steprunner.jdbc;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -6,10 +6,6 @@ import java.util.List;
 import java.util.Map;
 import org.ananas.runner.core.errors.ErrorHandler;
 import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.steprunner.jdbc.JDBCStatement;
-import org.ananas.runner.steprunner.jdbc.JdbcConnector;
-import org.ananas.runner.steprunner.jdbc.JdbcSchemaDetecter;
-import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;

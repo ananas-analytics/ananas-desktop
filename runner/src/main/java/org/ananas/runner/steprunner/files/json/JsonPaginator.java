@@ -1,4 +1,4 @@
-package org.ananas.runner.paginator.files;
+package org.ananas.runner.steprunner.files.json;
 
 import java.util.List;
 import java.util.Map;
@@ -8,6 +8,7 @@ import org.ananas.runner.core.paginate.AbstractPaginator;
 import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.core.schema.JsonAutodetect;
 import org.ananas.runner.core.schema.SchemaBasedRowConverter;
+import org.ananas.runner.steprunner.files.utils.PageProcessor;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 

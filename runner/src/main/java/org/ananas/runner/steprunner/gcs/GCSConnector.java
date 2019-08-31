@@ -9,7 +9,6 @@ import org.ananas.runner.core.model.StepType;
 import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.core.paginate.PaginatorFactory;
 import org.ananas.runner.core.schema.SchemaBasedRowConverter;
-import org.ananas.runner.paginator.files.GCSPaginator;
 import org.ananas.runner.steprunner.files.csv.BeamTextCSVCustomTable;
 import org.ananas.runner.steprunner.files.txt.TruncatedTextIO;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
