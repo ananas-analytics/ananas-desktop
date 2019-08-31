@@ -31,6 +31,7 @@ public class JdbcConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     config = new JdbcStepConfig(this.step.config);
 

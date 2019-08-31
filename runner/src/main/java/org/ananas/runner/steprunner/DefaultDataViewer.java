@@ -24,6 +24,7 @@ public class DefaultDataViewer extends DataViewerStepRunner {
     super(step, previous, engine, jobId, isTest);
   }
 
+  @Override
   public void build() {
     // DefaultDataViewer is actually a wrapper of SQLTransformer in test mode and a jdbcLoader in
     // run mode

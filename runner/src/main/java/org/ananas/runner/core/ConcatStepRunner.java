@@ -32,6 +32,7 @@ public class ConcatStepRunner extends AbstractStepRunner {
     this.upstreams = upstreams;
   }
 
+  @Override
   public void build() {
     Preconditions.checkNotNull(upstreams);
 

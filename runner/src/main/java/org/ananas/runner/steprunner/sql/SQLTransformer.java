@@ -16,6 +16,7 @@ public class SQLTransformer extends TransformerStepRunner {
     super(step, previous);
   }
 
+  @Override
   public void build() {
     String statement = (String) this.step.config.get(CONFIG_SQL);
     this.output =

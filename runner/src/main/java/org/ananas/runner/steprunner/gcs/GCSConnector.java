@@ -26,6 +26,7 @@ public class GCSConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     String format = (String) step.config.getOrDefault("format", "");
     switch (format) {

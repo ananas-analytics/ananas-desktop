@@ -3,7 +3,7 @@ package org.ananas.runner.core;
 import org.ananas.runner.core.model.Step;
 import org.ananas.runner.core.model.StepType;
 
-public class LoaderStepRunner extends AbstractStepRunner {
+public abstract class LoaderStepRunner extends AbstractStepRunner {
 
   private static final long serialVersionUID = -1873968600892797483L;
 

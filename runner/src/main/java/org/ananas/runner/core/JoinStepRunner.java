@@ -61,6 +61,7 @@ public class JoinStepRunner extends AbstractStepRunner {
     this.another = another;
   }
 
+  @Override
   public void build() {
     String leftStepId = (String) step.config.get(JOIN_LEFT_STEPID);
     StepRunner leftStep, rightStep;

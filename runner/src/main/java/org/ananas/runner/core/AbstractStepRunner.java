@@ -63,9 +63,7 @@ public abstract class AbstractStepRunner implements StepRunner, Serializable {
     return this.reader;
   }
 
-  public void build() {
-    // do nothing
-  }
+  public abstract void build();
 
   public void setReader() {
     if (this.output != null) {

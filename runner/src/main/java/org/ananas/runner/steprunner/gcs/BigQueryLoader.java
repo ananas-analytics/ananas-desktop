@@ -33,6 +33,7 @@ public class BigQueryLoader extends LoaderStepRunner {
     super(step, previous, isTest);
   }
 
+  @Override
   public void build() {
     String projectId = (String) step.config.getOrDefault(PROJECT, "");
     String dataset = (String) step.config.getOrDefault(DATASET, "");

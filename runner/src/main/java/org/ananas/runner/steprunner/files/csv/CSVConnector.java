@@ -17,6 +17,7 @@ public class CSVConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     CSVStepConfig config = new CSVStepConfig(StepType.Connector, step.config);
 

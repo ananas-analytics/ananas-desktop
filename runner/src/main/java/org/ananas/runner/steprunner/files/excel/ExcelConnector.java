@@ -20,6 +20,7 @@ public class ExcelConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     this.errors = new ErrorHandler();
 

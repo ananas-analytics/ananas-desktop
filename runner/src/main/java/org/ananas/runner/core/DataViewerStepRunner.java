@@ -4,7 +4,7 @@ import org.ananas.runner.core.model.Engine;
 import org.ananas.runner.core.model.Step;
 import org.ananas.runner.core.model.StepType;
 
-public class DataViewerStepRunner extends AbstractStepRunner {
+public abstract class DataViewerStepRunner extends AbstractStepRunner {
 
   protected String jobId;
   protected Engine engine;

@@ -4,7 +4,7 @@ import org.ananas.runner.core.model.Step;
 import org.ananas.runner.core.model.StepType;
 import org.apache.beam.sdk.Pipeline;
 
-public class ConnectorStepRunner extends AbstractStepRunner {
+public abstract class ConnectorStepRunner extends AbstractStepRunner {
 
   private static final long serialVersionUID = 6428329144693419800L;
   protected transient Pipeline pipeline;

@@ -3,7 +3,7 @@ package org.ananas.runner.core;
 import org.ananas.runner.core.model.Step;
 import org.ananas.runner.core.model.StepType;
 
-public class TransformerStepRunner extends AbstractStepRunner {
+public abstract class TransformerStepRunner extends AbstractStepRunner {
 
   protected transient Step step;
   protected transient StepRunner previous;

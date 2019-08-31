@@ -26,6 +26,7 @@ public class JsonConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     String url = (String) this.step.config.get(JsonConnector.CONFIG_PATH);
 

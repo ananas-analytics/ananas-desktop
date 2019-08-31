@@ -28,6 +28,7 @@ public class BigQueryConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     BigQueryStepConfig config = new BigQueryStepConfig(step.config);
 
