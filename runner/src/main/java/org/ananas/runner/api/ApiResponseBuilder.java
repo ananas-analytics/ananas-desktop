@@ -2,8 +2,8 @@ package org.ananas.runner.api;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.ananas.runner.kernel.errors.AnanasException;
-import org.ananas.runner.kernel.errors.ExceptionHandler;
+import org.ananas.runner.core.errors.AnanasException;
+import org.ananas.runner.core.errors.ExceptionHandler;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class ApiResponseBuilder {

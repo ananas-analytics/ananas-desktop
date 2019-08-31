@@ -2,8 +2,8 @@ package org.ananas.acceptance.helper;
 
 import java.util.HashMap;
 import org.ananas.runner.api.ApiResponseBuilder;
-import org.ananas.runner.kernel.common.JsonUtil;
-import org.ananas.runner.kernel.model.Engine;
+import org.ananas.runner.core.common.JsonUtil;
+import org.ananas.runner.core.model.Engine;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 
 public class DataViewerHelper {

@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.ananas.runner.kernel.common.JsonUtil;
-import org.ananas.runner.kernel.errors.AnanasException;
-import org.ananas.runner.kernel.job.BeamRunner;
-import org.ananas.runner.kernel.job.Job;
-import org.ananas.runner.kernel.job.JobRepositoryFactory;
-import org.ananas.runner.kernel.job.Runner;
-import org.ananas.runner.kernel.model.Dataframe;
-import org.ananas.runner.kernel.paginate.PaginationBody;
-import org.ananas.runner.kernel.paginate.Paginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.core.common.JsonUtil;
+import org.ananas.runner.core.errors.AnanasException;
+import org.ananas.runner.core.job.BeamRunner;
+import org.ananas.runner.core.job.Job;
+import org.ananas.runner.core.job.JobRepositoryFactory;
+import org.ananas.runner.core.job.Runner;
+import org.ananas.runner.core.model.Dataframe;
+import org.ananas.runner.core.paginate.PaginationBody;
+import org.ananas.runner.core.paginate.Paginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import spark.ExceptionHandler;
 import spark.Request;
@@ -62,7 +62,7 @@ class HttpHandler {
               ApiResponseBuilder.Of()
                   .KO(
                       new AnanasException(
-                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
+                          org.ananas.runner.core.errors.ExceptionHandler.ErrorCode.GENERAL,
                           "missing body"))
                   .build());
         }
@@ -82,7 +82,7 @@ class HttpHandler {
               ApiResponseBuilder.Of()
                   .KO(
                       new AnanasException(
-                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
+                          org.ananas.runner.core.errors.ExceptionHandler.ErrorCode.GENERAL,
                           "missing body"))
                   .build());
         }

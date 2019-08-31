@@ -1,7 +1,7 @@
 package org.ananas.runner.api;
 
 import ch.qos.logback.classic.Level;
-import org.ananas.runner.kernel.ExtensionRegistry;
+import org.ananas.runner.core.ExtensionRegistry;
 import org.slf4j.LoggerFactory;
 
 public class Main {

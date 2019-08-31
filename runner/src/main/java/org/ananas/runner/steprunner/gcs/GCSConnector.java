@@ -1,14 +1,14 @@
 package org.ananas.runner.steprunner.gcs;
 
 import java.io.IOException;
-import org.ananas.runner.kernel.ConnectorStepRunner;
-import org.ananas.runner.kernel.common.JsonStringBasedFlattenerReader;
-import org.ananas.runner.kernel.common.Sampler;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
+import org.ananas.runner.core.ConnectorStepRunner;
+import org.ananas.runner.core.common.JsonStringBasedFlattenerReader;
+import org.ananas.runner.core.common.Sampler;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.core.model.StepType;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
+import org.ananas.runner.core.schema.SchemaBasedRowConverter;
 import org.ananas.runner.paginator.files.GCSPaginator;
 import org.ananas.runner.steprunner.files.csv.BeamTextCSVCustomTable;
 import org.ananas.runner.steprunner.files.txt.TruncatedTextIO;

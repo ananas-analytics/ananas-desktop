@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import lombok.Data;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.model.Variable;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.core.model.Variable;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.cli.model.Profile;
-import org.ananas.runner.kernel.model.Dag;
-import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.kernel.model.Engine;
-import org.ananas.runner.kernel.model.Variable;
+import org.ananas.runner.core.model.Dag;
+import org.ananas.runner.core.model.DagRequest;
+import org.ananas.runner.core.model.Engine;
+import org.ananas.runner.core.model.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

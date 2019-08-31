@@ -2,12 +2,12 @@ package org.ananas.runner.paginator.files;
 
 import java.util.List;
 import java.util.Map;
-import org.ananas.runner.kernel.common.JsonStringBasedFlattenerReader;
-import org.ananas.runner.kernel.errors.ErrorHandler;
-import org.ananas.runner.kernel.paginate.AbstractPaginator;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.schema.JsonAutodetect;
-import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
+import org.ananas.runner.core.common.JsonStringBasedFlattenerReader;
+import org.ananas.runner.core.errors.ErrorHandler;
+import org.ananas.runner.core.paginate.AbstractPaginator;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.schema.JsonAutodetect;
+import org.ananas.runner.core.schema.SchemaBasedRowConverter;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
 

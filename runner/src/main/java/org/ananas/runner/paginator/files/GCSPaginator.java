@@ -2,6 +2,7 @@ package org.ananas.runner.paginator.files;
 
 import com.google.common.hash.Hashing;
 import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,8 +17,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.GZIPInputStream;
-import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.model.StepType;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.steprunner.files.utils.HomeManager;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
 import org.apache.beam.repackaged.beam_sdks_java_extensions_sql.com.google.common.collect.Lists;
@@ -27,7 +28,6 @@ import org.apache.beam.sdk.io.fs.ResourceId;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.values.Row;
-import org.apache.commons.io.FilenameUtils;
 
 public class GCSPaginator extends AutoDetectedSchemaPaginator {
 
@@ -68,7 +68,8 @@ public class GCSPaginator extends AutoDetectedSchemaPaginator {
             .hashString(sampleResourceId.get().toString(), StandardCharsets.UTF_8)
             .toString();
     String filename = sampleResourceId.get().getFilename();
-    String extension = FilenameUtils.getExtension(filename);
+    // String extension = FilenameUtils.getExtension(filename);
+    String extension = Files.getFileExtension(filename);
     File sampleFile = new File(HomeManager.getHomeFilePath(this.id + "_" + hash + "." + extension));
     if (sampleFile.exists()
         && config.getOrDefault("resampling", Boolean.FALSE).equals(Boolean.FALSE)) {

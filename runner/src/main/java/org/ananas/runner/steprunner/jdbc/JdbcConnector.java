@@ -3,12 +3,12 @@ package org.ananas.runner.steprunner.jdbc;
 import static org.apache.beam.sdk.values.Row.toRow;
 
 import java.util.stream.IntStream;
-import org.ananas.runner.kernel.ConnectorStepRunner;
-import org.ananas.runner.kernel.common.Sampler;
-import org.ananas.runner.kernel.errors.ErrorHandler;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.core.ConnectorStepRunner;
+import org.ananas.runner.core.common.Sampler;
+import org.ananas.runner.core.errors.ErrorHandler;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;

@@ -1,7 +1,7 @@
 package org.ananas.runner.steprunner.gcs;
 
 import java.util.Map;
-import org.ananas.runner.kernel.model.StepType;
+import org.ananas.runner.core.model.StepType;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
 import org.apache.commons.csv.CSVFormat;
 

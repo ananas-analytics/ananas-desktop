@@ -1,10 +1,10 @@
 package org.ananas.runner.steprunner.files.excel;
 
-import org.ananas.runner.kernel.ConnectorStepRunner;
-import org.ananas.runner.kernel.errors.AnanasException;
-import org.ananas.runner.kernel.errors.ErrorHandler;
-import org.ananas.runner.kernel.errors.ExceptionHandler;
-import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.core.ConnectorStepRunner;
+import org.ananas.runner.core.errors.AnanasException;
+import org.ananas.runner.core.errors.ErrorHandler;
+import org.ananas.runner.core.errors.ExceptionHandler;
+import org.ananas.runner.core.model.Step;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.Create;

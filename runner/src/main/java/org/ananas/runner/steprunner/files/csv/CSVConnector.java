@@ -1,10 +1,10 @@
 package org.ananas.runner.steprunner.files.csv;
 
-import org.ananas.runner.kernel.ConnectorStepRunner;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.core.ConnectorStepRunner;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.core.model.StepType;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.commons.csv.CSVFormat;

@@ -3,9 +3,9 @@ package org.ananas.runner.steprunner.gcs;
 import static org.apache.beam.sdk.values.Row.toRow;
 
 import com.google.api.services.bigquery.model.TableRow;
-import org.ananas.runner.kernel.LoaderStepRunner;
-import org.ananas.runner.kernel.StepRunner;
-import org.ananas.runner.kernel.model.Step;
+import org.ananas.runner.core.LoaderStepRunner;
+import org.ananas.runner.core.StepRunner;
+import org.ananas.runner.core.model.Step;
 import org.ananas.runner.misc.StepConfigHelper;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO.Write.CreateDisposition;

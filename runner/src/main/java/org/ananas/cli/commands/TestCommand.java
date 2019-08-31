@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 import org.ananas.cli.CommandLineTable;
 import org.ananas.cli.DagRequestBuilder;
 import org.ananas.runner.api.Services;
-import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.runner.core.model.DagRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;

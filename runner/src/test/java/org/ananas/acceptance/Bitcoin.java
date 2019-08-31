@@ -10,7 +10,7 @@ import java.util.Map;
 import org.ananas.acceptance.helper.AcceptanceTestBase;
 import org.ananas.acceptance.helper.DataViewerHelper;
 import org.ananas.cli.Main;
-import org.ananas.runner.kernel.model.Engine;
+import org.ananas.runner.core.model.Engine;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.Assertion;

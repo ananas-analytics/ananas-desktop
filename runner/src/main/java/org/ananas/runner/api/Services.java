@@ -3,13 +3,13 @@ package org.ananas.runner.api;
 import freemarker.template.TemplateException;
 import java.util.HashMap;
 import java.util.Map;
-import org.ananas.runner.kernel.build.Builder;
-import org.ananas.runner.kernel.build.DagBuilder;
-import org.ananas.runner.kernel.common.JsonUtil;
-import org.ananas.runner.kernel.job.BeamRunner;
-import org.ananas.runner.kernel.job.Runner;
-import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.kernel.model.Dataframe;
+import org.ananas.runner.core.build.Builder;
+import org.ananas.runner.core.build.DagBuilder;
+import org.ananas.runner.core.common.JsonUtil;
+import org.ananas.runner.core.job.BeamRunner;
+import org.ananas.runner.core.job.Runner;
+import org.ananas.runner.core.model.DagRequest;
+import org.ananas.runner.core.model.Dataframe;
 
 public class Services {
 
