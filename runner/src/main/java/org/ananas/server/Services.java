@@ -1,4 +1,4 @@
-package org.ananas.runner.api;
+package org.ananas.server;
 
 import freemarker.template.TemplateException;
 import java.util.HashMap;

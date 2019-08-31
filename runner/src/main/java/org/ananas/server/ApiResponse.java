@@ -1,4 +1,4 @@
-package org.ananas.runner.api;
+package org.ananas.server;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

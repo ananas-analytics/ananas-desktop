@@ -63,7 +63,7 @@ task packRunner(type: Exec) {
 		"--classpath", "runner/build/libs/${project.runnerJarName}.jar",
 		// "--removelibs", "runner/build/libs/${project.runnerJarName}.jar",
         // "--minimizejre", "soft",
-		"--mainclass", "org.ananas.runner.api.Main",
+		"--mainclass", "org.ananas.server.Main",
 		"--vmargs", "Xmx4G",
         "--bundle", "com.ananas.desktop",
 		"--output", "ui/resources/runner"

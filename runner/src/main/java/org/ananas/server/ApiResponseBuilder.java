@@ -1,4 +1,4 @@
-package org.ananas.runner.api;
+package org.ananas.server;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -40,16 +40,6 @@ public class ConcatStepRunner extends AbstractStepRunner {
           "Please connect steps to concat step. Can't find any upstream steps");
     }
 
-    // hack for flink issue with Schema coder equals
-    // leftStep.getSchema().setUUID(null);
-    // rightStep.getSchema().setUUID(null);
-
-    /*
-    if (!leftStep.getSchema().equals(rightStep.getSchema())) {
-      throw new RuntimeException("Both steps should have same columns (name and type). ");
-    }
-     */
-
     UUID inputSchemaUUID = UUID.randomUUID();
     upstreams.forEach(
         stepRunner -> {

@@ -1,7 +1,7 @@
 package org.ananas.cli.commands;
 
 import java.util.concurrent.Callable;
-import org.ananas.runner.api.RestApiRoutes;
+import org.ananas.server.RestApiRoutes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;

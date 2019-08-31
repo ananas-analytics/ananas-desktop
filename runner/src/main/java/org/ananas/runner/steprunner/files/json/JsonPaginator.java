@@ -28,7 +28,7 @@ public class JsonPaginator extends AutoDetectedSchemaPaginator {
   @Override
   public Schema autodetect() {
     List<String> lines =
-        PageProcessor.readFile(this.url, 0, AbstractFilePaginator.DEFAULT_LIMIT, (e, i) -> e);
+        PageProcessor.readFile(this.url, 0, AbstractPaginator.DEFAULT_LIMIT, (e, i) -> e);
     return JsonAutodetect.autodetectJson(lines.iterator(), false, AbstractPaginator.DEFAULT_LIMIT);
   }
 

@@ -1,4 +1,4 @@
-package org.ananas.runner.api;
+package org.ananas.server;
 
 import ch.qos.logback.classic.Level;
 import org.ananas.runner.core.ExtensionRegistry;

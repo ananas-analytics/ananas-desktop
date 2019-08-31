@@ -1,10 +1,10 @@
 package org.ananas.acceptance.helper;
 
 import java.util.HashMap;
-import org.ananas.runner.api.ApiResponseBuilder;
 import org.ananas.runner.core.common.JsonUtil;
 import org.ananas.runner.core.model.Engine;
 import org.ananas.runner.steprunner.DefaultDataViewer;
+import org.ananas.server.ApiResponseBuilder;
 
 public class DataViewerHelper {
   public static String getViewerJobData(String sql, String jobId, String stepId, Engine engine) {

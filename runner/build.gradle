@@ -105,7 +105,7 @@ publishing {
     }
 }
 
-mainClassName = 'org.ananas.runner.api.Main'
+mainClassName = 'org.ananas.server.Main'
 
 if (getSystemProperty('target', 'runner') == 'cli') {
     mainClassName = 'org.ananas.cli.Main'

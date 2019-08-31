@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import java.io.IOException;
 import java.io.InputStream;
-import org.ananas.runner.api.ApiResponse;
+import org.ananas.server.ApiResponse;
 
 public class JsonUtil {
 
