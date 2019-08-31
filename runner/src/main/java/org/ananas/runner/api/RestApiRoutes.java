@@ -63,8 +63,6 @@ public class RestApiRoutes {
 
     get("/v1/data/:jobid/:stepid", HttpHandler.dataView);
 
-    get("/healthcheck", HttpHandler.healtcheck);
-
     // Exception handler
     exception(Exception.class, HttpHandler.error);
 

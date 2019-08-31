@@ -10,9 +10,6 @@ import org.ananas.runner.kernel.job.BeamRunner;
 import org.ananas.runner.kernel.job.Runner;
 import org.ananas.runner.kernel.model.DagRequest;
 import org.ananas.runner.kernel.model.Dataframe;
-import org.ananas.scheduler.DefaultScheduler;
-import org.ananas.scheduler.ScheduleOptions;
-import org.quartz.SchedulerException;
 
 public class Services {
 
@@ -39,18 +36,5 @@ public class Services {
   public static Object testDag(DagRequest req) {
     Map<String, Dataframe> results = new DagBuilder(req, true).test();
     return JsonUtil.toJson(ApiResponseBuilder.Of().OK(results).build());
-  }
-
-  protected static Object scheduleDag(String body) throws java.io.IOException, TemplateException {
-    ScheduleOptions req = JsonUtil.fromJson(body, ScheduleOptions.class);
-    req.dag = req.dag.resolveVariables();
-
-    try {
-      DefaultScheduler.of().schedule(req);
-      return JsonUtil.toJson(ApiResponseBuilder.Of().OK("OK").build());
-    } catch (SchedulerException e) {
-      e.printStackTrace();
-      return JsonUtil.toJson(ApiResponseBuilder.Of().KO(e).build());
-    }
   }
 }

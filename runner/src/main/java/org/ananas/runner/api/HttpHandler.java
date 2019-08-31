@@ -15,7 +15,6 @@ import org.ananas.runner.kernel.model.Dataframe;
 import org.ananas.runner.kernel.paginate.PaginationBody;
 import org.ananas.runner.kernel.paginate.Paginator;
 import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.legacy.healthcheck.HealthCheck;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import spark.ExceptionHandler;
 import spark.Request;
@@ -23,12 +22,6 @@ import spark.Response;
 import spark.Route;
 
 class HttpHandler {
-
-  private static HealthCheck h;
-
-  static {
-    h = new HealthCheck();
-  }
 
   // DATASET
 
@@ -46,11 +39,6 @@ class HttpHandler {
                 ? new PaginationBody()
                 : JsonUtil.fromJson(body, PaginationBody.class);
 
-        /*
-        Paginator paginator =
-            SourcePaginator.of(
-                id, paginationBody.type, paginationBody.config, paginationBody.params);
-         */
         Paginator paginator = PaginatorFactory.of(id, paginationBody);
         try {
           Dataframe dataframe =
@@ -102,23 +90,6 @@ class HttpHandler {
         return Services.runDag(id, token, body);
       };
 
-  static Route scheduleDag =
-      (Request request, Response response) -> {
-        String body = request.body();
-
-        if (body == null || body.length() == 0) {
-          return JsonUtil.toJson(
-              ApiResponseBuilder.Of()
-                  .KO(
-                      new AnanasException(
-                          org.ananas.runner.kernel.errors.ExceptionHandler.ErrorCode.GENERAL,
-                          "missing body"))
-                  .build());
-        }
-
-        return Services.scheduleDag(body);
-      };
-
   static Route cancelPipeline =
       (Request request, Response response) -> {
         String id = request.params(":id");
@@ -144,25 +115,6 @@ class HttpHandler {
             JobRepositoryFactory.getJobRepostory()
                 .getJobsByGoal(
                     goalid,
-                    skip == null ? 0 : Integer.valueOf(skip),
-                    size == null ? 10 : Integer.valueOf(size));
-
-        List<Job> output =
-            jobs.stream().map(Job::JobStateResultFilter).collect(Collectors.toList());
-
-        return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
-      };
-
-  static Route getJobsByTrigger =
-      (Request request, Response response) -> {
-        String triggerid = request.params(":triggerid");
-        String skip = request.queryParams("skip");
-        String size = request.queryParams("size");
-
-        List<Job> jobs =
-            JobRepositoryFactory.getJobRepostory()
-                .getJobsByScheduleId(
-                    triggerid,
                     skip == null ? 0 : Integer.valueOf(skip),
                     size == null ? 10 : Integer.valueOf(size));
 
@@ -217,8 +169,4 @@ class HttpHandler {
         response.body(JsonUtil.toJson(ApiResponseBuilder.Of().KO(e).build()));
         e.printStackTrace();
       };
-
-  static Route healtcheck =
-      (Request request, Response response) ->
-          JsonUtil.toJson(ApiResponseBuilder.Of().OK(h).build());
 }
