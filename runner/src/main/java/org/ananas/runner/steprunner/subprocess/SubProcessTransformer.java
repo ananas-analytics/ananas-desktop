@@ -31,20 +31,20 @@ public class SubProcessTransformer extends TransformerStepRunner {
             .getOutput()
             .apply(
                 "subprocess transform",
-                ParDo.of(new EchoInputDoFn(configuration, "Echo", this.outputSchema)));
+                ParDo.of(new InputDoFn(configuration, "Echo", this.outputSchema)));
     this.output.setRowSchema(this.outputSchema);
   }
 
-  /** Simple DoFn that echos the element, used as an example of running a C++ library. */
+  /** Simple DoFn that calls a library. */
   @SuppressWarnings("serial")
-  public static class EchoInputDoFn extends DoFn<Row, Row> {
+  public static class InputDoFn extends DoFn<Row, Row> {
 
-    static final Logger LOG = LoggerFactory.getLogger(EchoInputDoFn.class);
+    static final Logger LOG = LoggerFactory.getLogger(InputDoFn.class);
 
     private SubProcessConfiguration configuration;
     private Schema schema;
 
-    public EchoInputDoFn(SubProcessConfiguration configuration, String binary, Schema schema) {
+    public InputDoFn(SubProcessConfiguration configuration, String binary, Schema schema) {
       // Pass in configuration information the name of the filename of the sub-process and the level
       // of concurrency
       this.configuration = configuration;

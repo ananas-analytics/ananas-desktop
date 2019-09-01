@@ -68,14 +68,9 @@ public class SubProcessKernel {
 
   private Process execBinary(ProcessBuilder builder, String arg) throws Exception {
     try {
-      /*System.out.println(
-        FileUtils.getFileResourceId(configuration.getWorkerPath(), executable).toString());
-      builder
-        .command()
-        .set(0, FileUtils.getFileResourceId(configuration.getWorkerPath(), executable).toString());
-      */
       builder.command().add(arg);
 
+      builder.inheritIO().redirectInput(ProcessBuilder.Redirect.PIPE);
       builder.inheritIO().redirectError(ProcessBuilder.Redirect.PIPE);
       builder.inheritIO().redirectOutput(ProcessBuilder.Redirect.PIPE);
 
