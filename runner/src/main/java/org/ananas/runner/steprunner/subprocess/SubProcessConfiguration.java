@@ -18,6 +18,7 @@ public class SubProcessConfiguration implements Serializable {
   protected static final String WAIT_TIME = "wait-time";
   protected static final String CONCURRENCY = "concurrency";
   protected static final String ONLY_UPLOAD_LOGS_ON_ERROR = "only-upload-logs-on-error";
+  public static final String AVRO_SCHEMA = "avro-schema";
 
   public SubProcessConfiguration(Map<String, Object> config) {
     this.binaryName = (String) config.getOrDefault(BINARY_NAME, "");
@@ -28,6 +29,7 @@ public class SubProcessConfiguration implements Serializable {
     this.concurrency = Integer.valueOf(StepConfigHelper.getConfig(config, CONCURRENCY, "1"));
     this.onlyUpLoadLogsOnError =
         (Boolean) config.getOrDefault(ONLY_UPLOAD_LOGS_ON_ERROR, Boolean.FALSE);
+    this.avroSchema = (String) config.getOrDefault(AVRO_SCHEMA, "");
   }
 
   // Source binary name
@@ -58,6 +60,9 @@ public class SubProcessConfiguration implements Serializable {
   public void setOnlyUpLoadLogsOnError(Boolean onlyUpLoadLogsOnError) {
     this.onlyUpLoadLogsOnError = onlyUpLoadLogsOnError;
   }
+
+  // Output Avro Schema definition
+  public String avroSchema;
 
   public String getSourcePath() {
     return sourcePath;

@@ -1,11 +1,16 @@
 package org.ananas.runner.steprunner.subprocess;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.ananas.runner.steprunner.subprocess.utils.CallingSubProcessUtils;
+import org.apache.avro.Schema;
+import org.apache.avro.file.DataFileReader;
+import org.apache.avro.file.SeekableByteArrayInput;
+import org.apache.avro.generic.GenericDatumReader;
+import org.apache.avro.generic.GenericRecord;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +25,8 @@ public class SubProcessKernel {
 
   SubProcessConfiguration configuration;
   ProcessBuilder processBuilder;
+  Schema outputSchema;
+  Schema inputSchema;
 
   private SubProcessKernel() {}
 
@@ -29,20 +36,21 @@ public class SubProcessKernel {
    *
    * @param options
    */
-  public SubProcessKernel(SubProcessConfiguration options) {
+  public SubProcessKernel(SubProcessConfiguration options, String outputSchema) {
     this.configuration = options;
     this.processBuilder =
         new ProcessBuilder(
             configuration.binaryName, configuration.workerPath + configuration.executableName);
+    this.outputSchema = new Schema.Parser().parse(outputSchema);
   }
 
-  public List<String> exec(String arg) throws Exception {
+  public List<GenericRecord> exec(byte[] b) throws Exception {
     try (CallingSubProcessUtils.Permit permit =
         new CallingSubProcessUtils.Permit(configuration.executableName)) {
 
-      List<String> results = new ArrayList<>();
+      List<GenericRecord> results = new ArrayList<>();
       try {
-        Process process = execBinary(processBuilder, arg);
+        Process process = execBinary(processBuilder, b);
         results = collectProcessResults(process, processBuilder);
       } catch (Exception ex) {
         LOG.error("Error running executable ", ex);
@@ -66,9 +74,9 @@ public class SubProcessKernel {
     return size;
   }
 
-  private Process execBinary(ProcessBuilder builder, String arg) throws Exception {
+  private Process execBinary(ProcessBuilder builder, byte[] arg) throws Exception {
     try {
-      builder.command().add(arg);
+      builder.command().add(Base64.getEncoder().encodeToString(arg));
 
       builder.inheritIO().redirectInput(ProcessBuilder.Redirect.PIPE);
       builder.inheritIO().redirectError(ProcessBuilder.Redirect.PIPE);
@@ -106,14 +114,15 @@ public class SubProcessKernel {
    * @return List of results
    * @throws Exception if process has non 0 value or no logs found then throw exception
    */
-  private List<String> collectProcessResults(Process process, ProcessBuilder builder)
+  private List<GenericRecord> collectProcessResults(Process process, ProcessBuilder builder)
       throws Exception {
 
-    List<String> results = new ArrayList<>();
+    List<GenericRecord> results = new ArrayList<>();
 
     try {
 
-      LOG.debug(String.format("Executing process %s", createLogEntryFromInputs(builder.command())));
+      // LOG.debug(String.format("Executing process %s",
+      // createLogEntryFromInputs(builder.command())));
 
       // If process exit value is not 0 then subprocess failed, record logs
       if (process.exitValue() != 0) {
@@ -133,9 +142,12 @@ public class SubProcessKernel {
       }*/
 
       // Everything looks healthy return values
-      try (BufferedReader reader =
-          new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-        reader.lines().forEach(line -> results.add(line));
+      GenericDatumReader<GenericRecord> datumReader = new GenericDatumReader<>(outputSchema);
+      try (DataFileReader<GenericRecord> r =
+          new DataFileReader<GenericRecord>(
+              new SeekableByteArrayInput(IOUtils.toByteArray(process.getInputStream())),
+              datumReader)) {
+        while (r.hasNext()) results.add(r.next());
       } catch (Exception e) {
         e.printStackTrace();
       }
