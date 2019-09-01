@@ -46,6 +46,8 @@ public class PipelineOptionsFactory {
   public static PipelineOptions createFlinkOptions(Engine engine) {
     FlinkPipelineOptions options =
         org.apache.beam.sdk.options.PipelineOptionsFactory.create().as(FlinkPipelineOptions.class);
+
+    // defaut embedded flink engine
     if (engine == null) {
       options.setParallelism(10);
       options.setMaxBundleSize(1000 * 1000L);
@@ -59,7 +61,7 @@ public class PipelineOptionsFactory {
     }
 
     options.setAppName(engine == null ? "ananas" : engine.getProperty(Engine.APP_NAME, "ananas"));
-    options.setFilesToStage(getFilesToStage());
+    options.setFilesToStage(getFilesToStage(engine));
     options.setRunner(FlinkRunner.class);
     return options;
   }
@@ -67,7 +69,7 @@ public class PipelineOptionsFactory {
   public static PipelineOptions createSparkOptions(Engine engine) {
     SparkPipelineOptions options =
         org.apache.beam.sdk.options.PipelineOptionsFactory.create().as(SparkPipelineOptions.class);
-    options.setFilesToStage(getFilesToStage());
+    options.setFilesToStage(getFilesToStage(engine));
 
     options.setSparkMaster(engine.getProperty("sparkMaster", "spark://localhost:7077"));
     options.setTempLocation(engine.getProperty("tempLocation", "/tmp/"));
@@ -87,13 +89,19 @@ public class PipelineOptionsFactory {
 
     options.setAppName(engine.getProperty(Engine.APP_NAME, "ananas"));
     options.setProject(engine.getProperty("projectId", ""));
-    options.setFilesToStage(getFilesToStage());
+    options.setFilesToStage(getFilesToStage(engine));
     options.setTempLocation(engine.getProperty("tempLocation", "gs://cookiesync-gdpr-dev/tmp"));
     options.setRunner(DataflowRunner.class);
     return options;
   }
 
-  public static List<String> getFilesToStage() {
+  public static List<String> getFilesToStage(Engine engine) {
+    List<String> filesToStaging = getBaseFilesToStage();
+
+    return filesToStaging;
+  }
+
+  private static List<String> getBaseFilesToStage() {
     List<String> filesToStaging = new ArrayList<>();
     try {
       String jar =
@@ -118,11 +126,6 @@ public class PipelineOptionsFactory {
     if (systemDefinedFiles != null) {
       String[] files = systemDefinedFiles.split(";");
       filesToStaging.addAll(Arrays.asList(files));
-    }
-
-    if (filesToStaging.size() == 0) {
-      throw new RuntimeException(
-          "Can't auto-resolve filesToStage options. If you are running on DEV mode, please set the 'filesToStage' system property");
     }
 
     LOG.info("filesToStage: {}", String.join(";", filesToStaging));

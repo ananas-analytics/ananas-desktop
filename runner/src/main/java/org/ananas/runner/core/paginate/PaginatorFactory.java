@@ -3,12 +3,12 @@ package org.ananas.runner.core.paginate;
 import com.google.common.base.Preconditions;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 import org.ananas.runner.core.common.VariableRender;
 import org.ananas.runner.core.errors.AnanasException;
 import org.ananas.runner.core.errors.ExceptionHandler;
 import org.ananas.runner.core.errors.ExceptionHandler.ErrorCode;
+import org.ananas.runner.core.extension.ExtensionRegistry;
 import org.ananas.runner.core.model.Dataframe;
 import org.ananas.runner.core.model.Step;
 import org.ananas.runner.core.model.StepType;
@@ -17,19 +17,11 @@ import org.apache.beam.sdk.values.Row;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class PaginatorFactory implements Paginator {
-  private static final Map<String, Class<? extends AutoDetectedSchemaPaginator>> REGISTRY =
-      new HashMap<>();
-
   String id;
   String metadataId;
   String type;
   Map<String, Object> config;
   Dataframe dataframe;
-
-  public static void register(
-      String metadataId, Class<? extends AutoDetectedSchemaPaginator> paginatorClass) {
-    REGISTRY.put(metadataId, paginatorClass);
-  }
 
   private PaginatorFactory(String id, PaginationBody body) {
     this(
@@ -69,10 +61,11 @@ public class PaginatorFactory implements Paginator {
   }
 
   public AutoDetectedSchemaPaginator buildPaginator() {
-    if (!REGISTRY.containsKey(this.metadataId)) {
+    if (!ExtensionRegistry.hasPaginator(this.metadataId)) {
       throw new IllegalStateException("Unsupported source type '" + this.metadataId + "'");
     }
-    Class<? extends AutoDetectedSchemaPaginator> clazz = REGISTRY.get(this.metadataId);
+    Class<? extends AutoDetectedSchemaPaginator> clazz =
+        ExtensionRegistry.getPaginator(this.metadataId);
 
     try {
       Constructor<? extends AutoDetectedSchemaPaginator> ctor =

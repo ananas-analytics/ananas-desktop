@@ -1,8 +1,11 @@
-package org.ananas.runner.core;
+package org.ananas.runner.core.extension;
 
-import org.ananas.runner.core.build.StepBuilder;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Map;
+import org.ananas.runner.core.StepRunner;
 import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.core.paginate.PaginatorFactory;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import org.ananas.runner.steprunner.api.APIConnector;
 import org.ananas.runner.steprunner.api.APIPaginator;
@@ -25,30 +28,111 @@ import org.ananas.runner.steprunner.jdbc.JdbcPaginator;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
 
 public class ExtensionRegistry {
+  private static final Map<String, Class<? extends StepRunner>> STEP_REGISTRY = new HashMap<>();
+  private static final Map<String, Class<? extends AutoDetectedSchemaPaginator>>
+      PAGINATOR_REGISTRY = new HashMap<>();
+
+  public static boolean hasStep(String metaId) {
+    if (STEP_REGISTRY.containsKey(metaId)) {
+      return true;
+    }
+    if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
+      return true;
+    }
+    return false;
+  }
+
+  public static Class<? extends StepRunner> getStep(String metaId) {
+    // 1. find the class in internal step registry
+    Class<? extends StepRunner> clazz = STEP_REGISTRY.get(metaId);
+    if (clazz != null) {
+      return clazz;
+    }
+
+    // 2. if not found, search it from classpath
+    URL[] additionalClasspath = new URL[] {};
+
+    // For local runner only, get additional classpath from local extension
+    // A remote runner will have all jars uploaded to workers through filesToStage
+    // or other parameters, and they are already in classpath on worksers
+    if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
+      StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
+      additionalClasspath = (URL[]) meta.classpath.toArray();
+    }
+
+    // search the StepRunner class from the classpath
+    try {
+      URLClassLoader classLoader = URLClassLoader.newInstance(additionalClasspath);
+      return (Class<? extends StepRunner>) classLoader.loadClass(metaId + ".StepRunner");
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static boolean hasPaginator(String metaId) {
+    return PAGINATOR_REGISTRY.containsKey(metaId);
+  }
+
+  public static Class<? extends AutoDetectedSchemaPaginator> getPaginator(String metaId) {
+    // 1. find the class in internal step registry
+    Class<? extends AutoDetectedSchemaPaginator> clazz = PAGINATOR_REGISTRY.get(metaId);
+    if (clazz != null) {
+      return clazz;
+    }
+
+    // 2. if not found, search it from classpath
+    URL[] additionalClasspath = new URL[] {};
+
+    // For local runner only, get additional classpath from local extension
+    // A remote runner will have all jars uploaded to workers through filesToStage
+    // or other parameters, and they are already in classpath on worksers
+    if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
+      StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
+      additionalClasspath = (URL[]) meta.classpath.toArray();
+    }
+
+    // search the Paginator class from the classpath
+    try {
+      URLClassLoader classLoader = URLClassLoader.newInstance(additionalClasspath);
+      return (Class<? extends AutoDetectedSchemaPaginator>)
+          classLoader.loadClass(metaId + ".Paginator");
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static void registerStep(String metaId, Class<? extends StepRunner> clazz) {
+    STEP_REGISTRY.put(metaId, clazz);
+  }
+
+  public static void registerPaginator(
+      String metadataId, Class<? extends AutoDetectedSchemaPaginator> paginatorClass) {
+    PAGINATOR_REGISTRY.put(metadataId, paginatorClass);
+  }
 
   public static void registerConnector(
       String metaId,
       Class<? extends StepRunner> stepRunnerClass,
       Class<? extends AutoDetectedSchemaPaginator> paginatorClass) {
-    StepBuilder.register(metaId, stepRunnerClass);
-    PaginatorFactory.register(metaId, paginatorClass);
+    registerStep(metaId, stepRunnerClass);
+    registerPaginator(metaId, paginatorClass);
   }
 
   public static void registerTransformer(
       String metaId, Class<? extends StepRunner> stepRunnerClass) {
-    StepBuilder.register(metaId, stepRunnerClass);
+    registerStep(metaId, stepRunnerClass);
   }
 
   public static void registerLoader(
       String metaId,
       Class<? extends StepRunner> stepRunnerClass,
       Class<? extends AutoDetectedSchemaPaginator> paginatorClass) {
-    StepBuilder.register(metaId, stepRunnerClass);
-    PaginatorFactory.register(metaId, paginatorClass);
+    registerStep(metaId, stepRunnerClass);
+    registerPaginator(metaId, paginatorClass);
   }
 
   public static void registerViewer(String metaId, Class<? extends StepRunner> stepRunnerClass) {
-    StepBuilder.register(metaId, stepRunnerClass);
+    registerStep(metaId, stepRunnerClass);
   }
 
   public static void init() {

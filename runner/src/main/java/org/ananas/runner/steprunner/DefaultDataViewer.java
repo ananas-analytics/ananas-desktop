@@ -9,7 +9,7 @@ import org.ananas.runner.core.job.JobRepositoryFactory;
 import org.ananas.runner.core.model.*;
 import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
 import org.ananas.runner.core.paginate.PaginatorFactory;
-import org.ananas.runner.steprunner.files.utils.HomeManager;
+import org.ananas.runner.misc.HomeManager;
 import org.ananas.runner.steprunner.jdbc.JDBCDriver;
 import org.ananas.runner.steprunner.jdbc.JdbcLoader;
 import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;

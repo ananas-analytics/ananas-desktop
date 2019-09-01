@@ -1,0 +1,6 @@
+ext1:
+  id: ext1
+  type: Source
+ext2:
+  id: ext2
+  type: Transform
