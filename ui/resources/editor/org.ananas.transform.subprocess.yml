@@ -30,6 +30,7 @@ layout:
         - binary
         - source-file
         - source-path
+        - avro-schema
         - worker-path
         - key: advanced-editor
           collapsible: true
@@ -92,6 +93,12 @@ components:
     default: ''
     props:
       label: Executable directory
+  avro-schema:
+    bind: avro-schema
+    type: TextArea
+    default: ''
+    props:
+      label: Avro Schema (output)
   concurrency:
     bind: concurrency
     type: TextInput
