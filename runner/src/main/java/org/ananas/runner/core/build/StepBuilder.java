@@ -5,15 +5,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.ananas.runner.core.ConcatStepRunner;
 import org.ananas.runner.core.JoinStepRunner;
 import org.ananas.runner.core.StepRunner;
 import org.ananas.runner.core.errors.AnanasException;
 import org.ananas.runner.core.errors.ExceptionHandler.ErrorCode;
+import org.ananas.runner.core.extension.ExtensionRegistry;
 import org.ananas.runner.core.model.Engine;
 import org.ananas.runner.core.model.Step;
 import org.ananas.runner.core.pipeline.PipelineContext;
@@ -23,16 +21,12 @@ import org.apache.beam.sdk.coders.CannotProvideCoderException;
 import org.apache.beam.sdk.coders.Coder;
 import org.apache.beam.sdk.coders.NullableCoder;
 import org.apache.beam.sdk.options.PipelineOptions;
-import org.apache.beam.sdk.schemas.Schema;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class StepBuilder {
 
   private static final Logger LOG = LoggerFactory.getLogger(StepBuilder.class);
-
-  private static Map<String, Class<? extends StepRunner>> REGISTRY = new HashMap<>();
 
   public static final String TYPE_CONNECTOR = "connector";
   public static final String TYPE_TRANSFORMER = "transformer";
@@ -70,12 +64,12 @@ public class StepBuilder {
 
   public static StepRunner connector(
       Step step, PipelineContext context, boolean doSampling, boolean isTest) {
-    if (!REGISTRY.containsKey(step.metadataId)) {
+    if (!ExtensionRegistry.hasStep(step.metadataId)) {
       throw new AnanasException(
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
-    Class<? extends StepRunner> clazz = REGISTRY.get(step.metadataId);
+    Class<? extends StepRunner> clazz = ExtensionRegistry.getStep(step.metadataId);
 
     try {
       Constructor<? extends StepRunner> ctor =
@@ -94,12 +88,12 @@ public class StepBuilder {
   }
 
   public static StepRunner transformer(Step step, StepRunner previous, boolean isTest) {
-    if (!REGISTRY.containsKey(step.metadataId)) {
+    if (!ExtensionRegistry.hasStep(step.metadataId)) {
       throw new AnanasException(
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
-    Class<? extends StepRunner> clazz = REGISTRY.get(step.metadataId);
+    Class<? extends StepRunner> clazz = ExtensionRegistry.getStep(step.metadataId);
 
     try {
       Constructor<? extends StepRunner> ctor =
@@ -118,12 +112,12 @@ public class StepBuilder {
   }
 
   public static StepRunner loader(Step step, StepRunner previous, boolean isTest) {
-    if (!REGISTRY.containsKey(step.metadataId)) {
+    if (!ExtensionRegistry.hasStep(step.metadataId)) {
       throw new AnanasException(
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
-    Class<? extends StepRunner> clazz = REGISTRY.get(step.metadataId);
+    Class<? extends StepRunner> clazz = ExtensionRegistry.getStep(step.metadataId);
 
     try {
       Constructor<? extends StepRunner> ctor =
@@ -143,12 +137,12 @@ public class StepBuilder {
 
   public static StepRunner dataViewer(
       String jobId, Engine engine, Step step, StepRunner previous, boolean isTest) {
-    if (!REGISTRY.containsKey(step.metadataId)) {
+    if (!ExtensionRegistry.hasStep(step.metadataId)) {
       throw new AnanasException(
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
-    Class<? extends StepRunner> clazz = REGISTRY.get(step.metadataId);
+    Class<? extends StepRunner> clazz = ExtensionRegistry.getStep(step.metadataId);
 
     try {
       Constructor<? extends StepRunner> ctor =
@@ -192,18 +186,5 @@ public class StepBuilder {
     StepRunner concatStepRunner = new ConcatStepRunner(step, upstreams);
     concatStepRunner.build();
     return concatStepRunner;
-  }
-
-  public static StepRunner mlTransformer(
-      Step step,
-      PipelineContext ctxt,
-      StepRunner previous,
-      boolean isTest,
-      Set<MutablePair<Step, Schema>> mlSources) {
-    return null;
-  }
-
-  public static void register(String metaId, Class<? extends StepRunner> clazz) {
-    REGISTRY.put(metaId, clazz);
   }
 }

@@ -13,13 +13,14 @@ import org.apache.beam.sdk.values.Row;
 public abstract class AbstractStepRunner implements StepRunner, Serializable {
 
   private static final long serialVersionUID = -2738595602320369583L;
-  protected static int DEFAULT_LIMIT = new Integer(100);
+  protected static int DEFAULT_LIMIT = 100;
 
-  protected transient PCollection<Row> output;
   protected String stepId;
-  private transient DataReader reader;
+  protected transient PCollection<Row> output;
   protected transient ErrorHandler errors;
   protected transient StepType type;
+  protected transient String outputMessage;
+  private transient DataReader reader;
 
   public String getMessage() {
     return this.outputMessage;
@@ -28,8 +29,6 @@ public abstract class AbstractStepRunner implements StepRunner, Serializable {
   public void setOutputMessage(String outputMessage) {
     this.outputMessage = outputMessage;
   }
-
-  protected transient String outputMessage;
 
   public String getStepId() {
     return this.stepId;

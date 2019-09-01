@@ -2,6 +2,7 @@ package org.ananas.server;
 
 import static spark.Spark.*;
 
+import org.ananas.runner.core.extension.ExtensionManager;
 import org.ananas.runner.misc.BackgroundApiService;
 
 /** REST API Routes */
@@ -15,12 +16,24 @@ public class RestApiRoutes {
 
     String address = "127.0.0.1";
     int port = 3003;
+    String extensionRepo = null;
     if (args.length != 0) {
       address = args[0];
       if (args.length >= 2) {
         port = Integer.valueOf(args[1]);
       }
+      // load extensions
+      if (args.length >= 3) {
+        extensionRepo = args[3];
+      }
     }
+
+    if (extensionRepo != null) {
+      ExtensionManager.getInstance().loadExtensions(extensionRepo);
+    } else {
+      ExtensionManager.getInstance().loadExtensions();
+    }
+
     ipAddress(address);
     port(port);
 

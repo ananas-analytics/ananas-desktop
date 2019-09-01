@@ -1,4 +1,4 @@
-package org.ananas.runner.steprunner.files.utils;
+package org.ananas.runner.misc;
 
 import java.io.File;
 import org.slf4j.Logger;
@@ -20,9 +20,5 @@ public class HomeManager {
 
   public static String getTempDirectory() {
     return System.getProperty("java.io.tmpdir");
-  }
-
-  public static void main(String[] args) {
-    LOG.debug("Home {}", getHome());
   }
 }

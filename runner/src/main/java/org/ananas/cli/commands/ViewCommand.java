@@ -1,17 +1,17 @@
 package org.ananas.cli.commands;
 
-import static org.ananas.cli.YamlHelper.openYAML;
+import static org.ananas.runner.misc.YamlHelper.openYAML;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
-import org.ananas.cli.YamlHelper;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.cli.model.Profile;
 import org.ananas.runner.core.common.JsonUtil;
 import org.ananas.runner.core.model.Engine;
+import org.ananas.runner.misc.YamlHelper;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import org.ananas.server.ApiResponseBuilder;
 import org.slf4j.Logger;

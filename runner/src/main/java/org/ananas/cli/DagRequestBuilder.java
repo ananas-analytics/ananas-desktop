@@ -1,6 +1,6 @@
 package org.ananas.cli;
 
-import static org.ananas.cli.YamlHelper.openYAML;
+import static org.ananas.runner.misc.YamlHelper.openYAML;
 
 import com.google.common.collect.Sets;
 import java.io.File;
