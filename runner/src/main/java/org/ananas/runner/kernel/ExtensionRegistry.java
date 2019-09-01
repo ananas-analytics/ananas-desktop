@@ -23,6 +23,7 @@ import org.ananas.runner.steprunner.gcs.GCSLoader;
 import org.ananas.runner.steprunner.jdbc.JdbcConnector;
 import org.ananas.runner.steprunner.jdbc.JdbcLoader;
 import org.ananas.runner.steprunner.sql.SQLTransformer;
+import org.ananas.runner.steprunner.subprocess.SubProcessTransformer;
 
 public class ExtensionRegistry {
 
@@ -70,6 +71,8 @@ public class ExtensionRegistry {
         "org.ananas.source.file.excel", ExcelConnector.class, ExcelPaginator.class);
 
     ExtensionRegistry.registerTransformer("org.ananas.transform.sql", SQLTransformer.class);
+    ExtensionRegistry.registerTransformer(
+        "org.ananas.transform.subprocess", SubProcessTransformer.class);
 
     ExtensionRegistry.registerLoader(
         "org.ananas.destination.file.csv", FileLoader.class, CSVPaginator.class);

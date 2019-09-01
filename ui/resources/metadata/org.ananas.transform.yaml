@@ -14,6 +14,20 @@ org.ananas.transform.sql:
     maxIncoming: 1
     maxOutgoing: -1
 
+org.ananas.transform.subprocess:
+  id: org.ananas.transform.subprocess
+  name: External program
+  description: Transform your data with external program
+  type: Transform
+  icon: images/sql.svg
+  step:
+    type: transformer
+    config:
+      subtype: subprocess
+  options:
+    maxIncoming: 1
+    maxOutgoing: -1
+
 org.ananas.transform.join:
   id: org.ananas.transform.join
   name: JOIN

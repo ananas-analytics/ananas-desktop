@@ -1,0 +1,154 @@
+---
+id: org.ananas.transform.subprocess
+layout:
+  key: root
+  props:
+    direction: row
+    fill: true
+  children:
+  - key: left-bar
+    props:
+      direction: column
+      elevation: small
+      fill: vertical
+      width: 400px
+      style:
+        minWidth: 300px
+    children:
+    - key: scrollable-editor
+      props:
+        flex: true
+        overflow:
+          vertical: auto
+        pad: small
+      children:
+      - key: inner-scrollable-editor
+        props:
+          flex: false
+        children:
+        - title
+        - binary
+        - source-file
+        - source-path
+        - worker-path
+        - key: advanced-editor
+          collapsible: true
+          props:
+            label: Advanced
+            open: false
+          children:
+          - description
+          - wait-time
+          - concurrency
+          - only-upload-logs-on-error
+    - key: update-container
+      props:
+        border: top
+        direction: column
+        height: 50px
+        justify: center
+        pad:
+          horizontal: medium
+          vertical: xsmall
+      children:
+      - update-btn
+  - key: main
+    props:
+      direction: column
+      flex: true
+      fill: true
+      pad:
+        top: small
+        left: small
+        right: small
+      overflow:
+        vertical: auto
+    children:
+    - variable-editor
+    - table-title
+    - data-table
+components:
+  title:
+    bind: __name__
+    type: TextInput
+    default: External program Transformer
+    props:
+      label: Title
+  only-upload-logs-on-error:
+    bind: only-upload-logs-on-error
+    type: CheckBox
+    default: true
+    props:
+      label: Only upload logs on error
+  source-file:
+    bind: source-file
+    type: TextInput
+    default: '' 
+    props:
+      label: Executable file name
+  source-path:
+    bind: source-path
+    type: TextInput
+    default: ''
+    props:
+      label: Executable directory
+  concurrency:
+    bind: concurrency
+    type: TextInput
+    default: '1'
+    props:
+      label: Concurrency
+  binary:
+    bind: binary
+    type: TextInput
+    default: 'python'
+    props:
+      label: Binary name
+  worker-path:
+    bind: worker-path
+    type: TextInput
+    default: ''
+    props:
+      label: Worker Directory
+  description:
+    bind: __description__
+    type: TextArea
+    default: Describe this step here
+    props:
+      label: Description
+  job-history:
+    type: JobHistory
+    box: {}
+    props: {}
+  update-btn:
+    type: Button
+    props:
+      label: Update
+      event: SUBMIT_CONFIG
+  variable-editor:
+    type: VariablePicker
+    box:
+      flex: false
+      margin:
+        bottom: medium
+        top: small
+    props:
+      exploreButton: false
+      testButton: true
+      runButton: false
+  table-title:
+    type: Heading
+    box:
+      flex: false
+    props:
+      text: Result
+      level: 4
+  data-table:
+    bind: __dataframe__
+    type: DataTable
+    box:
+      flex: true
+      fill: true
+    props:
+      pageSize: 25
+
