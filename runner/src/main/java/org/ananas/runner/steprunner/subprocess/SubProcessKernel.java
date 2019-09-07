@@ -1,6 +1,8 @@
 package org.ananas.runner.steprunner.subprocess;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -128,11 +130,18 @@ public class SubProcessKernel {
 
       // If process exit value is not 0 then subprocess failed, record logs
       if (process.exitValue() != 0) {
-        // TODO outPutFiles.copyOutPutFilesToBucket(configuration
-        // FileUtils.toStringParams(processBuilder);
-        String log = createLogEntryForProcessFailure(process, builder.command());
-        // outPutFiles);
-        throw new Exception("exit code is " + process.exitValue() + " error: " + log);
+
+        StringBuilder logBuilder = new StringBuilder();
+        try (BufferedReader reader =
+            new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+
+          while (reader.ready()) logBuilder.append(reader.readLine());
+        } catch (Exception e) {
+          throw e;
+        }
+
+        throw new Exception(
+            "exit code is " + process.exitValue() + ". STDERR: " + logBuilder.toString());
       }
 
       // If no return file then either something went wrong or the binary is setup incorrectly for
@@ -153,16 +162,6 @@ public class SubProcessKernel {
       } catch (Exception e) {
         e.printStackTrace();
       }
-
-      /*try (BufferedReader reader =
-             new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-        String line = reader.readLine();
-        if (Strings.isNullOrEmpty(line)) {
-          throw new RuntimeException(line);
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
-      }*/
 
       return results;
     } catch (Exception ex) {

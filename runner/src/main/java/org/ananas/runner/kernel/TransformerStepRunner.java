@@ -80,7 +80,7 @@ public class TransformerStepRunner extends AbstractStepRunner {
         dataFileWriter.append(AvroUtils.toGenericRecord(c.element(), inputAvroSchema));
         dataFileWriter.close();
         // Run the command and work through the results
-        //TODO close outputstream
+        // TODO close outputstream
         List<GenericRecord> results = kernel.exec(stdin);
         for (GenericRecord s : results) {
           c.output(AvroUtils.toBeamRowStrict(s, this.outputBeamSchema));
