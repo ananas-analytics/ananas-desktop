@@ -35,11 +35,9 @@ public class CallingSubProcessUtils {
 
     synchronized (downloadedFiles) {
       if (!downloadedFiles.contains(binaryName)) {
-        // Create Directories if needed
-        FileUtils.createDirectoriesOnWorker(configuration);
         LOG.info("Calling filesetup to move Executables to worker.");
-        ExecutableFile executableFile = new ExecutableFile(configuration, binaryName);
-        FileUtils.copyFileFromGCSToWorker(executableFile);
+        FileUtils.copyFileFrom(
+            configuration.sourcePath, configuration.workerPath, configuration.executableName);
         downloadedFiles.add(binaryName);
       }
     }

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.ananas.runner.steprunner.subprocess.utils.CallingSubProcessUtils;
-import org.ananas.runner.steprunner.subprocess.utils.FileUtils;
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.SeekableByteArrayInput;
@@ -47,36 +46,34 @@ public class SubProcessKernel {
     this.outputSchema = outputSchema;
   }
 
+  /**
+   * Execute binary
+   *
+   * @param b the outputstream to be written
+   * @return
+   * @throws Exception
+   */
   public List<GenericRecord> exec(ByteArrayOutputStream b) throws Exception {
     try (CallingSubProcessUtils.Permit permit =
         new CallingSubProcessUtils.Permit(configuration.executableName)) {
-
-      List<GenericRecord> results = new ArrayList<>();
       try {
         Process process = execBinary(processBuilder, b);
-        results = collectProcessResults(process, processBuilder);
+        return collectProcessResults(process, processBuilder);
       } catch (Exception ex) {
         LOG.error("Error running executable ", ex);
         throw ex;
       }
-      return results;
     }
   }
 
   /**
-   * Add up the total bytes used by the process.
+   * Execute binary .
    *
-   * @param commands
-   * @return
+   * @param builder Process builder
+   * @param out the outputstream to be written to STDIN
+   * @return a built process
+   * @throws Exception
    */
-  private int getTotalCommandBytes(SubProcessCommandLineArgs commands) {
-    int size = 0;
-    for (SubProcessCommandLineArgs.Command c : commands.getParameters()) {
-      size += c.value.length();
-    }
-    return size;
-  }
-
   private Process execBinary(ProcessBuilder builder, ByteArrayOutputStream out) throws Exception {
     try {
       Process process = builder.start();
@@ -110,7 +107,7 @@ public class SubProcessKernel {
   }
 
   /**
-   * TODO clean up duplicate with byte[] version collectBinaryProcessResults.
+   * Collect process results
    *
    * @param process
    * @param builder
@@ -139,14 +136,6 @@ public class SubProcessKernel {
             "exit code is " + process.exitValue() + ". STDERR: " + logBuilder.toString());
       }
 
-      // If no return file then either something went wrong or the binary is setup incorrectly for
-      // the ret file either way throw error
-      /*if (!Files.exists(outPutFiles.resultFile)) {
-        String log = createLogEntryForProcessFailure(process, builder.command(), outPutFiles);
-        outPutFiles.copyOutPutFilesToBucket(configuration, FileUtils.toStringParams(builder));
-        throw new Exception(log);
-      }*/
-
       // Everything looks healthy return values
       GenericDatumReader<GenericRecord> datumReader = new GenericDatumReader<>(outputSchema);
       try (DataFileReader<GenericRecord> r =
@@ -167,39 +156,6 @@ public class SubProcessKernel {
       System.err.println(log);
       throw new Exception(log);
     }
-  }
-
-  private static String createLogEntryForProcessFailure(Process process, List<String> commands) {
-
-    StringBuilder stringBuilder = new StringBuilder();
-
-    // Highlight when no result file is found vs standard process error
-    if (process.exitValue() == 0) {
-      stringBuilder.append(String.format("%nProcess succeded but no result file was found %n"));
-    } else {
-      stringBuilder.append(
-          String.format("%nProcess error failed with exit value of %s %n", process.exitValue()));
-    }
-
-    stringBuilder.append(
-        String.format("Command info was %s %n", createLogEntryFromInputs(commands)));
-
-    stringBuilder.append(
-        String.format(
-            "First line of error file is  %s %n",
-            FileUtils.readLineOfLogFile(process.getErrorStream())));
-
-    stringBuilder.append(
-        String.format(
-            "First line of out file is %s %n",
-            FileUtils.readLineOfLogFile(process.getErrorStream())));
-
-    stringBuilder.append(
-        String.format(
-            "First line of ret file is %s %n",
-            FileUtils.readLineOfLogFile(process.getErrorStream())));
-
-    return stringBuilder.toString();
   }
 
   private static String createLogEntryFromInputs(List<String> commands) {

@@ -31,57 +31,24 @@ public class FileUtils {
     return String.join(",", builder.command());
   }
 
-  public static String copyFileFromWorkerToGCS(
-      SubProcessConfiguration configuration, Path fileToUpload) throws Exception {
+  public static String copyFileFrom(String sourcePath, String targetPath, String fileName)
+      throws Exception {
 
-    Path fileName;
-
-    if ((fileName = fileToUpload.getFileName()) == null) {
+    if (fileName == null) {
       throw new IllegalArgumentException("FileName can not be null.");
     }
 
-    ResourceId sourceFile = getFileResourceId(configuration.getWorkerPath(), fileName.toString());
+    ResourceId sourceFile = getFileResourceId(sourcePath, fileName);
 
-    LOG.info("Copying file from worker " + sourceFile);
+    LOG.info("Copying file from " + sourcePath);
 
-    ResourceId destinationFile =
-        getFileResourceId(configuration.getSourcePath(), fileName.toString());
-    // TODO currently not supported with different schemas for example GCS to local, else could use
+    ResourceId destinationFile = getFileResourceId(targetPath, fileName);
     // FileSystems.copy(ImmutableList.of(sourceFile), ImmutableList.of(destinationFile));
     try {
       return copyFile(sourceFile, destinationFile);
     } catch (Exception ex) {
       LOG.error(
           String.format("Error copying file from %s  to %s", sourceFile, destinationFile), ex);
-      throw ex;
-    }
-  }
-
-  public static String copyFileFromGCSToWorker(ExecutableFile execuableFile) throws Exception {
-
-    ResourceId sourceFile =
-        FileSystems.matchNewResource(execuableFile.getSourceGCSLocation(), false);
-    ResourceId destinationFile =
-        FileSystems.matchNewResource(execuableFile.getDestinationLocation(), false);
-    try {
-      LOG.info(
-          String.format(
-              "Moving File %s to %s ",
-              execuableFile.getSourceGCSLocation(), execuableFile.getDestinationLocation()));
-      Path path = Paths.get(execuableFile.getDestinationLocation());
-
-      if (path.toFile().exists()) {
-        LOG.warn(
-            String.format(
-                "Overwriting file %s, should only see this once per worker.",
-                execuableFile.getDestinationLocation()));
-      }
-      copyFile(sourceFile, destinationFile);
-      path.toFile().setExecutable(true);
-      return path.toString();
-
-    } catch (Exception ex) {
-      LOG.error(String.format("Error moving file : %s ", execuableFile.fileName), ex);
       throw ex;
     }
   }
