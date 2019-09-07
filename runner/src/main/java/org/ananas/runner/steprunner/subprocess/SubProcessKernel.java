@@ -30,7 +30,6 @@ public class SubProcessKernel {
   SubProcessConfiguration configuration;
   ProcessBuilder processBuilder;
   Schema outputSchema;
-  Schema inputSchema;
 
   private SubProcessKernel() {}
 

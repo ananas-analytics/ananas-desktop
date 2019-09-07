@@ -60,7 +60,11 @@ public class TransformerStepRunner extends AbstractStepRunner {
     @Setup
     public void setUp() throws Exception {
       CallingSubProcessUtils.setUp(configuration, configuration.executableName);
-      if (inputAvroSchema == null) inputAvroSchema = AvroUtils.toAvroSchema(this.inputBeamSchema);
+      if (inputAvroSchema == null) {
+        this.inputAvroSchema =
+            org.ananas.runner.steprunner.subprocess.utils.AvroUtils.toAvroSchema(
+                this.inputBeamSchema);
+      }
 
       if (outputAvroSchema == null)
         outputAvroSchema = AvroUtils.toAvroSchema(this.outputBeamSchema);
