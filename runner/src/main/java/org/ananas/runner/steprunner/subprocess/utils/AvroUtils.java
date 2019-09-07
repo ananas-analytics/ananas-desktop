@@ -9,7 +9,7 @@ import org.apache.beam.vendor.guava.v20_0.com.google.common.collect.Lists;
 /**
  * Port {@link org.apache.beam.sdk.schemas.utils.AvroUtils
  *
- * <p>}
+ * <p><p>}
  */
 public class AvroUtils {
 
@@ -22,7 +22,7 @@ public class AvroUtils {
               field.getName(), fieldSchema, field.getDescription(), (Object) null);
       fields.add(recordField);
     }
-    Schema avroSchema = org.apache.avro.Schema.createRecord("Object", null, "user.avro", false);
+    Schema avroSchema = org.apache.avro.Schema.createRecord("Object", null, "object.avro", false);
     avroSchema.setFields(fields);
     return avroSchema;
   }

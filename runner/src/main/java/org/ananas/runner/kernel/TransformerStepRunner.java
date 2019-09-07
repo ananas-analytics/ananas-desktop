@@ -2,6 +2,8 @@ package org.ananas.runner.kernel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.ananas.runner.kernel.model.Step;
 import org.ananas.runner.kernel.model.StepType;
@@ -15,6 +17,7 @@ import org.apache.avro.io.DatumWriter;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.utils.AvroUtils;
 import org.apache.beam.sdk.transforms.DoFn;
+import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +39,8 @@ public class TransformerStepRunner extends AbstractStepRunner {
 
   /** Simple DoFn that calls a library. */
   @SuppressWarnings("serial")
-  public static class ExternalProgramDoFn extends DoFn<Row, Row> implements Serializable {
+  public static class ExternalProgramDoFn extends DoFn<KV<Integer, Iterable<Row>>, Row>
+      implements Serializable {
 
     static final Logger LOG = LoggerFactory.getLogger(ExternalProgramDoFn.class);
 
@@ -81,14 +85,18 @@ public class TransformerStepRunner extends AbstractStepRunner {
         DataFileWriter<GenericRecord> dataFileWriter =
             new DataFileWriter<GenericRecord>(datumWriter);
         dataFileWriter.create(inputAvroSchema, stdin);
-        dataFileWriter.append(AvroUtils.toGenericRecord(c.element(), inputAvroSchema));
+        Iterator<Row> it = c.element().getValue().iterator();
+        while (it.hasNext())
+          dataFileWriter.append(AvroUtils.toGenericRecord(it.next(), inputAvroSchema));
         dataFileWriter.close();
         // Run the command and work through the results
-        // TODO close outputstream
         List<GenericRecord> results = kernel.exec(stdin);
+        stdin.close();
+        List<Row> records = new ArrayList<>();
         for (GenericRecord s : results) {
           c.output(AvroUtils.toBeamRowStrict(s, this.outputBeamSchema));
         }
+
       } catch (Exception ex) {
         LOG.error("Error processing element ", ex);
         throw ex;

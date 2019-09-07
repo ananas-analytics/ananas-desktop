@@ -41,7 +41,7 @@ layout:
           - description
           - wait-time
           - concurrency
-          - only-upload-logs-on-error
+          - batch-size
     - key: update-container
       props:
         border: top
@@ -75,12 +75,6 @@ components:
     default: External program Transformer
     props:
       label: Title
-  only-upload-logs-on-error:
-    bind: only-upload-logs-on-error
-    type: CheckBox
-    default: true
-    props:
-      label: Only upload logs on error
   source-file:
     bind: source-file
     type: TextInput
@@ -105,6 +99,12 @@ components:
     default: '1'
     props:
       label: Concurrency
+  batch-size:
+    bind: batch-size
+    type: TextInput
+    default: '1000'
+    props:
+      label: Batch size
   binary:
     bind: binary
     type: TextInput
