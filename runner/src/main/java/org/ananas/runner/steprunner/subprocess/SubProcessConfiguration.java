@@ -18,8 +18,6 @@ public class SubProcessConfiguration implements Serializable {
   protected static final String WAIT_TIME = "wait-time";
   protected static final String CONCURRENCY = "concurrency";
   protected static final String BATCH_SIZE = "batch-size";
-
-  protected static final String ONLY_UPLOAD_LOGS_ON_ERROR = "only-upload-logs-on-error";
   public static final String AVRO_SCHEMA = "avro-schema";
 
   public SubProcessConfiguration(Map<String, Object> config) {
@@ -30,8 +28,6 @@ public class SubProcessConfiguration implements Serializable {
     this.waitTime = Integer.valueOf(StepConfigHelper.getConfig(config, WAIT_TIME, "1"));
     this.concurrency = Integer.valueOf(StepConfigHelper.getConfig(config, CONCURRENCY, "1"));
     this.batchSize = Integer.valueOf(StepConfigHelper.getConfig(config, BATCH_SIZE, "1000"));
-    this.onlyUpLoadLogsOnError =
-        (Boolean) config.getOrDefault(ONLY_UPLOAD_LOGS_ON_ERROR, Boolean.FALSE);
     this.avroSchema = (String) config.getOrDefault(AVRO_SCHEMA, "");
   }
 
@@ -55,17 +51,6 @@ public class SubProcessConfiguration implements Serializable {
 
   // "As sub-processes can be heavy weight match the desired batch size buffered to each worker"
   public Integer batchSize;
-
-  // Should log files only be uploaded if error
-  public Boolean onlyUpLoadLogsOnError;
-
-  public Boolean getOnlyUpLoadLogsOnError() {
-    return onlyUpLoadLogsOnError;
-  }
-
-  public void setOnlyUpLoadLogsOnError(Boolean onlyUpLoadLogsOnError) {
-    this.onlyUpLoadLogsOnError = onlyUpLoadLogsOnError;
-  }
 
   // Output Avro Schema definition
   public String avroSchema;

@@ -3,8 +3,8 @@ package org.ananas.runner.steprunner.subprocess;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.ananas.runner.steprunner.subprocess.utils.CallingSubProcessUtils;
@@ -79,13 +79,13 @@ public class SubProcessKernel {
 
   private Process execBinary(ProcessBuilder builder, ByteArrayOutputStream out) throws Exception {
     try {
-      builder.command().add(Base64.getEncoder().encodeToString(out.toByteArray()));
-
-      // builder.inheritIO().redirectInput(ProcessBuilder.Redirect.PIPE);
-      // builder.inheritIO().redirectError(ProcessBuilder.Redirect.PIPE);
-      // builder.inheritIO().redirectOutput(ProcessBuilder.Redirect.PIPE);
-
       Process process = builder.start();
+
+      // Write to STDIN
+      try (OutputStream o = process.getOutputStream()) {
+        out.writeTo(o);
+        out.close();
+      }
 
       boolean timeout = !process.waitFor(configuration.getWaitTime(), TimeUnit.SECONDS);
 
@@ -123,10 +123,6 @@ public class SubProcessKernel {
     List<GenericRecord> results = new ArrayList<>();
 
     try {
-
-      // LOG.debug(String.format("Executing process %s",
-      // createLogEntryFromInputs(builder.command())));
-
       // If process exit value is not 0 then subprocess failed, record logs
       if (process.exitValue() != 0) {
 
