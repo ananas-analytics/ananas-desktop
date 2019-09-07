@@ -13,9 +13,7 @@ public class SubProcessTransformer extends TransformerStepRunner {
 
   SubProcessConfiguration configuration;
   Schema stdoutSchema;
-  org.apache.avro.Schema stdoutAvroSchema;
   Schema stdinSchema;
-  org.apache.avro.Schema stdinAvroSchema;
 
   public SubProcessTransformer(Step step, StepRunner previous) {
     super(step, previous);
@@ -24,21 +22,16 @@ public class SubProcessTransformer extends TransformerStepRunner {
 
   public void build() {
     this.stdinSchema = previous.getSchema();
-    this.stdinAvroSchema = AvroUtils.toAvroSchema(this.stdinSchema);
-    this.stdoutAvroSchema = new org.apache.avro.Schema.Parser().parse(configuration.avroSchema);
-    this.stdoutSchema = AvroUtils.toBeamSchema(this.stdoutAvroSchema);
+    org.apache.avro.Schema stdoutAvroSchema =
+        new org.apache.avro.Schema.Parser().parse(configuration.avroSchema);
+    this.stdoutSchema = AvroUtils.toBeamSchema(stdoutAvroSchema);
     this.output =
         previous
             .getOutput()
             .apply(
                 "subprocess transform",
                 ParDo.of(
-                    new InputDoFn(
-                        configuration,
-                        this.stdinSchema,
-                        this.stdinAvroSchema.toString(),
-                        this.stdoutSchema,
-                        this.stdoutAvroSchema.toString())));
+                    new ExternalProgramDoFn(configuration, this.stdinSchema, this.stdoutSchema)));
     this.output.setRowSchema(this.stdoutSchema);
   }
 }

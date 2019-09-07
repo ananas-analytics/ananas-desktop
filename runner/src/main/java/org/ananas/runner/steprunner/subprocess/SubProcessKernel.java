@@ -1,10 +1,12 @@
 package org.ananas.runner.steprunner.subprocess;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.ananas.runner.steprunner.subprocess.utils.CallingSubProcessUtils;
+import org.ananas.runner.steprunner.subprocess.utils.FileUtils;
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.SeekableByteArrayInput;
@@ -36,15 +38,15 @@ public class SubProcessKernel {
    *
    * @param options
    */
-  public SubProcessKernel(SubProcessConfiguration options, String outputSchema) {
+  public SubProcessKernel(SubProcessConfiguration options, Schema outputSchema) {
     this.configuration = options;
     this.processBuilder =
         new ProcessBuilder(
             configuration.binaryName, configuration.workerPath + configuration.executableName);
-    this.outputSchema = new Schema.Parser().parse(outputSchema);
+    this.outputSchema = outputSchema;
   }
 
-  public List<GenericRecord> exec(byte[] b) throws Exception {
+  public List<GenericRecord> exec(ByteArrayOutputStream b) throws Exception {
     try (CallingSubProcessUtils.Permit permit =
         new CallingSubProcessUtils.Permit(configuration.executableName)) {
 
@@ -74,13 +76,13 @@ public class SubProcessKernel {
     return size;
   }
 
-  private Process execBinary(ProcessBuilder builder, byte[] arg) throws Exception {
+  private Process execBinary(ProcessBuilder builder, ByteArrayOutputStream out) throws Exception {
     try {
-      builder.command().add(Base64.getEncoder().encodeToString(arg));
+      builder.command().add(Base64.getEncoder().encodeToString(out.toByteArray()));
 
-      builder.inheritIO().redirectInput(ProcessBuilder.Redirect.PIPE);
-      builder.inheritIO().redirectError(ProcessBuilder.Redirect.PIPE);
-      builder.inheritIO().redirectOutput(ProcessBuilder.Redirect.PIPE);
+      // builder.inheritIO().redirectInput(ProcessBuilder.Redirect.PIPE);
+      // builder.inheritIO().redirectError(ProcessBuilder.Redirect.PIPE);
+      // builder.inheritIO().redirectOutput(ProcessBuilder.Redirect.PIPE);
 
       Process process = builder.start();
 
@@ -126,11 +128,11 @@ public class SubProcessKernel {
 
       // If process exit value is not 0 then subprocess failed, record logs
       if (process.exitValue() != 0) {
-        // TODO outPutFiles.copyOutPutFilesToBucket(configuration,
-        // FileUtils.toStringParams(builder));
-        // TODO String log = createLogEntryForProcessFailure(process, builder.command(),
+        // TODO outPutFiles.copyOutPutFilesToBucket(configuration
+        // FileUtils.toStringParams(processBuilder);
+        String log = createLogEntryForProcessFailure(process, builder.command());
         // outPutFiles);
-        throw new Exception("exit code is " + process.exitValue());
+        throw new Exception("exit code is " + process.exitValue() + " error: " + log);
       }
 
       // If no return file then either something went wrong or the binary is setup incorrectly for
@@ -173,7 +175,7 @@ public class SubProcessKernel {
     }
   }
 
-  /*private static String createLogEntryForProcessFailure(Process process, List<String> commands) {
+  private static String createLogEntryForProcessFailure(Process process, List<String> commands) {
 
     StringBuilder stringBuilder = new StringBuilder();
 
@@ -190,18 +192,21 @@ public class SubProcessKernel {
 
     stringBuilder.append(
         String.format(
-            "First line of error file is  %s %n", FileUtils.readLineOfLogFile(files.errFile)));
+            "First line of error file is  %s %n",
+            FileUtils.readLineOfLogFile(process.getErrorStream())));
 
     stringBuilder.append(
         String.format(
-            "First line of out file is %s %n", FileUtils.readLineOfLogFile(files.outFile)));
+            "First line of out file is %s %n",
+            FileUtils.readLineOfLogFile(process.getErrorStream())));
 
     stringBuilder.append(
         String.format(
-            "First line of ret file is %s %n", FileUtils.readLineOfLogFile(files.resultFile)));
+            "First line of ret file is %s %n",
+            FileUtils.readLineOfLogFile(process.getErrorStream())));
 
     return stringBuilder.toString();
-  }*/
+  }
 
   private static String createLogEntryFromInputs(List<String> commands) {
     String params;

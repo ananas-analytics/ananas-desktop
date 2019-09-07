@@ -36,56 +36,52 @@ public class TransformerStepRunner extends AbstractStepRunner {
 
   /** Simple DoFn that calls a library. */
   @SuppressWarnings("serial")
-  public static class InputDoFn extends DoFn<Row, Row> implements Serializable {
+  public static class ExternalProgramDoFn extends DoFn<Row, Row> implements Serializable {
 
-    static final Logger LOG = LoggerFactory.getLogger(InputDoFn.class);
+    static final Logger LOG = LoggerFactory.getLogger(ExternalProgramDoFn.class);
 
     private final SubProcessConfiguration configuration;
     private final Schema outputBeamSchema;
-    private final String outputAvroSchema;
+    private org.apache.avro.Schema outputAvroSchema;
     private final Schema inputBeamSchema;
-    private final String inputAvroSchema;
+    private org.apache.avro.Schema inputAvroSchema;
 
-    public InputDoFn(
-        SubProcessConfiguration configuration,
-        Schema inputBeamSchema,
-        String inputAvroSchema,
-        Schema outputBeamSchema,
-        String outputAvroSchema) {
+    public ExternalProgramDoFn(
+        SubProcessConfiguration configuration, Schema inputBeamSchema, Schema outputBeamSchema) {
       // Pass in configuration information the name of the filename of the sub-process and the level
       // of concurrency
       this.configuration = configuration;
       this.outputBeamSchema = outputBeamSchema;
-      this.outputAvroSchema = outputAvroSchema;
-      this.inputAvroSchema = inputAvroSchema;
       this.inputBeamSchema = inputBeamSchema;
+      this.inputAvroSchema = null;
+      this.outputAvroSchema = null;
     }
 
     @Setup
     public void setUp() throws Exception {
       CallingSubProcessUtils.setUp(configuration, configuration.executableName);
+      if (inputAvroSchema == null) inputAvroSchema = AvroUtils.toAvroSchema(this.inputBeamSchema);
+
+      if (outputAvroSchema == null)
+        outputAvroSchema = AvroUtils.toAvroSchema(this.outputBeamSchema);
     }
 
     @ProcessElement
     public void processElement(ProcessContext c) throws Exception {
       try {
-
         // The ProcessingKernel deals with the execution of the process
         SubProcessKernel kernel = new SubProcessKernel(configuration, this.outputAvroSchema);
-
-        org.apache.avro.Schema inputAvroSchemaObject =
-            new org.apache.avro.Schema.Parser().parse(this.inputAvroSchema);
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream stdin = new ByteArrayOutputStream();
         DatumWriter<GenericRecord> datumWriter =
-            new GenericDatumWriter<GenericRecord>(inputAvroSchemaObject);
+            new GenericDatumWriter<GenericRecord>(inputAvroSchema);
         DataFileWriter<GenericRecord> dataFileWriter =
             new DataFileWriter<GenericRecord>(datumWriter);
-        dataFileWriter.create(inputAvroSchemaObject, outputStream);
-        dataFileWriter.append(AvroUtils.toGenericRecord(c.element(), inputAvroSchemaObject));
+        dataFileWriter.create(inputAvroSchema, stdin);
+        dataFileWriter.append(AvroUtils.toGenericRecord(c.element(), inputAvroSchema));
         dataFileWriter.close();
         // Run the command and work through the results
-        List<GenericRecord> results = kernel.exec(outputStream.toByteArray());
+        //TODO close outputstream
+        List<GenericRecord> results = kernel.exec(stdin);
         for (GenericRecord s : results) {
           c.output(AvroUtils.toBeamRowStrict(s, this.outputBeamSchema));
         }

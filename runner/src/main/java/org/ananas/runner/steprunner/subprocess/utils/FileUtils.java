@@ -1,9 +1,6 @@
 package org.ananas.runner.steprunner.subprocess.utils;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -15,6 +12,8 @@ import org.ananas.runner.steprunner.subprocess.SubProcessConfiguration;
 import org.apache.beam.sdk.io.FileSystems;
 import org.apache.beam.sdk.io.fs.ResolveOptions.StandardResolveOptions;
 import org.apache.beam.sdk.io.fs.ResourceId;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.LineIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,10 +134,10 @@ public class FileUtils {
     }
   }
 
-  public static String readLineOfLogFile(Path path) {
+  public static String readLineOfLogFile(InputStream stream) {
 
-    try (BufferedReader br = Files.newBufferedReader(Paths.get(path.toString()), UTF_8)) {
-      return br.readLine();
+    try (LineIterator br = IOUtils.lineIterator(stream, "UTF-8")) {
+      return br.next();
     } catch (IOException e) {
       LOG.error("Error reading the first line of file", e);
     }
