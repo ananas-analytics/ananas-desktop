@@ -35,6 +35,7 @@ public class ExtensionManagerTest {
     Assert.assertEquals(2, ext3.classpath.size());
     List<String> paths =
         ext3.classpath.stream().map(url -> url.getPath()).collect(Collectors.toList());
+
     Assert.assertTrue(paths.contains(extensionRepo.getPath() + "/extension2/libs/extension2.jar"));
     Assert.assertTrue(paths.contains(extensionRepo.getPath() + "/extension2/libs/otherfile.txt"));
   }

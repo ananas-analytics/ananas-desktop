@@ -69,6 +69,7 @@ public class ExtensionManager {
   }
 
   public void loadStepExtension(String path) throws IOException {
+
     File extensionFolder = new File(path);
     File metadataFile = new File(path, "metadata.yml");
     Map<String, RawStepMetadata> rawMetadataMap =
