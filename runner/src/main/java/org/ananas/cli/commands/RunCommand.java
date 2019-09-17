@@ -32,7 +32,7 @@ public class RunCommand implements Callable<Integer> {
   private File project;
 
   @Option(
-      names = {"-e", "--profile"},
+      names = {"-f", "--profile"},
       description =
           "Profile yaml file, includes execution engine, and parameters (optional). By default, local Flink engine, no parameter")
   private File profile;

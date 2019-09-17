@@ -161,7 +161,7 @@ public class Bitcoin extends AcceptanceTestBase {
           "-p",
           project.getPath(),
           stepId,
-          "-e",
+          "-f",
           project.getPath() + "/spark_profile.yml",
           "-m",
           "MYSQL_HOST=" + props.getProperty("mysql.host"),

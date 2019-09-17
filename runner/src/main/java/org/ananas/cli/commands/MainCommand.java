@@ -15,7 +15,6 @@ import picocli.CommandLine.Option;
     name = "ananas",
     description = "Ananas Analytics Command Line Interface",
     subcommands = {
-      EngineCommand.class,
       ExploreCommand.class,
       ExtensionCommand.class,
       RunCommand.class,
