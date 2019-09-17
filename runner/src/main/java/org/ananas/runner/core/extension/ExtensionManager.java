@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.ananas.runner.misc.HomeManager;
-import org.ananas.runner.misc.YamlHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.utils.IOUtils;
@@ -22,10 +21,8 @@ public class ExtensionManager {
   private static ExtensionManager INSTANCE = null;
 
   private static final String EXTENSION_FOLDER = "extensions";
-  private static final String ENGINE_FOLDER = "engines";
 
   private Map<String, StepMetadata> stepMetadata;
-  private Map<String, EngineMetadata> engineMetadata;
 
   private ExtensionManager() {
     reset();
@@ -46,26 +43,35 @@ public class ExtensionManager {
     reset();
     // Load steps
     loadStepExtensions(getOrCreateDir(extensionRoot, EXTENSION_FOLDER));
-    // Load engines
-    loadEngineExtensions(getOrCreateDir(extensionRoot, ENGINE_FOLDER));
   }
 
   public void loadStepExtensions(String path) {
-    loadExtensionsInFolder(
-        path,
-        "step",
-        p -> {
-          loadStepExtension(p);
-        });
-  }
-
-  public void loadEngineExtensions(String path) {
-    loadExtensionsInFolder(
-        path,
-        "engine",
-        (p) -> {
-          loadEngineExtension(p);
-        });
+    LOG.info("Load extensions from " + path);
+    File repo = new File(path);
+    int succeed = 0;
+    int failed = 0;
+    if (repo.exists() && repo.isDirectory()) {
+      String[] extensions =
+          repo.list(
+              (file, name) -> {
+                return new File(file, name).isDirectory();
+              });
+      for (String ext : extensions) {
+        try {
+          LOG.info("Load extension " + ext);
+          loadStepExtension(new File(path, ext).getPath());
+          succeed++;
+        } catch (IOException e) {
+          failed++;
+          LOG.error(e.getLocalizedMessage());
+          e.printStackTrace();
+        }
+      }
+    } else {
+      LOG.error("Invalid extension repository: " + path);
+    }
+    LOG.info(
+        "Load " + (succeed + failed) + " extensions, " + succeed + " succeed, " + failed + " fail");
   }
 
   public void loadStepExtension(String path) throws IOException {
@@ -92,16 +98,6 @@ public class ExtensionManager {
             });
   }
 
-  public void loadEngineExtension(String path) throws IOException {
-    File metadataFile = new File(path, "metadata.yml");
-
-    EngineMetadata metadata = YamlHelper.openYAML(metadataFile.getPath(), EngineMetadata.class);
-
-    if (!this.engineMetadata.containsKey(metadata.id)) {
-      this.engineMetadata.put(metadata.id, metadata);
-    }
-  }
-
   public boolean hasStepMetadata(String metadataId) {
     return this.stepMetadata.containsKey(metadataId);
   }
@@ -110,13 +106,8 @@ public class ExtensionManager {
     return this.stepMetadata.get(metadataId);
   }
 
-  public EngineMetadata getEngineMetadata(String engineId) {
-    return this.engineMetadata.get(engineId);
-  }
-
   private void reset() {
     stepMetadata = new HashMap<>();
-    engineMetadata = new HashMap<>();
   }
 
   private StepMetadata fromRawMetadata(File extensionFile, RawStepMetadata rawMeta) {
@@ -156,46 +147,5 @@ public class ExtensionManager {
       directory.mkdirs();
     }
     return directory.getPath();
-  }
-
-  private void loadExtensionsInFolder(String path, String type, LocalExtensionLoader loader) {
-    LOG.info("Load " + type + " extensions from " + path);
-    File repo = new File(path);
-    int succeed = 0;
-    int failed = 0;
-    if (repo.exists() && repo.isDirectory()) {
-      String[] extensions =
-          repo.list(
-              (file, name) -> {
-                return new File(file, name).isDirectory();
-              });
-      for (String ext : extensions) {
-        try {
-          LOG.info("Load " + type + " extension " + ext);
-          loader.load(new File(path, ext).getPath());
-          succeed++;
-        } catch (IOException e) {
-          failed++;
-          LOG.error(e.getLocalizedMessage());
-          e.printStackTrace();
-        }
-      }
-    } else {
-      LOG.error("Invalid " + type + " extension repository: " + path);
-    }
-    LOG.info(
-        "Load "
-            + (succeed + failed)
-            + " "
-            + type
-            + " extensions, "
-            + succeed
-            + " succeed, "
-            + failed
-            + " fail");
-  }
-
-  private interface LocalExtensionLoader {
-    public void load(String path) throws IOException;
   }
 }

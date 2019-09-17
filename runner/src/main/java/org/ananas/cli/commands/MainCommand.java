@@ -2,7 +2,6 @@ package org.ananas.cli.commands;
 
 import ch.qos.logback.classic.Level;
 import java.util.concurrent.Callable;
-import org.ananas.cli.commands.engine.EngineCommand;
 import org.ananas.cli.commands.extension.ExtensionCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
