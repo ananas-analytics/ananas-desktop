@@ -98,11 +98,13 @@ public class PipelineOptionsFactory {
   public static List<String> getFilesToStage(Engine engine) {
     List<String> filesToStaging = getBaseFilesToStage();
     // get files to stage specified for the engine
-    String fileList = engine.getProperty(FILES_TO_STAGE, "");
-    if (!fileList.equals("")) {
+    if (engine != null) {
+      String fileList = engine.getProperty(FILES_TO_STAGE, "");
       LOG.info("engine filesToStage: {}", fileList);
-      String[] files = fileList.split(";");
-      filesToStaging.addAll(Arrays.asList(files));
+      if (!fileList.equals("")) {
+        String[] files = fileList.split(";");
+        filesToStaging.addAll(Arrays.asList(files));
+      }
     }
     return filesToStaging;
   }
