@@ -97,7 +97,13 @@ public class PipelineOptionsFactory {
 
   public static List<String> getFilesToStage(Engine engine) {
     List<String> filesToStaging = getBaseFilesToStage();
-
+    // get files to stage specified for the engine
+    String fileList = engine.getProperty(FILES_TO_STAGE, "");
+    if (!fileList.equals("")) {
+      LOG.info("engine filesToStage: {}", fileList);
+      String[] files = fileList.split(";");
+      filesToStaging.addAll(Arrays.asList(files));
+    }
     return filesToStaging;
   }
 
@@ -121,6 +127,7 @@ public class PipelineOptionsFactory {
       e.printStackTrace();
     }
 
+    // get system defined files to stage settings
     String systemDefinedFiles = System.getProperty(FILES_TO_STAGE);
     LOG.info("System defined filesToStage list: {}", systemDefinedFiles);
     if (systemDefinedFiles != null) {
@@ -128,7 +135,7 @@ public class PipelineOptionsFactory {
       filesToStaging.addAll(Arrays.asList(files));
     }
 
-    LOG.info("filesToStage: {}", String.join(";", filesToStaging));
+    LOG.info("system filesToStage: {}", String.join(";", filesToStaging));
     return filesToStaging;
   }
 }
