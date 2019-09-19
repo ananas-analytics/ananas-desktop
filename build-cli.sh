@@ -25,9 +25,7 @@ cp $(ls ./cli/*.jar) ./cli/ananas-cli-latest.jar
 
 # build artifacts
 ./gradlew :runner:extensionJar -Prelease=true
-./gradlew :runner:engineJar -Prelease=true -Dengine=flink
 ./gradlew :runner:engineJar -Prelease=true -Dengine=spark
-./gradlew :runner:engineJar -Prelease=true -Dengine=dataflow 
 
 cp ./runner/build/libs/ananas-flink* ./artifacts/engine/flink
 cp $(ls ./runner/build/libs/ananas-flink*.jar) ./runner/build/libs/ananas-flink-latest.jar

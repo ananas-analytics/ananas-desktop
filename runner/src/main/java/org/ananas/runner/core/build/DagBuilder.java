@@ -13,7 +13,6 @@ import org.ananas.runner.core.model.TriggerOptions;
 import org.ananas.runner.core.model.Variable;
 import org.ananas.runner.core.pipeline.NoHook;
 import org.ananas.runner.core.pipeline.PipelineContext;
-import org.apache.beam.sdk.schemas.Schema;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,7 +142,8 @@ public class DagBuilder implements Builder {
                     StepBuilder.createPipelineRunner(this.isTest, this.engine));
             contexts.push(ctxt);
           }
-          stepRunner = StepBuilder.connector(step, contexts.peek(), this.isTest, this.isTest);
+          stepRunner =
+              StepBuilder.connector(this.engine, step, contexts.peek(), this.isTest, this.isTest);
           stepRunnerMap.put(step.id, stepRunner);
           break;
         case 1:
@@ -162,14 +162,12 @@ public class DagBuilder implements Builder {
             Iterator<Step> it = predecessors.iterator();
             StepRunner one = stepRunnerMap.get(it.next().id);
             StepRunner other = stepRunnerMap.get(it.next().id);
-            stepRunner = StepBuilder.join(step, one, other);
+            stepRunner = StepBuilder.join(this.engine, step, one, other);
           } else if (step.config.get("subtype").equals("concat")) {
             Iterator<Step> it = predecessors.iterator();
             StepRunner one = stepRunnerMap.get(it.next().id);
             StepRunner other = stepRunnerMap.get(it.next().id);
-            stepRunner = StepBuilder.concat(step, Arrays.asList(one, other));
-          } else if (step.config.get("subtype").equals("ml")) {
-            stepRunner = mlStep(stepRunnerMap, contexts, step, predecessors);
+            stepRunner = StepBuilder.concat(this.engine, step, Arrays.asList(one, other));
           } else {
             throw new RuntimeException(
                 String.format(
@@ -177,18 +175,6 @@ public class DagBuilder implements Builder {
                     step.id));
           }
           break;
-          /*
-          case 3:
-            if (step.config.get("subtype").equals("ml")) {
-              stepRunner = mlStep(stepRunnerMap, contexts, step, predecessors);
-            } else {
-              throw new RuntimeException(
-                  String.format(
-                      "Ooops something wrong. An ML step is required here because there are 3 predecessors.",
-                      step.id));
-            }
-            break;
-             */
         default:
           if (step.config.get("subtype").equals("concat")) {
             Iterator<Step> it = predecessors.iterator();
@@ -198,9 +184,7 @@ public class DagBuilder implements Builder {
               runner = stepRunnerMap.get(it.next().id);
               upstreamRunners.add(runner);
             }
-            // StepRunner one = stepRunnerMap.get(it.next().id);
-            // StepRunner other = stepRunnerMap.get(it.next().id);
-            stepRunner = StepBuilder.concat(step, upstreamRunners);
+            stepRunner = StepBuilder.concat(this.engine, step, upstreamRunners);
           } else {
             throw new RuntimeException(
                 String.format("Step %s has more than 3 predecessors. Not supported. ", step.id));
@@ -212,70 +196,5 @@ public class DagBuilder implements Builder {
       stepRunnerMap.put(step.id, stepRunner);
     }
     return MutablePair.of(stepRunnerMap, contexts);
-  }
-
-  private StepRunner mlStep(
-      Map<String, StepRunner> stepRunnerMap,
-      Stack<PipelineContext> contexts,
-      Step mlstep,
-      Set<Step> predecessors) {
-    // TODO: entable it when ml is supported, rethink about how to handle ml steps
-    return null;
-    /*
-    StepRunner stepRunner;
-    Set<MutablePair<Step, Schema>> mlSources = new HashSet<>();
-
-    if (IsStepTrainingMode.of().filter(mlstep)) {
-      // Flush Data
-      for (Step s : predecessors) {
-        MutablePair<Step, Schema> stepSchemaMutablePair = flushData(s.id, stepRunnerMap.get(s.id));
-        mlSources.add(stepSchemaMutablePair);
-      }
-      // start a new context here for ML batching
-      PipelineContext mlCtxt =
-          PipelineContext.of(null, StepBuilder.createPipelineRunner(this.isTest, this.engine));
-      contexts.push(mlCtxt);
-    }
-    StepRunner previous = null;
-    for (Step step : predecessors) {
-      if (!IsStepTrainingMode.of().filter(step)) {
-        previous = stepRunnerMap.get(step.id);
-      }
-    }
-    stepRunner =
-        StepBuilder.mlTransformer(mlstep, contexts.peek(), previous, this.isTest, mlSources);
-    return stepRunner;
-    */
-  }
-
-  public MutablePair<Step, Schema> flushData(String stepId, StepRunner stepRunner) {
-    // TODO: enable this when ml function is on live
-    return MutablePair.of(new Step(), stepRunner.getSchema());
-    /*
-    if (stepRunner.getType() == StepType.Loader) {
-      throw new IllegalStateException(
-          String.format("Unexpected Step %s . Should not be a destination.", stepId));
-    }
-    Step step = new Step();
-    step.type = StepConfig.TYPE_LOADER;
-    step.id = stepId;
-    step.config = new HashMap<>();
-    step.config.put(StepConfig.SUBTYPE, "file");
-    step.config.put(StepConfig.FORMAT, "csv");
-    step.config.put(StepConfig.PATH, HomeManager.getTempDirectory());
-    step.config.put(StepConfig.PREFIX, stepId);
-    step.config.put(StepConfig.IS_HEADER, false);
-    step.config.put(StepConfig.SHARD, "1");
-
-    Iterable<Step> predecessors = this.dag.DFSBranch(stepId);
-    Iterable<Step> cachedPredecessors = stepsCache.getIfPresent(stepId);
-
-    if (cachedPredecessors == null || !Step.deepEquals(cachedPredecessors, predecessors)) {
-      // if no cache or predecessors has changed (comparing them to cached predecessors )
-      StepBuilder.append(step, stepRunner, false);
-      stepsCache.put(stepId, predecessors); // cache it for next execution
-    }
-    return MutablePair.of(step, stepRunner.getSchema());
-    */
   }
 }

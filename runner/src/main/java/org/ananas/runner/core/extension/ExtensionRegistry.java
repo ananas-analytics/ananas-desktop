@@ -42,7 +42,7 @@ public class ExtensionRegistry {
     return false;
   }
 
-  public static Class<? extends StepRunner> getStep(String metaId) {
+  public static Class<? extends StepRunner> getStep(String metaId, boolean local) {
     // 1. find the class in internal step registry
     Class<? extends StepRunner> clazz = STEP_REGISTRY.get(metaId);
     if (clazz != null) {
@@ -54,8 +54,8 @@ public class ExtensionRegistry {
 
     // For local runner only, get additional classpath from local extension
     // A remote runner will have all jars uploaded to workers through filesToStage
-    // or other parameters, and they are already in classpath on worksers
-    if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
+    // or other parameters, and they are already in classpath on workers
+    if (local && ExtensionManager.getInstance().hasStepMetadata(metaId)) {
       StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
       additionalClasspath = (URL[]) meta.classpath.toArray();
     }
@@ -85,7 +85,7 @@ public class ExtensionRegistry {
 
     // For local runner only, get additional classpath from local extension
     // A remote runner will have all jars uploaded to workers through filesToStage
-    // or other parameters, and they are already in classpath on worksers
+    // or other parameters, and they are already in classpath on workers
     if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
       StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
       additionalClasspath = (URL[]) meta.classpath.toArray();

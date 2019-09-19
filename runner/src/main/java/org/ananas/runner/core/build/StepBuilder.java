@@ -5,7 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.ananas.runner.core.ConcatStepRunner;
 import org.ananas.runner.core.JoinStepRunner;
 import org.ananas.runner.core.StepRunner;
@@ -34,7 +37,18 @@ public class StepBuilder {
   public static final String TYPE_DATAVIEWER = "viewer";
 
   public static org.apache.beam.sdk.Pipeline createPipelineRunner(boolean isTest, Engine engine) {
-    PipelineOptions options = PipelineOptionsFactory.create(isTest, engine);
+    return createPipelineRunner(isTest, engine, null);
+  }
+
+  public static org.apache.beam.sdk.Pipeline createPipelineRunner(
+      boolean isTest, Engine engine, Set<Step> steps) {
+
+    Set<String> metadataIds =
+        steps == null
+            ? new HashSet<>()
+            : steps.stream().map(step -> step.metadataId).collect(Collectors.toSet());
+
+    PipelineOptions options = PipelineOptionsFactory.create(isTest, engine, metadataIds);
     org.apache.beam.sdk.Pipeline p = org.apache.beam.sdk.Pipeline.create(options);
     Class[] classes =
         new Class[] {
@@ -63,13 +77,14 @@ public class StepBuilder {
   }
 
   public static StepRunner connector(
-      Step step, PipelineContext context, boolean doSampling, boolean isTest) {
+      Engine engine, Step step, PipelineContext context, boolean doSampling, boolean isTest) {
     if (!ExtensionRegistry.hasStep(step.metadataId)) {
       throw new AnanasException(
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
-    Class<? extends StepRunner> clazz = ExtensionRegistry.getStep(step.metadataId);
+    Class<? extends StepRunner> clazz =
+        ExtensionRegistry.getStep(step.metadataId, isLocalEngine(engine, isTest));
 
     try {
       Constructor<? extends StepRunner> ctor =
@@ -87,13 +102,15 @@ public class StepBuilder {
     }
   }
 
-  public static StepRunner transformer(Step step, StepRunner previous, boolean isTest) {
+  public static StepRunner transformer(
+      Engine engine, Step step, StepRunner previous, boolean isTest) {
     if (!ExtensionRegistry.hasStep(step.metadataId)) {
       throw new AnanasException(
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
-    Class<? extends StepRunner> clazz = ExtensionRegistry.getStep(step.metadataId);
+    Class<? extends StepRunner> clazz =
+        ExtensionRegistry.getStep(step.metadataId, isLocalEngine(engine, isTest));
 
     try {
       Constructor<? extends StepRunner> ctor =
@@ -111,13 +128,14 @@ public class StepBuilder {
     }
   }
 
-  public static StepRunner loader(Step step, StepRunner previous, boolean isTest) {
+  public static StepRunner loader(Engine engine, Step step, StepRunner previous, boolean isTest) {
     if (!ExtensionRegistry.hasStep(step.metadataId)) {
       throw new AnanasException(
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
-    Class<? extends StepRunner> clazz = ExtensionRegistry.getStep(step.metadataId);
+    Class<? extends StepRunner> clazz =
+        ExtensionRegistry.getStep(step.metadataId, isLocalEngine(engine, isTest));
 
     try {
       Constructor<? extends StepRunner> ctor =
@@ -142,7 +160,8 @@ public class StepBuilder {
           ErrorCode.DAG, "No StepRunner is registered for meta id: " + step.metadataId);
     }
 
-    Class<? extends StepRunner> clazz = ExtensionRegistry.getStep(step.metadataId);
+    Class<? extends StepRunner> clazz =
+        ExtensionRegistry.getStep(step.metadataId, isLocalEngine(engine, isTest));
 
     try {
       Constructor<? extends StepRunner> ctor =
@@ -166,9 +185,9 @@ public class StepBuilder {
     // TODO: maybe pass engine to all steps? Engine settings might be useful for all step types
     switch (step.type) {
       case TYPE_TRANSFORMER:
-        return transformer(step, previous, isTest);
+        return transformer(engine, step, previous, isTest);
       case TYPE_LOADER:
-        return loader(step, previous, isTest);
+        return loader(engine, step, previous, isTest);
       case TYPE_DATAVIEWER:
         return dataViewer(jobId, engine, step, previous, isTest);
       default:
@@ -176,15 +195,34 @@ public class StepBuilder {
     }
   }
 
-  public static StepRunner join(Step step, StepRunner one, StepRunner another) {
+  public static StepRunner join(Engine engine, Step step, StepRunner one, StepRunner another) {
     StepRunner joinStepRunner = new JoinStepRunner(step, one, another);
     joinStepRunner.build();
     return joinStepRunner;
   }
 
-  public static StepRunner concat(Step step, List<StepRunner> upstreams) {
+  public static StepRunner concat(Engine engine, Step step, List<StepRunner> upstreams) {
     StepRunner concatStepRunner = new ConcatStepRunner(step, upstreams);
     concatStepRunner.build();
     return concatStepRunner;
+  }
+
+  public static boolean isLocalEngine(Engine engine, boolean isTest) {
+    if (isTest) {
+      return true;
+    }
+
+    if (engine == null) {
+      return true;
+    }
+
+    if (engine.type.toLowerCase().equals("flink")) {
+      String flinkMaster = engine.getProperty("flinkMaster", "[auto]");
+      if (flinkMaster.equals("[auto]") || flinkMaster.equals("[local")) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

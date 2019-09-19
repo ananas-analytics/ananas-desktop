@@ -36,16 +36,16 @@ public class ExtensionManager {
   }
 
   public void load() {
-    load(HomeManager.getHome());
+    load(HomeManager.getHomeFilePath(EXTENSION_FOLDER));
   }
 
   public void load(String extensionRoot) {
     reset();
     // Load steps
-    loadStepExtensions(getOrCreateDir(extensionRoot, EXTENSION_FOLDER));
+    loadStepExtensions(getOrCreateDir(extensionRoot));
   }
 
-  public void loadStepExtensions(String path) {
+  private void loadStepExtensions(String path) {
     LOG.info("Load extensions from " + path);
     File repo = new File(path);
     int succeed = 0;
@@ -113,6 +113,9 @@ public class ExtensionManager {
   private StepMetadata fromRawMetadata(File extensionFile, RawStepMetadata rawMeta) {
     // list all libs
     File libsFolder = new File(extensionFile, "libs");
+    if (!libsFolder.exists()) {
+      return new StepMetadata(rawMeta.id, rawMeta.type, new ArrayList<>());
+    }
     File[] libs = libsFolder.listFiles();
     List<URL> classpath =
         Arrays.asList(libs).stream()
@@ -141,8 +144,8 @@ public class ExtensionManager {
     return yamlReader.readValue(yaml, typeRef);
   }
 
-  private String getOrCreateDir(String root, String dirName) {
-    File directory = new File(root + File.separator + dirName);
+  private String getOrCreateDir(String root) {
+    File directory = new File(root);
     if (!directory.exists()) {
       directory.mkdirs();
     }

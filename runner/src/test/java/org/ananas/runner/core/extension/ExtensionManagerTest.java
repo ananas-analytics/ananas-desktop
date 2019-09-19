@@ -14,7 +14,7 @@ public class ExtensionManagerTest {
     ExtensionManager extManager = ExtensionManager.getInstance();
 
     URL extensionRepo = TestHelper.getResource("extensions/test_step_repo");
-    extManager.loadStepExtensions(extensionRepo.getPath());
+    extManager.load(extensionRepo.getPath());
 
     StepMetadata ext1 = extManager.getStepMetadata("ext1");
     Assert.assertEquals("Source", ext1.type);
