@@ -70,7 +70,16 @@ public class ExtensionRegistry {
   }
 
   public static boolean hasPaginator(String metaId) {
-    return PAGINATOR_REGISTRY.containsKey(metaId);
+    if (PAGINATOR_REGISTRY.containsKey(metaId)) {
+      return true;
+    }
+
+    if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
+      StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
+      return meta.type.equals("Source") || meta.type.equals("Destination") || meta.type.equals("Visualization");
+    }
+
+    return false;
   }
 
   public static Class<? extends AutoDetectedSchemaPaginator> getPaginator(String metaId) {
