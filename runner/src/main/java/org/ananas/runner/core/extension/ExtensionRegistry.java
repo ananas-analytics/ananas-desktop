@@ -32,6 +32,9 @@ public class ExtensionRegistry {
   private static final Map<String, Class<? extends AutoDetectedSchemaPaginator>>
       PAGINATOR_REGISTRY = new HashMap<>();
 
+  private static final String STEP_RUNNER_CLASS_NAME = "StepRunner";
+  private static final String PAGINATOR_CLASS_NAME = "Paginator";
+
   public static boolean hasStep(String metaId) {
     if (STEP_REGISTRY.containsKey(metaId)) {
       return true;
@@ -63,7 +66,8 @@ public class ExtensionRegistry {
     // search the StepRunner class from the classpath
     try {
       URLClassLoader classLoader = URLClassLoader.newInstance(additionalClasspath);
-      return (Class<? extends StepRunner>) classLoader.loadClass(metaId + ".StepRunner");
+      return (Class<? extends StepRunner>)
+          classLoader.loadClass(metaId + "." + STEP_RUNNER_CLASS_NAME);
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
@@ -76,7 +80,9 @@ public class ExtensionRegistry {
 
     if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
       StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
-      return meta.type.equals("Source") || meta.type.equals("Destination") || meta.type.equals("Visualization");
+      return meta.type.equals("Source")
+          || meta.type.equals("Destination")
+          || meta.type.equals("Visualization");
     }
 
     return false;
@@ -92,9 +98,7 @@ public class ExtensionRegistry {
     // 2. if not found, search it from classpath
     URL[] additionalClasspath = new URL[] {};
 
-    // For local runner only, get additional classpath from local extension
-    // A remote runner will have all jars uploaded to workers through filesToStage
-    // or other parameters, and they are already in classpath on workers
+    // paginator always search extension classpath
     if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
       StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
       additionalClasspath = (URL[]) meta.classpath.toArray();
@@ -104,7 +108,7 @@ public class ExtensionRegistry {
     try {
       URLClassLoader classLoader = URLClassLoader.newInstance(additionalClasspath);
       return (Class<? extends AutoDetectedSchemaPaginator>)
-          classLoader.loadClass(metaId + ".Paginator");
+          classLoader.loadClass(metaId + "." + PAGINATOR_CLASS_NAME);
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
