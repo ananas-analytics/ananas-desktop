@@ -63,6 +63,7 @@ public class TransformerStepRunner extends AbstractStepRunner {
 
     @Setup
     public void setUp() throws Exception {
+      CallingSubProcessUtils.unarchive(configuration.executableName);
       CallingSubProcessUtils.setUp(configuration, configuration.executableName);
       if (inputAvroSchema == null) {
         this.inputAvroSchema =

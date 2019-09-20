@@ -1,0 +1,66 @@
+dag:
+  connections:
+    - source: 5d68064c837d2272849eee08
+      target: 5d68068f837d2272849eee0a
+id: 5d68063a837d2272849eee06
+name: external_binary
+steps:
+  5d68064c837d2272849eee08:
+    config:
+      delimiter: ","
+      forceAutoDetectSchema: true
+      format: csv
+      header: true
+      path: ${PROJECT_PATH}/input.txt
+      subtype: file
+    dataframe:
+      data: []
+      id: 5d68064c837d2272849eee08
+      schema:
+        fields:
+          - name: nname
+            type: VARCHAR
+    description: Connect data from a CSV file
+    id: 5d68064c837d2272849eee08
+    metadataId: org.ananas.source.file.csv
+    name: Local CSV Source
+    type: connector
+  5d68068f837d2272849eee0a:
+    config:
+      avro-schema: |-
+        {"namespace": "example.avro",
+         "type": "record",
+         "name": "User",
+         "fields": [
+             {"name": "name", "type": "string"},
+             {"name": "number",  "type": ["int", "null"]},
+             {"name": "favorite_color", "type": ["string", "null"]}
+         ]
+        }
+      batch-size: "2"
+      binary: ${PROJECT_PATH}/myenv.pex
+      concurrency: "1"
+      only-upload-logs-on-error: true
+      source: hello2.py
+      source-file: example.py
+      source-path: ${PROJECT_PATH}/
+      subtype: subprocess
+      worker-path: ${PROJECT_PATH}/worker/
+    dataframe:
+      data: []
+      id: 5d68068f837d2272849eee0a
+      schema:
+        fields:
+          - name: name
+            type: VARCHAR
+          - name: number
+            type: INTEGER
+          - name: favorite_color
+            type: VARCHAR
+    description: Transform your data with external program
+    id: 5d68068f837d2272849eee0a
+    metadataId: org.ananas.transform.subprocess
+    name: External program
+    type: transformer
+triggers: []
+variables: []

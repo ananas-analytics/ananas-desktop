@@ -33,11 +33,21 @@ public class CallingSubProcessUtils {
       initSemaphore(configuration.getConcurrency(), binaryName);
     }
 
+    archive(configuration, binaryName);
+  }
+
+  public static void unarchive(String binaryName) throws Exception {
+    synchronized (downloadedFiles) {
+      downloadedFiles.remove(binaryName);
+    }
+  }
+
+  private static void archive(SubProcessConfiguration configuration, String binaryName)
+      throws Exception {
     synchronized (downloadedFiles) {
       if (!downloadedFiles.contains(binaryName)) {
-        LOG.info("Calling filesetup to move Executables to worker.");
-        FileUtils.copyFileFrom(
-            configuration.sourcePath, configuration.workerPath, configuration.executableName);
+        LOG.info("Calling filesetup to move {} to worker.", binaryName);
+        FileUtils.copyFileFrom(configuration.sourcePath, configuration.workerPath, binaryName);
         downloadedFiles.add(binaryName);
       }
     }
@@ -50,7 +60,7 @@ public class CallingSubProcessUtils {
     }
   }
 
-  private static void aquireSemaphore(String binaryName) throws IllegalStateException {
+  private static void acquireSemaphore(String binaryName) throws IllegalStateException {
     if (!semaphores.containsKey(binaryName)) {
       throw new IllegalStateException("Semaphore is NULL, check init logic in @Setup.");
     }
@@ -75,7 +85,7 @@ public class CallingSubProcessUtils {
 
     public Permit(String binaryName) {
       this.binaryName = binaryName;
-      CallingSubProcessUtils.aquireSemaphore(binaryName);
+      CallingSubProcessUtils.acquireSemaphore(binaryName);
     }
 
     @Override
