@@ -45,6 +45,15 @@ public class ExtensionManager {
     loadStepExtensions(getOrCreateDir(extensionRoot));
   }
 
+  public Map<String, StepMetadata> getAllStepMetadata() {
+    Map<String, StepMetadata> copy = new HashMap<>();
+    this.stepMetadata.forEach(
+        (k, v) -> {
+          copy.put(k, v.clone());
+        });
+    return copy;
+  }
+
   private void loadStepExtensions(String path) {
     LOG.info("Load extensions from " + path);
     File repo = new File(path);

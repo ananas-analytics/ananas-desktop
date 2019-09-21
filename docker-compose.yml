@@ -11,6 +11,8 @@ services:
       - postgres
       - spark-master
       - spark-worker-1
+      - flink-master
+      - flink-slave
     environment:
       WAIT_HOSTS: mysql:3306, postgres:5432, spark-master:8080, spark-worker-1:8081
   mysql:
@@ -49,3 +51,22 @@ services:
       - "8081:8081"
     environment:
       - "SPARK_LOCAL_IP=spark-worker-1"
+  flink-master:
+    image: flink:1.8.2
+    expose: 
+      - "6123"
+    ports: 
+      - "8082:8081"
+    command: jobmanager
+    environment:
+      - "JOB_MANAGER_RPC_ADDRESS=flink-master"
+  flink-slave:
+    image: flink:1.8.2
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - flink-master
+    command: taskmanager
+    environment:
+      - "JOB_MANAGER_RPC_ADDRESS=flink-master"
