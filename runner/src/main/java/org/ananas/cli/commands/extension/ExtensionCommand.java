@@ -9,10 +9,12 @@ import picocli.CommandLine;
     subcommands = {
       InstallExtensionCommand.class,
       ListExtensionCommand.class,
+      CommandLine.HelpCommand.class,
     })
 public class ExtensionCommand implements Callable<Integer> {
   @Override
   public Integer call() throws Exception {
+
     return 0;
   }
 }

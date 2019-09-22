@@ -28,6 +28,13 @@ repositories {
 }
 
 configurations {
+    core {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+
+    apiElements.extendsFrom(core) // expose all core package to consumer
+
     implementation.extendsFrom(core, flink, extension)
 
     coreWithFlink.extendsFrom(core, flink)

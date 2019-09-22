@@ -40,7 +40,8 @@ public class DagRequestBuilder {
     if (!ananas.exists()) {
       ananas = Paths.get(project.getAbsolutePath(), "ananas.yaml").toFile();
       if (!ananas.exists()) {
-        throw new RuntimeException("Can't find ananas.yml file in our project");
+        throw new RuntimeException(
+            "Can't find ananas.yml file in your project: " + project.getAbsolutePath());
       }
     }
 

@@ -1,13 +1,12 @@
 package org.ananas.cli.commands;
 
 import java.io.File;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import org.ananas.cli.DagRequestBuilder;
+import org.ananas.cli.Helper;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.runner.core.common.JsonUtil;
 import org.ananas.runner.core.model.Dataframe;
@@ -16,7 +15,6 @@ import org.ananas.runner.core.model.StepType;
 import org.ananas.runner.core.paginate.PaginationBody;
 import org.ananas.runner.core.paginate.Paginator;
 import org.ananas.runner.core.paginate.PaginatorFactory;
-import org.ananas.runner.misc.YamlHelper;
 import org.ananas.server.ApiResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,20 +62,8 @@ public class ExploreCommand implements Callable<Integer> {
       params = new HashMap<>();
     }
 
-    AnalyticsBoard analyticsBoard = null;
-    File ananas = Paths.get(project.getAbsolutePath(), "ananas.yml").toFile();
-    if (!ananas.exists()) {
-      ananas = Paths.get(project.getAbsolutePath(), "ananas.yaml").toFile();
-      if (!ananas.exists()) {
-        System.err.println("Can't find ananas.yml file in your project");
-        return 1;
-      }
-    }
-    try {
-      analyticsBoard = YamlHelper.openYAML(ananas.getAbsolutePath(), AnalyticsBoard.class);
-    } catch (Exception e) {
-      System.err.println("Failed to parse analytics board file: " + e.getLocalizedMessage());
-      Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).forEach(LOG::error);
+    AnalyticsBoard analyticsBoard = Helper.createAnalyticsBoard(project);
+    if (analyticsBoard == null) {
       return 1;
     }
 

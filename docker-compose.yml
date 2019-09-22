@@ -5,7 +5,7 @@ services:
     env_file:
       - ./test/test.env
     command: [ 'sh', '-c',
-               '/wait && ./build-cli.sh && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties',  ]
+               '/wait && ./build-cli.sh && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties --console plain',  ]
     depends_on:
       - mysql
       - postgres

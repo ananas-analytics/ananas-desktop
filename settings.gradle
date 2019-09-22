@@ -5,4 +5,5 @@ include 'runner', 'ui', 'doc'
 rootProject.name = 'ananas-desktop'
 
 // gradle.projectsLoaded { g ->  println "loaded"  }
+include 'extension-example'
 

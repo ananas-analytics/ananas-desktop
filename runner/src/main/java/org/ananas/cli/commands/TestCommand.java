@@ -6,10 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import org.ananas.cli.CommandLineTable;
 import org.ananas.cli.DagRequestBuilder;
+import org.ananas.cli.commands.extension.ExtensionHelper;
 import org.ananas.runner.core.model.DagRequest;
 import org.ananas.server.Services;
 import org.slf4j.Logger;
@@ -46,6 +48,16 @@ public class TestCommand implements Callable {
   private Map<String, String> params;
 
   @Option(
+      names = {"-r", "--repo"},
+      description = "Extension repository location, by default, <ANANAS_WORKSPACE>/extensions")
+  private File repo;
+
+  @Option(
+      names = {"-x", "--extension"},
+      description = "Extension location, could be absolute path or relative to current directory")
+  private List<File> extensions;
+
+  @Option(
       names = {"-o", "--output"},
       description = "Output file")
   private File output;
@@ -61,6 +73,10 @@ public class TestCommand implements Callable {
   @Override
   public Integer call() throws Exception {
     parent.handleVerbose();
+
+    if (ExtensionHelper.loadExtensions(repo, extensions) != 0) {
+      return 1;
+    }
 
     boolean printUsage = true;
 

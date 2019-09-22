@@ -60,7 +60,7 @@ public class ExtensionRegistry {
     // or other parameters, and they are already in classpath on workers
     if (local && ExtensionManager.getInstance().hasStepMetadata(metaId)) {
       StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
-      additionalClasspath = (URL[]) meta.classpath.toArray();
+      additionalClasspath = (URL[]) meta.classpath.toArray(new URL[meta.classpath.size()]);
     }
 
     // search the StepRunner class from the classpath

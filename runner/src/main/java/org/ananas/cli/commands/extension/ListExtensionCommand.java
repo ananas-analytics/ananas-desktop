@@ -1,8 +1,10 @@
 package org.ananas.cli.commands.extension;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import org.ananas.runner.core.common.JsonUtil;
 import org.ananas.runner.core.extension.ExtensionManager;
 import org.ananas.runner.core.extension.StepMetadata;
 import picocli.CommandLine;
@@ -15,16 +17,19 @@ public class ListExtensionCommand implements Callable<Integer> {
       description = "Extension repository location, by default, <ANANAS_WORKSPACE>/extensions")
   private File repo;
 
+  @CommandLine.Option(
+      names = {"-x", "--extension"},
+      description = "Extension location, could be absolute path or relative to current directory")
+  private List<File> extensions;
+
   @Override
   public Integer call() throws Exception {
-    if (repo != null) {
-      ExtensionManager.getInstance().load(repo.getAbsolutePath());
-    } else {
-      ExtensionManager.getInstance().load();
+    if (ExtensionHelper.loadExtensions(repo, extensions) != 0) {
+      return 1;
     }
 
     Map<String, StepMetadata> result = ExtensionManager.getInstance().getAllStepMetadata();
-    System.out.println(result);
+    System.out.println(JsonUtil.toJson(result));
     return 0;
   }
 }

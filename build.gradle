@@ -50,9 +50,9 @@ task packRunner(type: Exec) {
 	dependsOn ":runner:clean"
 	dependsOn ":runner:shadowJar"
 
-	println "Packing settings: JDK_HOME=[${project.JDK_HOME}] for platform [${project.platform}]"
+	// println "Packing settings: JDK_HOME=[${project.JDK_HOME}] for platform [${project.platform}]"
 
-    println "Jar: ${project.runnerJarName}"
+    // println "Jar: ${project.runnerJarName}"
 
 	workingDir "."
 
@@ -75,9 +75,9 @@ task pack(type: Exec) {
 
 	inputs.property 'NODE_ENV', getAnanasEnv()
 
-	println "Binary version: ${project.version}"
+	// println "Binary version: ${project.version}"
 
-	println "Environment: ${getAnanasEnv()}"
+	// println "Environment: ${getAnanasEnv()}"
 
 	workingDir "./ui"
 
@@ -94,9 +94,9 @@ task packMac(type: Exec) {
 
 	inputs.property 'NODE_ENV', getAnanasEnv()
 
-	println "Binary version: ${project.version}"
+	// println "Binary version: ${project.version}"
 
-	println "Environment: ${getAnanasEnv()}"
+	// println "Environment: ${getAnanasEnv()}"
 
 	workingDir "./ui"
 
