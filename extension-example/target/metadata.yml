@@ -1,3 +1,0 @@
-org.ananas.extension.example.transform.sql:
-  id: org.ananas.extension.example.transform.sql
-  type: Transform
