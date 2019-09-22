@@ -19,8 +19,6 @@ services:
     image: mysql:5.7
     env_file:
       - ./test/test.env
-    ports:
-      - "3306:3306"
     volumes:
       - ./test/mysql:/docker-entrypoint-initdb.d/:ro
   postgres:
