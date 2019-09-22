@@ -136,3 +136,7 @@ variables:
     description: ""
     scope: project
     type: string
+  - name: FLINK_MASTER_HOST
+    description: ""
+    scope: project
+    type: string

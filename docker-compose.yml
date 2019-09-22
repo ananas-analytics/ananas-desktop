@@ -19,6 +19,8 @@ services:
     image: mysql:5.7
     env_file:
       - ./test/test.env
+    ports:
+      - "3306:3306"
     volumes:
       - ./test/mysql:/docker-entrypoint-initdb.d/:ro
   postgres:
@@ -51,6 +53,7 @@ services:
       - "8081:8081"
     environment:
       - "SPARK_LOCAL_IP=spark-worker-1"
+
   flink-master:
     image: flink:1.8.2
     expose: 

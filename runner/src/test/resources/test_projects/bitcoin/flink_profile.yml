@@ -8,8 +8,6 @@ engine:
     database_url: mysql://${MYSQL_HOST}:3306/${MYSQL_DB}
     database_user: root
     enableMetricSinks: "true"
-    sparkMaster: spark://${SPARK_MASTER_HOST}:7077
-    streaming: "false"
-    tempLocation: /tmp/
+    flinkMaster: ${FLINK_MASTER_HOST}:6123
   scope: workspace
-  type: Spark
+  type: Flink
