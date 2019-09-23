@@ -38,6 +38,7 @@ layout:
             label: Advanced
           children:
           - description
+          - force-auto-detect-schema
     - key: update-container
       props:
         boder:
@@ -112,6 +113,12 @@ components:
       label: Limit your data with SQL query
       options:
         mode: sql
+  force-auto-detect-schema:
+    bind: forceAutoDetectSchema
+    type: CheckBox
+    default: true
+    props:
+      label: Force schema auto detection
   update-btn:
     type: Button
     props:

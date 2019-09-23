@@ -2,10 +2,7 @@ package org.ananas.runner.steprunner.jdbc;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import org.ananas.runner.steprunner.jdbc.derby.DerbyDataTypes;
@@ -124,17 +121,11 @@ public enum JDBCDriver implements Serializable {
         return;
       }
       switch (type.getTypeName()) {
+        case LOGICAL_TYPE:
+          setTimestamp(idx, type, query, o);
+          return;
         case DATETIME:
-          String metadata = String.valueOf(type.getMetadata("subtype"));
-          if (metadata.equals("TIME")) {
-            query.setTime(idx, new Time(((Instant) o).getMillis()));
-            return;
-          }
-          if (metadata.equals("DATE") || metadata.equals("TS")) {
-            query.setTimestamp(idx, new Timestamp(((Instant) o).getMillis()));
-            return;
-          }
-          query.setTimestamp(idx, new Timestamp(((Instant) o).getMillis()));
+          setTimestamp(idx, type, query, o);
           return;
         case BOOLEAN:
           query.setBoolean(idx, (Boolean) o);
@@ -179,6 +170,20 @@ public enum JDBCDriver implements Serializable {
               + "  \n"
               + e.getMessage());
     }
+  }
+
+  private void setTimestamp(int idx, Schema.FieldType type, PreparedStatement query, Object o)
+      throws SQLException {
+    String metadata = String.valueOf(type.getMetadata("subtype"));
+    if (metadata.equals("TIME")) {
+      query.setTime(idx, new Time(((Instant) o).getMillis()));
+      return;
+    }
+    if (metadata.equals("DATE") || metadata.equals("TS")) {
+      query.setTimestamp(idx, new Timestamp(((Instant) o).getMillis()));
+      return;
+    }
+    query.setTimestamp(idx, new Timestamp(((Instant) o).getMillis()));
   }
 
   public org.jooq.SQLDialect getJOOQdialect() {

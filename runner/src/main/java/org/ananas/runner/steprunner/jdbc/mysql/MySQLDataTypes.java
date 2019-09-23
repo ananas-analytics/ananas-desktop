@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import org.ananas.runner.steprunner.jdbc.DDL;
 import org.ananas.runner.steprunner.jdbc.JDBCDataType;
+import org.apache.beam.sdk.extensions.sql.impl.utils.CalciteUtils;
 import org.apache.beam.sdk.schemas.Schema.FieldType;
 
 public enum MySQLDataTypes implements JDBCDataType, DDL {
@@ -13,8 +14,7 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   LONG("long", FieldType.INT64, false),
   SERIAL("serial", FieldType.INT64, false),
   SERIAL8("serial8", FieldType.INT64, false),
-
-  SMALLINT("smallint", FieldType.INT16, true),
+  BIGIINT_SERIAL8("bigint unsigned", FieldType.INT64, false),
 
   INTEGER("integer", FieldType.INT32, true),
   INT("int", FieldType.INT32, false),
@@ -23,6 +23,8 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   INT4("int4", FieldType.INT32, false),
   MEDIUMINT("mediumint", FieldType.INT32, false),
   TINYINT("tinyint", FieldType.INT32, false),
+  SMALLINT("smallint", FieldType.INT32, false),
+  BIT("bit", FieldType.INT32, false),
 
   DECIMAL("decimal", FieldType.DECIMAL, true),
   NUMERIC("numeric", FieldType.DECIMAL, false),
@@ -34,20 +36,24 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   SMALLFLOAT("smallfloat", FieldType.FLOAT, false),
 
   DOUBLE("double", FieldType.DOUBLE, true),
-  DOUBLE_PRECISION("double precision", FieldType.DOUBLE, true),
+  DOUBLE_PRECISION("double precision", FieldType.DOUBLE, false),
 
   BOOLEAN("boolean", FieldType.BOOLEAN, true),
   BOOL("bool", FieldType.BOOLEAN, false),
 
-  BYTES("bytes", FieldType.BYTE, true),
-  BINARY("binary", FieldType.BYTE, false),
-  BYTE("byte", FieldType.BYTE, false),
-
   TEXT("text", FieldType.STRING, true),
+  BYTES("bytes", FieldType.STRING, false),
+  BINARY("binary", FieldType.STRING, false),
+  VARBINARY("varbinary", FieldType.STRING, false),
+  BYTE("byte", FieldType.INT16, false),
+  BLOB("blob", FieldType.STRING, false),
+  TINYBLOB("tinyblob", FieldType.STRING, false),
+  MEDIUMBLOB("mediumblob", FieldType.STRING, false),
+  LONGBLOB("longblob", FieldType.STRING, false),
+  MEDIUMTEXT("mediumtext", FieldType.STRING, false),
   LONGTEXT("longtext", FieldType.STRING, false),
   TINYTEXT("tinytext", FieldType.STRING, false),
   STRING("string", FieldType.STRING, false),
-  BIT("bit", FieldType.STRING, false),
   BITVAR("bit varying", FieldType.STRING, false),
   CHAR("char", FieldType.STRING, false),
   BPCHAR("bpchar", FieldType.STRING, false),
@@ -59,21 +65,16 @@ public enum MySQLDataTypes implements JDBCDataType, DDL {
   OBJECT("object", FieldType.STRING, false),
   JSON("json", FieldType.STRING, false),
   XML("xml", FieldType.STRING, false),
+  YEAR("year", FieldType.STRING, false),
 
-  DATE_metadata("date", FieldType.DATETIME.withMetadata("subtype", "DATE"), true),
-  TIME_metadata("time", FieldType.DATETIME.withMetadata("subtype", "TIME"), true),
-  TIMESTAMP_metadata("timestamp", FieldType.DATETIME.withMetadata("subtype", "TS"), true),
-  TIMESTAMP_WITHOUT_TS_metadata(
-      "timestamp without time zone", FieldType.DATETIME.withMetadata("subtype", "TS"), true),
-  TIMESTAMP_WITH_TIME_ZONE_metadata(
-      "timestamp with time zone",
-      FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"),
-      true),
-  TIMESTAMPZ_metadata(
-      "timestamptz", FieldType.DATETIME.withMetadata("subtype", "TS_WITH_LOCAL_TZ"), false),
-  TIMESTAMP("timestamp", FieldType.DATETIME, true),
-  TIME("time", FieldType.DATETIME, true),
-  DATE("date", FieldType.DATETIME, true);
+  DATE_metadata("date", CalciteUtils.DATE, true),
+  TIME_metadata("time", CalciteUtils.TIME, true),
+  TIMESTAMP_metadata("timestamp", CalciteUtils.TIMESTAMP, true),
+  TIMESTAMP_WITHOUT_TS_metadata("timestamp without time zone", CalciteUtils.TIMESTAMP, false),
+  TIMESTAMP_WITH_TIME_ZONE_metadata("timestamp with time zone", CalciteUtils.TIMESTAMP, false),
+  TIMESTAMPZ_metadata("timestamptz", CalciteUtils.TIMESTAMP, false),
+  DATETIME("DATETIME", CalciteUtils.DATE, false),
+  DATE("date", CalciteUtils.DATE, false);
 
   private static final Map<String, FieldType> dataTypes;
 
