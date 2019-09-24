@@ -52,11 +52,12 @@ configurations {
 }
 
 dependencies {
-    def withoutX = { exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core:2.9.5' }
+    def without_jackson_core = { exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core:2.9.5' }
+    def without_slf4j_log4j12 = { exclude group: 'org.slf4j', module: 'slf4j-log4j12' }
 
     // common
     core 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5'
-    core 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5', withoutX
+    core 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5', without_jackson_core
     core 'com.github.wnameless:json-flattener:0.5.0'
     core 'com.jayway.jsonpath:json-path:2.4.0'
     core 'joda-time:joda-time:2.10'
@@ -98,17 +99,17 @@ dependencies {
 
     // engines
     // engine - spark - required only for standalone cluster
-    spark 'org.apache.spark:spark-core_2.11:2.4.3'
-    spark 'org.apache.spark:spark-streaming_2.11:2.4.3'
+    spark 'org.apache.spark:spark-core_2.11:2.4.3', without_slf4j_log4j12
+    spark 'org.apache.spark:spark-streaming_2.11:2.4.3', without_slf4j_log4j12
 
     // others
-    runtimeOnly 'org.slf4j:slf4j-jdk14:1.7.25'
+    // runtimeOnly 'org.slf4j:slf4j-jdk14:1.7.25'
     compileOnly 'org.projectlombok:lombok:1.16.2'
 
     annotationProcessor "com.google.auto.value:auto-value:1.6.2"
 
     // test
-    testCompile 'org.slf4j:slf4j-simple:1.7.22'
+    // testCompile 'org.slf4j:slf4j-simple:1.7.22'
     testCompile 'junit:junit:4.12'
     testCompile 'com.github.stefanbirkner:system-rules:1.19.0'
 }
