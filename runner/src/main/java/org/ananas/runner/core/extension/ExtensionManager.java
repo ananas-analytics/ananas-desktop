@@ -40,9 +40,9 @@ public class ExtensionManager {
   }
 
   public void load(String extensionRoot) {
-    reset();
     // Load steps
-    loadStepExtensions(getOrCreateDir(extensionRoot));
+    // loadStepExtensions(getOrCreateDir(extensionRoot));
+    loadStepExtensions(extensionRoot);
   }
 
   public Map<String, StepMetadata> getAllStepMetadata() {
@@ -114,7 +114,7 @@ public class ExtensionManager {
     return this.stepMetadata.get(metadataId);
   }
 
-  private void reset() {
+  public void reset() {
     stepMetadata = new HashMap<>();
   }
 

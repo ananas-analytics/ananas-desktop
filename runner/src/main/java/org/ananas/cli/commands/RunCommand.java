@@ -46,8 +46,8 @@ public class RunCommand implements Callable<Integer> {
 
   @Option(
       names = {"-r", "--repo"},
-      description = "Extension repository location, by default, <ANANAS_WORKSPACE>/extensions")
-  private File repo;
+      description = "Extension repository location, by default, ./extensions")
+  private File repo = new File("./extensions");
 
   @Option(
       names = {"-x", "--extension"},

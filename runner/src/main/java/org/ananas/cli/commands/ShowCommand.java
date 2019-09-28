@@ -56,7 +56,7 @@ public class ShowCommand implements Callable<Integer> {
   private boolean showStepConfig;
 
   @Option(
-      names = {"-j", "--json"},
+      names = {"--json"},
       description = "Show result in JSON format, default: false")
   private boolean json = false;
 
