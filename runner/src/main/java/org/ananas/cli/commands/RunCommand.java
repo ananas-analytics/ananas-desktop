@@ -15,6 +15,7 @@ import org.ananas.server.ApiResponse;
 import org.ananas.server.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -26,11 +27,10 @@ public class RunCommand implements Callable<Integer> {
 
   @ParentCommand private MainCommand parent;
 
-  @Option(
+  @CommandLine.Option(
       names = {"-p", "--project"},
-      description = "Ananas analytics project path",
-      required = true)
-  private File project;
+      description = "Ananas analytics project path, default: current directory")
+  private File project = new File(".");
 
   @Option(
       names = {"-f", "--profile"},

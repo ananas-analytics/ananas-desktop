@@ -8,10 +8,11 @@ import org.ananas.runner.core.extension.ExtensionManager;
 
 public class ExtensionHelper {
   public static int loadExtensions(File repo, List<File> extensions) {
+    // always load global extension first
+    ExtensionManager.getInstance().load();
+
     if (repo != null) {
       ExtensionManager.getInstance().load(repo.getAbsolutePath());
-    } else {
-      ExtensionManager.getInstance().load();
     }
 
     AtomicInteger ret = new AtomicInteger();

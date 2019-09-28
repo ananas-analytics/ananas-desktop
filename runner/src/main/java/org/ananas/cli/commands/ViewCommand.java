@@ -26,9 +26,8 @@ public class ViewCommand implements Callable<Integer> {
 
   @CommandLine.Option(
       names = {"-p", "--project"},
-      description = "Ananas analytics project path",
-      required = true)
-  private File project;
+      description = "Ananas analytics project path, default: current directory")
+  private File project = new File(".");
 
   @CommandLine.Option(
       names = {"-f", "--profile"},

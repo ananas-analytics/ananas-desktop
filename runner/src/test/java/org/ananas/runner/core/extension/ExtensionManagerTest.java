@@ -20,14 +20,14 @@ public class ExtensionManagerTest {
     Assert.assertEquals("Source", ext1.type);
     Assert.assertEquals(1, ext1.classpath.size());
     Assert.assertEquals(
-        extensionRepo.getPath() + "/extension1/libs/extension1.jar",
+        extensionRepo.getPath() + "/extension1/lib/extension1.jar",
         ext1.classpath.get(0).getPath());
 
     StepMetadata ext2 = extManager.getStepMetadata("ext2");
     Assert.assertEquals("Transform", ext2.type);
     Assert.assertEquals(1, ext2.classpath.size());
     Assert.assertEquals(
-        extensionRepo.getPath() + "/extension1/libs/extension1.jar",
+        extensionRepo.getPath() + "/extension1/lib/extension1.jar",
         ext2.classpath.get(0).getPath());
 
     StepMetadata ext3 = extManager.getStepMetadata("ext3");
@@ -36,7 +36,7 @@ public class ExtensionManagerTest {
     List<String> paths =
         ext3.classpath.stream().map(url -> url.getPath()).collect(Collectors.toList());
 
-    Assert.assertTrue(paths.contains(extensionRepo.getPath() + "/extension2/libs/extension2.jar"));
-    Assert.assertTrue(paths.contains(extensionRepo.getPath() + "/extension2/libs/otherfile.txt"));
+    Assert.assertTrue(paths.contains(extensionRepo.getPath() + "/extension2/lib/extension2.jar"));
+    Assert.assertTrue(paths.contains(extensionRepo.getPath() + "/extension2/lib/otherfile.txt"));
   }
 }

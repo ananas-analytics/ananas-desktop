@@ -84,7 +84,6 @@ public class ExtensionManager {
   }
 
   public void loadStepExtension(String path) throws IOException {
-
     File extensionFolder = new File(path);
     File metadataFile = new File(path, "metadata.yml");
     Map<String, RawStepMetadata> rawMetadataMap =
@@ -99,9 +98,9 @@ public class ExtensionManager {
                 return;
               }
               if (this.stepMetadata.containsKey(raw.id)) {
-                LOG.warn(
-                    "Ignore metadata " + raw.id + ", as there is already one with the same id");
-                return;
+                LOG.warn("Override metadata " + raw.id + " with extension: " + path);
+                // allow override metadata here, so do not return
+                // return;
               }
               this.stepMetadata.put(raw.id, meta);
             });
@@ -121,7 +120,7 @@ public class ExtensionManager {
 
   private StepMetadata fromRawMetadata(File extensionFile, RawStepMetadata rawMeta) {
     // list all libs
-    File libsFolder = new File(extensionFile, "libs");
+    File libsFolder = new File(extensionFile, "lib");
     if (!libsFolder.exists()) {
       return new StepMetadata(rawMeta.id, rawMeta.type, new ArrayList<>());
     }

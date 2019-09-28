@@ -5,6 +5,7 @@ import picocli.CommandLine;
 
 @CommandLine.Command(name = "install", description = "Install extension")
 public class InstallExtensionCommand implements Callable<Integer> {
+
   @Override
   public Integer call() throws Exception {
     return 0;

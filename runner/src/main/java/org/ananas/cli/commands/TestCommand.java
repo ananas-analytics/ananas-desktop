@@ -29,11 +29,10 @@ public class TestCommand implements Callable {
 
   @ParentCommand private MainCommand parent;
 
-  @Option(
+  @CommandLine.Option(
       names = {"-p", "--project"},
-      description = "Ananas analytics project path",
-      required = true)
-  private File project;
+      description = "Ananas analytics project path, default: current directory")
+  private File project = new File(".");
 
   @Option(
       names = {"-f", "--profile"},
