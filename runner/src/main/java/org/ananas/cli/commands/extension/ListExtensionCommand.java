@@ -28,7 +28,7 @@ public class ListExtensionCommand implements Callable<Integer> {
       return 1;
     }
 
-    Map<String, StepMetadata> result = ExtensionManager.getInstance().getAllStepMetadata();
+    Map<String, StepMetadata> result = ExtensionManager.getDefault().getAllStepMetadata();
     System.out.println(JsonUtil.toJson(result));
     return 0;
   }

@@ -52,11 +52,11 @@ jar {
 
 task copyJar(type: Copy) {
     dependsOn jar
-    outputs.dir "target/libs"
+    outputs.dir "target/lib"
 
     from "$buildDir/libs"
     include "*.jar"
-    into "target/libs"
+    into "target/lib"
 }
 
 task copyMetadata(type: Copy) {
@@ -67,7 +67,17 @@ task copyMetadata(type: Copy) {
     into "target"
 }
 
+task copyDescriptor(type: Copy) {
+    dependsOn jar
+    outputs.dir "target"
+
+    from "extension.yml"
+    into "target"
+}
+
+
 task dist {
     dependsOn copyJar
     dependsOn copyMetadata
+    dependsOn copyDescriptor
 }

@@ -16,7 +16,7 @@ plugins {
     id 'idea'
 
 	id 'com.github.johnrengelman.shadow' version '5.0.0'
-    id "com.github.sherter.google-java-format" version "0.8"
+    id 'com.github.sherter.google-java-format' version '0.8'
 }
 
 repositories {
@@ -61,6 +61,7 @@ dependencies {
     core 'joda-time:joda-time:2.10'
     core 'org.freemarker:freemarker:2.3.28'
     core 'ch.qos.logback:logback-classic:1.1.7'
+    core 'commons-io:commons-io:2.6'
 
     // server interface
     core 'com.sparkjava:spark-core:2.9.1'

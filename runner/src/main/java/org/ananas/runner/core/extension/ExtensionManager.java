@@ -3,18 +3,24 @@ package org.ananas.runner.core.extension;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import org.ananas.runner.misc.HomeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.utils.IOUtils;
 
+/**
+ * ExtensionManager manages extensions of Ananas. It makes sure the job has all the required class
+ * path from the extensions.
+ *
+ * <p>Each run will have its own extension manager to install and load extensions.
+ */
 public class ExtensionManager {
   private static final Logger LOG = LoggerFactory.getLogger(ExtensionManager.class);
 
@@ -24,24 +30,85 @@ public class ExtensionManager {
 
   private Map<String, StepMetadata> stepMetadata;
 
-  private ExtensionManager() {
+  public ExtensionManager() {
     reset();
   }
 
-  public static ExtensionManager getInstance() {
+  /**
+   * Get the default extension manager.
+   *
+   * @return
+   */
+  public static ExtensionManager getDefault() {
     if (INSTANCE == null) {
       INSTANCE = new ExtensionManager();
     }
     return INSTANCE;
   }
 
+  public void install(URL url, String name, String version, String repo) throws IOException {}
+
+  /**
+   * Install extension from a URI to a destination repo
+   *
+   * @param url
+   * @param repo
+   */
+  private void install(URL url, String repo) throws IOException {
+    BufferedInputStream in = new BufferedInputStream(url.openStream());
+
+    // download the zip file
+    File temp = File.createTempFile("ananas-ext", "");
+    FileOutputStream fileOutputStream = new FileOutputStream(temp);
+    byte dataBuffer[] = new byte[1024];
+    int bytesRead;
+    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+      fileOutputStream.write(dataBuffer, 0, bytesRead);
+    }
+
+    // unzip the file
+    File destDir = new File(repo);
+    byte[] buffer = new byte[1024];
+    ZipInputStream zis = new ZipInputStream(new FileInputStream(temp));
+    ZipEntry zipEntry = zis.getNextEntry();
+    while (zipEntry != null) {
+      File newFile = newFile(destDir, zipEntry);
+      FileOutputStream fos = new FileOutputStream(newFile);
+      int len;
+      while ((len = zis.read(buffer)) > 0) {
+        fos.write(buffer, 0, len);
+      }
+      fos.close();
+      zipEntry = zis.getNextEntry();
+    }
+    zis.closeEntry();
+    zis.close();
+  }
+
+  private File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+    File destFile = new File(destinationDir, zipEntry.getName());
+
+    String destDirPath = destinationDir.getCanonicalPath();
+    String destFilePath = destFile.getCanonicalPath();
+
+    if (!destFilePath.startsWith(destDirPath + File.separator)) {
+      throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+    }
+
+    return destFile;
+  }
+
+  /** Load extensions from default local extension repository */
   public void load() {
     load(HomeManager.getHomeFilePath(EXTENSION_FOLDER));
   }
 
+  /**
+   * Load extensions from extension repository
+   *
+   * @param extensionRoot
+   */
   public void load(String extensionRoot) {
-    // Load steps
-    // loadStepExtensions(getOrCreateDir(extensionRoot));
     loadStepExtensions(extensionRoot);
   }
 
@@ -55,7 +122,7 @@ public class ExtensionManager {
   }
 
   private void loadStepExtensions(String path) {
-    LOG.info("Load extensions from " + path);
+    LOG.info("Load extensions from repo" + path);
     File repo = new File(path);
     int succeed = 0;
     int failed = 0;
@@ -68,7 +135,7 @@ public class ExtensionManager {
       for (String ext : extensions) {
         try {
           LOG.info("Load extension " + ext);
-          loadStepExtension(new File(path, ext).getPath());
+          loadExtension(new File(path, ext).getPath());
           succeed++;
         } catch (IOException e) {
           failed++;
@@ -83,7 +150,30 @@ public class ExtensionManager {
         "Load " + (succeed + failed) + " extensions, " + succeed + " succeed, " + failed + " fail");
   }
 
-  public void loadStepExtension(String path) throws IOException {
+  /*
+  private void loadAllExtensionVersions(String repo, String extension) {
+    File extensionFolder = new File(repo + File.separator + extension);
+    if (extensionFolder.exists() && extensionFolder.isDirectory()) {
+      String[] versions = extensionFolder.list((file, name) -> {
+        return new File(file, name).isDirectory();
+      });
+
+      for (String version : versions) {
+        try {
+          LOG.info("Load extension " + extension + " version " + version);
+          loadExtension(new File(extensionFolder, version).getPath());
+          succeed++;
+        } catch (IOException e) {
+          failed++;
+          LOG.error(e.getLocalizedMessage());
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+   */
+
+  public void loadExtension(String path) throws IOException {
     File extensionFolder = new File(path);
     File metadataFile = new File(path, "metadata.yml");
     Map<String, RawStepMetadata> rawMetadataMap =

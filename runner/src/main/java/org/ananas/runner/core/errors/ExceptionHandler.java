@@ -13,7 +13,8 @@ public class ExceptionHandler {
     GENERAL(2),
     JAVASCRIPT(3),
     CONNECTION(4),
-    DAG(5);
+    DAG(5),
+    EXTENSION(6);
 
     public int code;
 

@@ -39,7 +39,7 @@ public class ExtensionRegistry {
     if (STEP_REGISTRY.containsKey(metaId)) {
       return true;
     }
-    if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
+    if (ExtensionManager.getDefault().hasStepMetadata(metaId)) {
       return true;
     }
     return false;
@@ -58,8 +58,8 @@ public class ExtensionRegistry {
     // For local runner only, get additional classpath from local extension
     // A remote runner will have all jars uploaded to workers through filesToStage
     // or other parameters, and they are already in classpath on workers
-    if (local && ExtensionManager.getInstance().hasStepMetadata(metaId)) {
-      StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
+    if (local && ExtensionManager.getDefault().hasStepMetadata(metaId)) {
+      StepMetadata meta = ExtensionManager.getDefault().getStepMetadata(metaId);
       additionalClasspath = (URL[]) meta.classpath.toArray(new URL[meta.classpath.size()]);
     }
 
@@ -78,8 +78,8 @@ public class ExtensionRegistry {
       return true;
     }
 
-    if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
-      StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
+    if (ExtensionManager.getDefault().hasStepMetadata(metaId)) {
+      StepMetadata meta = ExtensionManager.getDefault().getStepMetadata(metaId);
       return meta.type.equals("Source")
           || meta.type.equals("Destination")
           || meta.type.equals("Visualization");
@@ -99,8 +99,8 @@ public class ExtensionRegistry {
     URL[] additionalClasspath = new URL[] {};
 
     // paginator always search extension classpath
-    if (ExtensionManager.getInstance().hasStepMetadata(metaId)) {
-      StepMetadata meta = ExtensionManager.getInstance().getStepMetadata(metaId);
+    if (ExtensionManager.getDefault().hasStepMetadata(metaId)) {
+      StepMetadata meta = ExtensionManager.getDefault().getStepMetadata(metaId);
       additionalClasspath = (URL[]) meta.classpath.toArray();
     }
 

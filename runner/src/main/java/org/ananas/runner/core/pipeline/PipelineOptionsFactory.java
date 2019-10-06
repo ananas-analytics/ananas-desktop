@@ -113,9 +113,9 @@ public class PipelineOptionsFactory {
     // get step related jars
     metadataIds.forEach(
         id -> {
-          if (ExtensionManager.getInstance().hasStepMetadata(id)) {
+          if (ExtensionManager.getDefault().hasStepMetadata(id)) {
             List<String> classpath =
-                ExtensionManager.getInstance().getStepMetadata(id).classpath.stream()
+                ExtensionManager.getDefault().getStepMetadata(id).classpath.stream()
                     .map(
                         v -> {
                           try {

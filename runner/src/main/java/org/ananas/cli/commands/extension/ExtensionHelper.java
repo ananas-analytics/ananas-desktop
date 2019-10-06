@@ -8,11 +8,10 @@ import org.ananas.runner.core.extension.ExtensionManager;
 
 public class ExtensionHelper {
   public static int loadExtensions(File repo, List<File> extensions) {
-    // always load global extension first
-    ExtensionManager.getInstance().load();
-
     if (repo != null) {
-      ExtensionManager.getInstance().load(repo.getAbsolutePath());
+      ExtensionManager.getDefault().load(repo.getAbsolutePath());
+    } else {
+      ExtensionManager.getDefault().load();
     }
 
     AtomicInteger ret = new AtomicInteger();
@@ -20,7 +19,7 @@ public class ExtensionHelper {
       extensions.forEach(
           ext -> {
             try {
-              ExtensionManager.getInstance().loadStepExtension(ext.getAbsolutePath());
+              ExtensionManager.getDefault().loadExtension(ext.getAbsolutePath());
             } catch (IOException e) {
               System.err.println("Failed to load extension: " + ext.getAbsolutePath());
               ret.set(1);
