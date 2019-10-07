@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import org.ananas.runner.misc.YamlHelper;
@@ -78,6 +79,8 @@ public class LocalExtensionRepository implements ExtensionRepository {
 
     ExtensionManifest newManifest = loadExtensionManifest(verFolder);
     addToCache(descriptor.name, descriptor.version, newManifest);
+
+    destDir.delete();
   }
 
   @Override
@@ -90,6 +93,15 @@ public class LocalExtensionRepository implements ExtensionRepository {
       return;
     }
     extVersions.remove(version);
+  }
+
+  @Override
+  public boolean hasExtension(String name) {
+    if (!cache.containsKey(name)) {
+      return false;
+    }
+    Map<String, ExtensionManifest> versions = cache.get(name);
+    return versions.size() > 0;
   }
 
   @Override
@@ -111,6 +123,39 @@ public class LocalExtensionRepository implements ExtensionRepository {
     }
     Map<String, ExtensionManifest> versions = cache.get(name);
     return versions.get(version);
+  }
+
+  @Override
+  public List<String> getExtensionVersions(String name) {
+    if (!cache.containsKey(name)) {
+      return Collections.emptyList();
+    }
+    return cache.get(name).keySet().stream().collect(Collectors.toList());
+  }
+
+  /**
+   * get the highest version of extension that matches the extension version requirement
+   *
+   * @param name the name of the extension
+   * @return
+   */
+  @Override
+  public ExtensionManifest getExtension(String name) {
+    if (!cache.containsKey(name)) {
+      return null;
+    }
+    Map<String, ExtensionManifest> versions = cache.get(name);
+
+    String ananasVersion = LocalExtensionRepository.class.getPackage().getImplementationVersion();
+    if (ananasVersion == null) {
+      ananasVersion = "0.0.0";
+    }
+
+    // resolve extension version with minAnanasVersion
+    String current = "0.0.0";
+    // versions.keySet().
+
+    return null;
   }
 
   private File unzip(URL url) throws IOException {
@@ -144,23 +189,6 @@ public class LocalExtensionRepository implements ExtensionRepository {
         }
       }
     }
-    /*
-    byte[] buffer = new byte[1024];
-    ZipInputStream zis = new ZipInputStream(new FileInputStream(temp));
-    ZipEntry zipEntry = zis.getNextEntry();
-    while (zipEntry != null) {
-      File newFile = newFile(destDir, zipEntry);
-      FileOutputStream fos = new FileOutputStream(newFile);
-      int len;
-      while ((len = zis.read(buffer)) > 0) {
-        fos.write(buffer, 0, len);
-      }
-      fos.close();
-      zipEntry = zis.getNextEntry();
-    }
-    zis.closeEntry();
-    zis.close();
-     */
 
     return destDir;
   }

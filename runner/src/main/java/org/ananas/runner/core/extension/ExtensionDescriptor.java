@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ExtensionDescriptor {
   public String name;
   public String version;
+  public String minAnanasVersion;
   public String author;
   public String url;
 }

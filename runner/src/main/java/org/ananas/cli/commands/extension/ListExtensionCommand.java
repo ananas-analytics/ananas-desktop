@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import org.ananas.runner.core.common.JsonUtil;
-import org.ananas.runner.core.extension.ExtensionManager;
+import org.ananas.runner.core.extension.DefaultExtensionManager;
 import org.ananas.runner.core.extension.StepMetadata;
 import picocli.CommandLine;
 
@@ -28,7 +28,7 @@ public class ListExtensionCommand implements Callable<Integer> {
       return 1;
     }
 
-    Map<String, StepMetadata> result = ExtensionManager.getDefault().getAllStepMetadata();
+    Map<String, StepMetadata> result = DefaultExtensionManager.getDefault().getAllStepMetadata();
     System.out.println(JsonUtil.toJson(result));
     return 0;
   }

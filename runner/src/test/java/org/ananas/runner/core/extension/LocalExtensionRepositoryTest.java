@@ -55,5 +55,7 @@ public class LocalExtensionRepositoryTest {
     anotherRepo.delete("ananas-ext-example", "0.1.0");
     ExtensionManifest manifest2 = anotherRepo.getExtension("ananas-ext-example", "0.1.0");
     Assert.assertNull(manifest2);
+
+    temp.delete();
   }
 }

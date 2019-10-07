@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.ananas.runner.core.extension.ExtensionManager;
+import org.ananas.runner.core.extension.DefaultExtensionManager;
 import org.ananas.runner.core.model.Engine;
 import org.apache.beam.runners.dataflow.DataflowRunner;
 import org.apache.beam.runners.dataflow.options.DataflowPipelineOptions;
@@ -113,9 +113,9 @@ public class PipelineOptionsFactory {
     // get step related jars
     metadataIds.forEach(
         id -> {
-          if (ExtensionManager.getDefault().hasStepMetadata(id)) {
+          if (DefaultExtensionManager.getDefault().hasStepMetadata(id)) {
             List<String> classpath =
-                ExtensionManager.getDefault().getStepMetadata(id).classpath.stream()
+                DefaultExtensionManager.getDefault().getStepMetadata(id).classpath.stream()
                     .map(
                         v -> {
                           try {

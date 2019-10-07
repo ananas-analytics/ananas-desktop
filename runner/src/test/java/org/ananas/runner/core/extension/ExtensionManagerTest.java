@@ -11,7 +11,7 @@ public class ExtensionManagerTest {
 
   @Test
   public void testLoadStepExtensions() {
-    ExtensionManager extManager = ExtensionManager.getDefault();
+    DefaultExtensionManager extManager = DefaultExtensionManager.getDefault();
 
     URL extensionRepo = TestHelper.getResource("extensions/test_step_repo");
     extManager.load(extensionRepo.getPath());
