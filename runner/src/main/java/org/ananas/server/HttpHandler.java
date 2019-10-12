@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.ananas.runner.core.common.JsonUtil;
 import org.ananas.runner.core.errors.AnanasException;
+import org.ananas.runner.core.extension.DefaultExtensionManager;
+import org.ananas.runner.core.extension.LocalExtensionRepository;
 import org.ananas.runner.core.job.BeamRunner;
 import org.ananas.runner.core.job.Job;
 import org.ananas.runner.core.job.JobRepositoryFactory;
@@ -39,7 +41,10 @@ class HttpHandler {
                 ? new PaginationBody()
                 : JsonUtil.fromJson(body, PaginationBody.class);
 
-        Paginator paginator = PaginatorFactory.of(id, paginationBody);
+        DefaultExtensionManager extensionManager =
+            new DefaultExtensionManager(LocalExtensionRepository.getDefault());
+        extensionManager.resolve(paginationBody.extensions);
+        Paginator paginator = PaginatorFactory.of(id, paginationBody, extensionManager);
         try {
           Dataframe dataframe =
               paginator.paginate(
@@ -155,11 +160,13 @@ class HttpHandler {
               ApiResponseBuilder.Of().KO(new NoSuchElementException("jobid not found")).build());
         }
 
+        // Always pass null as extension manager to dataview, as only internal datasource is
+        // supported now
         DefaultDataViewer.DataViewRepository repository =
             new DefaultDataViewer.DataViewRepository();
         return JsonUtil.toJson(
             ApiResponseBuilder.Of()
-                .OK(repository.query(request.queryParams("sql"), jobid, stepid))
+                .OK(repository.query(request.queryParams("sql"), jobid, stepid, null))
                 .build());
       };
 

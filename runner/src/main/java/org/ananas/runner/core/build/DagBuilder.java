@@ -3,14 +3,11 @@ package org.ananas.runner.core.build;
 import com.google.common.base.Preconditions;
 import java.util.*;
 import org.ananas.runner.core.StepRunner;
-import org.ananas.runner.core.model.AnanasGraph;
-import org.ananas.runner.core.model.Dag;
-import org.ananas.runner.core.model.DagRequest;
-import org.ananas.runner.core.model.Dataframe;
-import org.ananas.runner.core.model.Engine;
-import org.ananas.runner.core.model.Step;
-import org.ananas.runner.core.model.TriggerOptions;
-import org.ananas.runner.core.model.Variable;
+import org.ananas.runner.core.extension.DefaultExtensionManager;
+import org.ananas.runner.core.extension.ExtensionManager;
+import org.ananas.runner.core.extension.ExtensionRepository;
+import org.ananas.runner.core.extension.LocalExtensionRepository;
+import org.ananas.runner.core.model.*;
 import org.ananas.runner.core.pipeline.NoHook;
 import org.ananas.runner.core.pipeline.PipelineContext;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -29,13 +26,17 @@ public class DagBuilder implements Builder {
 
   private Engine engine;
 
+  private Map<String, Extension> extensions;
+
+  private Map<String, Variable> variables;
+
   private TriggerOptions trigger;
 
-  // private static Cache<String, Iterable<Step>> stepsCache =
-  // CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(10, TimeUnit.MINUTES).build();
-
   private boolean isTest;
-  private Map<String, Variable> variables;
+
+  private ExtensionManager extensionManager;
+
+  private ExtensionRepository extensionRepo;
 
   public DagBuilder(DagRequest dagRequest, boolean isTest) {
     this(
@@ -43,8 +44,12 @@ public class DagBuilder implements Builder {
         dagRequest.goals,
         dagRequest.params,
         dagRequest.engine,
+        dagRequest.extensions,
         dagRequest.trigger,
-        isTest);
+        isTest,
+        // use default extension repository, you can setup it during initiation
+        // WARN: only init it once
+        LocalExtensionRepository.getDefault());
   }
 
   private DagBuilder(
@@ -52,8 +57,10 @@ public class DagBuilder implements Builder {
       Set<String> goals,
       Map<String, Variable> variables,
       Engine engine,
+      Map<String, Extension> extensins,
       TriggerOptions trigger,
-      boolean isTest) {
+      boolean isTest,
+      ExtensionRepository extensionRepo) {
     this.originalDag = d;
     this.dag = new AnanasGraph(d, goals).reverse().subDag(goals).reverse();
     LOG.debug(this.dag.toString());
@@ -62,7 +69,13 @@ public class DagBuilder implements Builder {
     Preconditions.checkNotNull(variables);
     this.variables = variables == null ? new HashMap<>() : variables;
     this.engine = engine;
+    this.extensions = extensins == null ? new HashMap<>() : extensins;
     this.trigger = trigger;
+
+    // resolve extensions used in the dag
+    this.extensionRepo = extensionRepo;
+    this.extensionManager = new DefaultExtensionManager(extensionRepo);
+    this.extensionManager.resolve(this.extensions);
   }
 
   public Set<String> getGoals() {
@@ -107,7 +120,7 @@ public class DagBuilder implements Builder {
     for (String stepId : this.stepIds) {
       StepRunner stepRunner = stepRunners.get(stepId);
       if (stepRunner == null) {
-        throw new RuntimeException("Ooops . Somthing went wrong with step " + stepId);
+        throw new RuntimeException("Ooops . Something went wrong with step " + stepId);
       }
       // TODO: fix this, unify the way to get step schema
       List<List<Object>> data =
@@ -139,11 +152,17 @@ public class DagBuilder implements Builder {
                 PipelineContext.of(
                     jobId,
                     new NoHook(),
-                    StepBuilder.createPipelineRunner(this.isTest, this.engine));
+                    StepBuilder.createPipelineRunner(this.isTest, this.engine, extensionManager));
             contexts.push(ctxt);
           }
           stepRunner =
-              StepBuilder.connector(this.engine, step, contexts.peek(), this.isTest, this.isTest);
+              StepBuilder.connector(
+                  this.extensionManager,
+                  this.engine,
+                  step,
+                  contexts.peek(),
+                  this.isTest,
+                  this.isTest);
           stepRunnerMap.put(step.id, stepRunner);
           break;
         case 1:
@@ -151,6 +170,7 @@ public class DagBuilder implements Builder {
           stepRunner =
               StepBuilder.append(
                   jobId,
+                  this.extensionManager,
                   this.engine,
                   step,
                   stepRunnerMap.get(predecessors.iterator().next().id),

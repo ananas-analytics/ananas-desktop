@@ -12,6 +12,11 @@ public class Helper {
 
   private static final Logger LOG = LoggerFactory.getLogger(Helper.class);
 
+  public static boolean isAnanasProject(File project) {
+    File ananasFile = new File(project, "ananas.yml");
+    return ananasFile.exists();
+  }
+
   public static AnalyticsBoard createAnalyticsBoard(File project) {
     AnalyticsBoard analyticsBoard = null;
     File ananas = Paths.get(project.getAbsolutePath(), "ananas.yml").toFile();

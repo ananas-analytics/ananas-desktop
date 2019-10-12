@@ -1,6 +1,7 @@
 package org.ananas.runner.core;
 
 import org.ananas.runner.core.common.DataReader;
+import org.ananas.runner.core.extension.ExtensionManager;
 import org.ananas.runner.core.model.StepType;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.SchemaCoder;
@@ -56,4 +57,6 @@ public interface StepRunner {
 
   /** build the step runner */
   void build();
+
+  void setExtensionManager(ExtensionManager extensionManager);
 }

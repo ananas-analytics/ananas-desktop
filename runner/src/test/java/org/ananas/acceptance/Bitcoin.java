@@ -1,16 +1,11 @@
 package org.ananas.acceptance;
 
 import com.jayway.jsonpath.JsonPath;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.ananas.acceptance.helper.AcceptanceTestBase;
-import org.ananas.acceptance.helper.DataViewerHelper;
 import org.ananas.cli.Main;
-import org.ananas.runner.core.model.Engine;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.Assertion;
@@ -101,6 +96,7 @@ public class Bitcoin extends AcceptanceTestBase {
         });
   }
 
+  /*
   @Test
   public void testRunDataViewerOnSpark() throws IOException, URISyntaxException {
     String stepId = "5d4559249c7a5441fdc67d47";
@@ -173,6 +169,7 @@ public class Bitcoin extends AcceptanceTestBase {
           "SPARK_MASTER_HOST=" + props.getProperty("spark.master"),
         });
   }
+   */
 
   /*
   @Test

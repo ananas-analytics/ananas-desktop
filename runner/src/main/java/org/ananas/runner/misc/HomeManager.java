@@ -10,12 +10,18 @@ public class HomeManager {
 
   private static final String PREFIX = "ananas";
 
+  private static final String EXTENSION_FOLDER = "extensions";
+
   public static String getHome() {
     return System.getProperty("user.home") + File.separator + PREFIX;
   }
 
   public static String getHomeFilePath(String fileName) {
     return getHome() + File.separator + fileName;
+  }
+
+  public static String getHomeExtensionPath() {
+    return getHomeFilePath(EXTENSION_FOLDER);
   }
 
   public static String getTempDirectory() {

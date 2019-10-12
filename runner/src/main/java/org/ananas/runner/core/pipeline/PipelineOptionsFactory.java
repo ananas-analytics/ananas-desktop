@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.ananas.runner.core.extension.DefaultExtensionManager;
+import org.ananas.runner.core.extension.ExtensionManager;
 import org.ananas.runner.core.model.Engine;
 import org.apache.beam.runners.dataflow.DataflowRunner;
 import org.apache.beam.runners.dataflow.options.DataflowPipelineOptions;
@@ -25,28 +25,30 @@ public class PipelineOptionsFactory {
 
   public static final String FILES_TO_STAGE = "filesToStage";
 
-  public static PipelineOptions create(boolean isTest, Engine engine, Set<String> metadataIds) {
+  public static PipelineOptions create(
+      boolean isTest, Engine engine, Set<String> metadataIds, ExtensionManager extensionManager) {
     if (isTest) {
-      return createFlinkOptions(null, metadataIds);
+      return createFlinkOptions(null, metadataIds, extensionManager);
     }
 
     if (engine == null) {
-      return createFlinkOptions(null, metadataIds);
+      return createFlinkOptions(null, metadataIds, extensionManager);
     }
 
     switch (engine.type.toLowerCase()) {
       case "flink":
-        return createFlinkOptions(engine, metadataIds);
+        return createFlinkOptions(engine, metadataIds, extensionManager);
       case "spark":
-        return createSparkOptions(engine, metadataIds);
+        return createSparkOptions(engine, metadataIds, extensionManager);
       case "dataflow":
-        return createDataflowOptions(engine, metadataIds);
+        return createDataflowOptions(engine, metadataIds, extensionManager);
       default:
-        return createFlinkOptions(null, metadataIds);
+        return createFlinkOptions(null, metadataIds, extensionManager);
     }
   }
 
-  public static PipelineOptions createFlinkOptions(Engine engine, Set<String> metadataIds) {
+  public static PipelineOptions createFlinkOptions(
+      Engine engine, Set<String> metadataIds, ExtensionManager extensionManager) {
     FlinkPipelineOptions options =
         org.apache.beam.sdk.options.PipelineOptionsFactory.create().as(FlinkPipelineOptions.class);
 
@@ -64,15 +66,16 @@ public class PipelineOptionsFactory {
     }
 
     options.setAppName(engine == null ? "ananas" : engine.getProperty(Engine.APP_NAME, "ananas"));
-    options.setFilesToStage(getFilesToStage(engine, metadataIds));
+    options.setFilesToStage(getFilesToStage(engine, metadataIds, extensionManager));
     options.setRunner(FlinkRunner.class);
     return options;
   }
 
-  public static PipelineOptions createSparkOptions(Engine engine, Set<String> metadataIds) {
+  public static PipelineOptions createSparkOptions(
+      Engine engine, Set<String> metadataIds, ExtensionManager extensionManager) {
     SparkPipelineOptions options =
         org.apache.beam.sdk.options.PipelineOptionsFactory.create().as(SparkPipelineOptions.class);
-    options.setFilesToStage(getFilesToStage(engine, metadataIds));
+    options.setFilesToStage(getFilesToStage(engine, metadataIds, extensionManager));
 
     options.setSparkMaster(engine.getProperty("sparkMaster", "spark://localhost:7077"));
     options.setTempLocation(engine.getProperty("tempLocation", "/tmp/"));
@@ -85,20 +88,22 @@ public class PipelineOptionsFactory {
     return options;
   }
 
-  public static PipelineOptions createDataflowOptions(Engine engine, Set<String> metadataIds) {
+  public static PipelineOptions createDataflowOptions(
+      Engine engine, Set<String> metadataIds, ExtensionManager extensionManager) {
     DataflowPipelineOptions options =
         org.apache.beam.sdk.options.PipelineOptionsFactory.create()
             .as(DataflowPipelineOptions.class);
 
     options.setAppName(engine.getProperty(Engine.APP_NAME, "ananas"));
     options.setProject(engine.getProperty("projectId", ""));
-    options.setFilesToStage(getFilesToStage(engine, metadataIds));
+    options.setFilesToStage(getFilesToStage(engine, metadataIds, extensionManager));
     options.setTempLocation(engine.getProperty("tempLocation", "gs://cookiesync-gdpr-dev/tmp"));
     options.setRunner(DataflowRunner.class);
     return options;
   }
 
-  private static List<String> getFilesToStage(Engine engine, Set<String> metadataIds) {
+  private static List<String> getFilesToStage(
+      Engine engine, Set<String> metadataIds, ExtensionManager extensionManager) {
     List<String> filesToStaging = getBaseFilesToStage();
     // get files to stage specified for the engine
     if (engine != null) {
@@ -113,9 +118,9 @@ public class PipelineOptionsFactory {
     // get step related jars
     metadataIds.forEach(
         id -> {
-          if (DefaultExtensionManager.getDefault().hasStepMetadata(id)) {
+          if (extensionManager.hasStepMetadata(id)) {
             List<String> classpath =
-                DefaultExtensionManager.getDefault().getStepMetadata(id).classpath.stream()
+                extensionManager.getStepMetadata(id).classpath.stream()
                     .map(
                         v -> {
                           try {

@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.Callable;
 import org.ananas.cli.commands.extension.ExtensionHelper;
+import org.ananas.runner.misc.HomeManager;
 import org.ananas.server.RestApiRoutes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ParentCommand;
@@ -34,6 +36,11 @@ public class StartCommand implements Callable<Integer> {
       description = "Extension repository location, by default, ./extensions")
   private File repo = new File("./extensions");
 
+  @CommandLine.Option(
+      names = {"-g", "--global"},
+      description = "Load extensions from global repository")
+  private boolean global = false;
+
   @Option(
       names = {"-x", "--extension"},
       description = "Extension location, could be absolute path or relative to current directory")
@@ -43,7 +50,10 @@ public class StartCommand implements Callable<Integer> {
   public Integer call() throws Exception {
     parent.handleVerbose();
 
-    if (ExtensionHelper.loadExtensions(repo, extensions) != 0) {
+    if (global) {
+      repo = new File(HomeManager.getHomeExtensionPath());
+    }
+    if (ExtensionHelper.initExtensionRepository(repo, extensions) != 0) {
       return 1;
     }
 

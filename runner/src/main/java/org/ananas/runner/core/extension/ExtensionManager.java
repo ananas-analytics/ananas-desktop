@@ -1,16 +1,12 @@
 package org.ananas.runner.core.extension;
 
-import java.io.IOException;
 import java.util.Map;
+import org.ananas.runner.core.model.Extension;
 
 public interface ExtensionManager {
-  void load();
-
-  void load(String repo);
+  void resolve(Map<String, Extension> manifest);
 
   Map<String, StepMetadata> getAllStepMetadata();
-
-  void loadExtension(String path) throws IOException;
 
   boolean hasStepMetadata(String metadataId);
 

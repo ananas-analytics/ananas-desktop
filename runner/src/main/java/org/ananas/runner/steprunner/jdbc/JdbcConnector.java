@@ -38,7 +38,8 @@ public class JdbcConnector extends ConnectorStepRunner {
     Schema stepSchema = step.getBeamSchema();
     if (stepSchema == null || step.forceAutoDetectSchema()) {
       AutoDetectedSchemaPaginator paginator =
-          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, stepSchema)
+          PaginatorFactory.of(
+                  stepId, step.metadataId, step.type, step.config, stepSchema, extensionManager)
               .buildPaginator();
       // find the paginator bind to it
       stepSchema = paginator.getSchema();

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import org.ananas.runner.core.common.DataReader;
 import org.ananas.runner.core.common.DirectRunnerDataReader;
 import org.ananas.runner.core.errors.ErrorHandler;
+import org.ananas.runner.core.extension.ExtensionManager;
 import org.ananas.runner.core.model.StepType;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.SchemaCoder;
@@ -20,6 +21,7 @@ public abstract class AbstractStepRunner implements StepRunner, Serializable {
   protected transient ErrorHandler errors;
   protected transient StepType type;
   protected transient String outputMessage;
+  protected transient ExtensionManager extensionManager;
   private transient DataReader reader;
 
   public String getMessage() {
@@ -74,5 +76,10 @@ public abstract class AbstractStepRunner implements StepRunner, Serializable {
   protected AbstractStepRunner(StepType type) {
     this.type = type;
     this.errors = new ErrorHandler();
+  }
+
+  @Override
+  public void setExtensionManager(ExtensionManager extensionManager) {
+    this.extensionManager = extensionManager;
   }
 }

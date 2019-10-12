@@ -2,7 +2,9 @@ package org.ananas.server;
 
 import static spark.Spark.*;
 
+import org.ananas.runner.core.extension.LocalExtensionRepository;
 import org.ananas.runner.misc.BackgroundApiService;
+import org.ananas.runner.misc.HomeManager;
 
 /** REST API Routes */
 public class RestApiRoutes {
@@ -15,7 +17,7 @@ public class RestApiRoutes {
 
     String address = "127.0.0.1";
     int port = 3003;
-    String extensionRepo = null;
+    String extensionRepo = HomeManager.getHomeExtensionPath();
     if (args.length != 0) {
       address = args[0];
       if (args.length >= 2) {
@@ -27,11 +29,10 @@ public class RestApiRoutes {
       }
     }
 
-    if (extensionRepo != null) {
-      // ExtensionManager.getInstance().loadExtensions(extensionRepo);
-    } else {
-      // ExtensionManager.getInstance().loadExtensions();
-    }
+    // set default repository for the server
+    // NOTE: only do it once! Use LocalExtensionRepository.getDefault() to ref it
+    LocalExtensionRepository.setDefaultRepository(extensionRepo);
+    LocalExtensionRepository.getDefault().load();
 
     ipAddress(address);
     port(port);

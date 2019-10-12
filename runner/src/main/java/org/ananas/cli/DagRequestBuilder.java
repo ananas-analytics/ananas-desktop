@@ -4,6 +4,7 @@ import static org.ananas.runner.misc.YamlHelper.openYAML;
 
 import com.google.common.collect.Sets;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,10 +14,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.cli.model.Profile;
-import org.ananas.runner.core.model.Dag;
-import org.ananas.runner.core.model.DagRequest;
-import org.ananas.runner.core.model.Engine;
-import org.ananas.runner.core.model.Variable;
+import org.ananas.runner.core.model.*;
+import org.ananas.runner.misc.YamlHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,10 +76,22 @@ public class DagRequestBuilder {
       profileObj.engine.properties.put("database_type", "derby");
     }
 
+    // parse extension.yml
+    File extensionFile = Paths.get(project.getAbsolutePath(), "extention.yml").toFile();
+    Map<String, Extension> extensions = new HashMap<>();
+    if (extensionFile.exists()) {
+      try {
+        extensions = YamlHelper.openMapYAML(extensionFile.getAbsolutePath(), Extension.class);
+      } catch (IOException e) {
+        LOG.error("Failed to parse extension file: " + e.getLocalizedMessage());
+      }
+    }
+
     // construct dag request
     dagRequest.dag.connections = analyticsBoard.dag.connections;
     dagRequest.dag.steps = Sets.newHashSet(analyticsBoard.steps.values());
     dagRequest.engine = profileObj.engine;
+    dagRequest.extensions = extensions;
     dagRequest.goals = new HashSet<>(goals);
     dagRequest.params =
         analyticsBoard.variables.stream().collect(Collectors.toMap(v -> v.name, v -> v));

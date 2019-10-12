@@ -30,7 +30,8 @@ public class CSVConnector extends ConnectorStepRunner {
     if (schema == null || step.forceAutoDetectSchema()) {
       // find the paginator bind to it
       AutoDetectedSchemaPaginator csvPaginator =
-          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+          PaginatorFactory.of(
+                  stepId, step.metadataId, step.type, step.config, schema, extensionManager)
               .buildPaginator();
       schema = csvPaginator.getSchema();
     }

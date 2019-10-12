@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import org.ananas.runner.misc.HomeManager;
 import org.ananas.runner.misc.YamlHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -20,7 +21,24 @@ public class LocalExtensionRepository implements ExtensionRepository {
   private File root;
   private Map<String, Map<String, ExtensionManifest>> cache;
 
-  public LocalExtensionRepository(String root) {
+  private static LocalExtensionRepository DEFAULT = null;
+
+  public static LocalExtensionRepository getDefault() {
+    if (DEFAULT == null) {
+      setDefaultRepository(HomeManager.getHomeExtensionPath());
+    }
+    return DEFAULT;
+  }
+
+  public static LocalExtensionRepository setDefaultRepository(String root) {
+    if (DEFAULT != null) {
+      LOG.warn("Default extension repository is already set");
+    }
+    DEFAULT = new LocalExtensionRepository(root);
+    return DEFAULT;
+  }
+
+  private LocalExtensionRepository(String root) {
     this.root = new File(root);
     this.cache = new HashMap<>();
   }
@@ -34,9 +52,14 @@ public class LocalExtensionRepository implements ExtensionRepository {
           getDirectoryContents(
               new File(root, ext), (file, name) -> new File(file, name).isDirectory());
       for (String ver : versions) {
-        ExtensionManifest manifest = loadExtension(ext, ver);
-        if (manifest != null) {
-          addToCache(ext, ver, manifest);
+        ExtensionManifest manifest = null;
+        try {
+          manifest = loadExtension(ext, ver);
+          if (manifest != null) {
+            addToCache(ext, ver, manifest);
+          }
+        } catch (IOException e) {
+          LOG.error("Failed to load extension " + ext + ":" + ver);
         }
       }
     }
@@ -47,11 +70,19 @@ public class LocalExtensionRepository implements ExtensionRepository {
       cache.put(name, new HashMap<String, ExtensionManifest>());
     }
     Map<String, ExtensionManifest> extVersions = cache.get(name);
+    if (extVersions.containsKey(version)) {
+      LOG.warn(
+          "Extension '"
+              + name
+              + "' version '"
+              + version
+              + "' already exists. Override with the new one");
+    }
     extVersions.put(version, manifest);
   }
 
   @Override
-  public void install(URL url) throws IOException {
+  public ExtensionManifest publish(URL url) throws IOException {
     // unzip the file
     File destDir = unzip(url);
 
@@ -76,23 +107,80 @@ public class LocalExtensionRepository implements ExtensionRepository {
     }
 
     FileUtils.copyDirectory(destDir, verFolder);
+    // override the url
+    descriptor.url = url.toString();
+    YamlHelper.saveYAML(new File(verFolder, "extension.yml").getAbsolutePath(), descriptor);
 
     ExtensionManifest newManifest = loadExtensionManifest(verFolder);
     addToCache(descriptor.name, descriptor.version, newManifest);
 
     destDir.delete();
+
+    return newManifest;
   }
 
   @Override
-  public void delete(String name, String version) {
+  public ExtensionManifest extract(URL zip) throws IOException {
+    // unzip the file
+    File destDir = unzip(zip);
+
+    // load extension manifest
+    ExtensionManifest manifest = loadExtensionManifest(destDir);
+    if (manifest == null) {
+      throw new IOException("Invalid extension");
+    }
+
+    return manifest;
+  }
+
+  @Override
+  public ExtensionManifest addExtension(File path) throws IOException {
+    ExtensionManifest manifest = loadExtensionManifest(path);
+
+    InputStream descIn = manifest.getDescriptor().openStream();
+    ExtensionDescriptor descriptor = YamlHelper.openYAML(descIn, ExtensionDescriptor.class);
+    if (descriptor.name == null || descriptor.version == null) {
+      throw new IOException("Invalid extension descriptor");
+    }
+
+    addToCache(descriptor.name, descriptor.version, manifest);
+    return manifest;
+  }
+
+  @Override
+  public void delete(String name, String version) throws IOException {
     if (!cache.containsKey(name)) {
       return;
     }
+
     Map<String, ExtensionManifest> extVersions = cache.get(name);
+
+    if (version == null) {
+      File ext = new File(this.root, name);
+      if (ext.exists()) {
+        FileUtils.deleteDirectory(ext);
+      }
+      return;
+    }
+
     if (!extVersions.containsKey(version)) {
       return;
     }
+    ExtensionManifest manifest = extVersions.get(version);
+    try {
+      File ext = new File(manifest.getUri().toURL().getFile());
+      if (ext.exists()) {
+        ext.delete();
+      }
+    } catch (MalformedURLException e) {
+      LOG.warn("Failed to delete the extension from disk: " + e.getLocalizedMessage());
+    }
     extVersions.remove(version);
+  }
+
+  @Override
+  public Map<String, Map<String, ExtensionManifest>> getExtensions() {
+    return this.cache;
   }
 
   @Override
@@ -206,7 +294,7 @@ public class LocalExtensionRepository implements ExtensionRepository {
     return destFile;
   }
 
-  private ExtensionManifest loadExtension(String name, String version) {
+  private ExtensionManifest loadExtension(String name, String version) throws IOException {
     File extensionFolder = new File(root, name);
     if (!extensionFolder.exists()) {
       return null;
@@ -220,30 +308,30 @@ public class LocalExtensionRepository implements ExtensionRepository {
     return loadExtensionManifest(versionFolder);
   }
 
-  private ExtensionManifest loadExtensionManifest(File path) {
+  private ExtensionManifest loadExtensionManifest(File path) throws IOException {
     File descriptor = new File(path, "extension.yml");
     if (!descriptor.exists()) {
       LOG.error("Can't find extension.yml from " + path);
-      return null;
+      throw new FileNotFoundException(path.getAbsolutePath());
     }
     URL descriptorURL, metadataURL = null;
     try {
       descriptorURL = descriptor.toURI().toURL();
     } catch (MalformedURLException e) {
       LOG.error("Invalid extension descriptor URL: " + descriptor.getAbsolutePath());
-      return null;
+      throw e;
     }
 
     File metadata = new File(path, "metadata.yml");
     if (!metadata.exists()) {
-      LOG.error("Can't load metadata.yml from " + path);
-      return null;
+      LOG.error("Can't load metadata.yml from " + path.getAbsolutePath());
+      throw new FileNotFoundException(metadata.getAbsolutePath());
     }
     try {
       metadataURL = metadata.toURI().toURL();
     } catch (MalformedURLException e) {
       LOG.error("Invalid metadata URL: " + metadata.getAbsolutePath());
-      return null;
+      throw e;
     }
 
     List<URL> editorUrls = new ArrayList<>();
@@ -270,7 +358,7 @@ public class LocalExtensionRepository implements ExtensionRepository {
     }
 
     ExtensionManifest extDesc =
-        new ExtensionManifest(descriptorURL, metadataURL, editorUrls, libUrls);
+        new ExtensionManifest(path.toURI(), descriptorURL, metadataURL, editorUrls, libUrls);
     return extDesc;
   }
 

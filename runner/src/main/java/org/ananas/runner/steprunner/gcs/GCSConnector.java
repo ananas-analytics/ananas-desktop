@@ -50,7 +50,8 @@ public class GCSConnector extends ConnectorStepRunner {
 
     Schema schema = step.getBeamSchema();
     AutoDetectedSchemaPaginator csvPaginator =
-        PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+        PaginatorFactory.of(
+                stepId, step.metadataId, step.type, step.config, schema, extensionManager)
             .buildPaginator();
     if (schema == null || step.forceAutoDetectSchema()) {
       // find the paginator bind to it
@@ -81,7 +82,8 @@ public class GCSConnector extends ConnectorStepRunner {
 
     Schema schema = step.getBeamSchema();
     AutoDetectedSchemaPaginator paginator =
-        PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+        PaginatorFactory.of(
+                stepId, step.metadataId, step.type, step.config, schema, extensionManager)
             .buildPaginator();
     if (schema == null || step.forceAutoDetectSchema()) {
       schema = paginator.getSchema();

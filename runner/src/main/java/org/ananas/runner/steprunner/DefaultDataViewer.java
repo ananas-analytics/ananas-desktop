@@ -107,7 +107,8 @@ public class DefaultDataViewer extends DataViewerStepRunner {
                   "org.ananas.destination.jdbc.mysql",
                   StepType.Connector.name(),
                   config,
-                  (Dataframe) null)
+                  (Dataframe) null,
+                  null)
               .buildPaginator();
       Dataframe dataframe = paginator.paginate(0, Integer.MAX_VALUE);
       return dataframe;

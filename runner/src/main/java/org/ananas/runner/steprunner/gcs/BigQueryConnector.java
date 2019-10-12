@@ -36,7 +36,8 @@ public class BigQueryConnector extends ConnectorStepRunner {
     if (schema == null || step.forceAutoDetectSchema()) {
       // find the paginator bind to it
       AutoDetectedSchemaPaginator paginator =
-          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+          PaginatorFactory.of(
+                  stepId, step.metadataId, step.type, step.config, schema, extensionManager)
               .buildPaginator();
       schema = paginator.getSchema();
     }

@@ -13,14 +13,13 @@ public class LocalExtensionRepositoryTest {
   public void testExtensionRepository() throws IOException {
     // first install
     File temp = Files.createTempDirectory("ananas-test-").toFile();
-    LocalExtensionRepository repo = new LocalExtensionRepository(temp.getAbsolutePath());
+    LocalExtensionRepository repo =
+        LocalExtensionRepository.setDefaultRepository(temp.getAbsolutePath());
     repo.load();
 
     URL zip = TestHelper.getResource("extensions/example-ext.zip");
 
-    repo.install(zip);
-
-    System.out.println(temp.getAbsoluteFile());
+    repo.publish(zip);
 
     File extFolder = new File(new File(temp, "ananas-ext-example"), "0.1.0");
 
@@ -44,7 +43,8 @@ public class LocalExtensionRepositoryTest {
     Assert.assertEquals(jar.getAbsolutePath(), manifest.getLibs().get(0).getPath());
 
     // now create a new repo from the temp folder
-    LocalExtensionRepository anotherRepo = new LocalExtensionRepository(temp.getAbsolutePath());
+    LocalExtensionRepository anotherRepo =
+        LocalExtensionRepository.setDefaultRepository(temp.getAbsolutePath());
     anotherRepo.load();
     ExtensionManifest manifest1 = anotherRepo.getExtension("ananas-ext-example", "0.1.0");
     Assert.assertEquals(descriptor.getAbsolutePath(), manifest1.getDescriptor().getPath());

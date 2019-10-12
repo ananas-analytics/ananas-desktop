@@ -35,17 +35,18 @@ public class ExtensionRegistry {
   private static final String STEP_RUNNER_CLASS_NAME = "StepRunner";
   private static final String PAGINATOR_CLASS_NAME = "Paginator";
 
-  public static boolean hasStep(String metaId) {
+  public static boolean hasStep(String metaId, ExtensionManager externalSource) {
     if (STEP_REGISTRY.containsKey(metaId)) {
       return true;
     }
-    if (DefaultExtensionManager.getDefault().hasStepMetadata(metaId)) {
+    if (externalSource != null && externalSource.hasStepMetadata(metaId)) {
       return true;
     }
     return false;
   }
 
-  public static Class<? extends StepRunner> getStep(String metaId, boolean local) {
+  public static Class<? extends StepRunner> getStep(
+      String metaId, boolean local, ExtensionManager externalSource) {
     // 1. find the class in internal step registry
     Class<? extends StepRunner> clazz = STEP_REGISTRY.get(metaId);
     if (clazz != null) {
@@ -58,8 +59,8 @@ public class ExtensionRegistry {
     // For local runner only, get additional classpath from local extension
     // A remote runner will have all jars uploaded to workers through filesToStage
     // or other parameters, and they are already in classpath on workers
-    if (local && DefaultExtensionManager.getDefault().hasStepMetadata(metaId)) {
-      StepMetadata meta = DefaultExtensionManager.getDefault().getStepMetadata(metaId);
+    if (local && externalSource != null && externalSource.hasStepMetadata(metaId)) {
+      StepMetadata meta = externalSource.getStepMetadata(metaId);
       additionalClasspath = (URL[]) meta.classpath.toArray(new URL[meta.classpath.size()]);
     }
 
@@ -73,13 +74,13 @@ public class ExtensionRegistry {
     }
   }
 
-  public static boolean hasPaginator(String metaId) {
+  public static boolean hasPaginator(String metaId, ExtensionManager extensionManager) {
     if (PAGINATOR_REGISTRY.containsKey(metaId)) {
       return true;
     }
 
-    if (DefaultExtensionManager.getDefault().hasStepMetadata(metaId)) {
-      StepMetadata meta = DefaultExtensionManager.getDefault().getStepMetadata(metaId);
+    if (extensionManager != null && extensionManager.hasStepMetadata(metaId)) {
+      StepMetadata meta = extensionManager.getStepMetadata(metaId);
       return meta.type.equals("Source")
           || meta.type.equals("Destination")
           || meta.type.equals("Visualization");
@@ -88,7 +89,8 @@ public class ExtensionRegistry {
     return false;
   }
 
-  public static Class<? extends AutoDetectedSchemaPaginator> getPaginator(String metaId) {
+  public static Class<? extends AutoDetectedSchemaPaginator> getPaginator(
+      String metaId, ExtensionManager extensionManager) {
     // 1. find the class in internal step registry
     Class<? extends AutoDetectedSchemaPaginator> clazz = PAGINATOR_REGISTRY.get(metaId);
     if (clazz != null) {
@@ -99,8 +101,8 @@ public class ExtensionRegistry {
     URL[] additionalClasspath = new URL[] {};
 
     // paginator always search extension classpath
-    if (DefaultExtensionManager.getDefault().hasStepMetadata(metaId)) {
-      StepMetadata meta = DefaultExtensionManager.getDefault().getStepMetadata(metaId);
+    if (extensionManager != null && extensionManager.hasStepMetadata(metaId)) {
+      StepMetadata meta = extensionManager.getStepMetadata(metaId);
       additionalClasspath = (URL[]) meta.classpath.toArray();
     }
 

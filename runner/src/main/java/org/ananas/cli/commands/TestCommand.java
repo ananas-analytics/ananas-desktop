@@ -11,8 +11,10 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import org.ananas.cli.CommandLineTable;
 import org.ananas.cli.DagRequestBuilder;
+import org.ananas.cli.Helper;
 import org.ananas.cli.commands.extension.ExtensionHelper;
 import org.ananas.runner.core.model.DagRequest;
+import org.ananas.runner.misc.HomeManager;
 import org.ananas.server.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +54,11 @@ public class TestCommand implements Callable {
   private File repo = new File("./extensions");
 
   @Option(
+      names = {"-g", "--global"},
+      description = "Load extensions from global repository")
+  private boolean global = false;
+
+  @Option(
       names = {"-x", "--extension"},
       description = "Extension location, could be absolute path or relative to current directory")
   private List<File> extensions;
@@ -73,7 +80,14 @@ public class TestCommand implements Callable {
   public Integer call() throws Exception {
     parent.handleVerbose();
 
-    if (ExtensionHelper.loadExtensions(repo, extensions) != 0) {
+    if (!Helper.isAnanasProject(project)) {
+      System.out.println("Invalid project path: " + project.getAbsolutePath());
+      return 1;
+    }
+    if (global) {
+      repo = new File(HomeManager.getHomeExtensionPath());
+    }
+    if (ExtensionHelper.initExtensionRepository(repo, extensions) != 0) {
       return 1;
     }
 

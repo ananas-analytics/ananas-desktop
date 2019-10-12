@@ -8,6 +8,7 @@ import org.ananas.runner.core.common.VariableRender;
 import org.ananas.runner.core.errors.AnanasException;
 import org.ananas.runner.core.errors.ExceptionHandler;
 import org.ananas.runner.core.errors.ExceptionHandler.ErrorCode;
+import org.ananas.runner.core.extension.ExtensionManager;
 import org.ananas.runner.core.extension.ExtensionRegistry;
 import org.ananas.runner.core.model.Dataframe;
 import org.ananas.runner.core.model.Step;
@@ -22,50 +23,69 @@ public class PaginatorFactory implements Paginator {
   String type;
   Map<String, Object> config;
   Dataframe dataframe;
+  ExtensionManager extensionManager;
 
-  private PaginatorFactory(String id, PaginationBody body) {
+  private PaginatorFactory(String id, PaginationBody body, ExtensionManager extensionManager) {
     this(
         id,
         body.metadataId,
         body.type,
         VariableRender.renderConfig(body.params, body.config),
-        body.dataframe);
+        body.dataframe,
+        extensionManager);
   }
 
   private PaginatorFactory(
-      String id, String metadataId, String type, Map<String, Object> config, Dataframe dataframe) {
+      String id,
+      String metadataId,
+      String type,
+      Map<String, Object> config,
+      Dataframe dataframe,
+      ExtensionManager extensionManager) {
     this.id = id;
     this.type = type;
     this.metadataId = metadataId;
     this.config = config;
     this.dataframe = dataframe;
+    this.extensionManager = extensionManager;
   }
 
-  public static PaginatorFactory of(String id, PaginationBody body) {
+  public static PaginatorFactory of(
+      String id, PaginationBody body, ExtensionManager extensionManager) {
     Preconditions.checkNotNull(body.config, "config cannot be null");
-    return new PaginatorFactory(id, body);
+    return new PaginatorFactory(id, body, extensionManager);
   }
 
   public static PaginatorFactory of(
-      String id, String metadataId, String type, Map<String, Object> config, Dataframe dataframe) {
+      String id,
+      String metadataId,
+      String type,
+      Map<String, Object> config,
+      Dataframe dataframe,
+      ExtensionManager extensionManager) {
     Preconditions.checkNotNull(config, "config cannot be null");
-    return new PaginatorFactory(id, metadataId, type, config, dataframe);
+    return new PaginatorFactory(id, metadataId, type, config, dataframe, extensionManager);
   }
 
   public static PaginatorFactory of(
-      String id, String metadataId, String type, Map<String, Object> config, Schema schema) {
+      String id,
+      String metadataId,
+      String type,
+      Map<String, Object> config,
+      Schema schema,
+      ExtensionManager extensionManager) {
     Preconditions.checkNotNull(config, "config cannot be null");
     Dataframe dataframe = new Dataframe();
     dataframe.schema = org.ananas.runner.core.schema.Schema.of(schema);
-    return new PaginatorFactory(id, metadataId, type, config, dataframe);
+    return new PaginatorFactory(id, metadataId, type, config, dataframe, extensionManager);
   }
 
   public AutoDetectedSchemaPaginator buildPaginator() {
-    if (!ExtensionRegistry.hasPaginator(this.metadataId)) {
+    if (!ExtensionRegistry.hasPaginator(this.metadataId, extensionManager)) {
       throw new IllegalStateException("Unsupported source type '" + this.metadataId + "'");
     }
     Class<? extends AutoDetectedSchemaPaginator> clazz =
-        ExtensionRegistry.getPaginator(this.metadataId);
+        ExtensionRegistry.getPaginator(this.metadataId, extensionManager);
 
     try {
       Constructor<? extends AutoDetectedSchemaPaginator> ctor =

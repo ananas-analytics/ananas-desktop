@@ -31,11 +31,13 @@ public class DagRequest {
   public Set<String> goals;
   public Engine engine;
   public Map<String, Variable> params;
+  public Map<String, Extension> extensions;
   public TriggerOptions trigger;
 
   public DagRequest() {
     this.params = new HashMap<>();
     this.goals = new HashSet<>();
+    this.extensions = new HashMap<>();
     this.trigger = TriggerOptionsFactory.runOnceNow(); // by default trigger once immediately
   }
 

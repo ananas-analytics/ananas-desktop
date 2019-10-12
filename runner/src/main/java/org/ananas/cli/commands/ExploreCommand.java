@@ -2,19 +2,23 @@ package org.ananas.cli.commands;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import org.ananas.cli.DagRequestBuilder;
 import org.ananas.cli.Helper;
+import org.ananas.cli.commands.extension.ExtensionHelper;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.runner.core.common.JsonUtil;
+import org.ananas.runner.core.extension.ExtensionManager;
 import org.ananas.runner.core.model.Dataframe;
 import org.ananas.runner.core.model.Step;
 import org.ananas.runner.core.model.StepType;
 import org.ananas.runner.core.paginate.PaginationBody;
 import org.ananas.runner.core.paginate.Paginator;
 import org.ananas.runner.core.paginate.PaginatorFactory;
+import org.ananas.runner.misc.HomeManager;
 import org.ananas.server.ApiResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +41,21 @@ public class ExploreCommand implements Callable<Integer> {
   private Map<String, String> params;
 
   @CommandLine.Option(
+      names = {"-r", "--repo"},
+      description = "Extension repository location, by default, ./extensions")
+  private File repo = new File("./extensions");
+
+  @CommandLine.Option(
+      names = {"-g", "--global"},
+      description = "Load extensions from global repository")
+  private boolean global = false;
+
+  @CommandLine.Option(
+      names = {"-x", "--extension"},
+      description = "Extension location, could be absolute path or relative to current directory")
+  private List<File> extensions;
+
+  @CommandLine.Option(
       names = {"-n"},
       description = "The page number",
       defaultValue = "0")
@@ -56,6 +75,19 @@ public class ExploreCommand implements Callable<Integer> {
   @Override
   public Integer call() {
     parent.handleVerbose();
+
+    if (!Helper.isAnanasProject(project)) {
+      System.out.println("Invalid project path: " + project.getAbsolutePath());
+      return 1;
+    }
+    if (global) {
+      repo = new File(HomeManager.getHomeExtensionPath());
+    }
+    ExtensionManager extensionManager =
+        ExtensionHelper.initExtensionManager(project, repo, extensions);
+    if (extensionManager == null) {
+      return 1;
+    }
 
     if (params == null) {
       params = new HashMap<>();
@@ -98,7 +130,7 @@ public class ExploreCommand implements Callable<Integer> {
     DagRequestBuilder.injectRuntimeVariables(paginationBody.params, project.getAbsolutePath());
 
     try {
-      Paginator paginator = PaginatorFactory.of(stepId, paginationBody);
+      Paginator paginator = PaginatorFactory.of(stepId, paginationBody, extensionManager);
       Dataframe dataframe = paginator.paginate(n, size);
       System.out.println(JsonUtil.toJson(ApiResponseBuilder.Of().OK(dataframe).build()));
     } catch (Exception e) {
