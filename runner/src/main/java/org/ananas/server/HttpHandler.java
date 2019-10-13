@@ -166,7 +166,7 @@ class HttpHandler {
             new DefaultDataViewer.DataViewRepository();
         return JsonUtil.toJson(
             ApiResponseBuilder.Of()
-                .OK(repository.query(request.queryParams("sql"), jobid, stepid, null))
+                .OK(repository.query(request.queryParams("sql"), jobid, stepid))
                 .build());
       };
 

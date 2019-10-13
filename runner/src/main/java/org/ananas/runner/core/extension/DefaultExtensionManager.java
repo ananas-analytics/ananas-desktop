@@ -39,6 +39,9 @@ public class DefaultExtensionManager implements ExtensionManager {
 
   @Override
   public void resolve(Map<String, Extension> extensions) {
+    if (extensions == null) {
+      return;
+    }
     extensions
         .entrySet()
         .forEach(
