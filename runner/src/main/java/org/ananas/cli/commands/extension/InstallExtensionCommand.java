@@ -1,7 +1,9 @@
 package org.ananas.cli.commands.extension;
 
+import com.github.zafarkhaja.semver.Version;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,7 @@ import java.util.concurrent.Callable;
 import org.ananas.cli.Helper;
 import org.ananas.runner.core.extension.ExtensionDescriptor;
 import org.ananas.runner.core.extension.ExtensionManifest;
+import org.ananas.runner.core.extension.ExtensionVersions;
 import org.ananas.runner.core.extension.LocalExtensionRepository;
 import org.ananas.runner.core.model.Extension;
 import org.ananas.runner.misc.HomeManager;
@@ -61,16 +64,36 @@ public class InstallExtensionCommand implements Callable<Integer> {
         ExtensionSource source = ExtensionSource.parse(extension);
 
         if (source.resolved) {
-          ExtensionManifest manifest = LocalExtensionRepository.getDefault().publish(source.url);
-          ExtensionDescriptor descriptor =
-              YamlHelper.openYAML(manifest.getDescriptor().openStream(), ExtensionDescriptor.class);
-          System.out.println(
-              "Resolve extension to " + descriptor.name + " version " + descriptor.version);
-
-          Extension ext = new Extension(descriptor.version, source.url.toString(), null);
-          requiredExtensions.put(descriptor.name, ext);
+          installZip(source.url, requiredExtensions);
         } else {
+          ExtensionVersions versions =
+              YamlHelper.openYAML(source.url.openStream(), ExtensionVersions.class);
+          if (versions.versions == null || versions.versions.size() == 0) {
+            throw new IOException("No available version found for extension " + source.url);
+          }
+          String ananasVersion =
+              InstallExtensionCommand.class.getPackage().getImplementationVersion();
+          if (ananasVersion == null) {
+            ananasVersion = "0.10.0";
+          }
+          Version aVersion = Version.valueOf(ananasVersion);
 
+          ExtensionVersions.sortVersions(versions.versions);
+
+          if (source.version.equals("latest")) {
+            installZip(new URL(versions.versions.get(0).url), requiredExtensions);
+          } else {
+            boolean found = false;
+            for (ExtensionDescriptor descriptor : versions.versions) {
+              if (Version.valueOf(descriptor.version).satisfies(source.version)) {
+                installZip(new URL(descriptor.url), requiredExtensions);
+                found = true;
+                break;
+              }
+            }
+            if (!found)
+              throw new IOException("No version matches: " + source.url + "@" + source.version);
+          }
         }
         success++;
       } catch (IOException e) {
@@ -93,5 +116,15 @@ public class InstallExtensionCommand implements Callable<Integer> {
             + fail
             + " Fail.");
     return 0;
+  }
+
+  public void installZip(URL url, Map<String, Extension> requiredExtensions) throws IOException {
+    ExtensionManifest manifest = LocalExtensionRepository.getDefault().publish(url);
+    ExtensionDescriptor descriptor =
+        YamlHelper.openYAML(manifest.getDescriptor().openStream(), ExtensionDescriptor.class);
+    System.out.println(
+        "Resolve extension to " + descriptor.name + " version " + descriptor.version);
+    Extension ext = new Extension(descriptor.version, url.toString(), null);
+    requiredExtensions.put(descriptor.name, ext);
   }
 }

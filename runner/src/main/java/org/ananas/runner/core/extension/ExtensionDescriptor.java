@@ -9,4 +9,5 @@ public class ExtensionDescriptor {
   public String minAnanasVersion;
   public String author;
   public String url;
+  public String sha1;
 }
