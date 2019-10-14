@@ -1,6 +1,7 @@
 package org.ananas.cli.commands;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,9 @@ import org.ananas.cli.Helper;
 import org.ananas.cli.commands.extension.ExtensionHelper;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.runner.core.common.JsonUtil;
+import org.ananas.runner.core.extension.DefaultExtensionManager;
 import org.ananas.runner.core.extension.ExtensionManager;
+import org.ananas.runner.core.extension.LocalExtensionRepository;
 import org.ananas.runner.core.model.Dataframe;
 import org.ananas.runner.core.model.Step;
 import org.ananas.runner.core.model.StepType;
@@ -83,9 +86,7 @@ public class ExploreCommand implements Callable<Integer> {
     if (global) {
       repo = new File(HomeManager.getHomeExtensionPath());
     }
-    ExtensionManager extensionManager =
-        ExtensionHelper.initExtensionManager(project, repo, extensions);
-    if (extensionManager == null) {
+    if (ExtensionHelper.initExtensionRepository(repo, extensions) != 0) {
       return 1;
     }
 
@@ -118,6 +119,13 @@ public class ExploreCommand implements Callable<Integer> {
     paginationBody.params =
         analyticsBoard.variables.stream().collect(Collectors.toMap(v -> v.name, v -> v));
 
+    try {
+      paginationBody.extensions =
+          ExtensionHelper.openExtensionList(new File(project, "extension.yml").getAbsolutePath());
+    } catch (IOException e) {
+      paginationBody.extensions = new HashMap<>();
+    }
+
     params
         .keySet()
         .forEach(
@@ -130,6 +138,9 @@ public class ExploreCommand implements Callable<Integer> {
     DagRequestBuilder.injectRuntimeVariables(paginationBody.params, project.getAbsolutePath());
 
     try {
+      ExtensionManager extensionManager =
+          new DefaultExtensionManager(LocalExtensionRepository.getDefault());
+      extensionManager.resolve(paginationBody.extensions);
       Paginator paginator = PaginatorFactory.of(stepId, paginationBody, extensionManager);
       Dataframe dataframe = paginator.paginate(n, size);
       System.out.println(JsonUtil.toJson(ApiResponseBuilder.Of().OK(dataframe).build()));

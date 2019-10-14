@@ -3,6 +3,7 @@ package org.ananas.cli.commands.extension;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
 
 public class ExtensionSource {
   public URL url;
@@ -31,30 +32,31 @@ public class ExtensionSource {
   private static ExtensionSource parseURL(String path, String version)
       throws MalformedURLException {
     ExtensionSource source = new ExtensionSource();
-
-    if (path.endsWith(".zip")) {
-      source.resolved = true;
-    } else {
-      source.resolved = false;
-    }
-
-    // handle relative path
-    if (path.startsWith(".")) {
-      path = "file:" + new File(path).getAbsolutePath();
-    }
-
-    if (path.startsWith("http:") || path.startsWith("file:")) {
-      source.url = new URL(path);
-    } else {
-      // TODO: resolve the url from the extension name
-      throw new MalformedURLException(
-          "Invalid extension location: "
-              + path
-              + "@"
-              + version
-              + ". Please note that resolving extension name to its url is not supported yet, use extension url instead.");
-    }
     source.version = version == null ? "latest" : version;
+    source.resolved = false;
+
+    if (path.startsWith("http:") || path.startsWith("https:")) {
+      source.url = new URL(path);
+      if (path.endsWith(".zip")) {
+        source.resolved = true;
+      }
+    } else {
+      // check if path points to a file
+      if (path.contains("\\") || path.contains("/")) {
+        File f = new File(path);
+        source.url = Paths.get(f.toURI()).normalize().toUri().toURL();
+        if (f.getAbsolutePath().endsWith(".zip")) {
+          source.resolved = true;
+        }
+      } else {
+        throw new MalformedURLException(
+            "Invalid extension location: "
+                + path
+                + "@"
+                + version
+                + ". Please note that resolving extension name to its url is not supported yet, use extension url instead.");
+      }
+    }
 
     return source;
   }

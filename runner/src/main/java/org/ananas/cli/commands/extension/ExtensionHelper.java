@@ -1,6 +1,10 @@
 package org.ananas.cli.commands.extension;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -11,9 +15,9 @@ import org.ananas.runner.core.extension.DefaultExtensionManager;
 import org.ananas.runner.core.extension.ExtensionManager;
 import org.ananas.runner.core.extension.LocalExtensionRepository;
 import org.ananas.runner.core.model.Extension;
-import org.ananas.runner.misc.YamlHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.utils.IOUtils;
 
 public class ExtensionHelper {
   private static final Logger LOG = LoggerFactory.getLogger(ExtensionHelper.class);
@@ -53,10 +57,22 @@ public class ExtensionHelper {
   }
 
   public static Map<String, Extension> getRequiredExtensions(File project) {
+    File extensionFile = Paths.get(project.getAbsolutePath(), "extension.yml").toFile();
+    Map<String, Extension> extensions = new HashMap<>();
+    if (extensionFile.exists()) {
+      try {
+        return ExtensionHelper.openExtensionList(extensionFile.getAbsolutePath());
+      } catch (IOException e) {
+        LOG.error("Failed to parse extension file: " + e.getLocalizedMessage());
+      }
+    }
+    return extensions;
+
+    /*
     // parse extension.yml
     File extensionFile = Paths.get(project.getAbsolutePath(), "extension.yml").toFile();
+    Map<String, Extension> extensions = new HashMap<>();
     if (extensionFile.exists()) {
-      Map<String, Extension> extensions = null;
       try {
         extensions = YamlHelper.openMapYAML(extensionFile.getAbsolutePath(), Extension.class);
         return extensions;
@@ -64,7 +80,8 @@ public class ExtensionHelper {
         LOG.error("Failed to parse extension file: " + e.getLocalizedMessage());
       }
     }
-    return new HashMap<>();
+    return extensions;
+     */
   }
 
   public static ExtensionManager initExtensionManagerWithLocalRepository(File project) {
@@ -73,5 +90,14 @@ public class ExtensionHelper {
         new DefaultExtensionManager(LocalExtensionRepository.getDefault());
     extensionManager.resolve(requiredExtensions);
     return extensionManager;
+  }
+
+  public static Map<String, Extension> openExtensionList(String path) throws IOException {
+    FileInputStream in = new FileInputStream(path);
+    String yaml = IOUtils.toString(in);
+    TypeReference<HashMap<String, Extension>> typeRef =
+        new TypeReference<HashMap<String, Extension>>() {};
+    ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
+    return yamlReader.readValue(yaml, typeRef);
   }
 }

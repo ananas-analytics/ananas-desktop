@@ -12,10 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.ananas.cli.commands.extension.ExtensionHelper;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.cli.model.Profile;
 import org.ananas.runner.core.model.*;
-import org.ananas.runner.misc.YamlHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,11 +77,11 @@ public class DagRequestBuilder {
     }
 
     // parse extension.yml
-    File extensionFile = Paths.get(project.getAbsolutePath(), "extention.yml").toFile();
+    File extensionFile = Paths.get(project.getAbsolutePath(), "extension.yml").toFile();
     Map<String, Extension> extensions = new HashMap<>();
     if (extensionFile.exists()) {
       try {
-        extensions = YamlHelper.openMapYAML(extensionFile.getAbsolutePath(), Extension.class);
+        extensions = ExtensionHelper.openExtensionList(extensionFile.getAbsolutePath());
       } catch (IOException e) {
         LOG.error("Failed to parse extension file: " + e.getLocalizedMessage());
       }

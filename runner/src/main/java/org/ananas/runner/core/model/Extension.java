@@ -8,6 +8,8 @@ public class Extension {
   public String resolved;
   public String checksum;
 
+  public Extension() {}
+
   public Extension(String version, String resolved, String checksum) {
     this.version = version;
     this.resolved = resolved;

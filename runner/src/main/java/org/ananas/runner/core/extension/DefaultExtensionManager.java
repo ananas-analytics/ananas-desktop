@@ -51,7 +51,7 @@ public class DefaultExtensionManager implements ExtensionManager {
               if (manifest == null) {
                 throw new AnanasException(
                     ExceptionHandler.ErrorCode.EXTENSION,
-                    "Can't resolve extension" + entry.getKey());
+                    "Can't resolve extension: " + entry.getKey());
               }
               try {
                 // FIXME: now we can suppose the URI is a file path
