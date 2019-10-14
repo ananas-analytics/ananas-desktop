@@ -11,5 +11,8 @@ engine:
     sparkMaster: spark://${SPARK_MASTER_HOST}:7077
     streaming: "false"
     tempLocation: /tmp/
+    # run ./build-cli.sh first
+    # then uncomment following line to test in local machine
+    # filesToStage: "[project-path]/cli/ananas-cli-latest.jar"
   scope: workspace
   type: Spark
