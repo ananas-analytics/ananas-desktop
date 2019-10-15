@@ -46,15 +46,20 @@ public class DefaultExtensionManager implements ExtensionManager {
         .entrySet()
         .forEach(
             entry -> {
+              Extension extension = entry.getValue();
               ExtensionManifest manifest =
-                  this.repository.getExtension(entry.getKey(), entry.getValue().version);
-              if (manifest == null) {
-                throw new AnanasException(
-                    ExceptionHandler.ErrorCode.EXTENSION,
-                    "Can't resolve extension: " + entry.getKey());
-              }
+                  this.repository.getExtension(entry.getKey(), extension.version);
               try {
-                // FIXME: now we can suppose the URI is a file path
+                if (manifest == null) {
+                  // install the extension with its resolve URL
+                  this.repository.publish(new URL(extension.resolved));
+                  manifest = this.repository.getExtension(entry.getKey(), extension.version);
+                  if (manifest == null) {
+                    throw new AnanasException(
+                        ExceptionHandler.ErrorCode.EXTENSION,
+                        "Can't resolve extension: " + entry.getKey());
+                  }
+                }
                 loadExtension(manifest.getUri().toURL().getPath());
               } catch (Exception e) {
                 LOG.error(

@@ -67,21 +67,6 @@ public class ExtensionHelper {
       }
     }
     return extensions;
-
-    /*
-    // parse extension.yml
-    File extensionFile = Paths.get(project.getAbsolutePath(), "extension.yml").toFile();
-    Map<String, Extension> extensions = new HashMap<>();
-    if (extensionFile.exists()) {
-      try {
-        extensions = YamlHelper.openMapYAML(extensionFile.getAbsolutePath(), Extension.class);
-        return extensions;
-      } catch (IOException e) {
-        LOG.error("Failed to parse extension file: " + e.getLocalizedMessage());
-      }
-    }
-    return extensions;
-     */
   }
 
   public static ExtensionManager initExtensionManagerWithLocalRepository(File project) {
