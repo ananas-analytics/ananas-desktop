@@ -6,6 +6,9 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN apt-get update -qq && apt-get install -qq --no-install-recommends \
   nodejs \
   yarn \
+  bats \
+  jq \
+  git \
   && rm -rf /var/lib/apt/lists/*
 
 ## Add the wait script to the image
@@ -16,6 +19,7 @@ WORKDIR /ananas-desktop
 
 COPY . .
 
+RUN git clone https://github.com/ananas-analytics/ananas-examples
 RUN cd ui && yarn install
 
 # this command will be overrided in docker-compose
