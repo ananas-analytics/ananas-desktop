@@ -80,7 +80,7 @@ public class ExploreCommand implements Callable<Integer> {
     parent.handleVerbose();
 
     if (!Helper.isAnanasProject(project)) {
-      System.out.println("Invalid project path: " + project.getAbsolutePath());
+      System.out.println("Invalid project: " + project.getAbsolutePath());
       return 1;
     }
     if (global) {

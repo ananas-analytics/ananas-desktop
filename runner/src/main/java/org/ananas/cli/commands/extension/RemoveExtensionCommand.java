@@ -35,17 +35,17 @@ public class RemoveExtensionCommand implements Callable<Integer> {
 
   @Override
   public Integer call() throws Exception {
+    boolean isAnanasProject = Helper.isAnanasProject(project);
+    if (!isAnanasProject && !global) {
+      System.err.println(
+          "Current directory is not a valid Ananas Project. Please use -p to specify Ananas Project, or use -g to install the extension in the global repository.");
+      return 1;
+    }
+
     if (global) {
       repo = new File(HomeManager.getHomeExtensionPath());
     }
     if (ExtensionHelper.initExtensionRepository(repo, Collections.emptyList()) != 0) {
-      return 1;
-    }
-    boolean isAnanasProject = Helper.isAnanasProject(project);
-
-    if (!isAnanasProject && !global) {
-      System.err.println(
-          "Current directory is not a valid Ananas Project. Please use -p to specify Ananas Project, or use -g to install the extension in the global repository.");
       return 1;
     }
 

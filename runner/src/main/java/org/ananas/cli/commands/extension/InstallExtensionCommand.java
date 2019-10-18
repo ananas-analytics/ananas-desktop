@@ -41,18 +41,17 @@ public class InstallExtensionCommand implements Callable<Integer> {
 
   @Override
   public Integer call() throws Exception {
-    if (global) {
-      repo = new File(HomeManager.getHomeExtensionPath());
-    }
-    ExtensionHelper.initExtensionRepository(repo, Collections.emptyList());
-
     boolean isAnanasProject = Helper.isAnanasProject(project);
-
     if (!isAnanasProject && !global) {
       System.err.println(
           "Current directory is not a valid Ananas Project. Please use -p to specify Ananas Project, or use -g to install the extension in the global repository.");
       return 1;
     }
+
+    if (global) {
+      repo = new File(HomeManager.getHomeExtensionPath());
+    }
+    ExtensionHelper.initExtensionRepository(repo, Collections.emptyList());
 
     Map<String, Extension> requiredExtensions = ExtensionHelper.getRequiredExtensions(project);
 
