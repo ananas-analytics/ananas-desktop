@@ -32,20 +32,23 @@ services:
     #build:
     #  context: ./test/spark
     #  dockerfile: spark-master.Dockerfile
-    image: ananasanalytics/ananas-ci-spark-master:1.0.0
+    image: ananasanalytics/ananas-ci-spark:1.0.0
     container_name: spark-master
     hostname: spark-master
+    command: [ 'sh', '-c', "/start-master.sh" ]
     ports:
       - "8080:8080"
       - "7077:7077"
     environment:
       - "SPARK_LOCAL_IP=spark-master"
   spark-worker-1:
-    build:
-      context: ./test/spark
-      dockerfile: spark-wroker.Dockerfile
+    #build:
+    #  context: ./test/spark
+    #  dockerfile: spark-wroker.Dockerfile
+    image: ananasanalytics/ananas-ci-spark:1.0.0
     container_name: spark-worker-1
     hostname: spark-worker-1
+    command: [ 'sh', '-c', "/start-worker.sh" ]
     depends_on:
       - spark-master
     ports:
