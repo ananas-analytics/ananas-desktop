@@ -9,4 +9,4 @@ if [ "$#" -lt 4 ]; then
 	exit 1	
 fi
 
-ANANAS_JAR=$1 EXAMPLE_HOME=$2 DEBUG_OUTPUT=$3 $4
+ANANAS_JAR=$1 EXAMPLE_HOME=$2 DEBUG_OUTPUT=$3 bats $4

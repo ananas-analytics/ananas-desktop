@@ -170,7 +170,7 @@ public class LocalExtensionRepository implements ExtensionRepository {
     try {
       File ext = new File(manifest.getUri().toURL().getFile());
       if (ext.exists()) {
-        ext.delete();
+        FileUtils.deleteDirectory(ext);
       }
     } catch (MalformedURLException e) {
       LOG.warn("Failed to delete the extension from disk: " + e.getLocalizedMessage());
