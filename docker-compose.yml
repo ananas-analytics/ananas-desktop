@@ -5,7 +5,7 @@ services:
     env_file:
       - ./test/test.env
     command: [ 'sh', '-c',
-               '/wait && ./build-cli.sh && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties --console plain && ./test/bats/run.sh /ananas-desktop/cli/ananas-cli-latest.jar /ananas-desktop/ananas-examples /ananas-desktop/bats-test.log /ananas-desktop/test/bats/*.bats',  ]
+               '/wait && ./test.sh' ]
     depends_on:
       - mysql
       - postgres
@@ -15,6 +15,8 @@ services:
       - flink-slave
     environment:
       WAIT_HOSTS: mysql:3306, postgres:5432, spark-master:8080, spark-worker-1:8081
+      ANANAS_DIR: /ananas-desktop
+      TEST_PROPERTIES: test.docker.properties
   mysql:
     image: mysql:5.7
     env_file:
