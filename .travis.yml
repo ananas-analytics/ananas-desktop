@@ -7,14 +7,13 @@ matrix:
         - openjdk8
         - openjdk11
       script:
-        - ./gradlew :runner:verGJF
-        # test is done in docker
-        # - travis_wait ./gradlew :runner:test
+        - docker-compose run --rm test
+
       services:
         - docker
       before_install:
+        - ./gradlew :runner:verGJF
         - docker-compose build
-        - docker-compose run --rm test
 
     - language: node_js
       node_js:
