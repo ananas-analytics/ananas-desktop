@@ -5,7 +5,7 @@ services:
     env_file:
       - ./test/test.env
     command: [ 'sh', '-c',
-               '/wait && ./build-cli.sh && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties --console plain && ./test/bats/run.sh ./cli/ananas-cli-latest.jar ./ananas-examples ./bats-test.log ./test/bats/*.bats',  ]
+               '/wait && ./build-cli.sh && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties --console plain && ./test/bats/run.sh /ananas-desktop/cli/ananas-cli-latest.jar /ananas-desktop/ananas-examples /ananas-desktop/bats-test.log /ananas-desktop/test/bats/*.bats',  ]
     depends_on:
       - mysql
       - postgres
