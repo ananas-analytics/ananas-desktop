@@ -29,9 +29,10 @@ services:
       - ./test/postgres:/docker-entrypoint-initdb.d/:ro
 
   spark-master:
-    build:
-      context: ./test/spark
-      dockerfile: spark-master.Dockerfile
+    #build:
+    #  context: ./test/spark
+    #  dockerfile: spark-master.Dockerfile
+    image: ananasanalytics/ananas-ci-spark-master:1.0.0
     container_name: spark-master
     hostname: spark-master
     ports:
