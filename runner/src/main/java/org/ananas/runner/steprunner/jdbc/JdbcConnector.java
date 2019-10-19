@@ -3,12 +3,12 @@ package org.ananas.runner.steprunner.jdbc;
 import static org.apache.beam.sdk.values.Row.toRow;
 
 import java.util.stream.IntStream;
-import org.ananas.runner.kernel.ConnectorStepRunner;
-import org.ananas.runner.kernel.common.Sampler;
-import org.ananas.runner.kernel.errors.ErrorHandler;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.core.ConnectorStepRunner;
+import org.ananas.runner.core.common.Sampler;
+import org.ananas.runner.core.errors.ErrorHandler;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
@@ -31,13 +31,15 @@ public class JdbcConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     config = new JdbcStepConfig(this.step.config);
 
     Schema stepSchema = step.getBeamSchema();
     if (stepSchema == null || step.forceAutoDetectSchema()) {
       AutoDetectedSchemaPaginator paginator =
-          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, stepSchema)
+          PaginatorFactory.of(
+                  stepId, step.metadataId, step.type, step.config, stepSchema, extensionManager)
               .buildPaginator();
       // find the paginator bind to it
       stepSchema = paginator.getSchema();

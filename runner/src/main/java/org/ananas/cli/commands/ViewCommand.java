@@ -1,19 +1,20 @@
 package org.ananas.cli.commands;
 
-import static org.ananas.cli.YamlHelper.openYAML;
+import static org.ananas.runner.misc.YamlHelper.openYAML;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
-import org.ananas.cli.YamlHelper;
+import org.ananas.cli.Helper;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.cli.model.Profile;
-import org.ananas.runner.api.ApiResponseBuilder;
-import org.ananas.runner.kernel.common.JsonUtil;
-import org.ananas.runner.kernel.model.Engine;
+import org.ananas.runner.core.common.JsonUtil;
+import org.ananas.runner.core.model.Engine;
+import org.ananas.runner.misc.YamlHelper;
 import org.ananas.runner.steprunner.DefaultDataViewer;
+import org.ananas.server.ApiResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -26,12 +27,11 @@ public class ViewCommand implements Callable<Integer> {
 
   @CommandLine.Option(
       names = {"-p", "--project"},
-      description = "Ananas analytics project path",
-      required = true)
-  private File project;
+      description = "Ananas analytics project path, default: current directory")
+  private File project = new File(".");
 
   @CommandLine.Option(
-      names = {"-e", "--profile"},
+      names = {"-f", "--profile"},
       description =
           "Profile yaml file, includes execution engine, and parameters (optional). By default, local Flink engine, no parameter")
   private File profile;
@@ -51,6 +51,11 @@ public class ViewCommand implements Callable<Integer> {
   @Override
   public Integer call() {
     parent.handleVerbose();
+
+    if (!Helper.isAnanasProject(project)) {
+      System.out.println("Invalid project: " + project.getAbsolutePath());
+      return 1;
+    }
 
     AnalyticsBoard analyticsBoard = null;
     File ananas = Paths.get(project.getAbsolutePath(), "ananas.yml").toFile();

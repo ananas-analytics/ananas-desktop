@@ -4,11 +4,11 @@ import avro.shaded.com.google.common.base.Preconditions;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
-import org.ananas.runner.kernel.LoaderStepRunner;
-import org.ananas.runner.kernel.StepRunner;
-import org.ananas.runner.kernel.common.DataReader;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.legacy.steps.commons.NullDataReader;
+import org.ananas.runner.core.LoaderStepRunner;
+import org.ananas.runner.core.StepRunner;
+import org.ananas.runner.core.common.DataReader;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.misc.NullDataReader;
 import org.apache.beam.sdk.io.jdbc.JdbcIO;
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.schemas.Schema.Field;
@@ -41,6 +41,7 @@ public class JdbcLoader extends LoaderStepRunner {
     // NO OPER
   }
 
+  @Override
   public void build() {
     JdbcStepConfig jdbcConfig = new JdbcStepConfig(step.config);
     String tablename = (String) step.config.get(JdbcStepConfig.JDBC_TABLENAME);

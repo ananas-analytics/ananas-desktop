@@ -2,14 +2,14 @@ package org.ananas.runner.steprunner;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.ananas.runner.kernel.DataViewerStepRunner;
-import org.ananas.runner.kernel.StepRunner;
-import org.ananas.runner.kernel.job.Job;
-import org.ananas.runner.kernel.job.JobRepositoryFactory;
-import org.ananas.runner.kernel.model.*;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.steprunner.files.utils.HomeManager;
+import org.ananas.runner.core.DataViewerStepRunner;
+import org.ananas.runner.core.StepRunner;
+import org.ananas.runner.core.job.Job;
+import org.ananas.runner.core.job.JobRepositoryFactory;
+import org.ananas.runner.core.model.*;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
+import org.ananas.runner.misc.HomeManager;
 import org.ananas.runner.steprunner.jdbc.JDBCDriver;
 import org.ananas.runner.steprunner.jdbc.JdbcLoader;
 import org.ananas.runner.steprunner.jdbc.JdbcStepConfig;
@@ -24,6 +24,7 @@ public class DefaultDataViewer extends DataViewerStepRunner {
     super(step, previous, engine, jobId, isTest);
   }
 
+  @Override
   public void build() {
     // DefaultDataViewer is actually a wrapper of SQLTransformer in test mode and a jdbcLoader in
     // run mode
@@ -106,7 +107,8 @@ public class DefaultDataViewer extends DataViewerStepRunner {
                   "org.ananas.destination.jdbc.mysql",
                   StepType.Connector.name(),
                   config,
-                  (Dataframe) null)
+                  (Dataframe) null,
+                  null)
               .buildPaginator();
       Dataframe dataframe = paginator.paginate(0, Integer.MAX_VALUE);
       return dataframe;

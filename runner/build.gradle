@@ -16,7 +16,7 @@ plugins {
     id 'idea'
 
 	id 'com.github.johnrengelman.shadow' version '5.0.0'
-    id "com.github.sherter.google-java-format" version "0.8"
+    id 'com.github.sherter.google-java-format' version '0.8'
 }
 
 repositories {
@@ -25,64 +25,94 @@ repositories {
     jcenter()
 }
 
-dependencies {
-    def withoutX = { exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core:2.9.5' }
+configurations {
+    core {
+        canBeResolved = false
+        canBeConsumed = true
+    }
 
-    compile 'com.jayway.jsonpath:json-path:2.4.0'
-	compile 'org.freemarker:freemarker:2.3.28'
-    compile 'org.apache.beam:beam-sdks-java-io-tika:2.13.0'
-    compile 'org.apache.beam:beam-sdks-java-io-kafka:2.13.0'
-    compile 'org.apache.beam:beam-sdks-java-core:2.13.0'
-    compile 'org.apache.beam:beam-runners-spark:2.13.0'
-    compile 'org.apache.beam:beam-runners-google-cloud-dataflow-java:2.13.0'
-    compile 'org.apache.beam:beam-runners-flink_2.11:2.13.0'
-    compile 'org.apache.beam:beam-sdks-java-extensions-sql:2.13.0'
-    compile 'org.apache.beam:beam-sdks-java-io-mongodb:2.13.0'
-    compile 'org.apache.beam:beam-sdks-java-io-jdbc:2.13.0'
-    compile 'org.apache.derby:derby:10.14.2.0'
-    compile 'org.apache.maven:maven-model:3.3.9'
-    compile 'org.apache.poi:poi:3.17'
-    compile 'org.apache.poi:poi-ooxml:3.17'
-    compile 'org.apache.spark:spark-core_2.11:2.4.3'
-    compile 'org.apache.spark:spark-streaming_2.11:2.4.3'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5'
-    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5', withoutX
-    compile 'com.github.haifengl:smile-core:1.5.2'
-    compile 'com.github.wnameless:json-flattener:0.5.0'
-    compile 'com.google.guava:guava:27.0.1-jre'
-    compile 'com.google.cloud:google-cloud-storage:1.79.0'
-    compile 'com.google.cloud:google-cloud-bigquery:1.79.0'
-    compile 'com.thoughtworks.xstream:xstream:1.4.11'
-    compile 'com.sparkjava:spark-core:2.9.1'
-    compile 'commons-io:commons-io:2.6'
-    compile 'commons-cli:commons-cli:1.4'
-    compile 'ch.qos.logback:logback-classic:1.1.7'
-    compile 'mysql:mysql-connector-java:8.0.13'
-    compile 'joda-time:joda-time:2.4'
-    compile 'org.jooq:jooq:3.11.9'
-    compile 'org.postgresql:postgresql:42.2.5'
-    compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'org.quartz-scheduler:quartz:2.3.0'
-    compile 'info.picocli:picocli:4.0.1'
+    apiElements.extendsFrom(core) // expose all core package to consumer
 
-    runtime 'org.apache.tika:tika-parsers:1.18'
-    runtime 'org.slf4j:slf4j-jdk14:1.7.25'
+    implementation.extendsFrom(core, flink, extension)
 
-    testCompile 'org.slf4j:slf4j-simple:1.7.22'
-    testCompile 'org.hamcrest:hamcrest-core:1.3'
-    testCompile 'org.hamcrest:hamcrest-library:1.3'
-    testCompile 'org.mockito:mockito-core:1.9.5'
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.github.stefanbirkner:system-rules:1.19.0'
+    coreWithFlink.extendsFrom(core, flink)
 
-    compileOnly 'org.projectlombok:lombok:1.16.2'
-    compileOnly 'com.google.auto.value:auto-value:1.2'
+    extensionWithCore.extendsFrom(implementation, extension)
 
-    compile "com.google.auto.value:auto-value-annotations:1.6.2"
-    annotationProcessor "com.google.auto.value:auto-value:1.6.2"
+    sparkWithCore.extendsFrom(implementation, spark)
+    flinkWithCore.extendsFrom(implementation, flink)
+    dataflowWithCore.extendsFrom(implementation, dataflow)
+
+    compileOnly.extendsFrom(spark, dataflow)
+
+    // junit test requires all components in classpath
+    testCompile.extendsFrom(flink, spark, dataflow, extension)
 }
 
+dependencies {
+    def without_jackson_core = { exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core:2.9.5' }
+    def without_slf4j_log4j12 = { exclude group: 'org.slf4j', module: 'slf4j-log4j12' }
 
+    // common
+    core 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5'
+    core 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5', without_jackson_core
+    core 'com.github.wnameless:json-flattener:0.5.0'
+    core 'com.jayway.jsonpath:json-path:2.4.0'
+    core 'joda-time:joda-time:2.10'
+    core 'org.freemarker:freemarker:2.3.28'
+    core 'ch.qos.logback:logback-classic:1.1.7'
+    core 'commons-io:commons-io:2.6'
+    core 'com.github.zafarkhaja:java-semver:0.9.0'
+
+    // server interface
+    core 'com.sparkjava:spark-core:2.9.1'
+
+    // cli interface
+    core 'info.picocli:picocli:4.0.1'
+
+    // beam
+    core 'org.apache.beam:beam-sdks-java-core:2.13.0'
+    core 'org.apache.beam:beam-sdks-java-extensions-sql:2.13.0'
+
+    // beam runner
+    core 'org.apache.beam:beam-runners-flink_2.11:2.13.0'
+    core 'org.apache.beam:beam-runners-spark:2.13.0'
+    core 'org.apache.beam:beam-runners-google-cloud-dataflow-java:2.13.0'
+
+    // steps - beam libs for steps
+    extension 'org.apache.beam:beam-sdks-java-io-jdbc:2.13.0' // for integrated jdbc steps
+    extension 'org.apache.beam:beam-sdks-java-io-mongodb:2.13.0'
+
+    // steps - database
+    extension 'org.jooq:jooq:3.11.9'
+    extension 'org.apache.derby:derby:10.14.2.0'
+    extension 'mysql:mysql-connector-java:8.0.13'
+    extension 'org.postgresql:postgresql:42.2.5'
+
+    // steps - excel
+    extension 'org.apache.poi:poi:3.17'
+    extension 'org.apache.poi:poi-ooxml:3.17'
+
+    // steps - google cloud
+    extension 'com.google.cloud:google-cloud-storage:1.79.0'
+    extension 'com.google.cloud:google-cloud-bigquery:1.79.0'
+
+    // engines
+    // engine - spark - required only for standalone cluster
+    spark 'org.apache.spark:spark-core_2.11:2.4.3', without_slf4j_log4j12
+    spark 'org.apache.spark:spark-streaming_2.11:2.4.3', without_slf4j_log4j12
+
+    // others
+    // runtimeOnly 'org.slf4j:slf4j-jdk14:1.7.25'
+    compileOnly 'org.projectlombok:lombok:1.16.2'
+
+    annotationProcessor "com.google.auto.value:auto-value:1.6.2"
+
+    // test
+    // testCompile 'org.slf4j:slf4j-simple:1.7.22'
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.github.stefanbirkner:system-rules:1.19.0'
+}
 
 group = 'org.ananas'
 sourceCompatibility = '1.8'
@@ -96,10 +126,15 @@ publishing {
     }
 }
 
-mainClassName = 'org.ananas.runner.api.Main'
+mainClassName = 'org.ananas.server.Main'
 
 if (getSystemProperty('target', 'runner') == 'cli') {
     mainClassName = 'org.ananas.cli.Main'
+}
+
+task copyRuntimeLibs(type: Copy) {
+    into "lib"
+    from configurations.spark - configurations.runtime
 }
 
 shadowJar {
@@ -119,8 +154,53 @@ shadowJar {
 	}
 }
 
+task extensionJar(type: ShadowJar) {
+    zip64 true
+    archiveName "ananas-ext-${project.version}.jar"
+
+    exclude 'META-INF/LICENSE'
+    exclude 'LICENSE'
+
+    mergeServiceFiles {
+        include 'reference.conf'
+    }
+
+    manifest {
+        attributes 'Implementation-Title': 'Ananas Analytics Core Extensions', 'Implementation-Version': "$project.version"
+    }
+
+    from {
+        (project.configurations.extensionWithCore - project.configurations.coreWithFlink).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+project.ext.engine = getSystemProperty('engine', 'flink') 
+task engineJar(type: ShadowJar) {
+    zip64 true
+    archiveName "ananas-${engine}-${project.version}.jar"
+
+    exclude 'META-INF/LICENSE'
+    exclude 'LICENSE'
+
+    mergeServiceFiles {
+        include 'reference.conf'
+    }
+
+    manifest {
+        attributes 'Implementation-Title': 'Ananas Analytics ${engine} Engine Driver', 'Implementation-Version': "$project.version"
+    }
+
+    from {
+        (project.configurations.getByName("${engine}WithCore") - project.configurations.runtimeClasspath).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
 googleJavaFormat {
-  toolVersion = '1.7'
+    toolVersion = '1.7'
 }
 
 compileJava {
@@ -128,9 +208,9 @@ compileJava {
 }
 
 test {
-    //we want display the following test events
+    //we want to display the following test events
     testLogging {
-        // events "PASSED", "STARTED", "FAILED", "SKIPPED"
+        // events "PASSED", "STARTED", "FAILED", "mKIPPED"
         showStandardStreams = true
     }
 

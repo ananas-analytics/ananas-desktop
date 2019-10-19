@@ -1,23 +1,28 @@
 package org.ananas.cli.commands;
 
 import java.io.File;
-import java.nio.file.Paths;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import org.ananas.cli.DagRequestBuilder;
-import org.ananas.cli.YamlHelper;
+import org.ananas.cli.Helper;
+import org.ananas.cli.commands.extension.ExtensionHelper;
 import org.ananas.cli.model.AnalyticsBoard;
-import org.ananas.runner.api.ApiResponseBuilder;
-import org.ananas.runner.kernel.common.JsonUtil;
-import org.ananas.runner.kernel.model.Dataframe;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.kernel.paginate.PaginationBody;
-import org.ananas.runner.kernel.paginate.Paginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.core.common.JsonUtil;
+import org.ananas.runner.core.extension.DefaultExtensionManager;
+import org.ananas.runner.core.extension.ExtensionManager;
+import org.ananas.runner.core.extension.LocalExtensionRepository;
+import org.ananas.runner.core.model.Dataframe;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.core.model.StepType;
+import org.ananas.runner.core.paginate.PaginationBody;
+import org.ananas.runner.core.paginate.Paginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
+import org.ananas.runner.misc.HomeManager;
+import org.ananas.server.ApiResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -30,14 +35,28 @@ public class ExploreCommand implements Callable<Integer> {
 
   @CommandLine.Option(
       names = {"-p", "--project"},
-      description = "Ananas analytics project path",
-      required = true)
-  private File project;
+      description = "Ananas analytics project path, default: current directory")
+  private File project = new File(".");
 
   @CommandLine.Option(
       names = {"-m", "--param"},
       description = "Parameter values, the parameter must be defined in ananas file")
   private Map<String, String> params;
+
+  @CommandLine.Option(
+      names = {"-r", "--repo"},
+      description = "Extension repository location, by default, ./extensions")
+  private File repo = new File("./extensions");
+
+  @CommandLine.Option(
+      names = {"-g", "--global"},
+      description = "Load extensions from global repository")
+  private boolean global = false;
+
+  @CommandLine.Option(
+      names = {"-x", "--extension"},
+      description = "Extension location, could be absolute path or relative to current directory")
+  private List<File> extensions;
 
   @CommandLine.Option(
       names = {"-n"},
@@ -60,24 +79,23 @@ public class ExploreCommand implements Callable<Integer> {
   public Integer call() {
     parent.handleVerbose();
 
+    if (!Helper.isAnanasProject(project)) {
+      System.out.println("Invalid project: " + project.getAbsolutePath());
+      return 1;
+    }
+    if (global) {
+      repo = new File(HomeManager.getHomeExtensionPath());
+    }
+    if (ExtensionHelper.initExtensionRepository(repo, extensions) != 0) {
+      return 1;
+    }
+
     if (params == null) {
       params = new HashMap<>();
     }
 
-    AnalyticsBoard analyticsBoard = null;
-    File ananas = Paths.get(project.getAbsolutePath(), "ananas.yml").toFile();
-    if (!ananas.exists()) {
-      ananas = Paths.get(project.getAbsolutePath(), "ananas.yaml").toFile();
-      if (!ananas.exists()) {
-        System.err.println("Can't find ananas.yml file in your project");
-        return 1;
-      }
-    }
-    try {
-      analyticsBoard = YamlHelper.openYAML(ananas.getAbsolutePath(), AnalyticsBoard.class);
-    } catch (Exception e) {
-      System.err.println("Failed to parse analytics board file: " + e.getLocalizedMessage());
-      Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).forEach(LOG::error);
+    AnalyticsBoard analyticsBoard = Helper.createAnalyticsBoard(project);
+    if (analyticsBoard == null) {
       return 1;
     }
 
@@ -101,6 +119,13 @@ public class ExploreCommand implements Callable<Integer> {
     paginationBody.params =
         analyticsBoard.variables.stream().collect(Collectors.toMap(v -> v.name, v -> v));
 
+    try {
+      paginationBody.extensions =
+          ExtensionHelper.openExtensionList(new File(project, "extension.yml").getAbsolutePath());
+    } catch (IOException e) {
+      paginationBody.extensions = new HashMap<>();
+    }
+
     params
         .keySet()
         .forEach(
@@ -113,7 +138,10 @@ public class ExploreCommand implements Callable<Integer> {
     DagRequestBuilder.injectRuntimeVariables(paginationBody.params, project.getAbsolutePath());
 
     try {
-      Paginator paginator = PaginatorFactory.of(stepId, paginationBody);
+      ExtensionManager extensionManager =
+          new DefaultExtensionManager(LocalExtensionRepository.getDefault());
+      extensionManager.resolve(paginationBody.extensions);
+      Paginator paginator = PaginatorFactory.of(stepId, paginationBody, extensionManager);
       Dataframe dataframe = paginator.paginate(n, size);
       System.out.println(JsonUtil.toJson(ApiResponseBuilder.Of().OK(dataframe).build()));
     } catch (Exception e) {

@@ -4,14 +4,19 @@ services:
     build: .
     env_file:
       - ./test/test.env
-    command: [ 'sh', '-c', '/wait && ./build-cli.sh && ./gradlew cleanTest test -Dananas.test.properties=test.docker.properties',  ]
+    command: [ 'sh', '-c',
+               '/wait && ./test.sh' ]
     depends_on:
       - mysql
       - postgres
       - spark-master
       - spark-worker-1
+      - flink-master
+      - flink-slave
     environment:
       WAIT_HOSTS: mysql:3306, postgres:5432, spark-master:8080, spark-worker-1:8081
+      ANANAS_DIR: /ananas-desktop
+      TEST_PROPERTIES: test.docker.properties
   mysql:
     image: mysql:5.7
     env_file:
@@ -26,25 +31,49 @@ services:
       - ./test/postgres:/docker-entrypoint-initdb.d/:ro
 
   spark-master:
-    build:
-      context: ./test/spark
-      dockerfile: spark-master.Dockerfile
+    #build:
+    #  context: ./test/spark
+    #  dockerfile: spark-master.Dockerfile
+    image: ananasanalytics/ananas-ci-spark:1.0.0
     container_name: spark-master
     hostname: spark-master
+    command: [ 'sh', '-c', "/start-master.sh" ]
     ports:
       - "8080:8080"
       - "7077:7077"
     environment:
       - "SPARK_LOCAL_IP=spark-master"
   spark-worker-1:
-    build:
-      context: ./test/spark
-      dockerfile: spark-wroker.Dockerfile
+    #build:
+    #  context: ./test/spark
+    #  dockerfile: spark-wroker.Dockerfile
+    image: ananasanalytics/ananas-ci-spark:1.0.0
     container_name: spark-worker-1
     hostname: spark-worker-1
+    command: [ 'sh', '-c', "/start-worker.sh" ]
     depends_on:
       - spark-master
     ports:
       - "8081:8081"
     environment:
       - "SPARK_LOCAL_IP=spark-worker-1"
+
+  flink-master:
+    image: flink:1.8.2
+    expose: 
+      - "6123"
+    ports: 
+      - "8082:8081"
+    command: jobmanager
+    environment:
+      - "JOB_MANAGER_RPC_ADDRESS=flink-master"
+  flink-slave:
+    image: flink:1.8.2
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - flink-master
+    command: taskmanager
+    environment:
+      - "JOB_MANAGER_RPC_ADDRESS=flink-master"

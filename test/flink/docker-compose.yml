@@ -1,0 +1,27 @@
+version: '3'
+services:
+  flink-master:
+    build:
+      context: .
+      dockerfile: flink-master.Dockerfile
+    expose:
+      - "6123"
+    ports:
+      - "6123:6123"
+      - "8082:8081"
+    command: jobmanager
+    environment:
+      - "JOB_MANAGER_RPC_ADDRESS=flink-master"
+  flink-slave:
+    image: flink:1.8.2
+    expose:
+      - "6121"
+      - "6122"
+    ports:
+      - "6121:6121"
+      - "6122:6122"
+    depends_on:
+      - flink-master
+    command: taskmanager
+    environment:
+      - "JOB_MANAGER_RPC_ADDRESS=flink-master"

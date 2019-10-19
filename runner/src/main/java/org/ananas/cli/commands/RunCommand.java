@@ -5,15 +5,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import org.ananas.cli.DagRequestBuilder;
-import org.ananas.runner.api.ApiResponse;
-import org.ananas.runner.api.Services;
-import org.ananas.runner.kernel.common.JsonUtil;
-import org.ananas.runner.kernel.job.BeamRunner;
-import org.ananas.runner.kernel.job.Job;
-import org.ananas.runner.kernel.job.Runner;
-import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.cli.Helper;
+import org.ananas.cli.commands.extension.ExtensionHelper;
+import org.ananas.runner.core.common.JsonUtil;
+import org.ananas.runner.core.job.BeamRunner;
+import org.ananas.runner.core.job.Job;
+import org.ananas.runner.core.job.Runner;
+import org.ananas.runner.core.model.DagRequest;
+import org.ananas.runner.misc.HomeManager;
+import org.ananas.server.ApiResponse;
+import org.ananas.server.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -25,14 +29,13 @@ public class RunCommand implements Callable<Integer> {
 
   @ParentCommand private MainCommand parent;
 
-  @Option(
+  @CommandLine.Option(
       names = {"-p", "--project"},
-      description = "Ananas analytics project path",
-      required = true)
-  private File project;
+      description = "Ananas analytics project path, default: current directory")
+  private File project = new File(".");
 
   @Option(
-      names = {"-e", "--profile"},
+      names = {"-f", "--profile"},
       description =
           "Profile yaml file, includes execution engine, and parameters (optional). By default, local Flink engine, no parameter")
   private File profile;
@@ -44,16 +47,19 @@ public class RunCommand implements Callable<Integer> {
   private Map<String, String> params;
 
   @Option(
-      names = {"-h", "--host"},
-      description = "Server host, default localhost",
-      defaultValue = "127.0.0.1")
-  private String host;
+      names = {"-r", "--repo"},
+      description = "Extension repository location, by default, ./extensions")
+  private File repo = new File("./extensions");
+
+  @CommandLine.Option(
+      names = {"-g", "--global"},
+      description = "Load extensions from global repository")
+  private boolean global = false;
 
   @Option(
-      names = {"--port"},
-      description = "Ananas server port, default 3003",
-      defaultValue = "3003")
-  private Integer port;
+      names = {"-x", "--extension"},
+      description = "Extension location, could be absolute path or relative to current directory")
+  private List<File> extensions;
 
   @Option(
       names = {"-i", "--interval"},
@@ -67,6 +73,17 @@ public class RunCommand implements Callable<Integer> {
   @Override
   public Integer call() throws Exception {
     parent.handleVerbose();
+
+    if (!Helper.isAnanasProject(project)) {
+      System.out.println("Invalid project: " + project.getAbsolutePath());
+      return 1;
+    }
+    if (global) {
+      repo = new File(HomeManager.getHomeExtensionPath());
+    }
+    if (ExtensionHelper.initExtensionRepository(repo, extensions) != 0) {
+      return 1;
+    }
 
     // build DagRequest
     try {

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Data;
-import org.ananas.runner.kernel.model.Engine;
+import org.ananas.runner.core.model.Engine;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -1,15 +1,14 @@
 package org.ananas.runner.steprunner.gcs;
 
 import java.io.IOException;
-import org.ananas.runner.kernel.ConnectorStepRunner;
-import org.ananas.runner.kernel.common.JsonStringBasedFlattenerReader;
-import org.ananas.runner.kernel.common.Sampler;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.model.StepType;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
-import org.ananas.runner.kernel.schema.SchemaBasedRowConverter;
-import org.ananas.runner.paginator.files.GCSPaginator;
+import org.ananas.runner.core.ConnectorStepRunner;
+import org.ananas.runner.core.common.JsonStringBasedFlattenerReader;
+import org.ananas.runner.core.common.Sampler;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.core.model.StepType;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
+import org.ananas.runner.core.schema.SchemaBasedRowConverter;
 import org.ananas.runner.steprunner.files.csv.BeamTextCSVCustomTable;
 import org.ananas.runner.steprunner.files.txt.TruncatedTextIO;
 import org.ananas.runner.steprunner.files.utils.StepFileConfigToUrl;
@@ -27,6 +26,7 @@ public class GCSConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     String format = (String) step.config.getOrDefault("format", "");
     switch (format) {
@@ -50,7 +50,8 @@ public class GCSConnector extends ConnectorStepRunner {
 
     Schema schema = step.getBeamSchema();
     AutoDetectedSchemaPaginator csvPaginator =
-        PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+        PaginatorFactory.of(
+                stepId, step.metadataId, step.type, step.config, schema, extensionManager)
             .buildPaginator();
     if (schema == null || step.forceAutoDetectSchema()) {
       // find the paginator bind to it
@@ -81,7 +82,8 @@ public class GCSConnector extends ConnectorStepRunner {
 
     Schema schema = step.getBeamSchema();
     AutoDetectedSchemaPaginator paginator =
-        PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+        PaginatorFactory.of(
+                stepId, step.metadataId, step.type, step.config, schema, extensionManager)
             .buildPaginator();
     if (schema == null || step.forceAutoDetectSchema()) {
       schema = paginator.getSchema();

@@ -41,9 +41,19 @@ public class TestHelper {
   public static String getCLIPath() {
     try {
       URL current = getResource("");
-      Path path = Paths.get(current.toURI()).resolve("../../../../../cli/ananas-cli-latest.jar");
-      return path.toRealPath().toAbsolutePath().toString();
+      Path cliPath = Paths.get(current.toURI()).resolve("../../../../../cli/ananas-cli-latest.jar");
+      Path sparkPath =
+          Paths.get(current.toURI())
+              .resolve("../../../../../runner/build/libs/ananas-spark-latest.jar");
+
+      String path =
+          cliPath.toRealPath().toAbsolutePath().toString()
+              + ";"
+              + sparkPath.toRealPath().toAbsolutePath().toString();
+      System.out.println(path);
+      return path;
     } catch (URISyntaxException | IOException e) {
+      e.printStackTrace();
       System.err.println(
           "Can't find compiled cli file, please run `./build-cli.sh [JDK_HOME]` to generate jar file");
     }

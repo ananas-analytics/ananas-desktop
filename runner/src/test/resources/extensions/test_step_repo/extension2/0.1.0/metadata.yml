@@ -1,0 +1,6 @@
+ext3:
+  id: ext3
+  type: Destination
+  step:
+    config:
+      key: value

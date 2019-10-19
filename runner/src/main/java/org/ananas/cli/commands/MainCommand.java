@@ -2,6 +2,7 @@ package org.ananas.cli.commands;
 
 import ch.qos.logback.classic.Level;
 import java.util.concurrent.Callable;
+import org.ananas.cli.commands.extension.ExtensionCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -14,10 +15,12 @@ import picocli.CommandLine.Option;
     description = "Ananas Analytics Command Line Interface",
     subcommands = {
       ExploreCommand.class,
-      TestCommand.class,
+      ExtensionCommand.class,
+      RunCommand.class,
       ShowCommand.class,
       StartCommand.class,
-      RunCommand.class,
+      TestCommand.class,
+      VersionCommand.class,
       ViewCommand.class,
       HelpCommand.class,
     })

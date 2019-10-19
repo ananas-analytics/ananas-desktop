@@ -1,0 +1,6 @@
+name: "ananas-extension-example"
+version: "0.1.0"
+minAnanasVersion: "0.10.0"
+author: "ananas"
+url: "https://github.com/ananas-analytics/ananas-extension-example/releases/download/v0.1.0/ananas-extension-example-0.1.0.zip"
+sha1: null

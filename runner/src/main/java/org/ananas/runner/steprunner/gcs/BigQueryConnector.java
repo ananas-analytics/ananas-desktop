@@ -7,10 +7,10 @@ import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.TableResult;
 import java.util.ArrayList;
 import java.util.List;
-import org.ananas.runner.kernel.ConnectorStepRunner;
-import org.ananas.runner.kernel.model.Step;
-import org.ananas.runner.kernel.paginate.AutoDetectedSchemaPaginator;
-import org.ananas.runner.kernel.paginate.PaginatorFactory;
+import org.ananas.runner.core.ConnectorStepRunner;
+import org.ananas.runner.core.model.Step;
+import org.ananas.runner.core.paginate.AutoDetectedSchemaPaginator;
+import org.ananas.runner.core.paginate.PaginatorFactory;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.schemas.Schema;
@@ -28,6 +28,7 @@ public class BigQueryConnector extends ConnectorStepRunner {
     super(pipeline, step, doSampling, isTest);
   }
 
+  @Override
   public void build() {
     BigQueryStepConfig config = new BigQueryStepConfig(step.config);
 
@@ -35,7 +36,8 @@ public class BigQueryConnector extends ConnectorStepRunner {
     if (schema == null || step.forceAutoDetectSchema()) {
       // find the paginator bind to it
       AutoDetectedSchemaPaginator paginator =
-          PaginatorFactory.of(stepId, step.metadataId, step.type, step.config, schema)
+          PaginatorFactory.of(
+                  stepId, step.metadataId, step.type, step.config, schema, extensionManager)
               .buildPaginator();
       schema = paginator.getSchema();
     }

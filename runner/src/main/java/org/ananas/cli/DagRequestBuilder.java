@@ -1,9 +1,10 @@
 package org.ananas.cli;
 
-import static org.ananas.cli.YamlHelper.openYAML;
+import static org.ananas.runner.misc.YamlHelper.openYAML;
 
 import com.google.common.collect.Sets;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,12 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.ananas.cli.commands.extension.ExtensionHelper;
 import org.ananas.cli.model.AnalyticsBoard;
 import org.ananas.cli.model.Profile;
-import org.ananas.runner.kernel.model.Dag;
-import org.ananas.runner.kernel.model.DagRequest;
-import org.ananas.runner.kernel.model.Engine;
-import org.ananas.runner.kernel.model.Variable;
+import org.ananas.runner.core.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +39,8 @@ public class DagRequestBuilder {
     if (!ananas.exists()) {
       ananas = Paths.get(project.getAbsolutePath(), "ananas.yaml").toFile();
       if (!ananas.exists()) {
-        throw new RuntimeException("Can't find ananas.yml file in our project");
+        throw new RuntimeException(
+            "Can't find ananas.yml file in your project: " + project.getAbsolutePath());
       }
     }
 
@@ -76,10 +76,22 @@ public class DagRequestBuilder {
       profileObj.engine.properties.put("database_type", "derby");
     }
 
+    // parse extension.yml
+    File extensionFile = Paths.get(project.getAbsolutePath(), "extension.yml").toFile();
+    Map<String, Extension> extensions = new HashMap<>();
+    if (extensionFile.exists()) {
+      try {
+        extensions = ExtensionHelper.openExtensionList(extensionFile.getAbsolutePath());
+      } catch (IOException e) {
+        LOG.error("Failed to parse extension file: " + e.getLocalizedMessage());
+      }
+    }
+
     // construct dag request
     dagRequest.dag.connections = analyticsBoard.dag.connections;
     dagRequest.dag.steps = Sets.newHashSet(analyticsBoard.steps.values());
     dagRequest.engine = profileObj.engine;
+    dagRequest.extensions = extensions;
     dagRequest.goals = new HashSet<>(goals);
     dagRequest.params =
         analyticsBoard.variables.stream().collect(Collectors.toMap(v -> v.name, v -> v));

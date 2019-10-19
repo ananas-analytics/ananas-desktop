@@ -6,12 +6,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import org.ananas.cli.CommandLineTable;
 import org.ananas.cli.DagRequestBuilder;
-import org.ananas.runner.api.Services;
-import org.ananas.runner.kernel.model.DagRequest;
+import org.ananas.cli.Helper;
+import org.ananas.cli.commands.extension.ExtensionHelper;
+import org.ananas.runner.core.model.DagRequest;
+import org.ananas.runner.misc.HomeManager;
+import org.ananas.server.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -27,14 +31,13 @@ public class TestCommand implements Callable {
 
   @ParentCommand private MainCommand parent;
 
-  @Option(
+  @CommandLine.Option(
       names = {"-p", "--project"},
-      description = "Ananas analytics project path",
-      required = true)
-  private File project;
+      description = "Ananas analytics project path, default: current directory")
+  private File project = new File(".");
 
   @Option(
-      names = {"-e", "--profile"},
+      names = {"-f", "--profile"},
       description =
           "Profile yaml file, includes execution engine, and parameters (optional). By default, local Flink engine, no parameter")
   private File profile;
@@ -44,6 +47,21 @@ public class TestCommand implements Callable {
       description =
           "Override the parameter defined in profile, the parameter must be defined in ananas file")
   private Map<String, String> params;
+
+  @Option(
+      names = {"-r", "--repo"},
+      description = "Extension repository location, by default, ./extensions")
+  private File repo = new File("./extensions");
+
+  @Option(
+      names = {"-g", "--global"},
+      description = "Load extensions from global repository")
+  private boolean global = false;
+
+  @Option(
+      names = {"-x", "--extension"},
+      description = "Extension location, could be absolute path or relative to current directory")
+  private List<File> extensions;
 
   @Option(
       names = {"-o", "--output"},
@@ -61,6 +79,17 @@ public class TestCommand implements Callable {
   @Override
   public Integer call() throws Exception {
     parent.handleVerbose();
+
+    if (!Helper.isAnanasProject(project)) {
+      System.out.println("Invalid project: " + project.getAbsolutePath());
+      return 1;
+    }
+    if (global) {
+      repo = new File(HomeManager.getHomeExtensionPath());
+    }
+    if (ExtensionHelper.initExtensionRepository(repo, extensions) != 0) {
+      return 1;
+    }
 
     boolean printUsage = true;
 

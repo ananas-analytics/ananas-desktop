@@ -1,0 +1,13 @@
+engine:
+  description: ""
+  name: Flink Local
+  properties:
+    app_name: "test app on flink"
+    database_password: ${MYSQL_PASSWORD}
+    database_type: mysql
+    database_url: mysql://${MYSQL_HOST}:3306/${MYSQL_DB}
+    database_user: root
+    enableMetricSinks: "true"
+    flinkMaster: ${FLINK_MASTER_HOST}:6123
+  scope: workspace
+  type: Flink

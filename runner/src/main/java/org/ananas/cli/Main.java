@@ -1,7 +1,7 @@
 package org.ananas.cli;
 
 import org.ananas.cli.commands.MainCommand;
-import org.ananas.runner.kernel.ExtensionRegistry;
+import org.ananas.runner.core.extension.ExtensionRegistry;
 import picocli.CommandLine;
 
 public class Main {

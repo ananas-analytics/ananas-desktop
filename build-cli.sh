@@ -1,19 +1,31 @@
 #!/bin/sh
 
-rm runner/build/libs/ananas-cli*.jar
+# clean up
+rm runner/build/libs/ananas-*.jar
 rm cli/ananas-cli*.jar
+rm -rf artifacts
 
+mkdir -p artifacts/engine/flink
+mkdir -p artifacts/engine/spark
+mkdir -p artifacts/engine/dataflow
+mkdir -p artifacts/extension
+
+# build cli
 if [ -z "$1" ]
-  then
+then
     echo "use default jdk to build CLI"
-    ./gradlew :runner:shadowJar -Dtarget=cli -Prelease=true
+    ./gradlew :runner:shadowJar -Dtarget=cli -Prelease=true --console plain
 else
-  echo "use jdk '$1' to build CLI"
-  ./gradlew :runner:shadowJar -Dorg.gradle.java.home=$1 -Dtarget=cli -Prelease=true
+    echo "use jdk '$1' to build CLI"
+    ./gradlew :runner:shadowJar -Dorg.gradle.java.home=$1 -Dtarget=cli -Prelease=true --console plain
 fi
 
 cp runner/build/libs/ananas-cli*.jar ./cli
 cp $(ls ./cli/*.jar) ./cli/ananas-cli-latest.jar
 
+# build artifacts
+./gradlew :runner:extensionJar -Prelease=true --console plain
+./gradlew :runner:engineJar -Prelease=true -Dengine=spark --console plain
 
-
+cp ./runner/build/libs/ananas-spark* ./artifacts/engine/spark
+cp $(ls ./runner/build/libs/ananas-spark*.jar) ./runner/build/libs/ananas-spark-latest.jar

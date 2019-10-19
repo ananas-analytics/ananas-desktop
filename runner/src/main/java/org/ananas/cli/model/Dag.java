@@ -3,7 +3,7 @@ package org.ananas.cli.model;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
-import org.ananas.runner.kernel.model.DagEdge;
+import org.ananas.runner.core.model.DagEdge;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @Data
