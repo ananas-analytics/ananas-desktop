@@ -7,6 +7,7 @@ services:
     command: [ 'sh', '-c',
                '/wait && ./test.sh' ]
     depends_on:
+      - mongo
       - mysql
       - postgres
       - spark-master
@@ -14,7 +15,7 @@ services:
       - flink-master
       - flink-slave
     environment:
-      WAIT_HOSTS: mysql:3306, postgres:5432, spark-master:8080, spark-worker-1:8081
+      WAIT_HOSTS: mysql:3306, postgres:5432, spark-master:8080, spark-worker-1:8081, mongo:27017
       ANANAS_DIR: /ananas-desktop
       TEST_PROPERTIES: test.docker.properties
   mysql:
@@ -77,3 +78,10 @@ services:
     command: taskmanager
     environment:
       - "JOB_MANAGER_RPC_ADDRESS=flink-master"
+
+  mongo:
+    image: mongo:3.6
+    env_file:
+      - ./test/test.env
+    volumes:
+      - ./test/mongo:/docker-entrypoint-initdb.d/:ro
