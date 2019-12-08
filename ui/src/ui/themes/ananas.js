@@ -30,6 +30,7 @@ export default {
         dark: '#FFFFFF',
         light: '#666666',
       },
+      focus: 'none',
       /*control: {
         dark: 'accent-4',
         light: 'brand', 
@@ -50,5 +51,4 @@ export default {
       radius: '1px',
     }
   },
-
 }

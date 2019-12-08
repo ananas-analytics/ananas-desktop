@@ -36,6 +36,9 @@ function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({ 
     width: 1440, height: 960, 
+    webPreferences: {
+      nodeIntegration: true,
+    },
   })
   // win.maximize()
 
