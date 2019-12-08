@@ -7,6 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface ExtensionRepository {
+  /**
+   * Get the root path of the repository
+   *
+   * @return the repository path
+   */
+  String getRepositoryRoot();
+
   /** Load extensions into cache */
   void load();
 

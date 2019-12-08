@@ -89,6 +89,15 @@ export type PlainDAG = {
 }
 
 /**
+ * Extension
+ */
+export type PlainExtension = {
+  version  : string,
+  resolved : string,
+  checksum : string,
+}
+
+/**
  * Project
  */
 export type ProjectMeta = {
@@ -106,6 +115,7 @@ export type PlainProject = {
   variables   : Array<PlainVariable>,
   settings    : Setting,
   triggers?   : Array<PlainTrigger>,
+  extensions  : {[string] : PlainExtension},
   deleted?    : boolean,
 }
 

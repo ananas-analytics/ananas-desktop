@@ -1,22 +1,25 @@
 package org.ananas.server;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.ananas.runner.core.common.JsonUtil;
 import org.ananas.runner.core.errors.AnanasException;
-import org.ananas.runner.core.extension.DefaultExtensionManager;
-import org.ananas.runner.core.extension.LocalExtensionRepository;
+import org.ananas.runner.core.extension.*;
 import org.ananas.runner.core.job.BeamRunner;
 import org.ananas.runner.core.job.Job;
 import org.ananas.runner.core.job.JobRepositoryFactory;
 import org.ananas.runner.core.job.Runner;
 import org.ananas.runner.core.model.Dataframe;
+import org.ananas.runner.core.model.Extension;
 import org.ananas.runner.core.paginate.PaginationBody;
 import org.ananas.runner.core.paginate.Paginator;
 import org.ananas.runner.core.paginate.PaginatorFactory;
+import org.ananas.runner.misc.YamlHelper;
 import org.ananas.runner.steprunner.DefaultDataViewer;
 import spark.ExceptionHandler;
 import spark.Request;
@@ -168,6 +171,94 @@ class HttpHandler {
             ApiResponseBuilder.Of()
                 .OK(repository.query(request.queryParams("sql"), jobid, stepid))
                 .build());
+      };
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public static class ExtensionBody {
+    public Map<String, Extension> extensions;
+  }
+
+  static Route extensionMetadata =
+      (Request request, Response response) -> {
+        String body = request.body();
+
+        ExtensionBody extensionBody =
+            body == null || body.length() == 0
+                ? new ExtensionBody()
+                : JsonUtil.fromJson(body, ExtensionBody.class);
+
+        try {
+          ExtensionRepository repository = LocalExtensionRepository.getDefault();
+          ExtensionManager extensionManager = new DefaultExtensionManager(repository);
+          extensionManager.resolve(extensionBody.extensions);
+
+          Map<String, Object> output = new HashMap<>();
+
+          extensionBody
+              .extensions
+              .entrySet()
+              .forEach(
+                  entry -> {
+                    Extension extension = entry.getValue();
+                    ExtensionManifest manifest =
+                        repository.getExtension(entry.getKey(), extension.version);
+                    URL metadataURL = manifest.getMetadata();
+                    try {
+                      Object metadata = YamlHelper.openYAML(metadataURL.openStream(), Object.class);
+                      output.put(entry.getKey(), metadata);
+                    } catch (IOException e) {
+                      // just skip the metadata
+                    }
+                  });
+          return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
+        } catch (Exception e) {
+          return JsonUtil.toJson(ApiResponseBuilder.Of().KO(e).build());
+        }
+      };
+
+  static Route allEditors =
+      (Request request, Response response) -> {
+        String extension = request.params(":name");
+        String version = request.params(":version");
+
+        ExtensionRepository repository = LocalExtensionRepository.getDefault();
+        ExtensionManifest manifest = repository.getExtension(extension, version);
+        List<Object> output = new ArrayList<>();
+        manifest
+            .getEditors()
+            .forEach(
+                url -> {
+                  try {
+                    output.add(YamlHelper.openYAML(url.openStream(), Object.class));
+                  } catch (IOException e) {
+                    // ignore this manifest
+                  }
+                });
+
+        return JsonUtil.toJson(ApiResponseBuilder.Of().OK(output).build());
+      };
+
+  static Route editor =
+      (Request request, Response response) -> {
+        String extension = request.params(":name");
+        String version = request.params(":version");
+        String metaId = request.params(":metadataId");
+
+        ExtensionRepository repository = LocalExtensionRepository.getDefault();
+        String root = repository.getRepositoryRoot();
+        Path path = Paths.get(root, extension, version, "editor", metaId + ".yml");
+        if (!path.toFile().exists()) {
+          return JsonUtil.toJson(
+              ApiResponseBuilder.Of()
+                  .KO(
+                      new AnanasException(
+                          org.ananas.runner.core.errors.ExceptionHandler.ErrorCode.EXTENSION,
+                          "Can't find editor " + metaId))
+                  .build());
+        }
+
+        return JsonUtil.toJson(
+            ApiResponseBuilder.Of().OK(YamlHelper.openYAML(path.toString(), Object.class)).build());
       };
 
   static ExceptionHandler error =

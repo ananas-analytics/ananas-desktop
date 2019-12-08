@@ -29,9 +29,12 @@ class Project {
     let description = this.project.description
     let settings = this.project.settings
     let projectData = { ... this.project }  
+    let extensions = projectData.extensions || {}
+
     delete projectData['description']
     delete projectData['path']
     delete projectData['settings']
+    delete projectData['extensions']
 
     // let dataframe = {schema: {}, data: []}
     // remove internal config property 
@@ -122,6 +125,9 @@ class Project {
       .then(() => {
         return util.promisify(fs.writeFile)(path.join(this.path, 'triggers.yml'), YAML.stringify(triggers), 'utf8')
       })
+      .then(() => {
+        return util.promisify(fs.writeFile)(path.join(this.path, 'extension.yml'), YAML.stringify(extensions), 'utf8')
+      })
   }
 
   toPlainObject() :PlainProject {
@@ -150,6 +156,37 @@ class Project {
       })
   }
 
+  static getMetadataType(type: string) :string {
+    switch(type) {
+      case 'connector':
+        return 'Source' 
+      case 'transformer':
+        return 'Transform'
+      case 'loader':
+        return 'Destination'
+      case 'viewer':
+        return 'Visualization'
+    }
+    return 'Transform'
+  }
+
+  static getDebugMetadataId(type: string) :string {
+    let mode = global.shared.devMode ? 'debug' : 'unknown'
+    let prefix = 'org.ananas.dev.'
+    switch(type) {
+      case 'connector':
+        return prefix + mode + '.source' 
+      case 'transformer':
+        return prefix + mode + '.transform' 
+      case 'loader':
+        return prefix + mode + '.destination'
+      case 'viewer':
+        return prefix + mode + '.visualization'
+    }
+    return prefix + mode + '.transform'
+
+  }
+
   static Load(projectPath: string, metadata: {[string]: PlainNodeMetadata}) :Promise<Project> {
     // default project
     let projectData = {
@@ -164,6 +201,7 @@ class Project {
       variables: [],
       settings: {},
       triggers: [],
+      extensions: {},
     }
 
     // TODO: check file existance in an async way 
@@ -212,18 +250,33 @@ class Project {
       })
       .then(() => {
         return layout
-          .filter(node => metadata.hasOwnProperty(node.metadataId))
+          //.filter(node => metadata.hasOwnProperty(node.metadataId))
           .map(node => {
             let step = projectData.steps[node.id] || {}
-            return {
-              id       : node.id,
-              label    : step.name,
-              type     : metadata[node.metadataId].type,
-              x        : node.x,
-              y        : node.y,
-              metadata : metadata[node.metadataId],
+            if (Object.prototype.hasOwnProperty.call(metadata, node.metadataId)) {
+              return {
+                id       : node.id,
+                label    : step.name,
+                type     : metadata[node.metadataId].type,
+                x        : node.x,
+                y        : node.y,
+                metadata : metadata[node.metadataId],
+              }
+            } else {
+              let metadataId = Project.getDebugMetadataId(step.type)
+              let metadataObj = { ... metadata[metadataId] }
+              metadataObj.id = step.metadataId
+              return {
+                id       : node.id,
+                label    : step.name,
+                type     : Project.getMetadataType(step.type),
+                x        : node.x,
+                y        : node.y,
+                metadata : metadataObj,
             }
-          })  
+            
+          }
+        })  
       })
       .then(nodes => {
         projectData.dag.nodes = nodes
@@ -241,6 +294,7 @@ class Project {
       .then(settings => {
         projectData.settings = settings
       })
+      /*
       .then(() => {
         return util.promisify(fs.readFile)(path.join(projectPath, 'triggers.yml'))
       })
@@ -252,8 +306,22 @@ class Project {
       })
       .then(triggers => {
         projectData.triggers = triggers
+      })
+      */
+      .then(() => {
+        return util.promisify(fs.readFile)(path.join(projectPath, 'extension.yml'))
+      })
+      .then(data => {
+        return YAML.parse(data.toString())
+      })
+      .catch(()=> {
+        return Promise.resolve({})
+      })
+      .then(extensions => {
+        projectData.extensions = extensions
         return new Project(projectPath, projectData)
       })
+
   }
 }
 

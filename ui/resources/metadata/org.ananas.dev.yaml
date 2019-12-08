@@ -1,0 +1,116 @@
+---
+##
+# debug nodes
+##
+org.ananas.dev.debug.source:
+  id: org.ananas.dev.debug.source
+  name: Debug Source
+  description: Debug Source
+  type: Source
+  icon: images/virus.svg
+  step: 
+    type: connector
+    config: {}
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
+org.ananas.dev.debug.transform:
+  id: org.ananas.dev.debug.transform
+  name: Debug Transform
+  description: Debug Tranform
+  type: Tranform
+  icon: images/virus.svg
+  step: 
+    type: transformer
+    config: {}
+  options:
+    maxIncoming: 1
+    maxOutgoing: -1
+org.ananas.dev.debug.destination:
+  id: org.ananas.dev.debug.destination
+  name: Destination Debug Node
+  description: Debug Destination
+  type: Destination
+  icon: images/virus.svg
+  step: 
+    type: loader
+    config: 
+      subtype: file
+      format: csv
+      prefix: output
+      header: true
+  options:
+    maxIncoming: 1
+    maxOutgoing: 0 
+org.ananas.dev.debug.visualization:
+  id: org.ananas.dev.debug.visualization
+  name: Visualization Debug Node
+  description: Debug visualization node
+  icon: images/virus.svg
+  type: Visualization
+  step: 
+    type: viewer
+    config: 
+  options: 
+    maxIncoming: 1
+    maxOutgoing: 0
+
+##
+# unknown nodes
+##
+org.ananas.dev.unknown.source:
+  id: org.ananas.dev.unknown.source
+  name: Unknown Source
+  description: Unknown Source
+  type: Source
+  icon: images/404.svg
+  step: 
+    type: connector
+    config: {}
+  options:
+    maxIncoming: 0
+    maxOutgoing: -1
+org.ananas.dev.unknown.transform:
+  id: org.ananas.dev.unknown.transform
+  name: Unknown Transform
+  description: Unknown Tranform
+  type: Tranform
+  icon: images/404.svg
+  step: 
+    type: transformer
+    config: {}
+  options:
+    maxIncoming: 1
+    maxOutgoing: -1
+org.ananas.dev.unknown.destination:
+  id: org.ananas.dev.unknown.destination
+  name: Unknown Destination
+  description: Unknown Destination
+  type: Destination
+  icon: images/404.svg
+  step: 
+    type: loader
+    config: 
+      subtype: file
+      format: csv
+      prefix: output
+      header: true
+  options:
+    maxIncoming: 1
+    maxOutgoing: 0 
+org.ananas.dev.unknown.visualization:
+  id: org.ananas.dev.unknown.visualization
+  name: Unknown Visualization
+  description: Unknown Visualization Node
+  icon: images/404.svg
+  type: Visualization
+  step: 
+    type: viewer
+    config: 
+  options: 
+    maxIncoming: 1
+    maxOutgoing: 0
+
+
+
+

@@ -1,7 +1,5 @@
 // @flow
 
-const app = require('electron').remote.app
-
 import moment from 'moment'
 
 import proxy from '../proxy'
@@ -182,12 +180,12 @@ export default class VariableService {
       })
   }
 
-  getProjectPath(projectID: ID) :string{
+  getProjectPath(projectID: ID) :string {
     const state = this.store.getState()
     let project = state.model.projects[projectID]
     if (project && project.path) {
       return project.path
     }
-    return `${app.getPath('userData')}/${projectID}`
+    return proxy.getProjectPathSync(projectID)
   }
 }

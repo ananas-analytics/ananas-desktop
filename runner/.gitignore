@@ -2,7 +2,6 @@ target/
 .gradle/
 .idea/*
 /build
-derby.log
 /package
 /tags
 out/
@@ -21,3 +20,5 @@ cscope.po.out
 
 test.local.properties
 
+/bin/
+/.settings/

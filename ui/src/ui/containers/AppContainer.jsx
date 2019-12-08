@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import proxy from '../proxy'
+
 import { Box } from 'grommet/components/Box'
 import { Collapsible } from 'grommet/components/Collapsible'
 
@@ -32,6 +34,12 @@ const renderActiveContextSideBar = (activeApp, options) => {
     case 0:
       if (!options.showNodeEditor) {
         let items = options.nodeMetadata.map(item => NodeType.fromObject(item))
+          .filter(item => {
+            if (proxy.getSharedVariable('devMode')) {
+              return true
+            } 
+            return !item.id.startsWith('org.ananas.dev')
+          })
         return <DAGEditorSideBar items={items} />
       } else {
         return <NodeEditorSideBar />

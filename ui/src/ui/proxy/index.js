@@ -1,5 +1,10 @@
 // @flow
 
+// proxy is the only place to allow native api calls
+
+const { shell, remote } = require('electron')
+const app = remote.app
+
 import { ipc } from './utils.js'
 
 
@@ -15,6 +20,19 @@ class Proxy {
 
   constructor() {
   } 
+
+  getSharedVariable(name: string) :any {
+    let shared = remote.getGlobal('shared')
+    return shared ? shared[name] : null
+  }
+
+  getProjectPathSync(projectID: string) :string {
+    return `${app.getPath('userData')}/${projectID}`
+  }
+
+  openFileExploreSync(path :string) {
+    shell.openItem(path)
+  }
 
   getLocalUserName() {
     return ipc('get-local-user')

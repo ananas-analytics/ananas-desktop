@@ -1,13 +1,12 @@
-const { app, BrowserWindow, dialog, Menu } = require('electron')
+const { app, BrowserWindow, Menu, globalShortcut } = require('electron')
 const path = require('path')
 const { spawn } = require('child_process')
-const os = require('os')
 
 const log = require('./src/common/log')
 
 const { init, loadWorkspace, checkUpdateWrapper } = require('./src/main')
 
-const { uid, trackEvent } = require('./src/common/util/analytics')
+const { trackEvent } = require('./src/common/util/analytics')
 
 const MetadataLoader = require('./src/common/model/MetadataLoader')
 const EditorMetadataLoader = require('./src/common/model/EditorMetadataLoader')
@@ -16,7 +15,10 @@ const pack = require('./package.json')
 const metadataResourcePath = getResourcePath('metadata')
 const editorResourcePath = getResourcePath('editor')
 
-// let platform = os.platform()
+
+global.shared = {
+  devMode: false
+}
 
 let hrstart = process.hrtime()
 
@@ -69,7 +71,41 @@ function createWindow () {
       { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
       { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
       { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
-    ]} 
+    ]}, {
+    label: 'Developer',
+    submenu: [
+      {
+        label: 'Enable Developer Mode',
+        accelerator: 'CmdOrCtrl+Shift+K',
+        click: () => {
+          global.shared.devMode = !global.shared.devMode
+          let title = 'Ananas Analytics - Desktop Edition'
+          if (global.shared.devMode) {
+            title += ' (Developer Mode)'
+            template[2].submenu[0].label = 'Disable Developer Mode'
+            stopRunner()
+
+            // inject refresh extension item
+            template[2].submenu.push({
+              label: 'Refresh Dev Extension',
+              accelerator: 'CmdOrCtrl+Shift+R',
+              click: () => {
+                console.log('refreshing extension items')
+              }
+            })
+          } else {
+            template[2].submenu[0].label = 'Enable Developer Mode'
+            if (template[2].submenu.length > 1) {
+              template[2].submenu = template[2].submenu.slice(0, 1)
+            }
+            startRunner()
+          }
+          console.log(template[2].submenu)
+          Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+          win.setTitle(title)
+        }
+      }
+    ]}
   ]
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))

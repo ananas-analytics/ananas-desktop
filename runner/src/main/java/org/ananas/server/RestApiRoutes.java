@@ -4,38 +4,22 @@ import static spark.Spark.*;
 
 import org.ananas.runner.core.extension.LocalExtensionRepository;
 import org.ananas.runner.misc.BackgroundApiService;
-import org.ananas.runner.misc.HomeManager;
 
 /** REST API Routes */
 public class RestApiRoutes {
 
-  public static void initRestApi(String[] args) {
+  public static void initRestApi(String host, int port) {
     int maxThreads = 8;
     int minThreads = 2;
     int timeOutMillis = 30000;
     threadPool(maxThreads, minThreads, timeOutMillis);
 
-    String address = "127.0.0.1";
-    int port = 3003;
-    String extensionRepo = HomeManager.getHomeExtensionPath();
-    if (args.length != 0) {
-      address = args[0];
-      if (args.length >= 2) {
-        port = Integer.valueOf(args[1]);
-      }
-      // load extensions
-      if (args.length >= 3) {
-        extensionRepo = args[3];
-      }
-    }
-
-    // set default repository for the server
-    // NOTE: only do it once! Use LocalExtensionRepository.getDefault() to ref it
-    LocalExtensionRepository.setDefaultRepository(extensionRepo);
-    LocalExtensionRepository.getDefault().load();
-
-    ipAddress(address);
+    ipAddress(host);
     port(port);
+
+    // expose repository as a static server
+    staticFiles.externalLocation(LocalExtensionRepository.getDefault().getRepositoryRoot());
+    staticFiles.expireTime(600); // cache 10 minutes
 
     // CORS
     options(
@@ -75,6 +59,10 @@ public class RestApiRoutes {
     post("/v1/jobs/:id/cancel", HttpHandler.cancelPipeline);
 
     get("/v1/data/:jobid/:stepid", HttpHandler.dataView);
+
+    post("/v1/extensions/metadata", HttpHandler.extensionMetadata);
+    get("/v1/extension/:name/:version/editors", HttpHandler.allEditors);
+    get("/v1/extension/:name/:version/editor/:metadataId", HttpHandler.editor);
 
     // Exception handler
     exception(Exception.class, HttpHandler.error);

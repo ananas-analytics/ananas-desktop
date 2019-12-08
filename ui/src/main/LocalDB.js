@@ -137,6 +137,7 @@ class LocalDB {
         steps: project.steps,
         variables: project.variables,
         settings: {},
+        extensions: project.extensions,
       }
 
       resolve(plainProject)

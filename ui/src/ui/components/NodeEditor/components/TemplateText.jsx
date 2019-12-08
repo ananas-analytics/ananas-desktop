@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Text } from 'grommet/components/Text'
 
-export default ({ level, text, color='text', truncate=true }) => {
+export default ({ value='', level, template='', color='text', truncate=false }) => {
   let size = 'small'
   let weight = 500
   switch(level) {
@@ -40,6 +40,6 @@ export default ({ level, text, color='text', truncate=true }) => {
       margin={{vertical: 'small'}}
       size={size} 
       truncate={truncate}
-      weight={weight} >{text}</Text>
+      weight={weight} >{template.replace(/{value}/gi, value)}</Text>
   )
 }

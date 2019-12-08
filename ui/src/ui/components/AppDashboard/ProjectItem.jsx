@@ -1,4 +1,4 @@
-const { shell } = require('electron')
+import proxy from '../../proxy'
 
 import React from 'react'
 
@@ -57,13 +57,13 @@ export default ({id, name, path, description, selected, onClick, onEdit, onConfi
             <Box onClick={onConfig}><SettingsOption /></Box>
             <Box onClick={() => {
               if (path) {
-                shell.openItem(path)
+                proxy.openFileExploreSync(path)
                 return
               } 
               
               getProjectPath(id)
                 .then(p => {
-                  shell.openItem(p)
+                  proxy.openFileExploreSync(p)
                 })
                 .catch(err => {
                   // TODO: handle error here

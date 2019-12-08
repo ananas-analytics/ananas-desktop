@@ -196,10 +196,12 @@ function handleSubmitNodeConfig(state, action) {
   newStep.name = config['__name__']
   newStep.description = config['__description__']
   newStep.dataframe = config['__dataframe__']
+  newStep.metadataId = config['__metadataId__']
   
   delete newStep.config['__name__']
   delete newStep.config['__description__']
   delete newStep.config['__dataframe__']
+  delete newStep.config['__metadataId__']
 
   let nodes = [ ... currentProject.dag.nodes ]
   nodes.forEach(node => {
