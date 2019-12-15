@@ -38,7 +38,7 @@ public class AsJsons extends PTransform<PCollection<Row>, PCollection<String>> {
                     try {
                       ObjectMapper mapper = AsJsons.this.customMapper;
                       return mapper.writeValueAsString(AsJsons.this.jsonifier.valueOfRow(i));
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                       AsJsons.this.errors.addError(e);
                       return null;
                     }

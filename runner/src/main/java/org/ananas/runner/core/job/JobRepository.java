@@ -6,6 +6,14 @@ import java.util.Set;
 public interface JobRepository {
 
   /**
+   * AUpdate or insert a job
+   *
+   * @param job
+   * @return the added job
+   */
+  Job upsertJob(Job job);
+
+  /**
    * Get job by id
    *
    * @param id

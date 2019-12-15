@@ -24,16 +24,5 @@ public class HomeManager {
     return getHomeFilePath(EXTENSION_FOLDER);
   }
 
-  public static String getTempDirectory() {
-    return System.getProperty("java.io.tmpdir");
-  }
 
-  public static String getOrCreateDirInHome(String dirName) {
-    String targetPath = getHomeFilePath(dirName);
-    File directory = new File(targetPath);
-    if (!directory.exists()) {
-      directory.mkdirs();
-    }
-    return targetPath;
-  }
 }

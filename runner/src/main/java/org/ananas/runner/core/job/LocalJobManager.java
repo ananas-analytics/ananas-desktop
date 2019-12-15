@@ -3,12 +3,9 @@ package org.ananas.runner.core.job;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 import org.ananas.runner.core.StepRunner;
 import org.ananas.runner.core.build.Builder;
 import org.ananas.runner.core.pipeline.PipelineContext;
@@ -19,18 +16,18 @@ import org.apache.commons.lang3.tuple.MutablePair;
 public class LocalJobManager implements JobManager, JobRepository {
 
   private ReentrantLock lock;
-  private ConcurrentMap<String, Job> jobs;
+  private JobRepository jobRepository;
 
   private static LocalJobManager singleton;
 
-  private LocalJobManager() {
+  private LocalJobManager(JobRepository j) {
     this.lock = new ReentrantLock();
-    this.jobs = new ConcurrentHashMap<>();
+    this.jobRepository = j;
   }
 
-  public static LocalJobManager Of() {
+  public static LocalJobManager Of(JobRepository j) {
     if (singleton == null) {
-      singleton = new LocalJobManager();
+      singleton = new LocalJobManager(j);
     }
     return singleton;
   }
@@ -48,7 +45,7 @@ public class LocalJobManager implements JobManager, JobRepository {
             builder.getGoals(),
             builder.getParams(),
             builder.getTrigger().id);
-    this.jobs.put(jobId, job);
+    this.jobRepository.upsertJob(job);
     try {
       CompletableFuture<MutablePair<PipelineResult, Exception>> pipelineFuture =
           CompletableFuture.supplyAsync(
@@ -66,6 +63,7 @@ public class LocalJobManager implements JobManager, JobRepository {
                     PipelineContext next = it.next();
                     // update the job state
                     job.state = State.RUNNING.name();
+                    this.jobRepository.upsertJob(job);
                     if (it.hasNext()) {
                       // Important : we wait for a pipelines to finish before we trigger the next
                       // one.
@@ -91,6 +89,7 @@ public class LocalJobManager implements JobManager, JobRepository {
                 () -> {
                   result.getLeft().waitUntilFinish();
                   job.setResult(result);
+                  this.jobRepository.upsertJob(job);
                 });
             return result != null;
           });
@@ -103,7 +102,7 @@ public class LocalJobManager implements JobManager, JobRepository {
 
   @Override
   public void cancelJob(String id) throws IOException {
-    Job r = this.jobs.get(id);
+    Job r = this.jobRepository.getJob(id);
     if (r != null) {
       this.lock.lock();
       try {
@@ -115,50 +114,32 @@ public class LocalJobManager implements JobManager, JobRepository {
   }
 
   @Override
+  public Job upsertJob(Job job) {
+    return this.jobRepository.upsertJob(job);
+  }
+
+  @Override
   public Job getJob(String id) {
-    return this.jobs.get(id);
+    return this.jobRepository.getJob(id);
   }
 
   @Override
   public Set<Job> getJobs(int offset, int n) {
-    // ingore offset and n for now, as it is in memory
-    Set<Job> jobs = new HashSet<>();
-    for (String id : this.jobs.keySet()) {
-      Job j = getJob(id);
-      if (j != null) {
-        jobs.add(getJob(id));
-      }
-    }
-    return jobs;
+    return this.jobRepository.getJobs(offset, n);
   }
 
   @Override
   public List<Job> getJobsByScheduleId(String scheduleId, int skip, int n) {
-    return jobs.values().stream()
-        .filter(job -> scheduleId.equals(job.scheduleId))
-        .sorted((a, b) -> (int) (b.createAt - a.createAt))
-        .skip(skip)
-        .limit(n)
-        .collect(Collectors.toList());
+    return this.jobRepository.getJobsByScheduleId(scheduleId, skip, n);
   }
 
   @Override
   public List<Job> getJobsByGoal(String goalId, int skip, int n) {
-    return jobs.values().stream()
-        .filter(job -> job.goals != null && job.goals.contains(goalId))
-        .sorted((a, b) -> (int) (b.createAt - a.createAt))
-        .skip(skip)
-        .limit(n)
-        .collect(Collectors.toList());
+    return this.jobRepository.getJobsByGoal(goalId, skip, n);
   }
 
   @Override
   public void deleteJob(String jobId) {
-    this.lock.lock();
-    try {
-      this.jobs.remove(jobId);
-    } finally {
-      this.lock.unlock();
-    }
+    this.jobRepository.deleteJob(jobId);
   }
 }
