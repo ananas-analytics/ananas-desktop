@@ -4173,17 +4173,16 @@ grommet-theme-v1@^0.1.2:
   dependencies:
     polished "^2.3.0"
 
-grommet@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.8.1.tgz#0c6e00e76572ef6241cb01f76bace224b618bc4b"
-  integrity sha512-cDAaESfc/L2AFcxyXw2loUKMEdhJBvBrdJSLoJuwWry+kspqvxOGYbThS1rNgTOuGL4TlCZ5WkR7cA8GxLwqDA==
+grommet@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.9.0.tgz#a40095bb678a111872ba050607c16ddf6454382e"
+  integrity sha512-v+AWKeVK9YTWdjb5nXnIUg3uMVUQPKA+Py6GkRBfORjwlQVxaNRUSfEHXajIWnEE0XB1eKr70DX62/5ZryCByA==
   dependencies:
     "@testing-library/dom" "^6.1.0"
     "@testing-library/jest-dom" "^4.2.4"
     "@testing-library/react" "^9.1.3"
     css "^2.2.3"
     grommet-icons "^4.2.0"
-    grommet-styles "^0.2.0"
     hoist-non-react-statics "^3.2.0"
     markdown-to-jsx "^6.9.1"
     polished "^3.4.1"
@@ -7246,7 +7245,7 @@ react-resize-detector@^4.2.0:
     raf-schd "^4.0.2"
     resize-observer-polyfill "^1.5.1"
 
-react-table@^6.9.0:
+react-table@^6.11.4:
   version "6.11.5"
   resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.11.5.tgz#84e52885db426a07a6c4ce2c7e942f2cd4e2aa58"
   integrity sha512-LM+AS9v//7Y7lAlgTWW/cW6Sn5VOb3EsSkKQfQTzOW8FngB1FUskLLNEVkAYsTX9LjOWR3QlGjykJqCE6eXT/g==

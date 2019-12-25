@@ -86,7 +86,7 @@ function createWindow () {
           if (global.shared.devMode) {
             title += ' (Developer Mode)'
             template[2].submenu[0].label = 'Disable Developer Mode'
-            stopRunner()
+            // stopRunner()
 
             // inject refresh extension item
             template[2].submenu.push({
@@ -101,9 +101,8 @@ function createWindow () {
             if (template[2].submenu.length > 1) {
               template[2].submenu = template[2].submenu.slice(0, 1)
             }
-            startRunner()
+            // startRunner()
           }
-          console.log(template[2].submenu)
           Menu.setApplicationMenu(Menu.buildFromTemplate(template))
           win.setTitle(title)
         }

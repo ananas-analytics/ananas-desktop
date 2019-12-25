@@ -5,8 +5,9 @@ const util     = require('util')
 const YAML     = require('yaml')
 const ObjectID = require('bson-objectid')
 
-const log     = require('../log')
-const Project = require('./Project')
+const log           = require('../log')
+const Project       = require('./Project')
+const promiseHelper = require('../util/promise')
 
 import type { PlainEngine, ProjectMeta, PlainNodeMetadata } from './flowtypes'
 
@@ -95,7 +96,7 @@ class Workspace {
 		let tasks = this.projects.map(project => {
 			return Project.Load(project.path, metadata)
 		})
-		return Promise.all(tasks)
+    return promiseHelper.promiseAllWithoutError(tasks)
 	}
 
   saveExecutionEngines(location :string, engines :Array<PlainEngine>) :Promise<any> {

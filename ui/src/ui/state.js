@@ -90,6 +90,7 @@ const state = {
         settings: {}, // project based settings
         triggers: [],
         extensions: {},
+        metadata: {}, // project related metadata, installed from extension
       },
       // other projects here
     },

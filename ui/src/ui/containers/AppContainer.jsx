@@ -9,6 +9,7 @@ import { Collapsible } from 'grommet/components/Collapsible'
 import AnalysisBoard from './AnalysisBoard'
 import Variables from './Variables'
 import ExecutionEngine from './ExecutionEngine'
+import Extensions from './Extensions'
 import Scheduler from './Scheduler'
 import { DAGEditorSideBar, NodeEditorSideBar } from '../components/DAGEditorSideBar'
 
@@ -24,6 +25,7 @@ const renderActiveApp = activeApp => {
 			return <Variables />
     case 3:
       // return <Scheduler />
+      return <Extensions />
     default:
 			return null // <Box>AppIndex: {activeApp}</Box>
   }
@@ -65,11 +67,21 @@ const AppContainer = ({ activeApp, contextSideBarExpanded, showNodeEditor, nodeM
 }
 
 const mapStateToProps = state => {
+  let currentProjectId = state.model.currentProjectId
+  let currentProject = state.model.projects[currentProjectId]
+  if (!currentProject) {
+    currentProject = {}
+  }
+  let nodes = []
+  if (currentProject.metadata) {
+    nodes = currentProject.metadata.node || [] 
+  }
+
   return {
     activeApp: state.AppSideBar.activeMenu,
     contextSideBarExpanded: state.AppToolBar.contextSideBarExpanded,
     showNodeEditor: state.AnalysisBoard.showEditor,
-    nodeMetadata: state.model.metadata.node,
+    nodeMetadata: [ ...state.model.metadata.node, ... nodes],
   }
 }
 

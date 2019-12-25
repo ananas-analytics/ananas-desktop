@@ -41,6 +41,10 @@ export default class ProjectConfigurer extends Component<Props, State> {
       variables: [],
       settings: {},
       extensions: {},
+      metadata: {
+        node: [],
+        editor: {},
+      }
     },
   }
 

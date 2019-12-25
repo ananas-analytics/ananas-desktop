@@ -5,6 +5,8 @@ const util     = require('util')
 const readdirp = require('readdirp')
 const YAML     = require('yaml')
 
+const promiseHelper = require('../util/promise')
+
 class EditorMetadataLoader {
   static INSTANCE :?EditorMetadataLoader
 
@@ -34,7 +36,8 @@ class EditorMetadataLoader {
             }
           })
       })
-      return Promise.all(tasks)
+      // return Promise.all(tasks)
+      return promiseHelper.promiseAllWithoutError(tasks)
     })
     .then(editors => {
       let output = {}

@@ -5,6 +5,8 @@ const util     = require('util')
 const readdirp = require('readdirp')
 const YAML     = require('yaml')
 
+const promiseHelper = require('../util/promise')
+
 import type { PlainNodeMetadata } from './flowtypes'
 
 class MetadataLoader {
@@ -25,7 +27,8 @@ class MetadataLoader {
         return util.promisify(fs.readFile)(entry.fullPath) 
       })
       // FIXIT: Promise.all fails when one task fails
-      return Promise.all(tasks)
+      // return Promise.all(tasks)
+      return promiseHelper.promiseAllWithoutError(tasks)
     })
     .then(contents => {
       let output = {}

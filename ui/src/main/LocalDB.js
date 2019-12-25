@@ -138,6 +138,10 @@ class LocalDB {
         variables: project.variables,
         settings: {},
         extensions: project.extensions,
+        metadata: {
+          node: [],
+          editor: {},
+        },
       }
 
       resolve(plainProject)

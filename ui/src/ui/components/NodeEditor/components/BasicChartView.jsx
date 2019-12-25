@@ -100,7 +100,8 @@ export default class BasicChartView extends PureComponent<Props, State> {
           this.props.context.project.dag.connections,
           this.props.context.project.steps,
           dict,
-          this.props.context.step.id)
+          this.props.context.step.id,
+          this.props.context.project.extensions)
       })
       .then(res => {
         if (res.code !== 200) {

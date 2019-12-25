@@ -10,6 +10,9 @@ const mkdirp   = require('mkdirp')
 
 const log = require('../log')
 const { calculateLayout } = require('../util/dag')
+const MetadataLoader = require('./MetadataLoader')
+const EditorMetadataLoader = require('./EditorMetadataLoader')
+const ProjectMetadataLoader = require('./ProjectMetadataLoader')
 
 import type { PlainProject, PlainNodeMetadata } from './flowtypes'
 
@@ -35,6 +38,7 @@ class Project {
     delete projectData['path']
     delete projectData['settings']
     delete projectData['extensions']
+    delete projectData['metadata']
 
     // let dataframe = {schema: {}, data: []}
     // remove internal config property 
@@ -202,10 +206,15 @@ class Project {
       settings: {},
       triggers: [],
       extensions: {},
+      metadata: {
+        node: [],
+        editor: {},
+      },
     }
 
     // TODO: check file existance in an async way 
     if (!fs.existsSync(path.join(projectPath, 'ananas.yml'))) {
+      //$FlowFixMe
       let projectObject = new Project(projectPath, projectData)
       // mark this project as not valid, so that the workspace can ignore it
       projectObject.valid = false
@@ -294,20 +303,6 @@ class Project {
       .then(settings => {
         projectData.settings = settings
       })
-      /*
-      .then(() => {
-        return util.promisify(fs.readFile)(path.join(projectPath, 'triggers.yml'))
-      })
-      .then(data => {
-        return YAML.parse(data.toString())
-      })
-      .catch(()=> {
-        return Promise.resolve([])
-      })
-      .then(triggers => {
-        projectData.triggers = triggers
-      })
-      */
       .then(() => {
         return util.promisify(fs.readFile)(path.join(projectPath, 'extension.yml'))
       })
@@ -319,9 +314,15 @@ class Project {
       })
       .then(extensions => {
         projectData.extensions = extensions
+        return ProjectMetadataLoader.getInstance().loadFromDir(projectPath, extensions) 
+      })
+      .then(metadata => {
+        projectData.metadata = metadata
+        return projectData
+      })
+      .then(() => {
         return new Project(projectPath, projectData)
       })
-
   }
 }
 

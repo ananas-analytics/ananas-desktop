@@ -105,6 +105,12 @@ export type ProjectMeta = {
   path : string,
 }
 
+// UI metadata for node and editor display
+export type PlainUIMetadata = {
+  node   : Array<PlainNodeMetadata>,
+  editor : {[string]: any},
+}
+
 export type PlainProject = {
   id          : ID,
   path?       : string,
@@ -116,6 +122,7 @@ export type PlainProject = {
   settings    : Setting,
   triggers?   : Array<PlainTrigger>,
   extensions  : {[string] : PlainExtension},
+  metadata    : PlainUIMetadata,
   deleted?    : boolean,
 }
 
@@ -268,3 +275,8 @@ export type APIResponse<T> = {
   data?    : T,
 }
 
+export type PromiseAllResult<T> = {
+  success: bool,
+  result?: T,
+  error?: Error
+}

@@ -126,6 +126,7 @@ export default class VariablePicker extends Component<Props, State> {
           dict,
           this.props.context.step.id,
           engine,
+          this.props.context.project.extensions || {},
         )
       })
       .then(res => {
