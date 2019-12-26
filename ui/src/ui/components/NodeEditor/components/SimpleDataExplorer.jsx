@@ -38,7 +38,6 @@ class SimpleDataExplorer extends PureComponent {
   }
 
   componentDidMount() {
-		console.log('simple data explorer did mount')
     this.props.ee.on('CONFIG_UPDATED', this.handleConfigUpdated, this)
     this.handleMore(true)
   }
@@ -155,7 +154,6 @@ class SimpleDataExplorer extends PureComponent {
   }
 
   render() {
-		console.log('render simple data explorer')
     let minWidth = this.state.columns.length * 100
     if (this.state.data.length === 0) {
       return (<div>No data yet</div>)

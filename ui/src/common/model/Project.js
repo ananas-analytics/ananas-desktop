@@ -191,6 +191,36 @@ class Project {
 
   }
 
+  // $FlowFixMe
+  static getNodeFromLayoutItem(node, projectData, globalNodeMeta, projectNodeMeta) {
+    let step = projectData.steps[node.id] || {}
+    // merge global node metadata with project node metadata
+    let metadata = { ... projectNodeMeta, ... globalNodeMeta }
+
+    if (Object.prototype.hasOwnProperty.call(metadata, node.metadataId)) {
+      return {
+        id       : node.id,
+        label    : step.name,
+        type     : metadata[node.metadataId].type,
+        x        : node.x,
+        y        : node.y,
+        metadata : metadata[node.metadataId],
+      }
+    } else {
+      let metadataId = Project.getDebugMetadataId(step.type)
+      let metadataObj = { ... metadata[metadataId] }
+      metadataObj.id = step.metadataId
+      return {
+        id       : node.id,
+        label    : step.name,
+        type     : Project.getMetadataType(step.type),
+        x        : node.x,
+        y        : node.y,
+        metadata : metadataObj,
+      }
+    }
+  }
+
   static Load(projectPath: string, metadata: {[string]: PlainNodeMetadata}) :Promise<Project> {
     // default project
     let projectData = {
@@ -237,6 +267,29 @@ class Project {
           projectData.id = ObjectID.generate()
         }
       })
+      // load extensions
+      .then(() => {
+        return util.promisify(fs.readFile)(path.join(projectPath, 'extension.yml'))
+      })
+      .then(data => {
+        return YAML.parse(data.toString())
+      })
+      .catch(()=> {
+        return Promise.resolve({})
+      })
+      .then(extensions => {
+        projectData.extensions = extensions
+        return extensions
+      })
+      // load metadata
+      .then(extensions => {
+        return ProjectMetadataLoader.getInstance().loadFromDir(projectPath, extensions) 
+      })
+      .then(metadata => {
+        projectData.metadata = metadata
+        return projectData
+      })
+      // load layout or calculate it
       .then(() => {
          return util.promisify(fs.readFile)(path.join(projectPath, 'layout.yml'))
       })
@@ -259,37 +312,18 @@ class Project {
       })
       .then(() => {
         return layout
-          //.filter(node => metadata.hasOwnProperty(node.metadataId))
           .map(node => {
-            let step = projectData.steps[node.id] || {}
-            if (Object.prototype.hasOwnProperty.call(metadata, node.metadataId)) {
-              return {
-                id       : node.id,
-                label    : step.name,
-                type     : metadata[node.metadataId].type,
-                x        : node.x,
-                y        : node.y,
-                metadata : metadata[node.metadataId],
-              }
-            } else {
-              let metadataId = Project.getDebugMetadataId(step.type)
-              let metadataObj = { ... metadata[metadataId] }
-              metadataObj.id = step.metadataId
-              return {
-                id       : node.id,
-                label    : step.name,
-                type     : Project.getMetadataType(step.type),
-                x        : node.x,
-                y        : node.y,
-                metadata : metadataObj,
+            let projectNodeMeta = {}
+            for (let n of projectData.metadata.node) {
+              projectNodeMeta[n.id] = n
             }
-            
-          }
-        })  
+            return Project.getNodeFromLayoutItem(node, projectData, metadata, projectNodeMeta) 
+          })  
       })
       .then(nodes => {
         projectData.dag.nodes = nodes
       })
+      // load settings
       .then(() => {
         return util.promisify(fs.readFile)(path.join(projectPath, 'settings.yml'))
       })
@@ -303,23 +337,7 @@ class Project {
       .then(settings => {
         projectData.settings = settings
       })
-      .then(() => {
-        return util.promisify(fs.readFile)(path.join(projectPath, 'extension.yml'))
-      })
-      .then(data => {
-        return YAML.parse(data.toString())
-      })
-      .catch(()=> {
-        return Promise.resolve({})
-      })
-      .then(extensions => {
-        projectData.extensions = extensions
-        return ProjectMetadataLoader.getInstance().loadFromDir(projectPath, extensions) 
-      })
-      .then(metadata => {
-        projectData.metadata = metadata
-        return projectData
-      })
+            // finally return project object
       .then(() => {
         return new Project(projectPath, projectData)
       })

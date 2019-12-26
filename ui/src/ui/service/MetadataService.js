@@ -37,7 +37,6 @@ export default class MetadataService {
     }
     return proxy.getEditorMetadata() 
       .then(metadata => {
-        console.log('==========', metadata)
         this.editorMetadata = metadata
         return metadata
       })

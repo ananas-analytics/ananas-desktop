@@ -3095,7 +3095,7 @@ electron-builder@^21.2.0:
     update-notifier "^3.0.1"
     yargs "^13.3.0"
 
-electron-log@^3.0.1:
+electron-log@^3.0.9:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-3.0.9.tgz#53ff1fcdb2f3e4a73ea7096d2f7204121109ec6f"
   integrity sha512-kfV4riUqW8uooYLAfrlB3EJW66W29ePipJU4/Fm8UxQekVNcR2qHI/0tiJX3oWM79VdAUiiYqL9V49lhnSIO8g==

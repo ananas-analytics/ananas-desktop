@@ -330,7 +330,7 @@ export default class NodeEditor extends Component<Props, State> {
   }
 
   renderComponent(key: string, components: {[string]:any}) {
-    if (!components.hasOwnProperty(key)) {
+    if (!Object.prototype.hasOwnProperty.call(components, key)) {
       return null
     }
     let view = components[key]

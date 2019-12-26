@@ -17,7 +17,6 @@ const StyledCodeMirror = styled(CodeMirror)`
 `
 
 export default ({config={}, label=null, readOnly=false, tabSize=2, devMode=false, onChange}) => {
-  console.log(tabSize, devMode, label)
   let metaConfs = {}
   let strValue = '{}'
   if (!devMode) {

@@ -61,7 +61,7 @@
     "d3-array": "^2.0.3",
     "dagre": "^0.8.4",
     "deepmerge": "^3.1.0",
-    "electron-log": "^3.0.1",
+    "electron-log": "^3.0.9",
     "graphlib": "^2.1.7",
     "grommet": "^2.9.0",
     "grommet-icons": "^4.4.0",

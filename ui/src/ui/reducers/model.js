@@ -213,7 +213,6 @@ function handleSubmitNodeConfig(state, action) {
 
   newStep.expressions = action.expressions
   // update variables in the config
-  
   currentProject.steps[action.stepId] = newStep
   newState.projects[currentProjectId] = currentProject
   return newState

@@ -14,8 +14,6 @@ describe('load project metadata', () => {
       }
     })
 
-    console.log(metadata)
-
     expect(metadata.node.length).toBe(1)
     expect(Object.values(metadata.editor).length).toBe(1)
     expect(metadata.node[0].id).toBe('org.ananas.extension.example.transform.sql')

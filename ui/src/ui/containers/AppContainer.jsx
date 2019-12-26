@@ -81,7 +81,7 @@ const mapStateToProps = state => {
     activeApp: state.AppSideBar.activeMenu,
     contextSideBarExpanded: state.AppToolBar.contextSideBarExpanded,
     showNodeEditor: state.AnalysisBoard.showEditor,
-    nodeMetadata: [ ...state.model.metadata.node, ... nodes],
+    nodeMetadata: [ ... nodes, ...state.model.metadata.node ],
   }
 }
 

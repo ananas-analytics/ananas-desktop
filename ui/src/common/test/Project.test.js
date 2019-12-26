@@ -56,8 +56,6 @@ describe('save and load project', () => {
       prefix: 'ananas_test' 
     }) 
 
-    // console.log(tmpPath)
-
     let plainProject = {
       id: 'example-project',
       name: 'Example Project',

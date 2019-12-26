@@ -59,16 +59,18 @@ function submitNodeConfig(stepId, config) {
 
     let state = getState()
     let projectId = state.model.currentProjectId
-    let project = state.model.projects[projectId]
+    let project = { ... state.model.projects[projectId] }
+    delete project['metadata']
 
     modelService.saveProject(project)
       .then(()=>{
         // do nothing for now
+        console.log('save project done!')
       })
       .catch(err=>{
         // do nothing for now
+        console.error(err)
       })
-
   }
 }
 
