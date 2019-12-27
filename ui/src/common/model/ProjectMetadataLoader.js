@@ -33,20 +33,26 @@ class ProjectMetadataLoader {
         // copy entries
         metaEntries = entries
         // read metadata
-        let tasks = entries.filter(entry => {
+        let tasks = entries.map(entry => {
           for (let name in extensions) {
             if (entry.path.startsWith(path.join(name, 'metadata'))) {
-              return true
+              return {
+                entry,
+                extension: name,
+              }
             }
           }
-          return false
-        }).map(entry => {
-          return util.promisify(fs.readFile)(entry.fullPath) 
+          return null
+        })
+        .filter(item => item !== null)
+        .map(item => {
+          return util.promisify(fs.readFile)(item.entry.fullPath) 
             .then(content => {
-              if (entry.basename.endsWith('json')) {
-                return JSON.parse(content.toString())
+              let txt = this.injectResourceRoot(content.toString(), dir, item.extension)
+              if (item.entry.basename.endsWith('json')) {
+                return JSON.parse(txt)
               } else {
-                return YAML.parse(content.toString())
+                return YAML.parse(txt)
               }
             })
         })
@@ -92,6 +98,11 @@ class ProjectMetadataLoader {
         output.editor = editors
         return output
       })
+  }
+
+  injectResourceRoot(content: string, projectPath: string, extension: string) :string {
+    let resLocation = 'file://' + path.join(projectPath, 'metadata', extension, 'resource')
+    return content.replace(/\${resource}/g, resLocation)
   }
 
   static getInstance() :ProjectMetadataLoader {

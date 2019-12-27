@@ -69,7 +69,10 @@ const NodeTemplate = ({
         onClick={() => onClick()} 
       >
         <Box pad={ selected ? '18px' : '25px' } fill>
-          <Image src={icon} fit='cover' /> 
+          <Image 
+            src={icon}
+            fit='cover'
+            fallback='images/question.svg' />
         </Box>
       </Content>
       { /*
