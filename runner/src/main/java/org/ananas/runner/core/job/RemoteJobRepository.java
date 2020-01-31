@@ -1,19 +1,18 @@
 package org.ananas.runner.core.job;
 
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.util.*;
 import org.ananas.runner.core.common.JsonUtil;
 import org.ananas.runner.misc.HttpClient;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 public class RemoteJobRepository implements JobRepository {
 
   private static RemoteJobRepository singleton;
 
-  private RemoteJobRepository() {
-  }
+  public static final String URL = "http://127.0.0.1:3004%s";
+
+  private RemoteJobRepository() {}
 
   public static RemoteJobRepository Of() {
     if (singleton == null) {
@@ -26,12 +25,12 @@ public class RemoteJobRepository implements JobRepository {
   public Job upsertJob(Job job) {
     try {
       return HttpClient.PUT(
-        "http://locahost:3004/v1/job",
-        new HashMap<>(),
-        JsonUtil.toJson(job),
-        conn -> {
-          return null;
-        });
+          String.format(URL, "/v1/job"),
+          new HashMap<>(),
+          job,
+          conn -> {
+            return JsonUtil.fromJson(conn.getInputStream(), Job.class);
+          });
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -41,11 +40,11 @@ public class RemoteJobRepository implements JobRepository {
   public Job getJob(String id) {
     try {
       return HttpClient.GET(
-        "http://locahost:3004/v1/job",
-        ImmutableMap.of("id", id),
-        conn -> {
-          return JsonUtil.fromJson(conn.getInputStream(), Job.class);
-        });
+          String.format(URL, "/v1/job?id=" + id),
+          new HashMap<>(),
+          conn -> {
+            return JsonUtil.fromJson(conn.getInputStream(), Job.class);
+          });
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -54,12 +53,15 @@ public class RemoteJobRepository implements JobRepository {
   @Override
   public Set<Job> getJobs(int offset, int n) {
     try {
-      return HttpClient.GET(
-        "http://locahost:3004/v1/jobs",
-        new HashMap<>(),
-        conn -> {
-          return JsonUtil.fromJson(conn.getInputStream(), Set.class);
-        });
+      return new HashSet<>(
+          Arrays.asList(
+              HttpClient.GET(
+                      String.format(URL, "/v1/jobs"),
+                      ImmutableMap.of(),
+                      conn -> {
+                        return JsonUtil.fromJsonToApiResponse(conn.getInputStream(), Job[].class);
+                      })
+                  .data));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -67,27 +69,48 @@ public class RemoteJobRepository implements JobRepository {
 
   @Override
   public List<Job> getJobsByScheduleId(String triggerId, int offset, int n) {
-    return null;
+    try {
+      return Arrays.asList(
+          HttpClient.GET(
+                  String.format(URL, String.format("/v1/schedule/%s/jobs", triggerId)),
+                  ImmutableMap.of(),
+                  conn -> {
+                    return JsonUtil.fromJsonToApiResponse(conn.getInputStream(), Job[].class);
+                  })
+              .data);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
   public List<Job> getJobsByGoal(String goalId, int offset, int n) {
-    return null;
+    try {
+      return Arrays.asList(
+          HttpClient.GET(
+                  String.format(URL, String.format("/v1/goal/%s/jobs", goalId)),
+                  ImmutableMap.of(),
+                  conn -> {
+                    return JsonUtil.fromJsonToApiResponse(conn.getInputStream(), Job[].class);
+                  })
+              .data);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
   public void deleteJob(String jobId) {
     try {
       HttpClient.PUT(
-        "http://locahost:3004/v1/job/delete",
-        ImmutableMap.of("id", jobId),
-        "",
-        conn -> {
-          return null;
-        });
+          String.format(URL, String.format("/v1/%s/jobs", jobId)),
+          ImmutableMap.of("id", jobId),
+          "",
+          conn -> {
+            return null;
+          });
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
-
 }

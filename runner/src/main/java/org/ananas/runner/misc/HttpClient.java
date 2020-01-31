@@ -6,14 +6,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 import org.ananas.runner.core.common.JsonUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpClient {
+
+  private static final Logger LOG = LoggerFactory.getLogger(HttpClient.class);
 
   public static <T> T handle(
       URL url, Map<String, String> params, String method, Object body, RequestHandler<T> handler)
       throws IOException {
     // #https://cloud.google.com/appengine/docs/standard/java/issue-requests
-    // #GET http://localhost:3000/api/v1/pipeline/$PIPELINE_ID/steps
     HttpURLConnection conn = null;
     try {
       conn = (HttpURLConnection) url.openConnection();
@@ -21,6 +24,7 @@ public class HttpClient {
       conn.setRequestMethod(method);
       if (params != null) {
         for (Map.Entry<String, String> param : params.entrySet()) {
+          LOG.debug("Setting param {} ", param.toString());
           conn.setRequestProperty(param.getKey(), param.getValue());
         }
       }
@@ -33,6 +37,13 @@ public class HttpClient {
       }
 
       if (conn.getResponseCode() != 200) {
+        LOG.error(
+            "{} {} [params={}, body= {}] status ",
+            method,
+            url.toString(),
+            params,
+            body,
+            conn.getResponseCode());
         throw new RuntimeException(
             "Cannot connect to "
                 + url
@@ -44,6 +55,13 @@ public class HttpClient {
                 + conn.getResponseMessage());
       }
     } catch (Exception e) {
+      LOG.error(
+          "{} {} [params={}, body= {}] error : ",
+          method,
+          url.toString(),
+          params,
+          body,
+          e.getStackTrace());
       throw new RuntimeException(
           "Cannot connect to "
               + url
@@ -57,6 +75,12 @@ public class HttpClient {
     try {
       return handler.handler(conn);
     } finally {
+      LOG.debug(
+          "HTTP Request - {} {} [params={}, body= {}] status OK",
+          method,
+          url.toString(),
+          params,
+          body);
       conn.disconnect();
     }
   }

@@ -39,6 +39,11 @@
         <appender-ref ref="FILE"/>
     </logger>
 
+    <logger name="org.ananas.runner.misc.HttpClient" level="debug"
+            additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
     <root level="error">
         <appender-ref ref="FILE"/>
     </root>

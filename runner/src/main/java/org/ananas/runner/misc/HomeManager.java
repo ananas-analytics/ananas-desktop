@@ -23,6 +23,4 @@ public class HomeManager {
   public static String getHomeExtensionPath() {
     return getHomeFilePath(EXTENSION_FOLDER);
   }
-
-
 }

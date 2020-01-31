@@ -28,7 +28,7 @@ public class JsonUtil {
   }
 
   public static String toJson(Object object) {
-    return toJson(object, true);
+    return toJson(object, false);
   }
 
   public static <T> T fromJson(String in, Class<T> type) throws IOException {
