@@ -22,12 +22,12 @@ const renderActiveApp = activeApp => {
     case 1:
       return <ExecutionEngine />
     case 2:
-			return <Variables />
+      return <Variables />
     case 3:
       // return <Scheduler />
       return <Extensions />
     default:
-			return null // <Box>AppIndex: {activeApp}</Box>
+      return null // <Box>AppIndex: {activeApp}</Box>
   }
 }
 
@@ -39,7 +39,7 @@ const renderActiveContextSideBar = (activeApp, options) => {
           .filter(item => {
             if (proxy.getSharedVariable('devMode')) {
               return true
-            } 
+            }
             return !item.id.startsWith('org.ananas.dev')
           })
         return <DAGEditorSideBar items={items} />
@@ -47,7 +47,7 @@ const renderActiveContextSideBar = (activeApp, options) => {
         return <NodeEditorSideBar />
       }
     default:
-			return null // <Box>AppIndex: {activeApp}</Box>
+      return null // <Box>AppIndex: {activeApp}</Box>
   }
 }
 
@@ -74,7 +74,7 @@ const mapStateToProps = state => {
   }
   let nodes = []
   if (currentProject.metadata) {
-    nodes = currentProject.metadata.node || [] 
+    nodes = currentProject.metadata.node || []
   }
 
   return {

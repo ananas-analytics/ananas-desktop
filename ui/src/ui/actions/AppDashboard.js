@@ -1,6 +1,7 @@
 // @flow
 
 import actions from './types'
+import Message from './Message'
 
 import type { ID, PlainProject, Dispatch, GetState, ThunkActionArgs } from '../../common/model/flowtypes.js'
 
@@ -21,17 +22,12 @@ function newProject(project: PlainProject) {
 }
 
 function updateProject(project: PlainProject) {
-  return (dispatch: Dispatch, getState: GetState, {modelService}: ThunkActionArgs) => {
-    modelService.saveProject(project)
-      .then(() => {
-        dispatch({
-          type: actions.UPDATE_PROJECT,
-          project,
-        })
-      })
-      .catch(err => {
-        // TODO:
-      })
+  return async (dispatch: Dispatch, getState: GetState, {modelService}: ThunkActionArgs) => {
+    try {
+      await modelService.saveProject(project, true) // shallow save
+    } catch (err) {
+      // TODO:
+    }
   }
 }
 
@@ -45,13 +41,13 @@ function deleteProject(projectId: ID) {
         })
       })
       .catch(err => {
-        // TODO: 
+        // TODO:
       })
   }
 }
 
 function changeCurrentProject(id: string) {
-  return (dispatch: Dispatch, getState: GetState, {modelService, variableService}: ThunkActionArgs) => {
+  return async (dispatch: Dispatch, getState: GetState, {modelService, variableService}: ThunkActionArgs) => {
     if (!id) {
       dispatch({
         type: actions.CHANGE_PROJECT,
@@ -61,20 +57,18 @@ function changeCurrentProject(id: string) {
 
     variableService.clearCache()
     // first load the current project
-    modelService.loadProject(id)
-      .then((project)=>{
-        // clear variable cache
-        dispatch(projectLoaded(project))
-
-        dispatch({
-          type: actions.CHANGE_PROJECT,
-          id,
-          project,
-        })
+    try {
+      let project = await modelService.loadProject(id)
+      // clear variable cache
+      dispatch(projectLoaded(project))
+      dispatch({
+        type: actions.CHANGE_PROJECT,
+        id,
+        project,
       })
-      .catch(err=>{
-        console.error(err)
-      })
+    } catch(err){
+      Message.dispatchDisplayMessage(dispatch, id, err.message, 'danger', {})
+    }
   }
 }
 

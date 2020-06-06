@@ -1,15 +1,14 @@
-// @flow 
+// @flow
 
-const fs       = require('fs')
-const util     = require('util')
-const readdirp = require('readdirp')
-const YAML     = require('yaml')
-
-const promiseHelper = require('../util/promise')
+import fs from 'fs'
+import util from 'util'
+import readdirp from 'readdirp'
+import YAML from 'yaml'
+import promiseHelper from'../util/promise'
 
 import type { PlainNodeMetadata } from './flowtypes'
 
-class MetadataLoader {
+export default class MetadataLoader {
   static INSTANCE :?MetadataLoader
 
   metadata :?{[string]: PlainNodeMetadata}
@@ -21,10 +20,10 @@ class MetadataLoader {
   loadFromDir(dir: string) :Promise<{[string]: PlainNodeMetadata}> {
     return readdirp.promise(dir, {
       fileFilter: ['*.yaml', '*.yml'],
-    }) 
+    })
     .then(entries => {
       let tasks = entries.map(entry => {
-        return util.promisify(fs.readFile)(entry.fullPath) 
+        return util.promisify(fs.readFile)(entry.fullPath)
       })
       // FIXIT: Promise.all fails when one task fails
       // return Promise.all(tasks)
@@ -46,12 +45,11 @@ class MetadataLoader {
     if (MetadataLoader.INSTANCE !== null &&
         MetadataLoader.INSTANCE !== undefined) {
       return MetadataLoader.INSTANCE
-    } 
+    }
 
     MetadataLoader.INSTANCE = new MetadataLoader()
     return MetadataLoader.INSTANCE
   }
 
-} 
+}
 
-module.exports = MetadataLoader

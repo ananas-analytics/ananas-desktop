@@ -23,23 +23,21 @@ export default class MetadataService {
     if (this.nodeMetadata) {
       return Promise.resolve(this.nodeMetadata)
     }
-    return proxy.getNodeMetadata() 
+    return proxy.getNodeMetadata()
       .then(metadata => {
         this.nodeMetadata = metadata
         return metadata
       })
-    
   }
 
   loadEditorMetadata() :Promise<{[string]:any}>{
     if (this.editorMetadata) {
       return Promise.resolve(this.editorMetadata)
     }
-    return proxy.getEditorMetadata() 
+    return proxy.getEditorMetadata()
       .then(metadata => {
         this.editorMetadata = metadata
         return metadata
       })
-    
   }
 }

@@ -1,10 +1,10 @@
 // @flow
 
-const dagre = require('dagre')
+import dagre from 'dagre'
 
 import type { PlainStep, PlainConnection } from '../model/flowtypes'
 
-function calculateLayout(steps: Array<PlainStep>, connections: Array<PlainConnection>) {
+export function calculateLayout(steps: Array<PlainStep>, connections: Array<PlainConnection>) {
   let g = new dagre.graphlib.Graph()
 
   g.setGraph({
@@ -13,9 +13,9 @@ function calculateLayout(steps: Array<PlainStep>, connections: Array<PlainConnec
   g.setDefaultEdgeLabel(function() { return {} })
 
   steps.forEach(step => {
-    g.setNode(step.id, { 
+    g.setNode(step.id, {
       id: step.id,
-      metadataId: step.metadataId, 
+      metadataId: step.metadataId,
       width: 100,
       height: 100,
     })
@@ -30,7 +30,3 @@ function calculateLayout(steps: Array<PlainStep>, connections: Array<PlainConnec
   return g.nodes().map(v => g.node(v))
 }
 
-
-module.exports = {
-  calculateLayout,
-}

@@ -1,10 +1,10 @@
-const fs = require('fs')
-const path = require('path')
-const util = require('util')
-const tmp = require('tmp')
-const del = require('del')
-const Project = require('../model/Project')
-const MetadataLoader = require('../model/MetadataLoader')
+import fs from 'fs'
+import path from 'path'
+import util from 'util'
+import tmp from 'tmp'
+import del from 'del'
+import Project from '../model/Project'
+import MetadataLoader from '../model/MetadataLoader'
 
 // node metadata
 let metadatas = null
@@ -19,7 +19,7 @@ describe('load project', () => {
   test('should load project from a directory', async () => {
     let projectPath = path.join(__dirname, 'resources/exampleProject')
     let project = await Project.Load(projectPath, metadatas)
-    
+
     let plainProject = project.toPlainObject()
     expect(plainProject.id).toBe('example-project')
     expect(plainProject.name).toBe('Example Project')
@@ -32,7 +32,7 @@ describe('load project', () => {
   test('should calculate layout if not exist', async () => {
     let projectPath = path.join(__dirname, 'resources/exampleProjectWithoutLayout')
     let project = await Project.Load(projectPath, metadatas)
-    
+
     let plainProject = project.toPlainObject()
     expect(plainProject.id).toBe('example-project')
     expect(plainProject.name).toBe('Example Project')
@@ -52,9 +52,9 @@ describe('save and load project', () => {
   })
 
   test('should save and load project', async () => {
-    let tmpPath = await util.promisify(tmp.dir)({ 
-      prefix: 'ananas_test' 
-    }) 
+    let tmpPath = await util.promisify(tmp.dir)({
+      prefix: 'ananas_test'
+    })
 
     let plainProject = {
       id: 'example-project',
@@ -81,7 +81,7 @@ describe('save and load project', () => {
                   format: 'csv',
                 }
               },
-              type: 'Source', 
+              type: 'Source',
             },
             type: 'Source',
             x: 50,

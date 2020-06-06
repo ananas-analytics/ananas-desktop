@@ -1,22 +1,23 @@
 // @flow
 
-const fs       = require('fs')
-const path     = require('path')
-const util     = require('util')
-const YAML     = require('yaml')
-const ObjectID = require('bson-objectid')
-const mkdirp   = require('mkdirp')
+import fs from 'fs'
+import path from 'path'
+import util from 'util'
+import YAML from 'yaml'
+import ObjectID from 'bson-objectid'
+import mkdirp from 'mkdirp'
 
+const fsPromises = fs.promises
 
-const log = require('../log')
-const { calculateLayout } = require('../util/dag')
-const MetadataLoader = require('./MetadataLoader')
-const EditorMetadataLoader = require('./EditorMetadataLoader')
-const ProjectMetadataLoader = require('./ProjectMetadataLoader')
+import log from '../log'
+import { calculateLayout } from '../util/dag'
+import ProjectMetadataLoader from './ProjectMetadataLoader'
+import ExtensionHelper from './ExtensionHelper'
+
 
 import type { PlainProject, PlainNodeMetadata } from './flowtypes'
 
-class Project { 
+export default class Project {
   path: string
   project: PlainProject
   valid: boolean
@@ -27,11 +28,11 @@ class Project {
     this.valid = true
   }
 
-  save() :Promise<any> { 
+  async save(shallowSave: boolean) :Promise<any> {
     log.debug('save project', this.project.id, 'to', this.path)
     let description = this.project.description
     let settings = this.project.settings
-    let projectData = { ... this.project }  
+    let projectData = { ... this.project }
     let extensions = projectData.extensions || {}
 
     delete projectData['description']
@@ -41,7 +42,7 @@ class Project {
     delete projectData['metadata']
 
     // let dataframe = {schema: {}, data: []}
-    // remove internal config property 
+    // remove internal config property
     let newSteps = {}
     for (let k in projectData.steps) {
       if (!projectData.steps[k].deleted) {
@@ -51,9 +52,9 @@ class Project {
         delete newSteps[k]['variables']
         // clean up dataframe
         if (newSteps[k].hasOwnProperty('dataframe')) {
-          newSteps[k].dataframe.data = [] 
+          newSteps[k].dataframe.data = []
           /*
-          if (typeof newSteps[k].dataframe.schema === 'object' && 
+          if (typeof newSteps[k].dataframe.schema === 'object' &&
               Array.isArray(newSteps[k].dataframe.schema.fields)) {
             newSteps[k].dataframe.schema.fields = newSteps[k].dataframe.schema.fields.map(field => {
               return {
@@ -94,6 +95,10 @@ class Project {
 
     // remove nodes in dag and build layout
     let nodes = projectData.dag ? projectData.dag.nodes : []
+    if (!nodes) {
+      nodes = []
+    }
+    log.debug('prepare layout to save', nodes)
     let layout = nodes.map(node => {
       return {
         id: node.id,
@@ -110,34 +115,28 @@ class Project {
     let projectContent = YAML.stringify(projectData)
 
     let ananasFile = path.join(this.path, 'ananas.yml')
-    return util.promisify(mkdirp)(this.path)
-      .then(() => {
-        // save ananas.yml
-        return util.promisify(fs.writeFile)(ananasFile, projectContent, 'utf8')
-      })
-      .then(() => {
-        // save readme
-        return util.promisify(fs.writeFile)(path.join(this.path, 'README.md'), description, 'utf8')
-      })
-      .then(() => {
-        return util.promisify(fs.writeFile)(path.join(this.path, 'settings.yml'), YAML.stringify(settings), 'utf8')
-      })
-      .then(() => {
-        // save layout
-        return util.promisify(fs.writeFile)(path.join(this.path, 'layout.yml'), YAML.stringify(layout), 'utf8')
-      })
-      .then(() => {
-        return util.promisify(fs.writeFile)(path.join(this.path, 'triggers.yml'), YAML.stringify(triggers), 'utf8')
-      })
-      .then(() => {
-        return util.promisify(fs.writeFile)(path.join(this.path, 'extension.yml'), YAML.stringify(extensions), 'utf8')
-      })
+
+    log.debug('writing files ...')
+
+    await util.promisify(mkdirp)(this.path)
+    await util.promisify(fs.writeFile)(ananasFile, projectContent, 'utf8')
+    await util.promisify(fs.writeFile)(path.join(this.path, 'README.md'), description, 'utf8')
+    if (!shallowSave) {
+      await util.promisify(fs.writeFile)(path.join(this.path, 'settings.yml'), YAML.stringify(settings), 'utf8')
+      await util.promisify(fs.writeFile)(path.join(this.path, 'layout.yml'), YAML.stringify(layout), 'utf8')
+      await util.promisify(fs.writeFile)(path.join(this.path, 'triggers.yml'), YAML.stringify(triggers), 'utf8')
+      await util.promisify(fs.writeFile)(path.join(this.path, 'extension.yml'), YAML.stringify(extensions), 'utf8')
+    } else {
+      log.debug('shallow save, ignore settings, layout, and extensions')
+    }
+
+    log.debug('save done.')
   }
 
   toPlainObject() :PlainProject {
     // return validate project
     if (!this.project.hasOwnProperty('dag')) {
-      this.project.dag = { 
+      this.project.dag = {
         nodes: [],
         connections: [],
       }
@@ -163,7 +162,7 @@ class Project {
   static getMetadataType(type: string) :string {
     switch(type) {
       case 'connector':
-        return 'Source' 
+        return 'Source'
       case 'transformer':
         return 'Transform'
       case 'loader':
@@ -179,9 +178,9 @@ class Project {
     let prefix = 'org.ananas.dev.'
     switch(type) {
       case 'connector':
-        return prefix + mode + '.source' 
+        return prefix + mode + '.source'
       case 'transformer':
-        return prefix + mode + '.transform' 
+        return prefix + mode + '.transform'
       case 'loader':
         return prefix + mode + '.destination'
       case 'viewer':
@@ -221,11 +220,13 @@ class Project {
     }
   }
 
-  static Load(projectPath: string, metadata: {[string]: PlainNodeMetadata}) :Promise<Project> {
+  static async Load(projectPath: string, metadata: {[string]: PlainNodeMetadata}, shallowLoad: boolean) :Promise<Project> {
+    // $FlowFixMe
+    log.debug(`Load project ${projectPath}. shallowMode: ${shallowLoad}`)
     // default project
     let projectData = {
       id: ObjectID.generate(),
-      name: 'untitled project', 
+      name: 'untitled project',
       description: '# untitled project',
       dag: {
         connections: [],
@@ -242,7 +243,87 @@ class Project {
       },
     }
 
-    // TODO: check file existance in an async way 
+    try {
+      await fsPromises.access(path.join(projectPath, 'ananas.yml'), fs.constants.F_OK)
+    } catch (err) {
+      let projectObject = new Project(projectPath, projectData)
+      // mark this project as not valid, so that the workspace can ignore it
+      projectObject.valid = false
+      return projectObject
+    }
+
+    let layout = []
+    // ananas.yml and readme
+    try {
+      const ananasYml = await fsPromises.readFile(path.join(projectPath, 'ananas.yml'))
+      projectData = YAML.parse(ananasYml.toString())
+      const readMeYml  = await fsPromises.readFile(path.join(projectPath, 'README.md'))
+      projectData.description = readMeYml.toString()
+    } catch (err) {
+      log.warn(err.message)
+      projectData.description = ''
+    }
+    if (!projectData.id) {
+      projectData.id = ObjectID.generate()
+    }
+
+    // extension
+    try {
+      const extensionYml = await fsPromises.readFile(path.join(projectPath, 'extension.yml'))
+      projectData.extensions = YAML.parse(extensionYml.toString())
+    } catch (err) {
+      log.info(err.message)
+      projectData.extensions = {}
+    }
+
+    if (!shallowLoad) {
+      // Do NOT install extension in shallowLoad mode
+      await ExtensionHelper.MakeSureAllExtensionsInstalled(projectPath, projectData.extensions)
+      // $FlowFixMe
+      projectData.metadata = await ProjectMetadataLoader.getInstance().loadFromDir(projectPath,
+        projectData.extensions)
+
+      // layout
+      try {
+        const layoutYml = await fsPromises.readFile(path.join(projectPath, 'layout.yml'))
+        layout = YAML.parse(layoutYml.toString())
+        if (!layout) layout = []
+      } catch(err) {
+        // calculate the layout
+        log.error('failed to load layout, now calculating it')
+        let stepList = []
+        for (let key in projectData.steps) {
+          stepList.push(projectData.steps[key])
+        }
+        layout = calculateLayout(stepList, projectData.dag.connections)
+        log.debug(layout)
+      }
+      const nodes = layout.map(node => {
+          let projectNodeMeta = {}
+          for (let n of projectData.metadata.node) {
+            projectNodeMeta[n.id] = n
+          }
+          return Project.getNodeFromLayoutItem(node, projectData, metadata, projectNodeMeta)
+        })
+      projectData.dag.nodes = nodes
+    }
+
+
+    // settings
+    try {
+      const settingsYml = await fsPromises.readFile(path.join(projectPath, 'settings.yml'))
+      const settings = YAML.parse(settingsYml.toString())
+      projectData.settings = settings
+    } catch (err) {
+      projectData.settings = {}
+    }
+
+    // await new Promise(resolve => setTimeout(resolve, 5000))
+
+    return new Project(projectPath, projectData)
+
+    /*
+    // TODO: check file existance in an async way
     if (!fs.existsSync(path.join(projectPath, 'ananas.yml'))) {
       //$FlowFixMe
       let projectObject = new Project(projectPath, projectData)
@@ -283,7 +364,9 @@ class Project {
       })
       // load metadata
       .then(extensions => {
-        return ProjectMetadataLoader.getInstance().loadFromDir(projectPath, extensions) 
+        console.log('--------------> load metadata from extensions')
+        console.log(extensions)
+        return ProjectMetadataLoader.getInstance().loadFromDir(projectPath, extensions)
       })
       .then(metadata => {
         projectData.metadata = metadata
@@ -306,7 +389,7 @@ class Project {
         for (let key in projectData.steps) {
           stepList.push(projectData.steps[key])
         }
-        layout = calculateLayout(stepList, projectData.dag.connections) 
+        layout = calculateLayout(stepList, projectData.dag.connections)
         log.debug(layout)
         return Promise.resolve('')
       })
@@ -317,8 +400,8 @@ class Project {
             for (let n of projectData.metadata.node) {
               projectNodeMeta[n.id] = n
             }
-            return Project.getNodeFromLayoutItem(node, projectData, metadata, projectNodeMeta) 
-          })  
+            return Project.getNodeFromLayoutItem(node, projectData, metadata, projectNodeMeta)
+          })
       })
       .then(nodes => {
         projectData.dag.nodes = nodes
@@ -328,11 +411,11 @@ class Project {
         return util.promisify(fs.readFile)(path.join(projectPath, 'settings.yml'))
       })
       .then(data => {
-        let settings = YAML.parse(data.toString()) 
+        let settings = YAML.parse(data.toString())
         return settings
       })
       .catch(() => {
-        return Promise.resolve({}) 
+        return Promise.resolve({})
       })
       .then(settings => {
         projectData.settings = settings
@@ -341,7 +424,6 @@ class Project {
       .then(() => {
         return new Project(projectPath, projectData)
       })
+      */
   }
 }
-
-module.exports = Project

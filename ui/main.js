@@ -1,16 +1,18 @@
-const { app, BrowserWindow, Menu, globalShortcut } = require('electron')
-const path = require('path')
-const { spawn } = require('child_process')
+import { app, BrowserWindow, Menu } from 'electron'
+import path from 'path'
+import { spawn } from 'child_process'
 
-const log = require('./src/common/log')
+import log from './src/common/log'
 
-const { init, loadWorkspace, checkUpdateWrapper } = require('./src/main')
 
-const { trackEvent } = require('./src/common/util/analytics')
+import { init, loadWorkspace, checkUpdateWrapper } from './src/main'
 
-const MetadataLoader = require('./src/common/model/MetadataLoader')
-const EditorMetadataLoader = require('./src/common/model/EditorMetadataLoader')
-const { getResourcePath } = require('./src/main/util')
+import { trackEvent } from'./src/common/util/analytics'
+
+import MetadataLoader from './src/common/model/MetadataLoader'
+import EditorMetadataLoader from './src/common/model/EditorMetadataLoader'
+import ProjectPersister from './src/common/model/ProjectPersister'
+import { getResourcePath } from'./src/main/util'
 const pack = require('./package.json')
 const metadataResourcePath = getResourcePath('metadata')
 const editorResourcePath = getResourcePath('editor')
@@ -25,7 +27,7 @@ let hrstart = process.hrtime()
 let runner = null
 // these are initiated when app is ready
 let metadata = null
-let settings = {} 
+let settings = {}
 let version = pack.version || 'unknown'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -34,8 +36,8 @@ let win = null
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({ 
-    width: 1440, height: 960, 
+  win = new BrowserWindow({
+    width: 1440, height: 960,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -115,16 +117,16 @@ function createWindow () {
   // #if process.env.NODE_ENV === 'production'
   startRunner(settings.env)
   // #endif
-  
+
   let hrend = process.hrtime(hrstart)
   log.info('start time:', Math.ceil(hrend[1]/1000000))
-  
+
   trackEvent('usage', 'open-app', `${version}`, Math.ceil(hrend[1] / 1000000))
 
   log.info('checkUpdateOnStart:', !settings.disableCheckUpdateOnStart)
   if (!settings.disableCheckUpdateOnStart) {
     setTimeout(() => {
-      checkUpdateWrapper() 
+      checkUpdateWrapper()
     }, 10000)
   }
 }
@@ -138,7 +140,7 @@ function getRunnerPath() {
       return path.join(app.getAppPath(), '..', 'resources/runner/ananas')
     case 'linux':
       return path.join(app.getAppPath(), '..', 'resources/runner/ananas')
-  } 
+  }
   // #endif
 
   // #if process.env.NODE_ENV !== 'production'
@@ -160,7 +162,7 @@ function startRunner(env) {
     return
   }
 
-  const runnerPath = getRunnerPath()  
+  const runnerPath = getRunnerPath()
 
   log.info(`runner path: ${runnerPath}`)
   log.info(`runner environment: ${JSON.stringify(env)}`)
@@ -208,10 +210,10 @@ app.on('ready', () => {
       init(metadata, editors)
     })
     .then(() => {
-      return loadWorkspace() 
+      return loadWorkspace()
     })
     .then(workspace => {
-      settings = workspace.settings || {} 
+      settings = workspace.settings || {}
       log.debug(`workspace settings ${JSON.stringify(settings, null, 4)}`)
       createWindow()
     })
@@ -227,6 +229,8 @@ app.on('window-all-closed', () => {
   // to stay active until the user quits explicitly with Cmd + Q
   let hrend = process.hrtime(hrstart)
   trackEvent('usage', 'close-app', process.platform, hrend[0])
+
+  ProjectPersister.getInstance().persist()
 
   if (process.platform !== 'darwin') {
     app.quit()
@@ -244,5 +248,7 @@ app.on('activate', () => {
 
 app.on('before-quit', () => {
   stopRunner()
+
+  ProjectPersister.getInstance().persist()
 })
 

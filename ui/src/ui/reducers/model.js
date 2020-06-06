@@ -121,7 +121,7 @@ function handleNewNode(newState, node) {
     description: meta.description,
     metadataId: meta.id,
     type: meta.step.type,
-    config: { ... meta.step.config }, 
+    config: { ... meta.step.config },
     variables: [],
     dirty: true,
   }
@@ -148,7 +148,7 @@ function handleDuplicateNode(newState, original, newNode) {
     name: meta.name,
     description: meta.description,
     type: meta.step.type,
-    config: { ... meta.step.config }, 
+    config: { ... meta.step.config },
     variables: [],
     dirty: true,
   }
@@ -156,7 +156,7 @@ function handleDuplicateNode(newState, original, newNode) {
   let originalStep = currentProject.steps[original.id]
   if (originalStep) {
     newStep.config = { ... originalStep.config }
-  } 
+  }
 
   currentProject.steps = { ... currentProject.steps }
   currentProject.steps[newNode.id] = newStep
@@ -197,7 +197,7 @@ function handleSubmitNodeConfig(state, action) {
   newStep.description = config['__description__']
   newStep.dataframe = config['__dataframe__']
   newStep.metadataId = config['__metadataId__']
-  
+
   delete newStep.config['__name__']
   delete newStep.config['__description__']
   delete newStep.config['__dataframe__']

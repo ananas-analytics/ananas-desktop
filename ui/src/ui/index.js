@@ -19,16 +19,19 @@ import proxy from './proxy'
 
 // import services
 import ServiceContext from './contexts/ServiceContext'
-import { 
-  ExecutionService, 
-  JobService, 
-  ModelService, 
+import {
+  ExecutionService,
+  JobService,
+  ModelService,
   VariableService,
   NotificationService,
   MetadataService,
   SettingService,
   SchedulerService,
 } from './service'
+
+// clean global onerror callback, it will be initiated in App.js
+window.onerror = null
 
 // #if process.env.NODE_ENV !== 'production'
 const logger              = createLogger({})
@@ -45,19 +48,19 @@ const schedulerService    = new SchedulerService()
 // start initializing application
 proxy.getLocalUserName()
   .then(username => {
-    state.model.user.name = username 
+    state.model.user.name = username
     return settingService.loadGlobalSettings()
   })
   .then(globalSettings => {
     state.Settings.global = Object.assign({ // default settings
       runnerEndpoint: 'http://localhost:3003/v1'
-    }, globalSettings) 
+    }, globalSettings)
     return modelService.loadExecutionEngines()
   })
   .then(engines => {
     if (engines.length > 0) {
       state.ExecutionEngine.engines = engines
-    } 
+    }
     // load metadata, then init the app
     return Promise.all([
       metadataService.loadNodeMetadata(),
@@ -65,11 +68,11 @@ proxy.getLocalUserName()
     ])
   })
   .then(metadatas => {
-    let services = { 
-      executionService, 
-      jobService, 
-      modelService, 
-      variableService, 
+    let services = {
+      executionService,
+      jobService,
+      modelService,
+      variableService,
       notificationService,
       metadataService,
       settingService,
@@ -86,7 +89,7 @@ proxy.getLocalUserName()
       state,
       applyMiddleware(
         // #if process.env.NODE_ENV !== 'production'
-        logger, 
+        logger,
         // #endif
         thunkMiddleware.withExtraArgument(services),
       )
@@ -110,10 +113,8 @@ proxy.getLocalUserName()
     )
   })
   .catch(err => {
-    // TODO: report error to main process and display 
+    // TODO: report error to main process and display
     console.error(err.message, err.stack)
   })
-
-
 
 

@@ -1,23 +1,23 @@
-// @flow 
+// @flow
 
-const fs       = require('fs')
-const path     = require('path')
-const readdirp = require('readdirp')
-const util     = require('util')
-const YAML     = require('yaml')
+import fs from 'fs'
+import path from 'path'
+import util from 'util'
+import readdirp from 'readdirp'
+import YAML from 'yaml'
 
-const promiseHelper = require('../util/promise')
+import promiseHelper from'../util/promise'
 
 import type { PlainUIMetadata, PlainExtension } from './flowtypes'
 
-class ProjectMetadataLoader {
-  static INSTANCE :? ProjectMetadataLoader 
+export default class ProjectMetadataLoader {
+  static INSTANCE :? ProjectMetadataLoader
 
   metadata :?{[string]: PlainUIMetadata}
 
   loadFromDir(dir: string, extensions: {[string]:PlainExtension}) :Promise<PlainUIMetadata> {
-    // load project metadata from folder {PROJECT_HOME}/metadata/ 
-    // metadata (node & editor descripor) are organized by extension 
+    // load project metadata from folder {PROJECT_HOME}/metadata/
+    // metadata (node & editor descripor) are organized by extension
     let output = {}
     let extensionNames = []
     for (let name in extensions) {
@@ -26,9 +26,9 @@ class ProjectMetadataLoader {
     let metaEntries = []
     return readdirp.promise(path.join(dir, 'metadata'), {
         fileFilter: ['*.yaml', '*.yml', '*.json'],
-        directoryFilter: [ ... extensionNames, 'editor' ], 
+        directoryFilter: [ ... extensionNames, 'editor' ],
         depth: 2,
-      }) 
+      })
       .then(entries => {
         // copy entries
         metaEntries = entries
@@ -46,7 +46,7 @@ class ProjectMetadataLoader {
         })
         .filter(item => item !== null)
         .map(item => {
-          return util.promisify(fs.readFile)(item.entry.fullPath) 
+          return util.promisify(fs.readFile)(item.entry.fullPath)
             .then(content => {
               let txt = this.injectResourceRoot(content.toString(), dir, item.extension)
               if (item.entry.basename.endsWith('json')) {
@@ -61,7 +61,7 @@ class ProjectMetadataLoader {
       .then(metadatas => {
         let nodes = {}
         for (let meta of metadatas) {
-          nodes = { ... nodes, ... meta } 
+          nodes = { ... nodes, ... meta }
         }
         output.node = Object.values(nodes)
         return metaEntries
@@ -76,7 +76,7 @@ class ProjectMetadataLoader {
           }
           return false
         }).map(entry => {
-          return util.promisify(fs.readFile)(entry.fullPath) 
+          return util.promisify(fs.readFile)(entry.fullPath)
             .then(content => {
               if (entry.basename.endsWith('json')) {
                 return JSON.parse(content.toString())
@@ -106,7 +106,7 @@ class ProjectMetadataLoader {
   }
 
   static getInstance() :ProjectMetadataLoader {
-    if (ProjectMetadataLoader.INSTANCE !== null && 
+    if (ProjectMetadataLoader.INSTANCE !== null &&
         ProjectMetadataLoader.INSTANCE !== undefined ) {
       return ProjectMetadataLoader.INSTANCE
     }
@@ -115,5 +115,3 @@ class ProjectMetadataLoader {
     return ProjectMetadataLoader.INSTANCE
   }
 }
-
-module.exports = ProjectMetadataLoader

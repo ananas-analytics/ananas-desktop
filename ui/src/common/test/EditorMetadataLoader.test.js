@@ -1,9 +1,9 @@
-const path = require('path')
-const EditorMetadataLoader = require('../model/EditorMetadataLoader')
+import path from 'path'
+import EditorMetadataLoader from '../model/EditorMetadataLoader'
 
 describe('load metadata', () => {
   test('should load editor metadata from a directory', async () => {
-    let loader = EditorMetadataLoader.getInstance() 
+    let loader = EditorMetadataLoader.getInstance()
 
     let dir = path.join(__dirname, 'resources/editor')
     let metadatas = await loader.loadFromDir(dir)

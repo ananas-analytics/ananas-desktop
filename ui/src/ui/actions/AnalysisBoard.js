@@ -1,7 +1,7 @@
 import actions from './types'
 
 function changeDAG(nodes, connections, operation) {
-  return (dispatch, getState, args) => {
+  return async (dispatch, getState, args) => {
     dispatch({
       type: actions.CHANGE_DAG,
       nodes,
@@ -13,14 +13,8 @@ function changeDAG(nodes, connections, operation) {
     let projectId = state.model.currentProjectId
     let project = state.model.projects[projectId]
 
-    args.modelService.saveProject(project)
-      .then(()=>{
-        // do nothing for now
-      })
-      .catch(err=>{
-        // do nothing for now
-      })
-
+    // TODO: batch save operations to improve performance
+    await args.modelService.saveProject(project)
   }
 }
 

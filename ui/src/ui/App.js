@@ -22,9 +22,9 @@ import actions from './actions'
 
 const App = ({
   dispatch, // inject dispatch
-  user, 
+  user,
   /* AppDashboard */
-  projectId, projects, onChangeCurrentProject, onNewProject, onUpdateProject, onDeleteProject,
+  projectId, onChangeCurrentProject, onNewProject, onUpdateProject, onDeleteProject,
   onLogout, onCheckUpdate,
   /* AppSideBar */
   activeMenu, expand, onClickAppMenu, onToggleAppSideBar,
@@ -33,6 +33,16 @@ const App = ({
   /* Notification */
   showNotif, messages, onDisplayMessage, onDisposeMessage,
 }) => {
+  // register application level uncaught error handler, all uncaught error will be handled here
+  if (window.onerror == null) {
+    window.onerror = (errorMsg) => {
+      onDisplayMessage('Uncaughted Error', 'warning', {
+        body: errorMsg
+      })
+      return false
+    }
+  }
+
   // show project selection page if user not yet select project
   if (!projectId) {
     return (<Grommet theme={theme} full>
@@ -40,7 +50,6 @@ const App = ({
         { ({modelService}) => (
         <AppDashboard dispatch={dispatch}
           modelService={modelService}
-          projects={projects}
           onChangeCurrentProject={onChangeCurrentProject}
           onNewProject={onNewProject}
           onUpdateProject={onUpdateProject}
@@ -51,7 +60,7 @@ const App = ({
         />)
         }
       </ServiceContext.Consumer>
-      { showNotif && (<Messages id='notification' messages={messages} onDispose={onDisposeMessage} />) } 
+      { showNotif && (<Messages id='notification' messages={messages} onDispose={onDisposeMessage} />) }
     </Grommet>)
   }
 
@@ -75,7 +84,7 @@ const App = ({
           />
           <AppContainer />
         </Box>
-        { showNotif && (<Messages id='notification' messages={messages} onDispose={onDisposeMessage} />) } 
+        { showNotif && (<Messages id='notification' messages={messages} onDispose={onDisposeMessage} />) }
       </Box>
     </Grommet>
   )
@@ -87,7 +96,6 @@ const mapStateToProps = state => {
   return {
     user: state.model.user,
     projectId,
-    projects: state.model.projects,
 
     /* AppSideBar */
     activeMenu: state.AppSideBar.activeMenu,
@@ -117,7 +125,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(actions.AppDashboard.updateProject(project))
     },
     onDeleteProject: id => {
-      dispatch(actions.AppDashboard.deleteProject(id))  
+      dispatch(actions.AppDashboard.deleteProject(id))
     },
     onChangeCurrentProject: project => {
       dispatch(actions.AppDashboard.changeCurrentProject(project))

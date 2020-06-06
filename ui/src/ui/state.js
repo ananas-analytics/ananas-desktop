@@ -63,7 +63,7 @@ const state = {
 
   Message: {
     open: true,
-    messages: [], 
+    messages: [],
   },
 
   /* data model */
@@ -94,11 +94,11 @@ const state = {
       },
       // other projects here
     },
-    runtimeVariables: [], 
+    runtimeVariables: [],
     metadata: {
       node: [],
       editor: {},
-    }, // metadata    
+    }, // metadata
   },
 
   /* global settings */

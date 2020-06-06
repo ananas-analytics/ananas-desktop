@@ -1,11 +1,11 @@
 // @flow
 
-const fs       = require('fs')
-const util     = require('util')
-const readdirp = require('readdirp')
-const YAML     = require('yaml')
+import fs from 'fs'
+import util from 'util'
+import readdirp from 'readdirp'
+import YAML from 'yaml'
 
-const promiseHelper = require('../util/promise')
+import promiseHelper from '../util/promise'
 
 class EditorMetadataLoader {
   static INSTANCE :?EditorMetadataLoader
@@ -19,10 +19,10 @@ class EditorMetadataLoader {
   loadFromDir(dir: string) :Promise<{[string]: any}> {
     return readdirp.promise(dir, {
       fileFilter: ['*.yaml', '*.yml', '*.json'],
-    }) 
+    })
     .then(entries => {
       let tasks = entries.map(entry => {
-        return util.promisify(fs.readFile)(entry.fullPath) 
+        return util.promisify(fs.readFile)(entry.fullPath)
           .then(content => {
             try {
               if (entry.basename.endsWith('json')) {
@@ -36,7 +36,6 @@ class EditorMetadataLoader {
             }
           })
       })
-      // return Promise.all(tasks)
       return promiseHelper.promiseAllWithoutError(tasks)
     })
     .then(editors => {
@@ -54,11 +53,11 @@ class EditorMetadataLoader {
     if (EditorMetadataLoader.INSTANCE !== null &&
         EditorMetadataLoader.INSTANCE !== undefined) {
       return EditorMetadataLoader.INSTANCE
-    } 
+    }
 
     EditorMetadataLoader.INSTANCE = new EditorMetadataLoader()
     return EditorMetadataLoader.INSTANCE
   }
 }
 
-module.exports = EditorMetadataLoader
+export default EditorMetadataLoader

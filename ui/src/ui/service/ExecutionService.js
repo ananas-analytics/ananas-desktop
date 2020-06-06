@@ -3,15 +3,15 @@
 import axios from 'axios'
 import { Graph } from 'graphlib'
 
-import type { 
-  ID, 
-  APIResponse, 
+import type {
+  ID,
+  APIResponse,
   PlainEngine,
   PlainExtension,
-  PlainProject, 
-  PlainConnection, 
-  PlainDataframe, 
-  PlainStep 
+  PlainProject,
+  PlainConnection,
+  PlainDataframe,
+  PlainStep
 } from '../../common/model/flowtypes.js'
 
 import type VariableService from './VariableService'
@@ -264,8 +264,8 @@ export default class ExecutionService {
    * Run the current step
    * @return Promise<APIResponse<PlainDataframe>>
    */
-  runStep(user: any, projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep}, 
+  runStep(user: any, projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep},
           dict:{[string]:any}, runnableId: ID, engine: PlainEngine, extensions: {[string]:PlainExtension}) :Promise<APIResponse<ID>> {
-    return this.run(user, projectId, connections, steps, dict, [ runnableId ], engine, extensions) 
+    return this.run(user, projectId, connections, steps, dict, [ runnableId ], engine, extensions)
   }
 }

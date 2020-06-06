@@ -33,7 +33,7 @@ function promiseAllWithoutError(promises: Array<Promise<any>>) :Promise<any> {
   })
 }
 
-module.exports = {
+export default {
   promiseAllWithError,
   promiseAllWithoutError,
 }

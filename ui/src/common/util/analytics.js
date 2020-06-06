@@ -1,17 +1,20 @@
 // @flow
-const ua = require('universal-analytics')
-const { machineIdSync } = require('node-machine-id')
+import ua from'universal-analytics'
+import { machineIdSync } from 'node-machine-id'
 
-const log = require('../log')
+import log from '../log'
+
 
 let uid = machineIdSync({original: true})
+let uhash = 0
+let trackEvent = () => {}
 
 log.info('user id:', uid)
 
 // #if process.env.NODE_ENV === 'production'
 let visitor = ua('UA-143770934-1', uid, {strictCidFormat: false})
 
-function trackEvent(category :string, action :string, label :string, value :number) {
+trackEvent = (category :string, action :string, label :string, value :number) => {
   log.info(`${category} ${action} ${label} ${value}`)
   visitor
     .event({
@@ -34,19 +37,21 @@ function strHash(str: string) :number {
   return hash
 }
 
-module.exports = { 
-  uid,
-  uhash: strHash(uid),
-  trackEvent 
-}
+uid,
+uhash = strHash(uid),
+trackEvent
 // #endif
 
 // #if process.env.NODE_ENV !== 'production'
-module.exports = {
-  uid: 'dev-user',
-  uhash: 0,
-  trackEvent: (... args: any) => {
-    log.info('dev mode, tracker mock:', JSON.stringify(args))
-  },
+uid = 'dev-user',
+uhash = 0,
+trackEvent = (... args: any) => {
+  log.info('dev mode, tracker mock:', JSON.stringify(args))
 }
 // #endif
+
+export {
+  uid,
+  uhash,
+  trackEvent,
+}

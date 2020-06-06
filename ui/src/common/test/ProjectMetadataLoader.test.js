@@ -1,5 +1,5 @@
-const path = require('path')
-const ProjectMetadataLoader = require('../model/ProjectMetadataLoader')
+import path from 'path'
+import ProjectMetadataLoader from '../model/ProjectMetadataLoader'
 
 describe('load project metadata', () => {
   test('should load metadata from project', async () => {
@@ -10,7 +10,7 @@ describe('load project metadata', () => {
       'ananas-extension-example': {
         version: '0.1.0',
         checksum: '',
-        resolved: '', 
+        resolved: '',
       }
     })
 

@@ -1,13 +1,12 @@
 // @flow
 
-const loki = require('lokijs')
+import loki from 'lokijs'
+import log from '../common/log'
 
-const log = require('../common/log')
 
-
-import type { 
-  ID, 
-  VariableDictionary, 
+import type {
+  ID,
+  VariableDictionary,
   PlainProject,
 } from '../common/model/flowtypes.js'
 
@@ -42,7 +41,7 @@ class LocalDB {
       col = this.db.addCollection(name, this.getCollectionOptions(name))
     }
     return col
-  } 
+  }
 
   getCollectionOptions(name:string) {
     switch(name) {
@@ -53,18 +52,18 @@ class LocalDB {
         }
       case LocalDB.STEP:
         return {
-          unique: ['projectId', 'stepId'] 
+          unique: ['projectId', 'stepId']
         }
       default:
         return {}
     }
   }
-  
+
   /**
    * get the variable dictionary by project id
    *
    * @projectId ID  the id of the project
-   * 
+   *
    * @return Promise<VariableDictionary>
    */
   getProjectVariableDict(projectId: ID) :Promise<VariableDictionary> {
@@ -78,7 +77,7 @@ class LocalDB {
         resolve({})
       }
     })
-  } 
+  }
 
   /**
    * save project variable dictionary
@@ -188,4 +187,5 @@ class LocalDB {
   }
 }
 
-module.exports = LocalDB 
+// module.exports = LocalDB
+export default LocalDB

@@ -14,19 +14,15 @@ import { Add, UserSettings, Download } from 'grommet-icons'
 import ProjectItem, { Item } from './ProjectItem'
 import ProjectConfigurer from './ProjectConfigurer'
 import UserMenu from './UserMenu'
-
-import actions from '../../actions'
+import Loading from '../Common/Loading'
 
 import type { Node } from 'react'
 import type ModelService from '../../service/ModelService'
 import type { MessageOptions, PlainProject, ID, Dispatch } from '../../../common/model/flowtypes.js'
 
-import RunButton from '../Common/RunButton'
-
 type Props = {
   dispatch: Dispatch,
   modelService: ModelService,
-  projects: {[string]:PlainProject},
 
   onNewProject: (PlainProject) => void,
   onUpdateProject: (PlainProject) => void,
@@ -37,7 +33,7 @@ type Props = {
   onLogout: () => void,
   onCheckUpdate: () => void,
 
-	onDisplayMessage: (title:string, level:string, options:MessageOptions) => void
+  onDisplayMessage: (title:string, level:string, options:MessageOptions) => void
 }
 
 type State = {
@@ -50,8 +46,6 @@ type State = {
 
 export default class AppDashboard extends Component<Props, State> {
   static defaultProps = {
-    projects: {},
-
     onNewProject: ()=>{},
     onUpdateProject: ()=>{},
     onDeleteProject: ()=>{},
@@ -61,54 +55,51 @@ export default class AppDashboard extends Component<Props, State> {
   }
 
   state = {
-    projects: this.props.projects,
+    projects: {}, // this.props.projects,
     selected: null,
     editing: false,
     loading: true,
   }
 
   componentDidMount() {
-    this.loadProjects() 
+    this.loadProjects()
   }
 
-  loadProjects() {
+  async loadProjects() {
     // load projects
     // get project index, and load them
     let modelService = this.props.modelService
 
-    modelService.loadProjects()
-      .then(projects=>{
-        // dispatch loaded
-        let newStateProjects = {}
-        projects.forEach(project=>{
-          this.props.dispatch(actions.AppDashboard.projectLoaded(project))
-          newStateProjects[project.id] = project
-        })
-        this.setState({projects: newStateProjects, loading: false})
+    try {
+      let projects = await modelService.loadProjects()
+      // dispatch loaded
+      let newStateProjects = {}
+      projects.forEach(project=>{
+        newStateProjects[project.id] = project
       })
-      .catch(err => {
-				this.props.onDisplayMessage('Failed to load projects', 'warning', {
-					body: err.message
-				})
+      this.setState({projects: newStateProjects, loading: false})
+    } catch(err) {
+      this.props.onDisplayMessage('Failed to load projects', 'warning', {
+        body: err.message
       })
+    }
   }
 
   handleNewProject() {
     this.setState({editing: true, selected: null})
   }
 
-	handleImportProject() {
+  async handleImportProject() {
     let modelService = this.props.modelService
-		modelService.importProject()
-			.then(project => {
-				this.handleSubmitChange(project)	
-			})
-			.catch(err => {
-				this.props.onDisplayMessage('Failed to import project', 'danger', {
-					body: err.message
-				})
-			})
-	}
+    try {
+      let project = await modelService.importProject()
+      this.handleSubmitChange(project)
+    } catch(err) {
+      this.props.onDisplayMessage('Failed to import project', 'danger', {
+        body: err.message
+      })
+    }
+  }
 
   handleDeleteProject(id: ID) {
     let projects = { ... this.state.projects }
@@ -129,6 +120,10 @@ export default class AppDashboard extends Component<Props, State> {
       this.setState({editing: false, projects, selected: null})
       this.props.onUpdateProject(project)
     }
+  }
+
+  handleEditProject(projectId: string) {
+    this.props.onChangeCurrentProject(projectId)
   }
 
   renderProjects(size /*:string*/) :Node {
@@ -152,12 +147,11 @@ export default class AppDashboard extends Component<Props, State> {
         (<Item key='add-project' align='center' justify='center'
           onClick={()=>this.handleNewProject()}>
           <Add color='light-4' size='large' />
-				</Item>),
-				(<Item key='import-project' align='center' justify='center'
+        </Item>),
+        (<Item key='import-project' align='center' justify='center'
           onClick={()=>this.handleImportProject()}>
           <Download color='light-4' size='large' />
-        </Item>)
-
+        </Item>),
       ] // first row
     ]
     let count = 0
@@ -169,7 +163,7 @@ export default class AppDashboard extends Component<Props, State> {
         rows.push([])
       }
       rows[rows.length-1].push(
-        <ProjectItem key={id} 
+        <ProjectItem key={id}
           id={id}
           name={projects[id].name}
           path={projects[id].path}
@@ -177,7 +171,7 @@ export default class AppDashboard extends Component<Props, State> {
           selected={this.state.selected != null && this.state.selected.id === id}
           onClick={()=>this.setState({selected: projects[id]})}
           onConfig={()=>this.setState({editing: true})}
-          onEdit={()=>this.props.onChangeCurrentProject(id)}
+          onEdit={()=>this.handleEditProject(id)}
           onDelete={()=>this.handleDeleteProject(id)}
           getProjectPath={id=>this.props.modelService.getProjectPath(id)}
         />
@@ -214,12 +208,12 @@ export default class AppDashboard extends Component<Props, State> {
         </Box>
       </Box>
       { this.state.loading ?
-        (<Box>loading</Box>)
+        <Loading />
         :
         <Stack fill>
-					<Box fill
-						overflow={{vertical: 'auto'}}
-					>
+          <Box fill
+            overflow={{vertical: 'auto'}}
+          >
           <ResponsiveContext.Consumer>
             { size => (
             <Box align='center' direction='column' justify='start' pad='medium'
@@ -230,12 +224,12 @@ export default class AppDashboard extends Component<Props, State> {
             </Box>)
             }
           </ResponsiveContext.Consumer>
-					</Box>
+          </Box>
           {
           this.state.editing ? (
           <ProjectConfigurer project={this.state.selected}
             onSubmit={(project)=>{
-            this.handleSubmitChange(project)
+              this.handleSubmitChange(project)
             }}
             onCancel={()=>this.setState({editing: false})}
           />
