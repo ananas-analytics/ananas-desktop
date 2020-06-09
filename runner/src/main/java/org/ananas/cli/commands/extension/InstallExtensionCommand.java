@@ -105,6 +105,8 @@ public class InstallExtensionCommand implements Callable<Integer> {
       YamlHelper.saveYAML(new File(project, "extension.yml").getAbsolutePath(), requiredExtensions);
     }
 
+    // TODO: copy ui related metadata to project/metadata
+
     System.out.println();
     System.out.println(
         "Installed "

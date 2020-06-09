@@ -4,12 +4,32 @@ dag:
       target: 5d4557439c7a5441fdc67d3b
     - source: 5d4557439c7a5441fdc67d3b
       target: 5d4559249c7a5441fdc67d47
+    - source: 5d409da52c03930c36c3fdb9
+      target: 5edebf981c62cbb8534a1371
+    - source: 5edebf981c62cbb8534a1371
+      target: 5edebf6f1c62cbb8534a136e
 id: 5d31c70384b5674b6a220288
 name: bitcoin
 steps:
   5d409da52c03930c36c3fdb9:
     config:
       body: ""
+      dataSourceLoop:
+        - begin: 1
+          end: 2
+          name: n
+          step: 1
+          type: number
+        - begin: 1
+          end: 3
+          name: m
+          step: 1
+          type: number
+        - begin: 1
+          end: 5
+          name: k
+          step: 1
+          type: number
       forceAutoDetectSchema: true
       format: json
       headers: {}
@@ -17,7 +37,7 @@ steps:
       lineDelimiter: \n
       method: get
       subtype: api
-      url: https://api.coindesk.com/v1/bpi/currentprice.json
+      url: https://api.coindesk.com/v1/bpi/currentprice.json?n=%{n}&m=%{m}&k=%{k}
     dataframe:
       data: []
       id: 5d409da52c03930c36c3fdb9
@@ -63,6 +83,12 @@ steps:
             type: VARCHAR
           - name: bpi.USD.description
             type: VARCHAR
+          - name: n
+            type: INTEGER
+          - name: m
+            type: INTEGER
+          - name: k
+            type: INTEGER
     description: Connect data from an API
     id: 5d409da52c03930c36c3fdb9
     metadataId: org.ananas.source.api
@@ -71,7 +97,7 @@ steps:
   5d4557439c7a5441fdc67d3b:
     config:
       sql: |-
-        SELECT 
+        SELECT
         	`bpi.EUR.code` as `code`,
           `bpi.EUR.rate_float` as `rate`,
           `time.updatedISO` as `time`
@@ -118,6 +144,133 @@ steps:
     metadataId: org.ananas.visualization.bignumber
     name: Big Number
     type: viewer
+  5edebf6f1c62cbb8534a136e:
+    config:
+      format: csv
+      header: true
+      path: /Users/b.hou/
+      prefix: output-
+      subtype: file
+    dataframe:
+      data: []
+      id: 5edebf6f1c62cbb8534a136e
+      schema:
+        fields:
+          - name: bpi.EUR.rate_float
+            type: DOUBLE
+          - name: bpi.USD.rate_float
+            type: DOUBLE
+          - name: bpi.GBP.rate
+            type: VARCHAR
+          - name: bpi.USD.code
+            type: VARCHAR
+          - name: bpi.GBP.symbol
+            type: VARCHAR
+          - name: bpi.EUR.code
+            type: VARCHAR
+          - name: time.updateduk
+            type: VARCHAR
+          - name: bpi.USD.rate
+            type: VARCHAR
+          - name: bpi.EUR.description
+            type: VARCHAR
+          - name: time.updated
+            type: VARCHAR
+          - name: time.updatedISO
+            type: TIMESTAMP
+          - name: chartName
+            type: VARCHAR
+          - name: bpi.GBP.rate_float
+            type: DOUBLE
+          - name: bpi.EUR.rate
+            type: VARCHAR
+          - name: bpi.GBP.description
+            type: VARCHAR
+          - name: bpi.USD.symbol
+            type: VARCHAR
+          - name: bpi.EUR.symbol
+            type: VARCHAR
+          - name: bpi.GBP.code
+            type: VARCHAR
+          - name: disclaimer
+            type: VARCHAR
+          - name: bpi.USD.description
+            type: VARCHAR
+          - name: n
+            type: INTEGER
+          - name: m
+            type: INTEGER
+          - name: k
+            type: INTEGER
+    description: Save your data as CSV file
+    id: 5edebf6f1c62cbb8534a136e
+    metadataId: org.ananas.destination.file.csv
+    name: CSV Destination
+    type: loader
+  5edebf981c62cbb8534a1371:
+    config:
+      sql: |-
+        SELECT
+        	*
+        FROM PCOLLECTION
+        WHERE n = 1
+      subtype: sql
+    dataframe:
+      data: []
+      id: 5edebf981c62cbb8534a1371
+      schema:
+        fields:
+          - name: bpi.EUR.rate_float
+            type: DECIMAL
+          - name: bpi.USD.rate_float
+            type: DECIMAL
+          - name: bpi.GBP.rate
+            type: VARCHAR
+          - name: bpi.USD.code
+            type: VARCHAR
+          - name: bpi.GBP.symbol
+            type: VARCHAR
+          - name: bpi.EUR.code
+            type: VARCHAR
+          - name: time.updateduk
+            type: VARCHAR
+          - name: bpi.USD.rate
+            type: VARCHAR
+          - name: bpi.EUR.description
+            type: VARCHAR
+          - name: time.updated
+            type: VARCHAR
+          - name: time.updatedISO
+            type: VARCHAR
+          - name: chartName
+            type: VARCHAR
+          - name: bpi.GBP.rate_float
+            type: DECIMAL
+          - name: bpi.EUR.rate
+            type: VARCHAR
+          - name: bpi.GBP.description
+            type: VARCHAR
+          - name: bpi.USD.symbol
+            type: VARCHAR
+          - name: bpi.EUR.symbol
+            type: VARCHAR
+          - name: bpi.GBP.code
+            type: VARCHAR
+          - name: disclaimer
+            type: VARCHAR
+          - name: bpi.USD.description
+            type: VARCHAR
+          - name: n
+            type: INTEGER
+          - name: m
+            type: INTEGER
+          - name: k
+            type: INTEGER
+    description: Transform your data with SQL
+    id: 5edebf981c62cbb8534a1371
+    metadataId: org.ananas.transform.sql
+    name: SELECT ALL
+    type: transformer
 triggers: []
 variables:
   - name: MYSQL_HOST
