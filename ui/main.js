@@ -76,7 +76,8 @@ function createWindow () {
       { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
       { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
       { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
-    ]}, {
+    ]},
+    /*{
     label: 'Developer',
     submenu: [
       {
@@ -109,7 +110,7 @@ function createWindow () {
           win.setTitle(title)
         }
       }
-    ]}
+    ]} */
   ]
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))

@@ -27,6 +27,7 @@ const AppSideBarMenu = ({ activeIndex, expand,
         { expand ? <Text>Variables</Text> : <Code size='20px' /> }
       </AppSideBarMenuItem>
 
+      {/*
       <AppSideBarMenuItem active={activeIndex === 3} expand={expand}
         onClick={() => onClickMenu(3)} >
         { expand ? <Text>Extensions</Text> : <Cubes size='20px' /> }
@@ -36,6 +37,7 @@ const AppSideBarMenu = ({ activeIndex, expand,
         onClick={() => onClickMenu(4)} >
         { expand ? <Text>Settings</Text> : <SettingsOption size='20px' /> }
       </AppSideBarMenuItem>
+      */}
 
 
 

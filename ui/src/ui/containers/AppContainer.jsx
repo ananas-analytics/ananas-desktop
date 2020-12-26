@@ -10,7 +10,7 @@ import AnalysisBoard from './AnalysisBoard'
 import Variables from './Variables'
 import ExecutionEngine from './ExecutionEngine'
 import Extensions from './Extensions'
-import Scheduler from './Scheduler'
+// import Scheduler from './Scheduler'
 import { DAGEditorSideBar, NodeEditorSideBar } from '../components/DAGEditorSideBar'
 
 import NodeType from '../components/DAGEditorSideBar/models/NodeType'
