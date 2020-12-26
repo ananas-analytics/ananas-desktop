@@ -43,7 +43,8 @@ class ExtensionHelper {
 
   static async MakeSureExtensionInstalled(projectPath: string, name: string,
     extension: PlainExtension) :Promise<'OK'> {
-    let metadataPath = path.join(projectPath, 'metadata', name, extension.version, 'metadata.yml')
+    let metadataPath = path.join(projectPath, 'metadata', name, 'metadata.yml')
+    // let metadataPath = path.join(projectPath, 'metadata', name, extension.version, 'metadata.yml')
     try {
       await fsPromises.access(metadataPath, fs.constants.F_OK)
     } catch (err) {
@@ -56,6 +57,7 @@ class ExtensionHelper {
    * Install one extension to a specified place
    */
   static async InstallExtension(name: string, extension: PlainExtension, dest: string) :Promise<any> {
+    console.log(`install extensions ${name}`)
     let unzippedFolder = path.join(dest, name)
     // $FlowFixMe
     await fsPromises.mkdir(unzippedFolder, { recursive: true })

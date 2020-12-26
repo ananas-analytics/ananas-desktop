@@ -22,7 +22,7 @@ describe('extension helper tests', () => {
 
     expect(result).toBe('OK')
 
-    const extensionFolder = path.join(dest, 'ananas-extension-example', '0.1.0')
+    const extensionFolder = path.join(dest, 'ananas-extension-example')
     result = await fsPromises.access(
       extensionFolder,
       fs.constants.F_OK)
@@ -74,7 +74,7 @@ describe('extension helper tests', () => {
     })
     expect(result).toBe('OK')
 
-    const extensionFolder = path.join(projectPath, 'metadata', 'ananas-extension-example', '0.1.0')
+    const extensionFolder = path.join(projectPath, 'metadata', 'ananas-extension-example')
     result = await fsPromises.access(
       path.join(extensionFolder, 'editor', 'org.ananas.extension.example.transform.sql.yml'),
       fs.constants.F_OK)
