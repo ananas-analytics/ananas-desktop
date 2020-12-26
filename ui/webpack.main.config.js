@@ -16,15 +16,16 @@ module.exports = {
         use: [
           {
             loader: 'babel-loader',
-            options: { 
-              presets: [ '@babel/env', '@babel/preset-flow' ], 
+            options: {
+              presets: [ '@babel/env', '@babel/preset-flow' ],
               plugins: [
                 '@babel/plugin-proposal-class-properties',
                 '@babel/plugin-proposal-object-rest-spread',
                 '@babel/plugin-syntax-dynamic-import',
-                '@babel/plugin-transform-async-to-generator'
+                '@babel/plugin-transform-async-to-generator',
+                '@babel/plugin-transform-runtime'
               ]
-            }    
+            }
           },
           {
             loader: 'webpack-conditional-loader'

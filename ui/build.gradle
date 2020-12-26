@@ -1,67 +1,67 @@
 // clean the runner binary folder
 task cleanRunnerBinary(type: Delete) {
-	delete 'resources/runner'
+    delete 'resources/runner'
 }
 
 task install(type: Exec) {
-	workingDir "."
+    workingDir "."
 
-	inputs.file("package.json").withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.file("package.json").withPathSensitivity(PathSensitivity.RELATIVE)
 
-	outputs.dir("node_modules")
-	outputs.cacheIf { true }
+    outputs.dir("node_modules")
+    outputs.cacheIf { true }
 
-	commandLine "yarn", "install"
+    commandLine "yarn", "install"
 }
 
-task buildRender(type: Exec) { 
-	dependsOn install	
+task buildRender(type: Exec) {
+    dependsOn install
 
-	workingDir "."
-	
-	inputs.property 'NODE_ENV', getAnanasEnv() 
-	inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
-	inputs.dir("src/ui").withPathSensitivity(PathSensitivity.RELATIVE)
-	inputs.dir("public").withPathSensitivity(PathSensitivity.RELATIVE)
+    workingDir "."
 
-	outputs.file("dist/bundle.js")
-	outputs.cacheIf { true }
+    inputs.property 'NODE_ENV', getAnanasEnv()
+    inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir("src/ui").withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir("public").withPathSensitivity(PathSensitivity.RELATIVE)
 
-	environment "NODE_ENV", "${getAnanasEnv()}"
+    outputs.file("dist/bundle.js")
+    outputs.cacheIf { true }
 
-	commandLine "./node_modules/.bin/webpack", "--mode", "${getAnanasEnv()}"
+    environment "NODE_ENV", "${getAnanasEnv()}"
+
+    commandLine "./node_modules/.bin/webpack", "--mode", "${getAnanasEnv()}"
 }
 
 task buildMain(type: Exec) {
-	dependsOn install	
+    dependsOn install
 
-	inputs.property 'NODE_ENV', getAnanasEnv() 
-	inputs.file("main.js").withPathSensitivity(PathSensitivity.RELATIVE)
-	inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
-	inputs.dir("src/main").withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property 'NODE_ENV', getAnanasEnv()
+    inputs.file("main.js").withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir("src/common").withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir("src/main").withPathSensitivity(PathSensitivity.RELATIVE)
 
-	outputs.file("dist/app.js")
-	outputs.cacheIf { true }
+    outputs.file("dist/app.js")
+    outputs.cacheIf { true }
 
-	workingDir "."
+    workingDir "."
 
-	environment "NODE_ENV", "${getAnanasEnv()}"
+    environment "NODE_ENV", "${getAnanasEnv()}"
 
-	commandLine "./node_modules/.bin/webpack", "--config",  "webpack.main.config.js", "--mode", "${getAnanasEnv()}" 
+    commandLine "./node_modules/.bin/webpack", "--config",  "webpack.main.config.js", "--mode", "${getAnanasEnv()}"
 }
 
 task build {
-	dependsOn buildRender, buildMain
+    dependsOn buildRender, buildMain
 }
 
 task test(type: Exec) {
-	commandLine "./node_modules/.bin/jest"
+    commandLine "./node_modules/.bin/jest"
 }
 
 task run(type: Exec) {
-	dependsOn build
+    dependsOn build
 
-	workingDir "."
+    workingDir "."
 
-	commandLine "./node_modules/.bin/electron", "."
+    commandLine "./node_modules/.bin/electron", "."
 }

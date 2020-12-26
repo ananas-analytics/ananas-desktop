@@ -30,13 +30,13 @@ export default class ModelService {
   saveExecutionEngines(engines: Array<PlainEngine>) {
     return proxy.saveExecutionEngines(engines)
   }
-  
+
   loadProjects() {
     return proxy.loadProjects()
   }
 
-  saveProject(project :PlainProject) :Promise<'OK'> {
-    return proxy.saveProject(project)
+  saveProject(project :PlainProject, shallow :boolean) :Promise<'OK'> {
+    return proxy.saveProject(project, shallow)
   }
 
   loadProject(id :ID) :Promise<PlainProject> {

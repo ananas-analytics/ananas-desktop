@@ -89,11 +89,26 @@ export type PlainDAG = {
 }
 
 /**
+ * Extension
+ */
+export type PlainExtension = {
+  version  : string,
+  resolved : string,
+  checksum : string,
+}
+
+/**
  * Project
  */
 export type ProjectMeta = {
   id   : string,
   path : string,
+}
+
+// UI metadata for node and editor display
+export type PlainUIMetadata = {
+  node   : Array<PlainNodeMetadata>,
+  editor : {[string]: any},
 }
 
 export type PlainProject = {
@@ -106,6 +121,8 @@ export type PlainProject = {
   variables   : Array<PlainVariable>,
   settings    : Setting,
   triggers?   : Array<PlainTrigger>,
+  extensions  : {[string] : PlainExtension},
+  metadata    : PlainUIMetadata,
   deleted?    : boolean,
 }
 
@@ -258,3 +275,8 @@ export type APIResponse<T> = {
   data?    : T,
 }
 
+export type PromiseAllResult<T> = {
+  success: bool,
+  result?: T,
+  error?: Error
+}

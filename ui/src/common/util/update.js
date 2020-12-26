@@ -1,22 +1,23 @@
 // @flow
 
-const vcmp = require('semver-compare')
 const pack = require('../../../package.json')
-const axios = require('axios')
 
-const { uhash } = require('./analytics') 
-const uuidv4 = require('uuid/v4')
+import vcmp from 'semver-compare'
+import axios from 'axios'
 
-const log = require('../log')
+import { uhash } from './analytics'
+import uuidv4 from 'uuid/v4'
+
+import log from '../log'
 
 // checkUpdate
-// { 
+// {
 //    version: [binary version],
 //    downloadPage: [download page url]
 //    rollout: [number rollout percentage],
 // }
 
-function checkUpdate() {
+export function checkUpdate() {
   let version = pack.version || '0.0.1'
 
   // FIXME: this is a quick fix for linux which can't get the package version.
@@ -28,12 +29,12 @@ function checkUpdate() {
 
   let hash = 99
   if (uhash) {
-    hash = uhash 
+    hash = uhash
   }
   hash = hash % 100
 
   log.info(`detect current version ${version}`)
-  // get version list 
+  // get version list
   return axios.get(`https://raw.githubusercontent.com/ananas-analytics/ananas-desktop/master/versions.json?n=${uuidv4()}`, {
       headers: {
         'Cache-Control': 'no-cache'
@@ -54,8 +55,4 @@ function checkUpdate() {
         }
       }
     })
-}
-
-module.exports = {
-  checkUpdate,
 }

@@ -1,5 +1,6 @@
-const log = require('electron-log')
+//const log = require('electron-log')
 
+import log from 'electron-log'
 
 // #if process.env.NODE_ENV !== 'production'
 log.transports.console.level = 'debug'
@@ -11,23 +12,35 @@ log.transports.console.level = 'info'
 log.transports.file.level = 'info'
 // #endif
 
-module.exports = {
-  error: (... args) => {
-    log.error(... args)
-  },
-  warn: (... args) => {
-    log.warn(... args)
-  },
-  info: (... args) => {
-    log.info(... args)
-  },
-  verbose: (... args) => {
-    log.verbose(... args)
-  },
-  debug: (... args) => {
-    log.debug(... args)
-  },
-  silly: (... args) => {
-    log.silly(... args)
-  },
+function error(... args) {
+  log.error(... args)
+}
+
+function warn(... args) {
+  log.warn(... args)
+}
+
+function info(... args) {
+  log.info(... args)
+}
+
+function verbose(... args) {
+  log.verbose(... args)
+}
+
+function debug(... args) {
+  log.debug(... args)
+}
+
+function silly(... args) {
+  log.silly(... args)
+}
+
+export default {
+  error,
+  warn,
+  info,
+  verbose,
+  debug,
+  silly,
 }

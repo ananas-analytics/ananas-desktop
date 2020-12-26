@@ -1,5 +1,10 @@
 // @flow
 
+// proxy is the only place to allow native api calls
+
+const { shell, remote } = require('electron')
+const app = remote.app
+
 import { ipc } from './utils.js'
 
 
@@ -9,12 +14,25 @@ class Proxy {
   static getInstance(): Proxy {
     if (!Proxy.instance) {
       Proxy.instance = new Proxy()
-    } 
+    }
     return Proxy.instance
   }
 
   constructor() {
-  } 
+  }
+
+  getSharedVariable(name: string) :any {
+    let shared = remote.getGlobal('shared')
+    return shared ? shared[name] : null
+  }
+
+  getProjectPathSync(projectID: string) :string {
+    return `${app.getPath('userData')}/${projectID}`
+  }
+
+  openFileExploreSync(path :string) {
+    shell.openItem(path)
+  }
 
   getLocalUserName() {
     return ipc('get-local-user')
@@ -48,16 +66,16 @@ class Proxy {
     return ipc('save-global-settings', settings)
   }
 
-	importProject() {
-		return ipc('import-project')
-	}
+  importProject() {
+    return ipc('import-project')
+  }
 
   getProjectPath(id) {
     return ipc('get-project-path', id)
   }
 
-  saveProject(project) {
-    return ipc('save-project', project)
+  saveProject(project, shallow, force) {
+    return ipc('save-project', project, shallow, force)
   }
 
   deleteProject(projectId) {
@@ -76,9 +94,9 @@ class Proxy {
     return ipc('save-execution-engines', engines)
   }
 
-	login(apiEndpoint, email, password) {
-		return ipc('login', `${apiEndpoint}/user/login`, email, password)
-	}
+  login(apiEndpoint, email, password) {
+    return ipc('login', `${apiEndpoint}/user/login`, email, password)
+  }
 
   checkUpdate(notifyUpdated) {
     return ipc('check-update', notifyUpdated)

@@ -49,28 +49,4 @@ public class JsonConnector extends ConnectorStepRunner {
                     SchemaBasedRowConverter.of(schema), this.errors));
     this.output.setRowSchema(schema);
   }
-
-  /*
-  public static Schema autodetect(String uri) {
-
-    File f = new File(uri);
-    if (!f.canRead()) {
-      throw new RuntimeException("Can't read file " + uri);
-    }
-
-    long ts = System.currentTimeMillis();
-
-    if (!f.exists()) {
-      throw new RuntimeException(String.format("file %s does not exist", f.getPath()));
-    }
-    FileIterator it = new FileIterator(uri, f);
-
-    try {
-      return JsonAutodetect.autodetectJson(it.iterator(), false, DEFAULT_LIMIT);
-    } finally {
-      it.close();
-      LOG.debug("autodetect : {} ms", System.currentTimeMillis() - ts);
-    }
-  }
-   */
 }

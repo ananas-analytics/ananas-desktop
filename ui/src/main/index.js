@@ -1,20 +1,21 @@
 // @flow
 
-const { 
-	app, 
-	dialog, 
+import {
+  app,
+  dialog,
   ipcMain,
-  shell } = require('electron')
-const path  = require('path')
-const os = require('os')
+  shell } from 'electron'
+import path from 'path'
+import os from 'os'
 
-const LocalDB        = require('./LocalDB.js')
-const log            = require('../common/log')
-const Workspace      = require('../common/model/Workspace')
-const Project        = require('../common/model/Project')
-const User           = require('../common/model/User')
+import LocalDB from './LocalDB'
+import log from '../common/log'
+import Workspace from '../common/model/Workspace'
+import Project from '../common/model/Project'
+import User from '../common/model/User'
+import ProjectPersister from '../common/model/ProjectPersister'
 
-const { checkUpdate } = require('../common/util/update') 
+import { checkUpdate } from '../common/util/update'
 
 import type { PlainNodeMetadata } from '../common/model/flowtypes'
 
@@ -22,7 +23,7 @@ import type { PlainNodeMetadata } from '../common/model/flowtypes'
 const home = app.getPath('userData')
 const dbPath = path.join(home, 'db')
 
-function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) {
+export function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) {
   // init localDB
   const localDB = new LocalDB(dbPath)
   log.debug('local db path', dbPath)
@@ -88,7 +89,10 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
 
   ipcMain.on('load-projects', (event) => {
     let wkp = null
-    Workspace.Load(path.join(home, 'workspace.yml'))
+    ProjectPersister.getInstance().persist()
+      .then(() => {
+        return Workspace.Load(path.join(home, 'workspace.yml'))
+      })
       .then(workspace => {
         wkp = workspace
         return workspace.loadProjects(metadata)
@@ -107,7 +111,9 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
             wkp.save()
           }
         }
-        log.debug('load projects', projects)
+        log.debug('load projects', projects.map(p => {
+          return {path: p.path, name: p.hasOwnProperty('project') ? p.project.name : null}
+        }))
         let plainProjects = projects
           .filter(project => project.valid)
           .map(project => project.toPlainObject())
@@ -119,17 +125,16 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
       })
   })
 
-  ipcMain.on('load-project', (event, projectId) => {
-    Workspace.Load(path.join(home, 'workspace.yml'))
-      .then(workspace => {
-        return workspace.loadProject(projectId, metadata)
-      })
-      .then(project => {
-        event.sender.send('load-project-result', { code: 200, data: project.toPlainObject() })
-      })
-      .catch(err => {
-        event.sender.send('load-project-result', { code: 500, message: err.message })
-      })
+  ipcMain.on('load-project', async (event, projectId) => {
+    try {
+      let workspace = await Workspace.Load(path.join(home, 'workspace.yml'))
+      // save requested project persistence
+      await ProjectPersister.getInstance().persist()
+      let project = await workspace.loadProject(projectId, metadata)
+      event.sender.send('load-project-result', { code: 200, data: project.toPlainObject() })
+    } catch (err) {
+      event.sender.send('load-project-result', { code: 500, message: err.message })
+    }
   })
 
   ipcMain.on('import-project', (event) => {
@@ -139,24 +144,28 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
       buttonLabel: 'Import',
       properties: ['openDirectory'],
       message: 'Select Ananas Project'
-    }, (filePaths) => {
+    }).then(result => {
+      if (result.canceled) {
+        return
+      }
+      let filePaths = result.filePaths
       log.debug('import project', filePaths)
       if (!filePaths || filePaths.length === 0) {
         return event.sender.send('import-project-result', { code: 500, message: 'cancelled' })
-      } 		
+      }
 
       let wks
       let tmpProject
       Project.VerifyProject(filePaths[0])
         .then(() => {
           return Workspace.Load(path.join(home, 'workspace.yml'))
-        }) 
+        })
         .then(workspace => {
           wks = workspace
           return workspace.importProject(filePaths[0], metadata)
         })
         .then(project => {
-          tmpProject = project	
+          tmpProject = project
           return wks.save()
         })
         .then(() => {
@@ -183,7 +192,7 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
       })
   })
 
-  ipcMain.on('save-project', (event, project) => {
+  ipcMain.on('save-project', (event, project, shallow, force) => {
     Workspace.Load(path.join(home, 'workspace.yml'))
       .then(workspace => {
         if (!project.path) {
@@ -197,7 +206,11 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
       })
       .then(() => {
         let projectObject = new Project(project.path, project)
-        return projectObject.save()
+        if (force) {
+          return projectObject.save(shallow)
+        } else {
+          return ProjectPersister.getInstance().requestPersistence(projectObject, shallow)
+        }
       })
       .then(() => {
         event.sender.send('save-project-result', { code: 200, data: 'OK' })
@@ -256,7 +269,7 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
   })
 
   ipcMain.on('get-editor-metadata', event => {
-    log.debug('get editor metadata') 
+    log.debug('get editor metadata')
     event.sender.send('get-editor-metadata-result', {
       code: 200,
       data: editors
@@ -270,7 +283,7 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
         event.sender.send('check-update-result', {
           code: 200,
           data: version,
-        })  
+        })
       })
       .catch(err => {
         event.sender.send('check-update-result', { code: 500, message: err.message })
@@ -278,11 +291,11 @@ function init(metadata :{[string]:PlainNodeMetadata}, editors: {[string]: any}) 
   })
 }
 
-function loadWorkspace() :Promise<Workspace> {
+export function loadWorkspace() :Promise<Workspace> {
   return Workspace.Load(path.join(home, 'workspace.yml'))
 }
 
-function checkUpdateWrapper(notifyUpdated ?:boolean) {
+export function checkUpdateWrapper(notifyUpdated ?:boolean) {
   return checkUpdate()
     .then(version => {
       if (version) {
@@ -307,9 +320,3 @@ function checkUpdateWrapper(notifyUpdated ?:boolean) {
     })
 }
 
-
-module.exports = {
-  init,
-  loadWorkspace,
-  checkUpdateWrapper
-}

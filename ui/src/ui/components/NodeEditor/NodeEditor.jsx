@@ -9,6 +9,8 @@ import { Text } from 'grommet/components/Text'
 
 import registry from './components'
 
+import proxy from '../../proxy'
+
 import MessageActions from '../../actions/Message.js'
 
 import type { ViewData } from './editors'
@@ -131,14 +133,14 @@ export default class NodeEditor extends Component<Props, State> {
   ee = new EventEmitter()
   state = {
     context: Object.freeze({ // XXX: context is read only!!
-      dispatch: this.props.dispatch,
-      user: this.props.user,
-      project: this.props.project, // current project
-      dag: this.props.dag, // current dag 
-      step: this.props.step, // current step 
-      variables: this.props.variables, // all variable definitions
-      engines: this.props.engines,
-      services: this.props.services,    
+      dispatch  : this.props.dispatch,
+      user      : this.props.user,
+      project   : this.props.project, // current project
+      dag       : this.props.dag, // current dag
+      step      : this.props.step, // current step
+      variables : this.props.variables, // all variable definitions
+      engines   : this.props.engines,
+      services  : this.props.services,
     }),
     viewData: this.getViewData(),
     value: this.getInitConfig(),
@@ -149,10 +151,30 @@ export default class NodeEditor extends Component<Props, State> {
   onMessageHandler = this.handleMessage.bind(this)
   onMultipleChangesHandler = this.handleChanges.bind(this)
 
+  getDebugMetadataId(type: string, mode: string) :string {
+    let prefix = 'org.ananas.dev.'
+    switch(type) {
+      case 'connector':
+        return prefix + mode + '.source' 
+      case 'transformer':
+        return prefix + mode + '.transform' 
+      case 'loader':
+        return prefix + mode + '.destination'
+      case 'viewer':
+        return prefix + mode + '.visualization'
+    }
+    return prefix + mode + '.transform'
+
+  }
 
   getViewData() :ViewData {
     // TODO: use default page layout instead of a blank page
+    let metadataId = this.props.step.metadataId
     if (!this.props.editors.hasOwnProperty(this.props.step.metadataId)) {
+      let isDevMode = proxy.getSharedVariable('devMode')
+      // use dev editor, debug or unknown depends on the current mode
+      metadataId = this.getDebugMetadataId(this.props.step.type, isDevMode ? 'debug' : 'unknown') 
+      /*
       return {
         layout: {
           key: 'root',
@@ -161,8 +183,9 @@ export default class NodeEditor extends Component<Props, State> {
         },
         components: {},
       }
+      */
     }
-    return this.props.editors[this.props.step.metadataId]
+    return this.props.editors[metadataId]
   }
 
   componentDidMount() {
@@ -185,11 +208,12 @@ export default class NodeEditor extends Component<Props, State> {
     config['__name__'] = this.props.step.name
     config['__description__'] = this.props.step.description
     config['__dataframe__'] = this.props.step.dataframe
+    config['__metadataId__'] = this.props.step.metadataId
 
     // merge the default value
     for (let key in viewData.components) {
       let view = viewData.components[key]
-      if (view.bind) {
+      if (view.bind && view.bind !== '__config__') { // exclude '__config__' case
         if (typeof config[view.bind] === 'undefined') {
           config[view.bind] = view.default
         }
@@ -199,10 +223,18 @@ export default class NodeEditor extends Component<Props, State> {
   }
 
   getConfigValue(bind: string): {[string]:any} {
+    // special case, bind to all config
+    if (bind === '__config__') {
+      return this.state.value
+    }
     return this.state.value[bind]
   }
 
   handleChange(bind: string, value: any) {
+    if (bind === '__config__') {
+      this.setState({ value })
+      return
+    }
     let v = this.state.value
     v[bind] = value
     this.setState({ value: v })
@@ -298,7 +330,7 @@ export default class NodeEditor extends Component<Props, State> {
   }
 
   renderComponent(key: string, components: {[string]:any}) {
-    if (!components.hasOwnProperty(key)) {
+    if (!Object.prototype.hasOwnProperty.call(components, key)) {
       return null
     }
     let view = components[key]

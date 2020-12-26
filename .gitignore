@@ -31,3 +31,7 @@ derby.log
 # ignore local file
 test.local.properties
 
+# coc
+/.settings/
+.classpath
+.project

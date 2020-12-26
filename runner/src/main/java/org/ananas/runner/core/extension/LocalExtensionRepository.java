@@ -44,6 +44,11 @@ public class LocalExtensionRepository implements ExtensionRepository {
   }
 
   @Override
+  public String getRepositoryRoot() {
+    return root.getAbsolutePath();
+  }
+
+  @Override
   public void load() {
     String[] extensions =
         getDirectoryContents(root, (file, name) -> new File(file, name).isDirectory());
@@ -102,9 +107,11 @@ public class LocalExtensionRepository implements ExtensionRepository {
     // copy the extension from the temp folder to the extension folder
     File extFolder = new File(root, descriptor.name);
     File verFolder = new File(extFolder, descriptor.version);
-    if (!verFolder.exists()) {
-      verFolder.mkdirs();
+    if (verFolder.exists()) {
+      // if it already exists, delete it first
+      FileUtils.deleteDirectory(verFolder);
     }
+    verFolder.mkdirs();
 
     FileUtils.copyDirectory(destDir, verFolder);
     // override the url

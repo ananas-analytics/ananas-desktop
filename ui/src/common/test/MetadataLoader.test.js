@@ -1,13 +1,13 @@
-const path = require('path')
-const MetadataLoader = require('../model/MetadataLoader')
+import path from 'path'
+import MetadataLoader from '../model/MetadataLoader'
 
 describe('load metadata', () => {
   test('should load metadata from a directory', async () => {
-    let loader = MetadataLoader.getInstance() 
+    let loader = MetadataLoader.getInstance()
 
     let dir = path.join(__dirname, 'resources/metadata')
     let metadatas = await loader.loadFromDir(dir)
-    expect(Object.values(metadatas).length).toBe(6) 
+    expect(Object.values(metadatas).length).toBe(6)
     expect(metadatas['org.ananas.source.file.csv'].name).toBe('CSV')
     expect(metadatas['org.ananas.source.file.csv'].icon).toBe('images/csv.svg')
     expect(metadatas['org.ananas.source.file.csv'].options.maxIncoming).toBe(0)

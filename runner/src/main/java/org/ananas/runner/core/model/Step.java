@@ -19,6 +19,7 @@ public class Step implements DeepComparable, Serializable {
 
   // Reserved configuration name
   public static final String FORCE_AUTODETECT_SCHEMA = "forceAutoDetectSchema";
+  public static final String DATA_SOURCE_LOOP = "dataSourceLoop";
 
   public String id;
   public String metadataId;

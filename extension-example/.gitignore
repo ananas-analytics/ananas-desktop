@@ -8,3 +8,5 @@ derby.log
 out/
 derby.log
 
+/bin/
+/.settings/

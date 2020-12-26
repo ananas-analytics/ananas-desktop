@@ -95,8 +95,13 @@ const mapStateToProps = state => {
   let currentProjectId = state.model.currentProjectId
   let currentStepId = state.AnalysisBoard.currentStepId
   let currentProject = state.model.projects[currentProjectId]
+
   if (!currentProject) {
     currentProject = {}
+  }
+  let editors = {}
+  if (currentProject.metadata) {
+    editors = currentProject.metadata.editor || {}
   }
 
   return {
@@ -106,7 +111,7 @@ const mapStateToProps = state => {
     step: currentProject.steps[currentStepId],
     variables: [ ...state.model.runtimeVariables, ...currentProject.variables ],
     engines: state.ExecutionEngine.engines,
-    editors: state.model.metadata.editor,
+    editors: { ... editors, ... state.model.metadata.editor },
 
     showEditor: state.AnalysisBoard.showEditor,
     nodes: currentProject.dag.nodes,

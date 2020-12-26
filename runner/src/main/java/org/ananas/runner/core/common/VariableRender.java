@@ -12,13 +12,11 @@ import org.ananas.runner.core.model.DagRequest;
 import org.ananas.runner.core.model.Variable;
 
 public class VariableRender {
-
-  public static Map<String, Object> renderConfig(
-      Map<String, Variable> variables, Map<String, Object> config) {
-    String json = JsonUtil.toJson(config);
+  public static Map<String, Object> renderConfigFromString(
+      Map<String, Variable> variables, String config) {
     Template t = null;
     try {
-      t = new Template("StepConfig", new StringReader(json), DagRequest.TEMPLATE_CFG);
+      t = new Template("StepConfig", new StringReader(config), DagRequest.TEMPLATE_CFG);
     } catch (IOException e) {
       // e.printStackTrace();
       throw new RuntimeException(e);
@@ -49,5 +47,11 @@ public class VariableRender {
     } catch (IOException | TemplateException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static Map<String, Object> renderConfig(
+      Map<String, Variable> variables, Map<String, Object> config) {
+    String json = JsonUtil.toJson(config);
+    return renderConfigFromString(variables, json);
   }
 }

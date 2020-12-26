@@ -7,13 +7,13 @@ import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 public class APIStepConfig {
 
   // API
-  private static final String API_METHOD = "method";
-  private static final String API_FORMAT = "format";
-  private static final String API_BODY = "body";
-  private static final String API_URL = "url";
-  private static final String API_JSONPATH = "jsonpath";
-  private static final Object API_DELIM = "lineDelimiter";
-  private static final Object API_HEADERS = "headers";
+  protected static final String API_METHOD = "method";
+  protected static final String API_FORMAT = "format";
+  protected static final String API_BODY = "body";
+  protected static final String API_URL = "url";
+  protected static final String API_JSONPATH = "jsonpath";
+  protected static final Object API_DELIM = "lineDelimiter";
+  protected static final Object API_HEADERS = "headers";
 
   public Map<String, String> headers;
   public String url;
@@ -31,7 +31,10 @@ public class APIStepConfig {
     this.method = (String) config.get(API_METHOD);
     this.format = (String) config.get(API_FORMAT);
     this.delimiter = (String) config.getOrDefault(API_DELIM, "\n");
+
     Preconditions.checkNotNull(this.url, API_URL);
     Preconditions.checkNotNull(this.method, API_METHOD);
   }
+
+  protected APIStepConfig() {}
 }

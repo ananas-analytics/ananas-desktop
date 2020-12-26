@@ -37,6 +37,7 @@ const state = {
         { name: 'projectId', label: 'ProjectId', type: 'string', description: '', default: '', advanced: false },
         { name: 'tempLocation', label: 'Google Cloud Storage Temp Location', type: 'string', description: '', default: 'gs://<bucket>/tmp', advanced: true },
         { name: 'streaming', label: 'Use Streaming', type: 'boolean', description: '', default: 'false', advanced: true },
+        { name: 'filesToStage', label: 'Additional Files upload to Execution Engine (separated by ;)', type: 'string', description: '', default: '', advanced: true },
       ],
       Flink: [
         { name: 'flinkMaster', label: 'Master URL', type: 'string', description: '', default: '[auto]', advanced: false },
@@ -44,12 +45,14 @@ const state = {
         { name: 'parallelism', label: 'Parallelism', type: 'number', description: '', default: '10', advanced: false },
         { name: 'maxBundleSize', label: 'Max Bundle Size', type: 'number', description: '', default: '1000000', advanced: true },
         { name: 'objectReuse', label: 'Enable Object Reuse', type: 'boolean', description: '', default: 'true', advanced: true },
+        { name: 'filesToStage', label: 'Additional Files upload to Execution Engine (separated by ;)', type: 'string', description: '', default: '', advanced: true },
       ],
       Spark: [
         { name: 'sparkMaster', label: 'Master URL', type: 'string', description: '', default: '', advanced: false },
         { name: 'tempLocation', label: 'Temp Location', type: 'string', description: '', default: '/tmp/', advanced: true },
         { name: 'streaming', label: 'Use Streaming', type: 'boolean', description: '', default: 'false', advanced: true },
         { name: 'enableMetricSinks', label: 'Enable Metric Sinks', type: 'boolean', description: '', default: 'true', advanced: true },
+        { name: 'filesToStage', label: 'Additional Files upload to Execution Engine (separated by ;)', type: 'string', description: '', default: '', advanced: true },
       ]
     }
   },
@@ -60,11 +63,12 @@ const state = {
 
   Message: {
     open: true,
-    messages: [], 
+    messages: [],
   },
 
   /* data model */
   model: {
+    devMode: false,
     user: {
       id: 'local-user',
       name: '',
@@ -85,14 +89,16 @@ const state = {
         variables: [],
         settings: {}, // project based settings
         triggers: [],
+        extensions: {},
+        metadata: {}, // project related metadata, installed from extension
       },
       // other projects here
     },
-    runtimeVariables: [], 
+    runtimeVariables: [],
     metadata: {
       node: [],
       editor: {},
-    }, // metadata    
+    }, // metadata
   },
 
   /* global settings */

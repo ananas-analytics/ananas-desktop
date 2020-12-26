@@ -3,14 +3,15 @@
 import axios from 'axios'
 import { Graph } from 'graphlib'
 
-import type { 
-  ID, 
-  APIResponse, 
+import type {
+  ID,
+  APIResponse,
   PlainEngine,
-  PlainProject, 
-  PlainConnection, 
-  PlainDataframe, 
-  PlainStep 
+  PlainExtension,
+  PlainProject,
+  PlainConnection,
+  PlainDataframe,
+  PlainStep
 } from '../../common/model/flowtypes.js'
 
 import type VariableService from './VariableService'
@@ -171,7 +172,7 @@ export default class ExecutionService {
    * Test the current step
    * @return Promise<APIResponse<PlainDataframe>>
    */
-  testStep(projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep}, dict:{[string]:any}, runnableId: ID) :Promise<APIResponse<PlainDataframe>> {
+  testStep(projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep}, dict:{[string]:any}, runnableId: ID, extensions: {[string]: PlainExtension}) :Promise<APIResponse<PlainDataframe>> {
     let newSteps = []
     for (let id in steps) {
       // inject variables for each step
@@ -203,6 +204,7 @@ export default class ExecutionService {
           runnableId
         ],
         params: dict,
+        extensions,
       }
     })
     .then(res=>{
@@ -214,7 +216,7 @@ export default class ExecutionService {
    * Run the multiple steps
    */
   run(user: any, projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep},
-    dict: {[string]:any}, runnables: Array<ID>, engine: PlainEngine) :Promise<APIResponse<ID>> {
+    dict: {[string]:any}, runnables: Array<ID>, engine: PlainEngine, extensions: {[string]:PlainExtension}) :Promise<APIResponse<ID>> {
     let newSteps = []
     for (let id in steps) {
       // inject variables for each step
@@ -250,6 +252,7 @@ export default class ExecutionService {
         goals: runnables,
         engine,
         params: dict,
+        extensions,
       }
     })
     .then(res=>{
@@ -261,8 +264,8 @@ export default class ExecutionService {
    * Run the current step
    * @return Promise<APIResponse<PlainDataframe>>
    */
-  runStep(user: any, projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep}, 
-          dict:{[string]:any}, runnableId: ID, engine: PlainEngine) :Promise<APIResponse<ID>> {
-    return this.run(user, projectId, connections, steps, dict, [ runnableId ], engine) 
+  runStep(user: any, projectId: ID, connections: Array<PlainConnection>, steps: {[string]:PlainStep},
+          dict:{[string]:any}, runnableId: ID, engine: PlainEngine, extensions: {[string]:PlainExtension}) :Promise<APIResponse<ID>> {
+    return this.run(user, projectId, connections, steps, dict, [ runnableId ], engine, extensions)
   }
 }
