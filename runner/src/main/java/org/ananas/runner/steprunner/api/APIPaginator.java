@@ -42,7 +42,24 @@ public class APIPaginator extends LoopedAutoDectectedSchemaPaginator {
       throw new AnanasException(
           MutablePair.of(ExceptionHandler.ErrorCode.CONNECTION, e.getMessage()));
     }
-    if (isJson()) {
+    if (isJsonLog()) {
+      Map<String, Schema.FieldType> types = new HashMap<>();
+      this.jsonPayloadAsString = json;
+      this.jsonPayloadAsObject = new ArrayList();
+      Arrays.asList(this.jsonPayloadAsString.split("\n"))
+          .forEach(
+              line -> {
+                try {
+                  Object jsonObj = JsonPath.parse(line).read(APIConfig.jsonPath);
+                  ((List) this.jsonPayloadAsObject).add(jsonObj);
+                  JsonAutodetect.inferTypes(
+                      types, JsonUtil.toJson(jsonObj, false), FlattenMode.KEEP_ARRAYS, false);
+                } catch (Exception e) {
+                  this.errors.addError(e);
+                }
+              });
+      return JsonAutodetect.buildSchema(types);
+    } else if (isJson()) {
       this.jsonPayloadAsObject = JsonPath.parse(json).read(APIConfig.jsonPath);
       this.jsonPayloadAsString = JsonUtil.toJson(this.jsonPayloadAsObject, false);
       if (isJsonArray()) {
@@ -54,7 +71,8 @@ public class APIPaginator extends LoopedAutoDectectedSchemaPaginator {
         }
         return JsonAutodetect.buildSchema(types);
       } else {
-        return JsonAutodetect.autodetectJson(this.jsonPayloadAsString, false);
+        return JsonAutodetect.autodetectJson(
+            JsonUtil.toJson(this.jsonPayloadAsObject, false), false);
       }
     } else {
       this.jsonPayloadAsString = json;
@@ -63,7 +81,11 @@ public class APIPaginator extends LoopedAutoDectectedSchemaPaginator {
   }
 
   private boolean isJsonArray() {
-    return List.class.isAssignableFrom(this.jsonPayloadAsObject.getClass());
+    return isJsonLog() || List.class.isAssignableFrom(this.jsonPayloadAsObject.getClass());
+  }
+
+  private boolean isJsonLog() {
+    return "jsonlog".equals(APIConfig.format);
   }
 
   private boolean isJson() {
@@ -83,7 +105,7 @@ public class APIPaginator extends LoopedAutoDectectedSchemaPaginator {
       }
     }
     this.APIConfig = new APIStepConfig(this.configGenerator.getConfig());
-    if (isJson()) {
+    if (isJson() || isJsonLog()) {
       JsonStringBasedFlattenerReader jsonReader =
           new JsonStringBasedFlattenerReader(
               SchemaBasedRowConverter.of(rawSchema), new ErrorHandler());
@@ -91,6 +113,7 @@ public class APIPaginator extends LoopedAutoDectectedSchemaPaginator {
         return ((List<Object>) this.jsonPayloadAsObject)
             .stream()
                 .map(o -> jsonReader.document2BeamRow(JsonUtil.toJson(o, false)))
+                // .limit(5000)
                 .collect(Collectors.toList());
       else
         return Arrays.asList(this.jsonPayloadAsString.split(this.APIConfig.delimiter)).stream()
