@@ -21,7 +21,6 @@ export const Item = styled(Box)`
   height: 10rem;
   width: 100%;
 
-  display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 `
@@ -59,8 +58,8 @@ export default ({id, name, path, description, selected, onClick, onEdit, onConfi
               if (path) {
                 proxy.openFileExploreSync(path)
                 return
-              } 
-              
+              }
+
               getProjectPath(id)
                 .then(p => {
                   proxy.openFileExploreSync(p)

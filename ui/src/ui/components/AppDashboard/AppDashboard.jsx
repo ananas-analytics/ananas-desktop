@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react'
 
+import styled from 'styled-components'
+
 import { Box } from 'grommet/components/Box'
 import { Image } from 'grommet/components/Image'
 import { Stack } from 'grommet/components/Stack'
@@ -42,6 +44,10 @@ type State = {
   editing: boolean,
   loading: boolean,
 }
+
+const AutoOverflowStack = styled(Stack)`
+  overflow: auto;
+`
 
 
 export default class AppDashboard extends Component<Props, State> {
@@ -146,7 +152,7 @@ export default class AppDashboard extends Component<Props, State> {
       [
         (<Item key='add-project' align='center' justify='center'
           onClick={()=>this.handleNewProject()}>
-          <Add color='light-4' size='large' />
+            <Add color='light-4' size='large' />
         </Item>),
         (<Item key='import-project' align='center' justify='center'
           onClick={()=>this.handleImportProject()}>
@@ -210,7 +216,7 @@ export default class AppDashboard extends Component<Props, State> {
       { this.state.loading ?
         <Loading />
         :
-        <Stack fill>
+        <AutoOverflowStack fill>
           <Box fill
             overflow={{vertical: 'auto'}}
           >
@@ -235,7 +241,7 @@ export default class AppDashboard extends Component<Props, State> {
           />
           ) : null
           }
-        </Stack>
+        </AutoOverflowStack>
       }
     </Box>)
   }

@@ -39,7 +39,6 @@ steps:
       subtype: api
       url: https://api.coindesk.com/v1/bpi/currentprice.json?n=%{n}&m=%{m}&k=%{k}
     dataframe:
-      data: []
       id: 5d409da52c03930c36c3fdb9
       schema:
         fields:
@@ -89,6 +88,7 @@ steps:
             type: INTEGER
           - name: k
             type: INTEGER
+      data: []
     description: Connect data from an API
     id: 5d409da52c03930c36c3fdb9
     metadataId: org.ananas.source.api
@@ -152,7 +152,6 @@ steps:
       prefix: output-
       subtype: file
     dataframe:
-      data: []
       id: 5edebf6f1c62cbb8534a136e
       schema:
         fields:
@@ -202,6 +201,7 @@ steps:
             type: INTEGER
           - name: k
             type: INTEGER
+      data: []
     description: Save your data as CSV file
     id: 5edebf6f1c62cbb8534a136e
     metadataId: org.ananas.destination.file.csv
@@ -209,11 +209,10 @@ steps:
     type: loader
   5edebf981c62cbb8534a1371:
     config:
-      sql: |-
+      sql: |
         SELECT
         	*
         FROM PCOLLECTION
-        WHERE n = 1
       subtype: sql
     dataframe:
       data: []

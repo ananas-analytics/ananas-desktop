@@ -23,8 +23,8 @@ import type { EventEmitter3 } from 'eventemitter3'
 
 
 type Props = {
-  context: NodeEditorContext, 
-  ee: EventEmitter3, 
+  context: NodeEditorContext,
+  ee: EventEmitter3,
   label: string,
 
   onError: (title:string, level:string, error: Error)=>void,
@@ -32,7 +32,7 @@ type Props = {
 }
 
 type State = {
-  jobs: Array<any>, // TODO: use PlainJob here, need to refactor code 
+  jobs: Array<any>, // TODO: use PlainJob here, need to refactor code
   loading: boolean
 }
 
@@ -48,13 +48,13 @@ export default class JobHistory extends Component<Props, State> {
     let { jobService } = this.props.context.services
     jobService.getJobsByStepId(this.props.context.step.id)
       .then(jobs => {
-        this.setState({ jobs }) 
+        this.setState({ jobs })
       })
 
     this.interval = setInterval(() => {
       jobService.getJobsByStepId(this.props.context.step.id)
         .then(jobs => {
-          this.setState({ jobs }) 
+          this.setState({ jobs })
         })
     }, 3000)
   }
@@ -73,7 +73,7 @@ export default class JobHistory extends Component<Props, State> {
   }
 
   renderJobs() {
-    return (<Table caption="Jobs Table">
+    return (<Table>
       <TableHeader>
         <TableRow>
           {/*
@@ -114,8 +114,8 @@ export default class JobHistory extends Component<Props, State> {
             <TableCell scope='row' >
               { datum.message != null && datum.message !== undefined && datum.message !== '' ?
               (<Box>
-                <Button icon={<View size='small'/>} 
-                  hoverIndicator 
+                <Button icon={<View size='small'/>}
+                  hoverIndicator
                   onClick={() => {this.props.onMessage(
                     `Message of Job ${datum.id}`,
                     datum.state.toUpperCase() === 'FAILED' ? 'danger' : 'warning',
@@ -124,14 +124,14 @@ export default class JobHistory extends Component<Props, State> {
                   )}}
                 />
               </Box>)
-              : 
+              :
               (datum.state.toUpperCase() == 'DONE' ? (<Box>
-                <Button icon={<View size='small'/>} 
-                  hoverIndicator 
+                <Button icon={<View size='small'/>}
+                  hoverIndicator
                   onClick={() => {
-                    this.handleViewJobResult(datum.id) 
+                    this.handleViewJobResult(datum.id)
                   }}
-                /> 
+                />
               </Box>) : '-')
               }
             </TableCell>
@@ -148,4 +148,4 @@ export default class JobHistory extends Component<Props, State> {
       </Box>
     )
   }
-} 
+}
