@@ -31,7 +31,11 @@ class Proxy {
   }
 
   openFileExploreSync(path :string) {
-    shell.openItem(path)
+    shell.openPath(path)
+  }
+
+  async openFileExploreAsync(path :string) :Promise<string> {
+    return await shell.openPath(path)
   }
 
   getLocalUserName() {

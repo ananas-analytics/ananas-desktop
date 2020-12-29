@@ -56,7 +56,10 @@ export default ({id, name, path, description, selected, onClick, onEdit, onConfi
             <Box onClick={onConfig}><SettingsOption /></Box>
             <Box onClick={() => {
               if (path) {
-                proxy.openFileExploreSync(path)
+                proxy.openFileExploreAsync(path)
+                  .catch(err => {
+                    console.log(err.message)
+                  })
                 return
               }
 
