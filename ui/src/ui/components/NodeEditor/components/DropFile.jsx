@@ -17,7 +17,7 @@ type State = {
 
 export default class DropFile extends Component<Props, State> {
   render() {
-    
+
     return (<Box margin={{vertical: 'small'}} border='all' onDragOver={
         (event) => {
           // Ugly: fix react-dnd conflict with react-dropzone
@@ -36,7 +36,7 @@ export default class DropFile extends Component<Props, State> {
           ev.preventDefault()
         }
       }>
-        <Text size='1rem' weight='bold'>
+        <Text size='1rem' weight='bold' wordBreak='break-all'>
           { this.props.value ? this.props.value : 'Drop your file here ...' }
         </Text>
       </Box>
