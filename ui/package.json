@@ -55,7 +55,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "bson-objectid": "^1.2.4",
     "codemirror": "^5.43.0",
     "d3-array": "^2.0.3",
