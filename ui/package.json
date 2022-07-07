@@ -72,7 +72,7 @@
     "jsplumb": "^2.9.3",
     "lokijs": "^1.5.6",
     "mkdirp": "^0.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-machine-id": "^1.1.12",
     "normalize-path": "^3.0.0",
     "panzoom": "^7.1.2",
